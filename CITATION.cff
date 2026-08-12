@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use GEO-Scope in your academic research or benchmarks, please cite it as below."
+title: "GEO-Scope: Generative Engine Optimization (GEO) & AI Search Reverse-Engineering Framework"
+version: 1.0.0
+date-released: 2026-08-12
+url: "https://github.com/your-username/geo-scope"
+license: MIT
+authors:
+  - name: "GEO-Scope Open Source Contributors"
+keywords:
+  - "Generative Engine Optimization"
+  - "GEO"
+  - "AI SEO"
+  - "LLM Citation Analysis"
+  - "Share of Model"
+  - "Perplexity"
+  - "ChatGPT Search"
+  - "Gemini Grounding"

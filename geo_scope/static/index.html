@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEO-Scope | موتور مهندسی معکوس الگوریتم‌های هوش مصنوعی (AI Visibility)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        dark: {
+                            bg: '#0b0f19',
+                            card: '#111827',
+                            border: '#1f2937',
+                            hover: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-brand {
+            box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.35);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 15px -3px rgba(79, 70, 229, 0.4);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3748;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a5568;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#0b0f19] text-gray-100 flex flex-col">
+
+    <!-- Top Navbar -->
+    <header class="border-b border-gray-800 bg-[#0d1322]/90 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/30">
+                    ⟠
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-lg text-white tracking-wide">GEO-Scope</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold border border-indigo-500/30">v2.6 Enterprise</span>
+                    </div>
+                    <p class="text-xs text-gray-400">سامانه مهندسی معکوس الگوریتم‌های هوش مصنوعی و سئو در LLMها</p>
+                </div>
+            </div>
+
+            <!-- Controls & Actions -->
+            <div class="flex items-center gap-3">
+                <button id="langToggleBtn" onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg border border-gray-700 bg-gray-800/80 hover:bg-gray-700 text-xs font-semibold text-gray-300 transition flex items-center gap-1.5">
+                    🌐 <span id="langLabel">English</span>
+                </button>
+                <button onclick="openNewBenchmarkModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white font-medium text-xs sm:text-sm shadow-md shadow-indigo-500/25 transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <span data-i18n="btn_new_benchmark">اجرای بنچمارک ۱۰۰۰ سوال جدید</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- Benchmark Status Bar (when running) -->
+        <div id="runningBanner" class="hidden p-4 rounded-2xl bg-indigo-950/60 border border-indigo-500/30 flex items-center justify-between gap-4 animate-pulse">
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
+                <div>
+                    <div id="statusTitle" class="text-sm font-bold text-indigo-200">در حال اجرای چرخه تحلیل ۱۰۰۰ سوال...</div>
+                    <div id="statusSub" class="text-xs text-indigo-400/80">ارزیابی خروجی‌های ChatGPT، Perplexity، Gemini و Claude</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 min-w-[200px]">
+                <div class="flex-1 bg-gray-800 rounded-full h-2 overflow-hidden">
+                    <div id="progressBar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+                <span id="progressPct" class="text-xs font-mono font-bold text-indigo-300">0%</span>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-gray-900/90 border border-gray-800 overflow-x-auto text-xs sm:text-sm font-medium">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
+                📊 <span data-i18n="tab_overview">داشبورد سهم دیده‌شدن (Share of Model)</span>
+            </button>
+            <button onclick="switchTab('reverse_engineering')" id="tab-reverse_engineering" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+                🧬 <span data-i18n="tab_algorithm">مهندسی معکوس وزن‌های الگوریتم</span>
+            </button>
+            <button onclick="switchTab('citation_graph')" id="tab-citation_graph" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+                🌐 <span data-i18n="tab_citations">گراف منابع و دامنه‌های استناد شده</span>
+            </button>
+            <button onclick="switchTab('prompts_explorer')" id="tab-prompts_explorer" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+                🔍 <span data-i18n="tab_prompts">کاوشگر ۱۰۰۰ پرسش و مقایسه مدل‌ها</span>
+            </button>
+            <button onclick="switchTab('geo_playbook')" id="tab-geo_playbook" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+                🚀 <span data-i18n="tab_playbook">استراتژی و نقشه راه اقدام (GEO Playbook)</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: EXECUTIVE DASHBOARD -->
+        <div id="section-dashboard" class="space-y-6">
+            <!-- Top KPI Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 relative overflow-hidden">
+                    <div class="text-xs font-semibold text-gray-400" data-i18n="kpi_queries_count">کل سوالات ارزیابی شده</div>
+                    <div id="kpi-queries" class="text-2xl sm:text-3xl font-black text-white mt-1.5 font-mono">1,000</div>
+                    <div class="text-[11px] text-emerald-400 mt-2 flex items-center gap-1">
+                        <span>●</span> ۴ مدل اصلی (۴,۰۰۰ اجرا)
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-indigo-500/30 relative overflow-hidden bg-gradient-to-br from-indigo-950/20 to-transparent">
+                    <div class="text-xs font-semibold text-indigo-300" data-i18n="kpi_brand_sov">سهم دیده‌شدن برند شما (SoM)</div>
+                    <div id="kpi-sov" class="text-2xl sm:text-3xl font-black text-indigo-400 mt-1.5 font-mono">72.4%</div>
+                    <div class="text-[11px] text-gray-400 mt-2">
+                        برند هدف: <span id="kpi-target-brand" class="font-bold text-white">HubSpot</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 relative overflow-hidden">
+                    <div class="text-xs font-semibold text-gray-400" data-i18n="kpi_top1_rate">نرخ پیشنهاد در رتبه اول (#1)</div>
+                    <div id="kpi-top1" class="text-2xl sm:text-3xl font-black text-amber-400 mt-1.5 font-mono">44.8%</div>
+                    <div class="text-[11px] text-gray-400 mt-2">
+                        توصیه به عنوان گزینه اصلی
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 relative overflow-hidden">
+                    <div class="text-xs font-semibold text-gray-400" data-i18n="kpi_best_engine">بهترین عملکرد در موتور</div>
+                    <div id="kpi-best-engine" class="text-xl sm:text-2xl font-black text-purple-300 mt-2">Perplexity</div>
+                    <div class="text-[11px] text-purple-400 mt-2">
+                        بیشترین استناد ارگانیک
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 1: Model Comparison & Competitors -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Share of Model Chart -->
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <span>🤖</span> <span data-i18n="chart_som_title">سهم دیده‌شدن به تفکیک موتور هوش مصنوعی</span>
+                            </h3>
+                            <p class="text-xs text-gray-400 mt-0.5">درصد پاسخ‌هایی که برند شما را ذکر کرده‌اند</p>
+                        </div>
+                    </div>
+                    <div class="h-64 relative">
+                        <canvas id="chartModelSoV"></canvas>
+                    </div>
+                </div>
+
+                <!-- Competitors Bar Chart -->
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <span>🏆</span> <span data-i18n="chart_comp_title">ماتریس رقابتی برندها (Share of Voice)</span>
+                            </h3>
+                            <p class="text-xs text-gray-400 mt-0.5">مقایسه حضور برند شما با رقبای اصلی در ۱۰۰۰ پرسش</p>
+                        </div>
+                    </div>
+                    <div class="h-64 relative">
+                        <canvas id="chartCompetitors"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intent Sensitivity Breakdown -->
+            <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <span>🎯</span> <span data-i18n="intent_breakdown_title">تحلیل حساسیت به قصد جستجوی کاربر (Search Intent)</span>
+                </h3>
+                <p class="text-xs text-gray-400">برند شما در کدام دسته از سوالات کاربران بیشترین یا کمترین شانس دیده‌شدن را دارد؟</p>
+                <div id="intentGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ALGORITHM REVERSE ENGINEERING LAB -->
+        <div id="section-reverse_engineering" class="hidden space-y-6">
+            <!-- Radar & Summary -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Radar Chart -->
+                <div class="lg:col-span-6 glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <span>🕸️</span> <span data-i18n="radar_title">توزیع وزن فاکتورهای الگوریتم بر اساس مدل</span>
+                    </h3>
+                    <p class="text-xs text-gray-400">مهندسی معکوس سیگنال‌های موثر در انتخاب منبع و رتبه‌بندی توسط هر LLM</p>
+                    <div class="h-80 relative flex items-center justify-center">
+                        <canvas id="chartAlgoRadar"></canvas>
+                    </div>
+                </div>
+
+                <!-- Factor Importance Breakdown -->
+                <div class="lg:col-span-6 glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <span>⚖️</span> <span data-i18n="factor_weights_title">میانگین وزن سیگنال‌های رتبه‌بندی کشف‌شده</span>
+                    </h3>
+                    <p class="text-xs text-gray-400">کدام متغیرها بیشترین همبستگی را با رتبه ۱ در پاسخ هوش مصنوعی دارند؟</p>
+                    <div id="factorsList" class="space-y-3 pt-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Engine Specific Biases Guide -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="glass-panel p-5 rounded-2xl border border-indigo-500/30 bg-indigo-950/10 space-y-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">⚡</span>
+                        <h4 class="font-bold text-indigo-300">الگوریتم Perplexity (Sonar / Pro)</h4>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        <strong>سیگنال طلایی:</strong> ۳۸٪ وزن الگوریتم متکی بر مباحث جامعه کاربری (Reddit, Quora, GitHub). این موتور برای پرسش‌های مقایسه‌ای ابتدا تاپیک‌های بحث ردیت با بیشترین رأی مثبت را اسکن می‌کند.
+                    </p>
+                    <div class="text-[11px] text-indigo-400 font-medium">
+                        ✓ راهکار: فعال‌سازی اکانت‌های فنی در ردیت و ویرگول برای ساخت ردپای معتبر UGC.
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-emerald-500/30 bg-emerald-950/10 space-y-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">🟢</span>
+                        <h4 class="font-bold text-emerald-300">الگوریتم ChatGPT Search (OpenAI)</h4>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        <strong>سیگنال طلایی:</strong> متکی بر ایندکس جستجوی Bing و پوشش رسانه‌ای معتبر (TechCrunch, Forbes, Zoomit) به همراه مراجع دایرکتوری G2. فرمت پاسخ‌دهی ساختاریافته در قالب جدول امتیاز بسیار بالایی دارد.
+                    </p>
+                    <div class="text-[11px] text-emerald-400 font-medium">
+                        ✓ راهکار: درج جداول مقایسه شفاف HTML و افزایش نقد‌های معتبر ۴.۵ ستاره در G2.
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-blue-500/30 bg-blue-950/10 space-y-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">🔵</span>
+                        <h4 class="font-bold text-blue-300">الگوریتم Google Gemini (Search Grounding)</h4>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        <strong>سیگنال طلایی:</strong> اتکای شدید به گراف دانش گوگل، موجودیت‌های رسمی ویکی‌پدیا و تازگی محتوا (Freshness). ویدیوهای آموزشی یوتیوب و داده‌های ساختاریافته Schema نقش محوری دارند.
+                    </p>
+                    <div class="text-[11px] text-blue-400 font-medium">
+                        ✓ راهکار: ثبت موجودیت در Wikidata، اسکیما مارک‌آپ پیشرفته و ساخت محتوای ویدیویی.
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-purple-500/30 bg-purple-950/10 space-y-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">🟣</span>
+                        <h4 class="font-bold text-purple-300">الگوریتم Anthropic Claude 3.7</h4>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        <strong>سیگنال طلایی:</strong> استدلال عمیق چندجانبه، مقایسه بی‌طرفانه مزایا/معایب و تکیه بر اسناد فنی و کاتالوگ دقیق محصول. کمترین تأثیرپذیری از متون بازاریابی اغراق‌آمیز.
+                    </p>
+                    <div class="text-[11px] text-purple-400 font-medium">
+                        ✓ راهکار: انتشار داکیومنت‌های دقیق با اعداد مشخص و جدول شفاف قیمت و محدودیت‌ها.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: CITATION & SOURCE GRAPH -->
+        <div id="section-citation_graph" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Source Category Pie -->
+                <div class="lg:col-span-5 glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <span>🥧</span> <span data-i18n="pie_citations_title">توزیع دسته‌بندی منابع استناد شده</span>
+                    </h3>
+                    <p class="text-xs text-gray-400">هوش مصنوعی‌ها لینک‌های منابع را از چه نوع وب‌سایت‌هایی برمی‌دارند؟</p>
+                    <div class="h-64 relative flex items-center justify-center">
+                        <canvas id="chartCitationCategories"></canvas>
+                    </div>
+                </div>
+
+                <!-- Top Cited Domains Table -->
+                <div class="lg:col-span-7 glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <span>🔗</span> <span data-i18n="top_domains_title">۱۲ دامنه پر استناد در پاسخ‌های ۱۰۰۰ پرسش</span>
+                    </h3>
+                    <p class="text-xs text-gray-400">دامنه‌هایی که بیشترین حضور را در لینک‌های پانویس هوش مصنوعی داشته‌اند</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs text-right">
+                            <thead class="bg-gray-800/60 text-gray-400 uppercase font-semibold">
+                                <tr>
+                                    <th class="p-2.5 rounded-r-lg">رتبه</th>
+                                    <th class="p-2.5">نام دامنه (Root Domain)</th>
+                                    <th class="p-2.5">دسته‌بندی</th>
+                                    <th class="p-2.5 rounded-l-lg text-left">تعداد استناد</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topDomainsTable" class="divide-y divide-gray-800">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: 1,000 PROMPTS EXPLORER -->
+        <div id="section-prompts_explorer" class="hidden space-y-4">
+            <!-- Filter Bar -->
+            <div class="glass-panel p-4 rounded-2xl border border-gray-800 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <input type="text" id="promptSearchInput" oninput="debounceFetchPrompts()" placeholder="جستجو در متن سوالات..." class="px-3.5 py-2 rounded-xl bg-gray-800/90 border border-gray-700 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 w-60 sm:w-72">
+                    
+                    <select id="promptIntentSelect" onchange="fetchPrompts(1)" class="px-3.5 py-2 rounded-xl bg-gray-800/90 border border-gray-700 text-xs text-gray-300 focus:outline-none focus:border-indigo-500">
+                        <option value="all">همه دسته‌های قصد جستجو (All Intents)</option>
+                        <option value="commercial_direct">تجاری مستقیم (Commercial Direct)</option>
+                        <option value="comparative">مقایسه‌ای (Comparative)</option>
+                        <option value="problem_solving">حل مسئله (Problem Solving)</option>
+                        <option value="long_tail_niche">تخصصی و لانگ‌تیل (Long-Tail Niche)</option>
+                        <option value="reputation_sentiment">اعتبار و نظرات (Reputation/Sentiment)</option>
+                    </select>
+
+                    <select id="promptMentionFilter" onchange="fetchPrompts(1)" class="px-3.5 py-2 rounded-xl bg-gray-800/90 border border-gray-700 text-xs text-gray-300 focus:outline-none focus:border-indigo-500">
+                        <option value="all">وضعیت ذکر برند هدف (همه)</option>
+                        <option value="true">فقط موارد ذکر شده (Mentioned)</option>
+                        <option value="false">فقط موارد ذکر نشده (Omitted)</option>
+                    </select>
+                </div>
+
+                <div class="text-xs text-gray-400">
+                    نمایش موارد: <span id="promptPaginationInfo" class="font-bold text-white font-mono">0 از 0</span>
+                </div>
+            </div>
+
+            <!-- Prompts Table -->
+            <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-right">
+                        <thead class="bg-gray-900/90 text-gray-400 font-semibold border-b border-gray-800">
+                            <tr>
+                                <th class="p-3 w-16">شناسه</th>
+                                <th class="p-3">متن پرسش ورودی (Query)</th>
+                                <th class="p-3 w-32">قصد جستجو</th>
+                                <th class="p-3 w-44 text-center">وضعیت در مدل‌ها</th>
+                                <th class="p-3 w-28 text-left">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promptsTableBody" class="divide-y divide-gray-800">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Footer -->
+                <div class="p-3 bg-gray-900/50 border-t border-gray-800 flex items-center justify-between">
+                    <button onclick="prevPromptPage()" id="prevPageBtn" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300 disabled:opacity-40 disabled:cursor-not-allowed">
+                        صفحه قبل
+                    </button>
+                    <div id="pageNumbers" class="text-xs text-gray-400 font-mono">صفحه ۱ از ۲۰</div>
+                    <button onclick="nextPromptPage()" id="nextPageBtn" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300 disabled:opacity-40 disabled:cursor-not-allowed">
+                        صفحه بعد
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: GEO PLAYBOOK & STRATEGY -->
+        <div id="section-geo_playbook" class="hidden space-y-6">
+            <!-- Strategic Overview Card -->
+            <div class="glass-panel p-6 rounded-2xl border border-indigo-500/40 bg-gradient-to-r from-indigo-950/40 via-purple-950/20 to-transparent flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="space-y-1.5">
+                    <div class="text-xs font-bold uppercase tracking-wider text-indigo-400">نقشه راه عملیاتی ۵ مرحله‌ای</div>
+                    <h2 class="text-xl font-extrabold text-white">استراتژی تسلط بر نتایج هوش مصنوعی برای <span id="playbookBrandName" class="text-indigo-300">HubSpot</span></h2>
+                    <p class="text-xs text-gray-300 leading-relaxed max-w-2xl">
+                        این برنامه اقدام بر اساس تحلیل مهندسی معکوس ۱۰۰۰ سوال و کشف وزن سیگنال‌های رتبه‌بندی در سال ۲۰۲۶ تدوین شده است.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportData('records_csv')" class="px-3 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-medium text-gray-200 border border-gray-700 flex items-center gap-1.5">
+                        📥 دانلود فایل نتایج (CSV)
+                    </button>
+                    <button onclick="exportData('full_json')" class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-medium text-white shadow-md flex items-center gap-1.5">
+                        📦 دانلود گزارش JSON
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5 Strategic Pillars Grid -->
+            <div id="playbookPillars" class="space-y-4">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal: New Benchmark Setup -->
+    <div id="newBenchmarkModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel rounded-3xl border border-gray-700 max-w-xl w-full p-6 space-y-5 bg-[#0f172a] shadow-2xl">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🚀</span>
+                    <h3 class="text-base font-bold text-white">پیکربندی بنچمارک جدید هوش مصنوعی</h3>
+                </div>
+                <button onclick="closeNewBenchmarkModal()" class="text-gray-400 hover:text-white text-lg">✕</button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-gray-300 mb-1.5">انتخاب صنعت و الگو (Industry Niche):</label>
+                    <select id="modalNicheSelect" onchange="onPresetChange()" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-gray-200 focus:outline-none focus:border-indigo-500">
+                        <option value="crm_sales">نرم‌افزارهای CRM و فروش (HubSpot, Salesforce, Zoho)</option>
+                        <option value="seo_marketing">ابزارهای سئو و بازاریابی (Ahrefs, SEMrush, Moz)</option>
+                        <option value="project_management">مدیریت پروژه و تسک‌ها (ClickUp, Asana, Monday)</option>
+                        <option value="ai_copywriting">تولید محتوای هوش مصنوعی (Jasper, Copy.ai, Claude)</option>
+                        <option value="ecommerce_platform">فروشگاه‌سازهای اینترنتی (Shopify, WooCommerce, Magento)</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-gray-300 mb-1.5">برند هدف شما (Target Brand):</label>
+                        <input type="text" id="modalTargetBrand" value="HubSpot" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-gray-300 mb-1.5">تعداد سوالات ارزیابی:</label>
+                        <select id="modalPromptCount" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-gray-200 focus:outline-none focus:border-indigo-500">
+                            <option value="1000" selected>۱,۰۰۰ سوال (استاندارد عمیق بنچمارک)</option>
+                            <option value="500">۵۰۰ سوال (ارزیابی سریع)</option>
+                            <option value="200">۲۰۰ سوال (تست اولیه)</option>
+                            <option value="50">۵۰ سوال (تست فوق سریع)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-gray-300 mb-1.5">رقبای اصلی (با کاما جدا کنید):</label>
+                    <input type="text" id="modalCompetitors" value="Salesforce, Zoho CRM, Pipedrive, Monday CRM" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-gray-300 mb-1.5">زبان سوالات:</label>
+                    <div class="flex items-center gap-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="langRadio" value="both" checked class="text-indigo-600">
+                            <span>دوزبانه (فارسی + انگلیسی)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="langRadio" value="fa" class="text-indigo-600">
+                            <span>فقط فارسی</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="langRadio" value="en" class="text-indigo-600">
+                            <span>فقط انگلیسی</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-gray-800 flex items-center justify-end gap-3">
+                <button onclick="closeNewBenchmarkModal()" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300">
+                    انصراف
+                </button>
+                <button onclick="startBenchmark()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-xs font-bold text-white shadow-lg shadow-indigo-500/30">
+                    شروع تحلیل و کشف الگوریتم
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Prompt Comparator (Side-by-side AI models) -->
+    <div id="promptComparatorModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-panel rounded-3xl border border-gray-700 max-w-5xl w-full max-h-[90vh] flex flex-col bg-[#0b0f19] shadow-2xl">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-gray-800 flex items-center justify-between">
+                <div>
+                    <span id="cmpQueryId" class="text-xs font-mono text-indigo-400 font-bold">QRY-0001</span>
+                    <h3 id="cmpQueryText" class="text-sm sm:text-base font-bold text-white mt-0.5 leading-snug">بهترین نرم‌افزار CRM در سال ۲۰۲۶ چیست؟</h3>
+                </div>
+                <button onclick="closeComparatorModal()" class="text-gray-400 hover:text-white text-xl p-1">✕</button>
+            </div>
+
+            <!-- Modal Content (Grid of 4 AI models) -->
+            <div class="flex-1 overflow-y-auto p-5">
+                <div id="cmpModelsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-gray-800 bg-gray-900/60 flex items-center justify-between text-xs text-gray-400">
+                <span>مقایسه سنتز پاسخ، رتبه برند هدف و لینک‌های استناد شده در ۴ موتور هوش مصنوعی</span>
+                <button onclick="closeComparatorModal()" class="px-4 py-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-medium">بستن پنجره</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // Global Application State
+        let currentLang = 'fa';
+        let benchmarkData = null;
+        let presetsData = null;
+        let chartInstances = {};
+        let currentPromptPage = 1;
+        let totalPromptPages = 1;
+        let searchDebounceTimer = null;
+
+        const I18N = {
+            fa: {
+                btn_new_benchmark: "اجرای بنچمارک ۱۰۰۰ سوال جدید",
+                tab_overview: "داشبورد سهم دیده‌شدن (Share of Model)",
+                tab_algorithm: "مهندسی معکوس وزن‌های الگوریتم",
+                tab_citations: "گراف منابع و دامنه‌های استناد شده",
+                tab_prompts: "کاوشگر ۱۰۰۰ پرسش و مقایسه مدل‌ها",
+                tab_playbook: "استراتژی و نقشه راه اقدام (GEO Playbook)",
+                kpi_queries_count: "کل سوالات ارزیابی شده",
+                kpi_brand_sov: "سهم دیده‌شدن برند شما (SoM)",
+                kpi_top1_rate: "نرخ پیشنهاد در رتبه اول (#1)",
+                kpi_best_engine: "بهترین عملکرد در موتور",
+                chart_som_title: "سهم دیده‌شدن به تفکیک موتور هوش مصنوعی",
+                chart_comp_title: "ماتریس رقابتی برندها (Share of Voice)",
+                intent_breakdown_title: "تحلیل حساسیت به قصد جستجوی کاربر (Search Intent)",
+                radar_title: "توزیع وزن فاکتورهای الگوریتم بر اساس مدل",
+                factor_weights_title: "میانگین وزن سیگنال‌های رتبه‌بندی کشف‌شده",
+                pie_citations_title: "توزیع دسته‌بندی منابع استناد شده",
+                top_domains_title: "۱۲ دامنه پر استناد در پاسخ‌های ۱۰۰۰ پرسش",
+            },
+            en: {
+                btn_new_benchmark: "Run 1,000 Prompts Benchmark",
+                tab_overview: "Share of Model Dashboard",
+                tab_algorithm: "Algorithm Reverse-Engineering",
+                tab_citations: "Citations & Source Graph",
+                tab_prompts: "1,000 Prompts Explorer",
+                tab_playbook: "GEO Strategy Playbook",
+                kpi_queries_count: "Total Queries Evaluated",
+                kpi_brand_sov: "Your Brand Share of Model",
+                kpi_top1_rate: "Top-1 Recommendation Rate",
+                kpi_best_engine: "Top Performing Engine",
+                chart_som_title: "Share of Voice Across AI Engines",
+                chart_comp_title: "Brand Share of Voice Matrix",
+                intent_breakdown_title: "Search Intent Sensitivity Breakdown",
+                radar_title: "Algorithm Factor Weights by Model",
+                factor_weights_title: "Reverse-Engineered Ranking Factors",
+                pie_citations_title: "Cited Sources Distribution",
+                top_domains_title: "Top 12 Cited Domains in 1,000 Prompts",
+            }
+        };
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadPresets();
+            await fetchResults();
+            await fetchPrompts(1);
+            pollBenchmarkStatus();
+        });
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'fa' ? 'en' : 'fa';
+            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
+            document.documentElement.lang = currentLang;
+            document.getElementById('langLabel').innerText = currentLang === 'fa' ? 'English' : 'فارسی';
+            
+            // Update i18n text
+            const strings = I18N[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (strings[key]) el.innerText = strings[key];
+            });
+
+            // Re-render UI pieces
+            if (benchmarkData) {
+                renderDashboard(benchmarkData);
+                renderReverseEngineering(benchmarkData);
+                renderCitations(benchmarkData);
+                renderPlaybook(benchmarkData);
+            }
+        }
+
+        async function loadPresets() {
+            try {
+                const res = await fetch('/api/presets');
+                presetsData = await res.json();
+            } catch (err) {
+                console.error("Failed to load presets:", err);
+            }
+        }
+
+        async function fetchResults() {
+            try {
+                const res = await fetch('/api/benchmark_results');
+                if (res.ok) {
+                    benchmarkData = await res.json();
+                    renderDashboard(benchmarkData);
+                    renderReverseEngineering(benchmarkData);
+                    renderCitations(benchmarkData);
+                    renderPlaybook(benchmarkData);
+                }
+            } catch (err) {
+                console.error("Failed to fetch results:", err);
+            }
+        }
+
+        function switchTab(tabId) {
+            ['dashboard', 'reverse_engineering', 'citation_graph', 'prompts_explorer', 'geo_playbook'].forEach(id => {
+                const sec = document.getElementById(`section-${id}`);
+                const btn = document.getElementById(`tab-${id}`);
+                if (id === tabId) {
+                    sec.classList.remove('hidden');
+                    btn.classList.add('active');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    sec.classList.add('hidden');
+                    btn.classList.remove('active');
+                    btn.classList.add('text-gray-400');
+                }
+            });
+        }
+
+        function renderDashboard(data) {
+            const sum = data.summary;
+            const sov = data.analysis.share_of_model;
+            
+            document.getElementById('kpi-queries').innerText = sum.total_queries_tested.toLocaleString();
+            document.getElementById('kpi-sov').innerText = `${sum.overall_sov}%`;
+            document.getElementById('kpi-top1').innerText = `${sum.overall_top1_rate}%`;
+            document.getElementById('kpi-target-brand').innerText = sum.target_brand;
+            document.getElementById('kpi-best-engine').innerText = formatModelName(sum.best_performing_model);
+
+            // Chart: Model SoV
+            const modelNames = Object.keys(sov.by_model);
+            const modelRates = modelNames.map(m => sov.by_model[m].mention_rate_pct);
+            const modelTop1Rates = modelNames.map(m => sov.by_model[m].top1_rate_pct);
+
+            renderBarChart('chartModelSoV', {
+                labels: modelNames.map(formatModelName),
+                datasets: [
+                    {
+                        label: currentLang === 'fa' ? 'سهم ذکر برند (Mention Rate %)' : 'Mention Rate %',
+                        data: modelRates,
+                        backgroundColor: 'rgba(99, 102, 241, 0.75)',
+                        borderColor: '#6366f1',
+                        borderWidth: 1.5,
+                        borderRadius: 8
+                    },
+                    {
+                        label: currentLang === 'fa' ? 'رتبه اول (#1 Pick Rate %)' : 'Top #1 Pick Rate %',
+                        data: modelTop1Rates,
+                        backgroundColor: 'rgba(245, 158, 11, 0.75)',
+                        borderColor: '#f59e0b',
+                        borderWidth: 1.5,
+                        borderRadius: 8
+                    }
+                ]
+            });
+
+            // Chart: Competitor Matrix
+            const compMatrix = data.analysis.competitor_matrix;
+            renderBarChart('chartCompetitors', {
+                labels: compMatrix.map(c => c.brand),
+                datasets: [{
+                    label: currentLang === 'fa' ? 'سهم دیده‌شدن (Share of Voice %)' : 'Share of Voice %',
+                    data: compMatrix.map(c => c.mention_rate_pct),
+                    backgroundColor: compMatrix.map(c => c.is_target ? 'rgba(99, 102, 241, 0.85)' : 'rgba(75, 85, 99, 0.6)'),
+                    borderColor: compMatrix.map(c => c.is_target ? '#818cf8' : '#6b7280'),
+                    borderWidth: 1.5,
+                    borderRadius: 8
+                }]
+            });
+
+            // Intent Grid
+            const intentStats = data.analysis.intent_sensitivity;
+            const intentContainer = document.getElementById('intentGrid');
+            intentContainer.innerHTML = '';
+            
+            const intentLabels = {
+                commercial_direct: { fa: 'تجاری مستقیم', en: 'Commercial Direct', icon: '💰' },
+                comparative: { fa: 'مقایسه‌ای', en: 'Comparative', icon: '⚖️' },
+                problem_solving: { fa: 'حل مسئله', en: 'Problem Solving', icon: '🛠️' },
+                long_tail_niche: { fa: 'تخصصی و خاص', en: 'Long-Tail Niche', icon: '🎯' },
+                reputation_sentiment: { fa: 'اعتبار و نقدها', en: 'Reputation', icon: '⭐' }
+            };
+
+            for (const [intentKey, st] of Object.entries(intentStats)) {
+                const info = intentLabels[intentKey] || { fa: intentKey, en: intentKey, icon: '📌' };
+                const label = currentLang === 'fa' ? info.fa : info.en;
+                intentContainer.innerHTML += `
+                    <div class="p-3.5 rounded-xl bg-gray-800/60 border border-gray-700/60 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-base">${info.icon}</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-gray-700 text-gray-300 font-mono">${st.query_count} Qs</span>
+                        </div>
+                        <div class="text-xs font-bold text-gray-200">${label}</div>
+                        <div class="flex items-baseline justify-between pt-1">
+                            <span class="text-[11px] text-gray-400">سهم ذکر:</span>
+                            <span class="text-sm font-bold font-mono ${st.mention_rate_pct > 60 ? 'text-emerald-400' : 'text-amber-400'}">${st.mention_rate_pct}%</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderReverseEngineering(data) {
+            const algo = data.analysis.algorithmic_factors;
+            const factorDefs = algo.factor_definitions;
+            const weights = algo.weights_by_model;
+            const avgWeights = algo.global_average_weights;
+
+            const factorKeys = Object.keys(factorDefs);
+            const factorLabels = factorKeys.map(k => currentLang === 'fa' ? factorDefs[k].name_fa : factorDefs[k].name_en);
+
+            // Radar Chart
+            renderRadarChart('chartAlgoRadar', {
+                labels: factorLabels,
+                datasets: [
+                    {
+                        label: 'Perplexity Sonar',
+                        data: factorKeys.map(k => weights.perplexity_sonar[k]),
+                        borderColor: '#818cf8',
+                        backgroundColor: 'rgba(129, 140, 248, 0.2)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'ChatGPT Search',
+                        data: factorKeys.map(k => weights.chatgpt_search[k]),
+                        borderColor: '#34d399',
+                        backgroundColor: 'rgba(52, 211, 153, 0.2)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Google Gemini',
+                        data: factorKeys.map(k => weights.gemini_grounding[k]),
+                        borderColor: '#60a5fa',
+                        backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                        borderWidth: 2
+                    }
+                ]
+            });
+
+            // Factors List
+            const factorsListEl = document.getElementById('factorsList');
+            factorsListEl.innerHTML = '';
+            
+            // Sort by average weight descending
+            const sortedFactors = [...factorKeys].sort((a, b) => avgWeights[b] - avgWeights[a]);
+            sortedFactors.forEach((k, idx) => {
+                const def = factorDefs[k];
+                const w = avgWeights[k];
+                const name = currentLang === 'fa' ? def.name_fa : def.name_en;
+                const desc = currentLang === 'fa' ? def.description_fa : def.description_en;
+                
+                factorsListEl.innerHTML += `
+                    <div class="p-3 rounded-xl bg-gray-800/40 border border-gray-700/60 flex items-center justify-between gap-3">
+                        <div class="flex-1 space-y-0.5">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-indigo-900/60 text-indigo-300 text-[11px] font-bold flex items-center justify-center">${idx + 1}</span>
+                                <span class="text-xs font-bold text-gray-200">${name}</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400 pr-7">${desc}</p>
+                        </div>
+                        <div class="text-right min-w-[70px]">
+                            <div class="text-sm font-black text-indigo-400 font-mono">${w}%</div>
+                            <div class="text-[10px] text-gray-500">ضریب اثر</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderCitations(data) {
+            const citations = data.analysis.citation_analytics;
+            const catDist = citations.category_distribution;
+            const topDomains = citations.top_cited_domains;
+
+            const categoryLabels = {
+                ugc_forums: { fa: 'ردیت و انجمن‌های کاربری (UGC)', en: 'Reddit & Community UGC', color: '#f97316' },
+                review_aggregators: { fa: 'سایت‌های نقد و بررسی (G2/Capterra)', en: 'Review Aggregators', color: '#6366f1' },
+                tech_media_pr: { fa: 'مجلات و اخبار تخصصی (PR)', en: 'Tech Media & PR', color: '#10b981' },
+                knowledge_base_wiki: { fa: 'ویکی‌پدیا و مراجع فنی', en: 'Wikipedia & Docs', color: '#8b5cf6' },
+                blogs_industry: { fa: 'بلاگ‌های تخصصی صنعت', en: 'Industry Blogs', color: '#ec4899' },
+                other_web: { fa: 'سایر وب‌سایت‌ها', en: 'Other Web Sources', color: '#6b7280' }
+            };
+
+            const catKeys = Object.keys(catDist);
+            renderPieChart('chartCitationCategories', {
+                labels: catKeys.map(k => currentLang === 'fa' ? (categoryLabels[k]?.fa || k) : (categoryLabels[k]?.en || k)),
+                datasets: [{
+                    data: catKeys.map(k => catDist[k]),
+                    backgroundColor: catKeys.map(k => categoryLabels[k]?.color || '#94a3b8'),
+                    borderWidth: 0
+                }]
+            });
+
+            // Top Domains Table
+            const tableBody = document.getElementById('topDomainsTable');
+            tableBody.innerHTML = '';
+            topDomains.forEach((d, idx) => {
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-gray-800/40">
+                        <td class="p-2.5 font-mono text-gray-400">#${idx + 1}</td>
+                        <td class="p-2.5 font-bold text-white font-mono flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                            ${d.domain}
+                        </td>
+                        <td class="p-2.5 text-gray-400">${getCategoryLabel(d.domain)}</td>
+                        <td class="p-2.5 text-left font-mono font-bold text-indigo-300">${d.count.toLocaleString()} استناد</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function getCategoryLabel(domain) {
+            if (domain.includes('reddit') || domain.includes('quora')) return 'فروم کاربری (UGC)';
+            if (domain.includes('g2') || domain.includes('capterra') || domain.includes('trustpilot')) return 'پایگاه بررسی نرم‌افزار';
+            if (domain.includes('techcrunch') || domain.includes('forbes') || domain.includes('zoomit')) return 'رسانه و PR';
+            if (domain.includes('wikipedia')) return 'گراف دانش رسمی';
+            return 'سایت تخصصی وب';
+        }
+
+        function renderPlaybook(data) {
+            const pb = data.playbook;
+            if (!pb) return;
+            
+            document.getElementById('playbookBrandName').innerText = pb.target_brand;
+            const container = document.getElementById('playbookPillars');
+            container.innerHTML = '';
+
+            pb.pillars.forEach(pillar => {
+                const name = currentLang === 'fa' ? pillar.name_fa : pillar.name_en;
+                let tacticsHtml = '';
+                
+                pillar.tactics.forEach(t => {
+                    const title = currentLang === 'fa' ? t.title_fa : t.title_en;
+                    const desc = currentLang === 'fa' ? t.desc_fa : t.desc_en;
+                    tacticsHtml += `
+                        <div class="p-3.5 rounded-xl bg-gray-800/50 border border-gray-700/60 space-y-1">
+                            <div class="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
+                                <span>⚡</span> ${title}
+                            </div>
+                            <p class="text-xs text-gray-300 leading-relaxed">${desc}</p>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML += `
+                    <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                ${name}
+                            </h3>
+                            <span class="text-[11px] px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+                                ضریب تاثیر: ${pillar.impact_score}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            ${tacticsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Fetch & Paginate Prompts Explorer
+        async function fetchPrompts(page = 1) {
+            currentPromptPage = page;
+            const search = document.getElementById('promptSearchInput')?.value || '';
+            const intent = document.getElementById('promptIntentSelect')?.value || 'all';
+            const mention = document.getElementById('promptMentionFilter')?.value || 'all';
+
+            let url = `/api/prompts?page=${page}&page_size=15`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (intent && intent !== 'all') url += `&intent=${intent}`;
+            if (mention !== 'all') url += `&target_mentioned=${mention}`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                renderPromptsTable(data);
+            } catch (err) {
+                console.error("Failed to fetch prompts:", err);
+            }
+        }
+
+        function debounceFetchPrompts() {
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => fetchPrompts(1), 300);
+        }
+
+        function renderPromptsTable(data) {
+            const tableBody = document.getElementById('promptsTableBody');
+            tableBody.innerHTML = '';
+
+            totalPromptPages = data.total_pages || 1;
+            document.getElementById('pageNumbers').innerText = `صفحه ${data.page} از ${data.total_pages}`;
+            document.getElementById('promptPaginationInfo').innerText = `${((data.page - 1) * data.page_size) + 1} تا ${Math.min(data.page * data.page_size, data.total)} از ${data.total}`;
+            
+            document.getElementById('prevPageBtn').disabled = data.page <= 1;
+            document.getElementById('nextPageBtn').disabled = data.page >= data.total_pages;
+
+            data.items.forEach(item => {
+                const mData = item.models_data;
+                
+                let badgesHtml = '';
+                const models = [
+                    { id: 'perplexity_sonar', label: 'Perplexity' },
+                    { id: 'chatgpt_search', label: 'ChatGPT' },
+                    { id: 'gemini_grounding', label: 'Gemini' },
+                    { id: 'claude_3_7', label: 'Claude' }
+                ];
+
+                models.forEach(m => {
+                    const st = mData[m.id];
+                    if (!st) return;
+                    if (st.is_top_1) {
+                        badgesHtml += `<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold" title="${m.label}: رتبه اول #1">${m.label[0]} #1</span>`;
+                    } else if (st.mentioned) {
+                        badgesHtml += `<span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40" title="${m.label}: ذکر شده">${m.label[0]} ✓</span>`;
+                    } else {
+                        badgesHtml += `<span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-800 text-gray-500 border border-gray-700" title="${m.label}: حذف شده">${m.label[0]} ✕</span>`;
+                    }
+                });
+
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-gray-800/40 transition">
+                        <td class="p-3 font-mono text-gray-400 text-[11px]">${item.query_id}</td>
+                        <td class="p-3 font-medium text-white max-w-md">${item.query_text}</td>
+                        <td class="p-3">
+                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-gray-800 text-gray-300 border border-gray-700 font-mono">${item.intent}</span>
+                        </td>
+                        <td class="p-3 text-center">
+                            <div class="flex items-center justify-center gap-1">
+                                ${badgesHtml}
+                            </div>
+                        </td>
+                        <td class="p-3 text-left">
+                            <button onclick="openComparatorModal('${item.query_id}')" class="px-2.5 py-1 rounded-lg bg-indigo-600/80 hover:bg-indigo-600 text-white font-medium text-[11px] transition">
+                                مقایسه مدل‌ها ↗
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function prevPromptPage() {
+            if (currentPromptPage > 1) fetchPrompts(currentPromptPage - 1);
+        }
+        function nextPromptPage() {
+            if (currentPromptPage < totalPromptPages) fetchPrompts(currentPromptPage + 1);
+        }
+
+        // Side by side model comparison modal
+        async function openComparatorModal(queryId) {
+            try {
+                const res = await fetch(`/api/prompts?search=${queryId}`);
+                const data = await res.json();
+                if (!data.items || data.items.length === 0) return;
+                
+                const item = data.items[0];
+                document.getElementById('cmpQueryId').innerText = item.query_id;
+                document.getElementById('cmpQueryText').innerText = item.query_text;
+
+                const grid = document.getElementById('cmpModelsGrid');
+                grid.innerHTML = '';
+
+                const modelsMeta = {
+                    perplexity_sonar: { name: "Perplexity Sonar Pro", icon: "⚡", color: "indigo" },
+                    chatgpt_search: { name: "ChatGPT Search (GPT-4o)", icon: "🟢", color: "emerald" },
+                    gemini_grounding: { name: "Google Gemini Grounding", icon: "🔵", color: "blue" },
+                    claude_3_7: { name: "Anthropic Claude 3.7", icon: "🟣", color: "purple" }
+                };
+
+                for (const [mKey, st] of Object.entries(item.models_data)) {
+                    const meta = modelsMeta[mKey] || { name: mKey, icon: "🤖", color: "gray" };
+                    
+                    let citationsListHtml = '';
+                    (st.citations || []).forEach(c => {
+                        citationsListHtml += `
+                            <a href="${c.url}" target="_blank" class="block truncate text-[11px] text-indigo-400 hover:underline">
+                                🔗 ${c.domain} (${c.category})
+                            </a>
+                        `;
+                    });
+
+                    grid.innerHTML += `
+                        <div class="rounded-2xl bg-gray-900 border border-gray-800 p-4 space-y-3 flex flex-col justify-between">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-lg">${meta.icon}</span>
+                                        <h4 class="font-bold text-white text-xs sm:text-sm">${meta.name}</h4>
+                                    </div>
+                                    <div>
+                                        ${st.is_top_1 ? '<span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">رتبه ۱ بازار</span>' : 
+                                          st.mentioned ? '<span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">ذکر شده</span>' : 
+                                          '<span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-500 border border-gray-700">ذکر نشده</span>'}
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-300 whitespace-pre-line leading-relaxed max-h-52 overflow-y-auto pr-1">
+                                    ${st.response_text || 'پاسخ موجود نیست.'}
+                                </div>
+                            </div>
+                            <div class="pt-2 border-t border-gray-800/80 space-y-1">
+                                <div class="text-[10px] font-bold text-gray-400">منابع و لینک‌های استناد شده:</div>
+                                <div class="space-y-0.5 max-h-20 overflow-y-auto">
+                                    ${citationsListHtml || '<span class="text-[10px] text-gray-500">بدون لینک استناد مستقیم</span>'}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('promptComparatorModal').classList.remove('hidden');
+            } catch (err) {
+                console.error("Failed to open comparator:", err);
+            }
+        }
+
+        function closeComparatorModal() {
+            document.getElementById('promptComparatorModal').classList.add('hidden');
+        }
+
+        // Modal Controls for Benchmark
+        function openNewBenchmarkModal() {
+            document.getElementById('newBenchmarkModal').classList.remove('hidden');
+        }
+        function closeNewBenchmarkModal() {
+            document.getElementById('newBenchmarkModal').classList.add('hidden');
+        }
+
+        function onPresetChange() {
+            const val = document.getElementById('modalNicheSelect').value;
+            if (!presetsData || !presetsData.presets[val]) return;
+            const p = presetsData.presets[val];
+            document.getElementById('modalTargetBrand').value = p.target_brand;
+            document.getElementById('modalCompetitors').value = p.competitors.join(', ');
+        }
+
+        async function startBenchmark() {
+            const niche = document.getElementById('modalNicheSelect').value;
+            const brand = document.getElementById('modalTargetBrand').value;
+            const count = parseInt(document.getElementById('modalPromptCount').value, 10);
+            const comps = document.getElementById('modalCompetitors').value.split(',').map(s => s.trim()).filter(Boolean);
+            const lang = document.querySelector('input[name="langRadio"]:checked').value;
+
+            closeNewBenchmarkModal();
+            document.getElementById('runningBanner').classList.remove('hidden');
+
+            try {
+                await fetch('/api/run_benchmark', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        niche_key: niche,
+                        target_brand: brand,
+                        competitors: comps,
+                        language: lang,
+                        prompt_count: count
+                    })
+                });
+                pollBenchmarkStatus();
+            } catch (err) {
+                console.error("Error starting benchmark:", err);
+            }
+        }
+
+        function pollBenchmarkStatus() {
+            const interval = setInterval(async () => {
+                try {
+                    const res = await fetch('/api/benchmark_status');
+                    const status = await res.json();
+                    
+                    if (status.is_running) {
+                        document.getElementById('runningBanner').classList.remove('hidden');
+                        document.getElementById('progressBar').style.width = `${status.progress}%`;
+                        document.getElementById('progressPct').innerText = `${status.progress}%`;
+                        document.getElementById('statusTitle').innerText = status.status_text;
+                    } else {
+                        document.getElementById('runningBanner').classList.add('hidden');
+                        if (status.has_results) {
+                            await fetchResults();
+                            await fetchPrompts(1);
+                        }
+                        clearInterval(interval);
+                    }
+                } catch (err) {
+                    console.error("Status polling error:", err);
+                }
+            }, 1000);
+        }
+
+        function exportData(type) {
+            window.open(`/api/export/${type}`, '_blank');
+        }
+
+        function formatModelName(modelKey) {
+            const names = {
+                perplexity_sonar: "Perplexity Sonar",
+                chatgpt_search: "ChatGPT Search",
+                gemini_grounding: "Google Gemini",
+                claude_3_7: "Claude 3.7"
+            };
+            return names[modelKey] || modelKey;
+        }
+
+        // Chart.js helper functions
+        function renderBarChart(canvasId, dataConfig) {
+            if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            chartInstances[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: dataConfig,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af', font: { family: 'Vazirmatn' } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af', font: { family: 'Vazirmatn' } }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e5e7eb', font: { family: 'Vazirmatn' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderRadarChart(canvasId, dataConfig) {
+            if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            chartInstances[canvasId] = new Chart(ctx, {
+                type: 'radar',
+                data: dataConfig,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                            pointLabels: { color: '#e5e7eb', font: { family: 'Vazirmatn', size: 10 } },
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e5e7eb', font: { family: 'Vazirmatn' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderPieChart(canvasId, dataConfig) {
+            if (chartInstances[canvasId]) chartInstances[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            chartInstances[canvasId] = new Chart(ctx, {
+                type: 'doughnut',
+                data: dataConfig,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#e5e7eb', font: { family: 'Vazirmatn', size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

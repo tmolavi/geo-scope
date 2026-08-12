@@ -1,0 +1,25 @@
+name: 📊 New Industry Benchmark Dataset
+description: Propose a new industry vertical taxonomy (e.g. Fintech, Healthcare, DevTools)
+labels: ["dataset", "geo-benchmark"]
+body:
+  - type: input
+    id: industry_name
+    attributes:
+      label: Industry / Vertical Name
+      placeholder: e.g. Healthcare & Telemedicine Software
+    validations:
+      required: true
+  - type: input
+    id: sample_brands
+    attributes:
+      label: Top 5-10 Brands in this space
+      placeholder: e.g. Teladoc, Epic, Cerner, Doximity
+    validations:
+      required: true
+  - type: textarea
+    id: sample_queries
+    attributes:
+      label: Sample 5-10 Representative Prompts (FA / EN)
+      description: Include commercial, comparative, and problem-solving prompts.
+    validations:
+      required: true
