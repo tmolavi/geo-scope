@@ -6,13 +6,15 @@
 
 **An open-source scientific benchmark and reverse-engineering platform to discover how brands, products, and content are ranked and cited across AI engines.**
 
-[![CI](https://github.com/your-username/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/geo-scope/actions)
+*Developed by [Taqi Molavi](https://github.com/tmolavi) — Part of the GEO Ecosystem including [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
+
+[![CI](https://github.com/tmolavi/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/tmolavi/geo-scope/actions)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://pypi.org/project/geo-scope/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker Support](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[English](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [Scientific Methodology](docs/METHODOLOGY.md) • [Mathematical Model](docs/MATHEMATICAL_MODEL.md) • [Live API Setup](docs/API_INTEGRATION.md)
+[English](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [Scientific Methodology](docs/METHODOLOGY.md) • [Mathematical Model](docs/MATHEMATICAL_MODEL.md) • [Live API Setup](docs/API_INTEGRATION.md) • [Related: mcp-geo-server](https://github.com/tmolavi/mcp-geo-server)
 
 </div>
 
@@ -75,7 +77,7 @@ By running a statistically significant matrix of **1,000 categorized queries** a
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/geo-scope.git
+git clone https://github.com/tmolavi/geo-scope.git
 cd geo-scope
 
 # Install package in editable mode
@@ -178,16 +180,25 @@ pytest tests/ -v --cov=geo_scope
 
 ---
 
+## 🔗 Related Projects in the GEO Ecosystem
+
+- [**mcp-geo-server**](https://github.com/tmolavi/mcp-geo-server): Model Context Protocol (MCP) Server for Generative Engine Optimization & RAG Readiness Audits by Taqi Molavi.
+- [**mcp-agent-skills-hub**](https://github.com/tmolavi/mcp-agent-skills-hub): Curated AI Agent Skills & MCP Hub by Taghi Molavi.
+
+---
+
 ## 📜 Citation
 
 If you use GEO-Scope in academic research or industrial benchmarks, please cite:
 
 ```bibtex
 @software{geoscope2026,
-  author = {GEO-Scope Open Source Research Initiative},
+  author = {Molavi, Taqi},
   title = {GEO-Scope: Generative Engine Optimization & AI Search Reverse-Engineering Framework},
   year = {2026},
-  url = {https://github.com/your-username/geo-scope},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/tmolavi/geo-scope}},
   version = {1.0.0}
 }
 ```
@@ -196,4 +207,4 @@ If you use GEO-Scope in academic research or industrial benchmarks, please cite:
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE) — Copyright (c) 2026 [Taqi Molavi](https://github.com/tmolavi).

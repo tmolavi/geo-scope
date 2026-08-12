@@ -3,10 +3,12 @@ message: "If you use GEO-Scope in your academic research or benchmarks, please c
 title: "GEO-Scope: Generative Engine Optimization (GEO) & AI Search Reverse-Engineering Framework"
 version: 1.0.0
 date-released: 2026-08-12
-url: "https://github.com/your-username/geo-scope"
+url: "https://github.com/tmolavi/geo-scope"
 license: MIT
 authors:
-  - name: "GEO-Scope Open Source Contributors"
+  - family-names: "Molavi"
+    given-names: "Taqi"
+    alias: "tmolavi"
 keywords:
   - "Generative Engine Optimization"
   - "GEO"
