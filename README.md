@@ -6,15 +6,16 @@
 
 **An open-source scientific benchmark and reverse-engineering platform to discover how brands, products, and content are ranked and cited across AI engines.**
 
-*Developed by [Taqi Molavi](https://github.com/tmolavi) — Part of the GEO Ecosystem including [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
+*توسعه‌داده‌شده توسط [تقی مولوی (Taqi Molavi)](https://molavi.pro/) — بخشی از اکوسیستم پژوهشی GEO در کنار [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
 
+[![Website](https://img.shields.io/badge/Website-molavi.pro-blue?logo=googlechrome&logoColor=white)](https://molavi.pro/)
 [![CI](https://github.com/tmolavi/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/tmolavi/geo-scope/actions)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://pypi.org/project/geo-scope/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker Support](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[English](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [Scientific Methodology](docs/METHODOLOGY.md) • [Mathematical Model](docs/MATHEMATICAL_MODEL.md) • [Live API Setup](docs/API_INTEGRATION.md) • [Related: mcp-geo-server](https://github.com/tmolavi/mcp-geo-server)
+[English](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [وب‌سایت شخصی مولوی](https://molavi.pro/) • [Scientific Methodology](docs/METHODOLOGY.md) • [Mathematical Model](docs/MATHEMATICAL_MODEL.md) • [Live API Setup](docs/API_INTEGRATION.md) • [Related: mcp-geo-server](https://github.com/tmolavi/mcp-geo-server)
 
 </div>
 
@@ -22,7 +23,7 @@
 
 ## 🌐 English Overview
 
-**GEO-Scope** is a full-stack open-source platform that reverse-engineers the ranking and citation mechanics of modern search-augmented AI models (**ChatGPT Search, Perplexity Sonar, Google Gemini Grounding, and Anthropic Claude 3.7**).
+**GEO-Scope** is a full-stack open-source platform created by **[Taqi Molavi](https://molavi.pro/)** that reverse-engineers the ranking and citation mechanics of modern search-augmented AI models (**ChatGPT Search, Perplexity Sonar, Google Gemini Grounding, and Anthropic Claude 3.7**).
 
 By running a statistically significant matrix of **1,000 categorized queries** across multiple search intents, GEO-Scope computes:
 - **Share of Model (SoM %)**: Percentage of AI responses recommending your brand vs competitors.
@@ -61,7 +62,7 @@ By running a statistically significant matrix of **1,000 categorized queries** a
 
 ## 🇮🇷 راهنمای فارسی
 
-**GEO-Scope** یک فریم‌ورک استاندارد و متن‌باز برای مهندسی معکوس الگوریتم‌های دیده‌شدن در هوش مصنوعی (**GEO / AI SEO**) است. با آزمایش **۱,۰۰۰ سوال** در ۵ دسته قصد جستجو، سیستم مشخص می‌کند هوش مصنوعی‌ها بر چه اساسی یک برند را به عنوان رتبه اول معرفی می‌کنند:
+**GEO-Scope** یک فریم‌ورک استاندارد و پژوهشی متن‌باز طراحی شده توسط **[تقی مولوی](https://molavi.pro/)** برای مهندسی معکوس الگوریتم‌های دیده‌شدن در هوش مصنوعی (**GEO / AI SEO**) است. با آزمایش **۱,۰۰۰ سوال** در ۵ دسته قصد جستجو، سیستم مشخص می‌کند هوش مصنوعی‌ها بر چه اساسی یک برند را به عنوان رتبه اول معرفی می‌کنند:
 
 ### خلاصه وزن‌های کشف‌شده در الگوریتم‌ها:
 - ⚡ **Perplexity Sonar**: ۳۸٪ وزن بر مبنای تاپیک‌های بحث و نظرات در **Reddit** و انجمن‌های کاربری (UGC).
@@ -182,8 +183,9 @@ pytest tests/ -v --cov=geo_scope
 
 ## 🔗 Related Projects in the GEO Ecosystem
 
-- [**mcp-geo-server**](https://github.com/tmolavi/mcp-geo-server): Model Context Protocol (MCP) Server for Generative Engine Optimization & RAG Readiness Audits by Taqi Molavi.
-- [**mcp-agent-skills-hub**](https://github.com/tmolavi/mcp-agent-skills-hub): Curated AI Agent Skills & MCP Hub by Taghi Molavi.
+- 🌐 [**molavi.pro**](https://molavi.pro/): Personal website, publications & AI research by Taqi Molavi (تقی مولوی).
+- ⚡ [**mcp-geo-server**](https://github.com/tmolavi/mcp-geo-server): Model Context Protocol (MCP) Server for Generative Engine Optimization & RAG Readiness Audits by Taqi Molavi.
+- 🤖 [**mcp-agent-skills-hub**](https://github.com/tmolavi/mcp-agent-skills-hub): Curated AI Agent Skills & MCP Hub by Taghi Molavi.
 
 ---
 
@@ -192,14 +194,14 @@ pytest tests/ -v --cov=geo_scope
 If you use GEO-Scope in academic research or industrial benchmarks, please cite:
 
 ```bibtex
-@software{geoscope2026,
+@software{molavi2026geoscope,
   author = {Molavi, Taqi},
   title = {GEO-Scope: Generative Engine Optimization & AI Search Reverse-Engineering Framework},
   year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},
   howpublished = {\url{https://github.com/tmolavi/geo-scope}},
-  version = {1.0.0}
+  note = {Personal Homepage: https://molavi.pro/}
 }
 ```
 
@@ -207,4 +209,4 @@ If you use GEO-Scope in academic research or industrial benchmarks, please cite:
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE) — Copyright (c) 2026 [Taqi Molavi](https://github.com/tmolavi).
+This project is licensed under the [MIT License](LICENSE) — Copyright (c) 2026 [تقی مولوی (Taqi Molavi)](https://molavi.pro/).

@@ -1,6 +1,17 @@
 # 🇮🇷 راهنمای فارسی پلتفرم مهندسی معکوس الگوریتم‌های هوش مصنوعی (GEO-Scope)
 
-این رپازیتوری یک فریم‌ورک استاندارد، علمی و متن‌باز برای **کشف، سنجش و مهندسی معکوس الگوریتم‌های دیده‌شدن و رتبه‌بندی در هوش مصنوعی‌ها (Generative Engine Optimization)** است.
+**طراحی و توسعه یافته توسط [تقی مولوی (Taqi Molavi)](https://molavi.pro/)**
+
+این رپازیتوری یک فریم‌ورک استاندارد، علمی و متن‌باز برای **کشف، سنجش و مهندسی معکوس الگوریتم‌های دیده‌شدن و رتبه‌بندی در هوش مصنوعی‌ها (Generative Engine Optimization - GEO)** است.
+
+---
+
+## 🌐 درباره نویسنده و اکوسیستم پژوهشی
+
+این پروژه بخشی از تحقیقات سئو در هوش مصنوعی و مدل‌های بازیابی مبتنی بر RAG توسط **[تقی مولوی](https://molavi.pro/)** است:
+- 🌐 **وب‌سایت رسمی**: [https://molavi.pro/](https://molavi.pro/)
+- ⚡ **پروژه مرتبط**: [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server) (سرور پروتکل زمینه‌ای برای ارزیابی آمادگی سایت‌ها در GEO)
+- 🤖 **هاب مهارت‌های ایجنت**: [`mcp-agent-skills-hub`](https://github.com/tmolavi/mcp-agent-skills-hub)
 
 ---
 
@@ -23,7 +34,7 @@
 
 ### ۱. نصب از طریق مخزن
 ```bash
-git clone https://github.com/your-username/geo-scope.git
+git clone https://github.com/tmolavi/geo-scope.git
 cd geo-scope
 pip install -e .
 ```
@@ -46,7 +57,7 @@ geo-scope run --niche crm_sales --brand HubSpot --count 1000 --out output/
 - `geo_scope/engine/query_generator.py`: ماژول تولید ۱۰۰۰ سوال در ۵ دسته قصد جستجو.
 - `geo_scope/engine/feature_extractor.py`: استخراج خودکار رتبه برند و لینک‌های پانویس.
 - `geo_scope/engine/algo_analyzer.py`: مهندسی معکوس آماری و وزن‌دهی به فاکتورها.
-- `geo_scope/engine/strategy_builder.py`: تولید نقشه راه و پلن عملیاتی سئو در هوش مصنوعی.
+- `geo_scope/engine/strategy_builder.py`: تولیدکننده نقشه راه عملیاتی سئو در هوش مصنوعی.
 - `geo_scope/static/index.html`: رابط کاربری وب تعاملی و زیبا (دوزبانه فارسی/انگلیسی).
 - `docs/`: مستندات علمی، فرمول‌های ریاضی و راهنمای اتصال کلیدهای API.
 - `tests/`: تست‌های خودکار پیاده‌سازی شده با Pytest.
@@ -59,3 +70,4 @@ geo-scope run --niche crm_sales --brand HubSpot --count 1000 --out output/
 - اضافه کردن صنایع و کلمات کلیدی جدید
 - اتصال مدل‌های هوش مصنوعی بومی یا محلی (مانند Ollama / DeepSeek)
 - بهبود الگوریتم‌های تحلیل استناد و رگرسیون وزن‌ها
+- ارسال Issue یا Pull Request در [گیت‌هاب تقی مولوی](https://github.com/tmolavi/geo-scope)
