@@ -16,6 +16,7 @@ from geo_scope.engine.feature_extractor import parse_model_response
 from geo_scope.engine.algo_analyzer import AlgoAnalyzer
 from geo_scope.engine.strategy_builder import generate_geo_playbook
 from geo_scope.engine.export_manager import export_records_to_csv, export_citations_to_csv, export_full_json
+from geo_scope.engine.history_tracker import save_benchmark_snapshot, load_all_history, get_brand_progression
 
 app = FastAPI(
     title="GEO-Scope API",
@@ -139,9 +140,12 @@ def execute_pipeline_sync(req: BenchmarkRequest):
     analysis = analyzer.compute_full_analysis()
     STATE["analysis_results"] = analysis
 
-    # 5. Build Actionable Strategic Playbook
-    STATE["current_status"] = "Synthesizing Custom GEO Action Roadmap..."
-    playbook = generate_geo_playbook(analysis)
+    # 5. Snapshot to History & Feedback Loop
+    delta_record = save_benchmark_snapshot(analysis, req.niche_key, brand, req.prompt_count)
+
+    # 6. Build Actionable Strategic Playbook
+    STATE["current_status"] = "Synthesizing Custom GEO Action Roadmap with Feedback Loop..."
+    playbook = generate_geo_playbook(analysis, delta_info=delta_record)
     STATE["playbook"] = playbook
 
     STATE["current_status"] = "Completed Successfully"
@@ -179,6 +183,16 @@ async def get_results():
         "playbook": STATE["playbook"],
         "summary": STATE["analysis_results"]["summary"]
     }
+
+
+@app.get("/api/history")
+async def get_history(brand: Optional[str] = None, niche: Optional[str] = None):
+    """
+    Returns audit history log and progression deltas.
+    """
+    if brand and niche:
+        return {"history": get_brand_progression(brand, niche)}
+    return {"history": load_all_history()}
 
 
 @app.get("/api/prompts")

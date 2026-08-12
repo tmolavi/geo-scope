@@ -147,6 +147,12 @@
             <button onclick="switchTab('geo_playbook')" id="tab-geo_playbook" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
                 🚀 <span data-i18n="tab_playbook">استراتژی و نقشه راه اقدام (GEO Playbook)</span>
             </button>
+            <button onclick="switchTab('mcp_hub')" id="tab-mcp_hub" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+                🔌 <span>سرور پروتکل MCP و کلاینت‌ها</span>
+            </button>
+            <button onclick="switchTab('history_log')" id="tab-history_log" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+                📈 <span>لاگ چرخه بازخورد و دلتا (History)</span>
+            </button>
         </div>
 
         <!-- TAB 1: EXECUTIVE DASHBOARD -->
@@ -440,6 +446,126 @@
             </div>
         </div>
 
+        <!-- TAB 6: MCP SERVER & AGENT INTEGRATION HUB -->
+        <div id="section-mcp_hub" class="hidden space-y-6">
+            <!-- MCP Header Banner -->
+            <div class="glass-panel p-6 rounded-2xl border border-purple-500/40 bg-gradient-to-r from-purple-950/40 via-indigo-950/20 to-transparent flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="space-y-1.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-purple-400">Model Context Protocol (MCP)</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">Active & Ready</span>
+                    </div>
+                    <h2 class="text-xl font-extrabold text-white">اتصال مستقیم به Claude Desktop و Cursor IDE</h2>
+                    <p class="text-xs text-gray-300 leading-relaxed max-w-2xl">
+                        از طریق پروتکل استاندارد MCP، هوش مصنوعی‌ها و ایجنت‌های توسعه شما می‌توانند مستقیماً بنچمارک سئو در هوش مصنوعی را اجرا کرده و نقشه راه دریافت کنند.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="https://github.com/tmolavi/mcp-geo-server" target="_blank" class="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-medium text-white shadow-md flex items-center gap-1.5">
+                        ⚡ مشاهده mcp-geo-server ↗
+                    </a>
+                </div>
+            </div>
+
+            <!-- Config Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Claude Desktop Config -->
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span>🟣</span> کانفیگ Claude Desktop (claude_desktop_config.json)
+                        </h3>
+                        <button onclick="copyToClipboard('claudeMcpJson')" class="text-[11px] px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-indigo-300 border border-gray-700">
+                            کپی JSON
+                        </button>
+                    </div>
+                    <pre id="claudeMcpJson" class="p-3.5 rounded-xl bg-black/60 border border-gray-800 text-[11px] font-mono text-emerald-400 overflow-x-auto leading-relaxed">{
+  "mcpServers": {
+    "geo-scope": {
+      "command": "python3",
+      "args": ["-m", "geo_scope.mcp_server"]
+    }
+  }
+}</pre>
+                </div>
+
+                <!-- Cursor IDE Config -->
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span>⚡</span> کانفیگ Cursor IDE (.cursor/mcp.json)
+                        </h3>
+                        <button onclick="copyToClipboard('cursorMcpJson')" class="text-[11px] px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-indigo-300 border border-gray-700">
+                            کپی JSON
+                        </button>
+                    </div>
+                    <pre id="cursorMcpJson" class="p-3.5 rounded-xl bg-black/60 border border-gray-800 text-[11px] font-mono text-indigo-300 overflow-x-auto leading-relaxed">{
+  "mcpServers": {
+    "geo-scope": {
+      "command": "geo-scope",
+      "args": ["mcp"]
+    }
+  }
+}</pre>
+                </div>
+            </div>
+
+            <!-- MCP Tools List -->
+            <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-3">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    🛠️ ابزارهای (Tools) در دسترس ایجنت‌ها در این پروتکل:
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+                    <div class="p-3.5 rounded-xl bg-gray-800/40 border border-gray-700/60 space-y-1">
+                        <div class="text-xs font-mono font-bold text-indigo-300">audit_ai_visibility</div>
+                        <p class="text-[11px] text-gray-400">سنجش سهم دیده‌شدن برند، رتبه اول و دامنه‌های برتر استناد شده در ۴ مدل هوش مصنوعی.</p>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-gray-800/40 border border-gray-700/60 space-y-1">
+                        <div class="text-xs font-mono font-bold text-purple-300">reverse_engineer_ranking_factors</div>
+                        <p class="text-[11px] text-gray-400">محاسبه وزن فاکتورهای ردیت، سایت‌های نقد، روابط عمومی، اسکیما و تازگی محتوا.</p>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-gray-800/40 border border-gray-700/60 space-y-1">
+                        <div class="text-xs font-mono font-bold text-emerald-300">generate_geo_playbook</div>
+                        <p class="text-[11px] text-gray-400">تولید پلن اجرایی ۵ مرحله‌ای به همراه ساختار BLUF و جداول مقایسه اختصاصی.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 7: HISTORICAL AUDITS & FEEDBACK LOOP -->
+        <div id="section-history_log" class="hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <span>📈</span> <span>لاگ ارزیابی‌های گذشته و رهگیری دلتای بهبود (Feedback Loop)</span>
+                        </h3>
+                        <p class="text-xs text-gray-400 mt-0.5">ثبت خودکار سابقه بنچمارک‌ها و محاسبه میزان پیشرفت سهم دیده‌شدن (Delta Tracking)</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-right">
+                        <thead class="bg-gray-800/60 text-gray-400 uppercase font-semibold">
+                            <tr>
+                                <th class="p-3 rounded-r-lg">شناسه و زمان</th>
+                                <th class="p-3">برند هدف</th>
+                                <th class="p-3">صنعت</th>
+                                <th class="p-3">تعداد سوال</th>
+                                <th class="p-3">سهم دیده‌شدن (SoM)</th>
+                                <th class="p-3">دلتای پیشرفت (Δ SoM)</th>
+                                <th class="p-3">رتبه اول (#1)</th>
+                                <th class="p-3 rounded-l-lg">بهترین موتور</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody" class="divide-y divide-gray-800">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Modal: New Benchmark Setup -->
@@ -650,19 +776,75 @@
         }
 
         function switchTab(tabId) {
-            ['dashboard', 'reverse_engineering', 'citation_graph', 'prompts_explorer', 'geo_playbook'].forEach(id => {
+            ['dashboard', 'reverse_engineering', 'citation_graph', 'prompts_explorer', 'geo_playbook', 'mcp_hub', 'history_log'].forEach(id => {
                 const sec = document.getElementById(`section-${id}`);
                 const btn = document.getElementById(`tab-${id}`);
                 if (id === tabId) {
-                    sec.classList.remove('hidden');
-                    btn.classList.add('active');
-                    btn.classList.remove('text-gray-400');
+                    if (sec) sec.classList.remove('hidden');
+                    if (btn) {
+                        btn.classList.add('active');
+                        btn.classList.remove('text-gray-400');
+                    }
                 } else {
-                    sec.classList.add('hidden');
-                    btn.classList.remove('active');
-                    btn.classList.add('text-gray-400');
+                    if (sec) sec.classList.add('hidden');
+                    if (btn) {
+                        btn.classList.remove('active');
+                        btn.classList.add('text-gray-400');
+                    }
                 }
             });
+            if (tabId === 'history_log') {
+                fetchHistoryLog();
+            }
+        }
+
+        async function fetchHistoryLog() {
+            try {
+                const res = await fetch('/api/history');
+                const data = await res.json();
+                renderHistoryTable(data.history || []);
+            } catch (err) {
+                console.error("Failed to fetch history:", err);
+            }
+        }
+
+        function renderHistoryTable(historyList) {
+            const tbody = document.getElementById('historyTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            
+            if (historyList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-gray-500">هیچ ارزیابی تاریخی هنوز ثبت نشده است.</td></tr>`;
+                return;
+            }
+
+            historyList.slice().reverse().forEach(h => {
+                const deltaClass = h.delta_sov > 0 ? 'text-emerald-400 font-bold' : (h.delta_sov < 0 ? 'text-red-400 font-bold' : 'text-gray-400');
+                const deltaSign = h.delta_sov > 0 ? '+' : '';
+                const deltaLabel = h.is_first_run ? '<span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400">مبنای اولیه (Base)</span>' : `<span class="${deltaClass} font-mono">${deltaSign}${h.delta_sov}%</span>`;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-800/40">
+                        <td class="p-3 font-mono text-gray-400">
+                            <div>${h.id}</div>
+                            <div class="text-[10px] text-gray-500">${h.timestamp}</div>
+                        </td>
+                        <td class="p-3 font-bold text-white">${h.brand}</td>
+                        <td class="p-3 font-mono text-indigo-300 text-[11px]">${h.niche}</td>
+                        <td class="p-3 font-mono text-gray-300">${h.prompt_count} Qs</td>
+                        <td class="p-3 font-mono font-bold text-indigo-400 text-sm">${h.overall_sov}%</td>
+                        <td class="p-3">${deltaLabel}</td>
+                        <td class="p-3 font-mono text-amber-400">${h.overall_top1_rate}%</td>
+                        <td class="p-3 text-gray-300">${formatModelName(h.best_model)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text);
+            alert("کانفیگ با موفقیت در کلیپ‌بورد کپی شد!");
         }
 
         function renderDashboard(data) {

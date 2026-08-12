@@ -1,19 +1,24 @@
 """
 Strategy Builder for Generative Engine Optimization (GEO)
-Generates end-to-end actionable playbooks based on reverse-engineered algorithm findings.
+Generates end-to-end actionable playbooks with Feedback Loop progression tracking.
 """
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 
-def generate_geo_playbook(analysis: Dict[str, Any]) -> Dict[str, Any]:
+def generate_geo_playbook(analysis: Dict[str, Any], delta_info: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """
-    Generates a personalized step-by-step GEO implementation roadmap.
+    Generates a personalized step-by-step GEO implementation roadmap with Feedback Loop delta tracking.
     """
     target = analysis["summary"]["target_brand"]
     sov = analysis["summary"]["overall_sov"]
     top1 = analysis["summary"]["overall_top1_rate"]
     
+    # Delta info
+    d_sov = delta_info.get("delta_sov", 0.0) if delta_info else 0.0
+    d_top1 = delta_info.get("delta_top1", 0.0) if delta_info else 0.0
+    is_first = delta_info.get("is_first_run", True) if delta_info else True
+
     pillars = [
         {
             "pillar_id": 1,
@@ -103,15 +108,15 @@ def generate_geo_playbook(analysis: Dict[str, Any]) -> Dict[str, Any]:
         },
         {
             "pillar_id": 5,
-            "name_fa": "۵. مانیتورینگ مستمر و چرخه تست ۱۰۰۰ سوال (Automated GEO Loop)",
-            "name_en": "5. Continuous Monitoring & Automated 1000-Prompt Benchmark",
+            "name_fa": "۵. مانیتورینگ مستمر و چرخه بازخورد (GEO Feedback Loop)",
+            "name_en": "5. Continuous Monitoring & Progression Feedback Loop",
             "impact_score": "92/100",
             "tactics": [
                 {
-                    "title_fa": "اجرای ماهانه بنچمارک ۱۰۰۰ پرسش برای رهگیری سهم دیده‌شدن (SoM)",
-                    "title_en": "Monthly 1,000 Prompt Automated Benchmark Runs",
-                    "desc_fa": "الگوریتم‌های هوش مصنوعی هر هفته با داده‌های وب جدید به‌روزرسانی می‌شوند. اجرای مستمر بنچمارک کاهش رتبه را فورا هشدار می‌دهد.",
-                    "desc_en": "AI indexes refresh continuously. Running automated 1,000 prompt audits every month catches visibility drops immediately."
+                    "title_fa": "رهگیری مستمر دلتای بهبود (Delta-Tracking)",
+                    "title_en": "Automated Delta Progression Tracking",
+                    "desc_fa": f"دلتای تغییرات نسبت به ارزیابی قبلی: سهم دیده‌شدن ({'+' if d_sov >= 0 else ''}{d_sov}%) و رتبه اول ({'+' if d_top1 >= 0 else ''}{d_top1}%). اجرای ماهانه بنچمارک ۱۰۰۰ پرسش اثر تغییرات را مستند می‌کند.",
+                    "desc_en": f"Progression delta since last benchmark: Share of Model ({'+' if d_sov >= 0 else ''}{d_sov}%) and Top-1 Pick ({'+' if d_top1 >= 0 else ''}{d_top1}%). Monthly audits prove optimization ROI."
                 }
             ]
         }
@@ -121,5 +126,11 @@ def generate_geo_playbook(analysis: Dict[str, Any]) -> Dict[str, Any]:
         "target_brand": target,
         "current_sov": sov,
         "current_top1_rate": top1,
+        "feedback_loop": {
+            "is_first_audit": is_first,
+            "delta_sov_pct": d_sov,
+            "delta_top1_pct": d_top1,
+            "status_label": "Baseline Established" if is_first else ("Improved 🟢" if d_sov >= 0 else "Regressed 🔴")
+        },
         "pillars": pillars
     }
