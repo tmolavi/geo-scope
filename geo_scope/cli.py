@@ -139,12 +139,18 @@ def main():
     gen_parser.add_argument("--lang", type=str, default="both", choices=["fa", "en", "both"], help="Language")
     gen_parser.add_argument("--out", type=str, default="prompts.json", help="Output JSON path")
 
+    # Command: mcp
+    mcp_parser = subparsers.add_parser("mcp", help="Start MCP (Model Context Protocol) Server for Claude Desktop & Cursor")
+
     args = parser.parse_args()
 
     if args.command == "run":
         run_benchmark_cmd(args)
     elif args.command == "serve":
         serve_dashboard_cmd(args)
+    elif args.command == "mcp":
+        from geo_scope.mcp_server import main as mcp_main
+        mcp_main()
     elif args.command == "generate":
         prompts = generate_prompt_dataset(
             niche_key=args.niche,

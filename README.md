@@ -9,66 +9,127 @@
 *توسعه‌داده‌شده توسط [تقی مولوی (Taqi Molavi)](https://molavi.pro/) — بخشی از اکوسیستم پژوهشی GEO در کنار [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
 
 [![Website](https://img.shields.io/badge/Website-molavi.pro-blue?logo=googlechrome&logoColor=white)](https://molavi.pro/)
+[![MCP Ready](https://img.shields.io/badge/MCP-Protocol%20Ready-8A2BE2?logo=anthropic&logoColor=white)](geo_scope/mcp_server.py)
 [![CI](https://github.com/tmolavi/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/tmolavi/geo-scope/actions)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://pypi.org/project/geo-scope/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker Support](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[English](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [وب‌سایت شخصی مولوی](https://molavi.pro/) • [Scientific Methodology](docs/METHODOLOGY.md) • [Mathematical Model](docs/MATHEMATICAL_MODEL.md) • [Live API Setup](docs/API_INTEGRATION.md) • [Related: mcp-geo-server](https://github.com/tmolavi/mcp-geo-server)
+[English Overview](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [MCP Server Setup](#-mcp-integration-claude-desktop--cursor) • [Visibility Score Algorithm](#-computational-methodology--visibility-score) • [Real-World Use Cases](#-real-world-use-cases-سناریوهای-کاربردی) • [Live API Setup](docs/API_INTEGRATION.md)
 
 </div>
 
 ---
 
+## 🖥️ Live Terminal & MCP Workflow Demo
+
+```text
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│  Claude Desktop / Cursor IDE ──▶ MCP Tool: audit_ai_visibility("HubSpot", "crm_sales") │
+└───────────────────────────────────────────┬────────────────────────────────────────────┘
+                                            │
+                                            ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ ⟠ GEO-Scope 1,000-Prompt Inference Result                                              │
+│                                                                                        │
+│ [✓] Overall Share of Model (SoM) : 77.6% (ChatGPT: 68.4% | Perplexity: 82.1%)          │
+│ [✓] Top-1 Recommendation Rate    : 44.9% (Primary recommended pick across models)      │
+│ [✓] Dominant Grounding Signal    : Reddit UGC threads (38%) + G2 Leaderboard (26%)     │
+│ [!] Critical Vulnerability Found : Missing comparison tables for "Enterprise API" queries│
+│ [→] Action Playbook Generated    : Implement BLUF schema on 3 key landing pages         │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## 🌐 English Overview
 
-**GEO-Scope** is a full-stack open-source platform created by **[Taqi Molavi](https://molavi.pro/)** that reverse-engineers the ranking and citation mechanics of modern search-augmented AI models (**ChatGPT Search, Perplexity Sonar, Google Gemini Grounding, and Anthropic Claude 3.7**).
+**GEO-Scope** is an open-source platform created by **[Taqi Molavi](https://molavi.pro/)** that reverse-engineers the ranking and citation mechanics of modern search-augmented AI models (**ChatGPT Search, Perplexity Sonar, Google Gemini Grounding, and Anthropic Claude 3.7**).
 
-By running a statistically significant matrix of **1,000 categorized queries** across multiple search intents, GEO-Scope computes:
-- **Share of Model (SoM %)**: Percentage of AI responses recommending your brand vs competitors.
-- **Top-1 Recommendation Rate (#1 Pick %)**: Likelihood of being selected as the primary recommended solution.
-- **Citation Graph & Source Attribution**: Domain-level mapping of sources LLMs crawl and synthesize (Reddit, G2, Tier-1 PR, Wikipedia).
-- **Algorithmic Weight Vectors**: Quantified importance of UGC, reviews, schema markup, and content structure per AI engine.
-
-```
-                  ┌──────────────────────────────────────────────┐
-                  │          GEO-Scope Pipeline Engine           │
-                  └──────────────────────┬───────────────────────┘
-                                         │
-                 ┌───────────────────────┴───────────────────────┐
-                 │ 1,000 Stratified Prompts Generator (5 Intents)│
-                 └───────────────────────┬───────────────────────┘
-                                         │
-        ┌────────────────┬───────────────┴───────────────┬────────────────┐
-        ▼                ▼                               ▼                ▼
-┌───────────────┐┌───────────────┐               ┌───────────────┐┌───────────────┐
-│Perplexity AI  ││ChatGPT Search │               │ Google Gemini ││  Claude 3.7   │
-│  (Sonar Pro)  ││   (GPT-4o)    │               │  (Grounding)  ││ (Reasoning)   │
-└───────┬───────┘└───────┬───────┘               └───────┬───────┘└───────┬───────┘
-        │                │                               │                │
-        └────────────────┼───────────────────────────────┼────────────────┘
-                         ▼                               ▼
-                 ┌───────────────────────────────────────────────┐
-                 │ NLP Feature Extractor & Citation Graph Parser │
-                 └───────────────────────┬───────────────────────┘
-                                         │
-                 ┌───────────────────────┴───────────────────────┐
-                 │ Statistical Attribution & GEO Action Playbook │
-                 └───────────────────────────────────────────────┘
-```
+By evaluating a statistically significant matrix of **1,000 categorized queries** across 5 search intent strata, GEO-Scope gives brands, growth engineers, and researchers complete visibility into how AI synthesizers discover, rank, and cite content.
 
 ---
 
 ## 🇮🇷 راهنمای فارسی
 
-**GEO-Scope** یک فریم‌ورک استاندارد و پژوهشی متن‌باز طراحی شده توسط **[تقی مولوی](https://molavi.pro/)** برای مهندسی معکوس الگوریتم‌های دیده‌شدن در هوش مصنوعی (**GEO / AI SEO**) است. با آزمایش **۱,۰۰۰ سوال** در ۵ دسته قصد جستجو، سیستم مشخص می‌کند هوش مصنوعی‌ها بر چه اساسی یک برند را به عنوان رتبه اول معرفی می‌کنند:
+**GEO-Scope** یک فریم‌ورک استاندارد و پژوهشی متن‌باز طراحی شده توسط **[تقی مولوی](https://molavi.pro/)** برای مهندسی معکوس الگوریتم‌های دیده‌شدن در هوش مصنوعی (**GEO / AI SEO**) است.
 
-### خلاصه وزن‌های کشف‌شده در الگوریتم‌ها:
-- ⚡ **Perplexity Sonar**: ۳۸٪ وزن بر مبنای تاپیک‌های بحث و نظرات در **Reddit** و انجمن‌های کاربری (UGC).
-- 🟢 **ChatGPT Search**: ۲۸٪ رسانه‌های معتبر با دامین آتوریتی بالا (PR) + ۲۶٪ امتیازات در دایرکتوری‌های نقد (**G2 / Capterra**).
-- 🔵 **Google Gemini**: ۲۲٪ اتکا به گراف دانش رسمی گوگل و **Wikidata** + ۱۲٪ تازگی محتوا و اسکیما.
-- 🟣 **Anthropic Claude 3.7**: استدلال عمیق بر پایه اسناد فنی دقیق، جدول‌های مقایسه شفاف و آمار عددی بدون اغراق.
+دیگر دوران تمرکز صرف روی ۱۰ لینک آبی گوگل به پایان رسیده است. هوش مصنوعی‌ها (مانند Perplexity و ChatGPT Search) مستقیماً به کاربر پاسخ نهایی می‌دهند. این ابزار با ارسال **۱,۰۰۰ سوال واقعی**، کشف می‌کند که الگوریتم هر هوش مصنوعی چه وزنی به فاکتورهایی مثل **ردیت (UGC)، سایت‌های نقد و بررسی (G2)، روابط عمومی (PR) و اسکیما** می‌دهد.
+
+---
+
+## 🔌 MCP Integration (Claude Desktop & Cursor)
+
+GEO-Scope includes a native **Model Context Protocol (MCP)** server, allowing you to run AI visibility audits directly inside **Claude Desktop**, **Cursor**, **Windsurf**, or custom AI agents.
+
+### Configuration for Claude Desktop (`claude_desktop_config.json`)
+
+```json
+{
+  "mcpServers": {
+    "geo-scope": {
+      "command": "python3",
+      "args": ["-m", "geo_scope.mcp_server"]
+    }
+  }
+}
+```
+
+### Configuration for Cursor IDE (`.cursor/mcp.json`)
+
+```json
+{
+  "mcpServers": {
+    "geo-scope": {
+      "command": "geo-scope",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+### Available MCP Tools in Claude / Cursor:
+1. `audit_ai_visibility(brand, niche, competitors, prompt_count)`: Calculates Share of Model (SoM) and Top-1 rank across AI engines.
+2. `reverse_engineer_ranking_factors(target_brand, niche)`: Deduces platform-specific weights (Reddit vs G2 vs PR vs Freshness).
+3. `generate_geo_playbook(brand, niche)`: Generates actionable on-page and off-page GEO strategies.
+
+---
+
+## 📐 Computational Methodology & Visibility Score
+
+The composite **GEO Visibility Score ($\mathcal{V}_{\text{GEO}}$)** measures a brand's authority, recommendation priority, and retrieval readiness:
+
+$$\mathcal{V}_{\text{GEO}} = w_1 \cdot \text{SoM} + w_2 \cdot \mathbb{P}(\text{Rank}_1) + w_3 \cdot \mathcal{S}_{\text{Sentiment}} + w_4 \cdot \mathcal{C}_{\text{Authority}}$$
+
+```
+┌───────────────────────────────────────────────┬─────────┬───────────────────────────────────────────┐
+│ Ranking Signal Dimension                      │ Weight  │ Grounding Mechanism in LLM Synthesis      │
+├───────────────────────────────────────────────┼─────────┼───────────────────────────────────────────┤
+│ 1. Community & Forum Footprint (Reddit/UGC)   │ 32%     │ Perplexity/ChatGPT index upvoted threads  │
+│ 2. 3rd-Party Review Leadership (G2/Capterra)  │ 24%     │ LLMs synthesize top-rated grid leaders    │
+│ 3. Tier-1 Digital PR & Authority Media        │ 20%     │ Bing & Google Web grounding index         │
+│ 4. Entity Grounding (Wikidata / JSON-LD)      │ 12%     │ Google Knowledge Graph disambiguation     │
+│ 5. Structured Tables & BLUF Formatting        │ 8%      │ Token extraction density in context window│
+│ 6. Information Freshness (Recency Decay)      │ 4%      │ Temporal filtering (year/quarter penalty) │
+└───────────────────────────────────────────────┴─────────┴───────────────────────────────────────────┘
+```
+
+---
+
+## 🎯 Real-World Use Cases (سناریوهای کاربردی)
+
+### سناریوی ۱: چرا Perplexity برند ما را نشان نمی‌دهد ولی ChatGPT نشان می‌دهد؟
+- **مسئله**: یک کسب‌وکار در پاسخ‌های ChatGPT Search رتبه ۲ است اما در Perplexity اصلا نامی از آن برده نمی‌شود.
+- **حل با GEO-Scope**: اجرای ۱,۰۰۰ سوال نشان می‌دهد Perplexity ۳۸٪ وزن را به تاپیک‌های ساب‌ردیت‌های تخصصی اختصاص داده است؛ جایی که رقبای شما حضور فعال دارند اما برند شما هیچ ردپای UGC در آن ندارد.
+
+### سناریوی ۲: مهندسی معکوس منابع طلایی رقبا (Citation Hijacking)
+- **مسئله**: رقیب اصلی شما در سوالات مقایسه‌ای همواره رتبه ۱ را می‌گیرد.
+- **حل با GEO-Scope**: گراف منابع (`citations_graph.csv`) نشان می‌دهد که ۷۲٪ از استنادهای هوش مصنوعی برای این سوالات، فقط از **۳ صفحه مقایسه در سایت G2 و یک مقاله در TechCrunch** برداشت شده‌اند. هدف‌گذاری مستقیم روی این ۴ منبع، بازی را تغییر می‌دهد.
+
+### سناریوی ۳: ارزیابی آمادگی GEO قبل از لانچ محصول (Pre-Launch Audit)
+- **مسئله**: انتشار یک ویژگی جدید یا بازطراحی صفحات لندینگ.
+- **حل با GEO-Scope**: قبل از انتشار رسمی، ۱۰۰۰ پرسش شبیه‌سازی‌شده اجرا می‌شود تا اطمینان حاصل شود ساختار جداول مقایسه‌ای و متد **BLUF (پاسخ مستقیم در ۳۰ کلمه اول)** توسط RAG قابل استخراج است.
 
 ---
 
@@ -90,7 +151,7 @@ pip install -e .
 ```bash
 geo-scope serve --host 0.0.0.0 --port 8000
 ```
-Open **`http://localhost:8000`** in your browser to view the live dashboard, charts, prompt comparator, and GEO playbook.
+Open **`http://localhost:8000`** to view the live dashboard, interactive charts, prompt comparator, and custom benchmark runner.
 
 ### 3. Run Benchmark from CLI
 
@@ -109,8 +170,6 @@ docker-compose up -d
 
 ## 📊 The 1,000-Prompt Intent Matrix
 
-To guarantee statistical confidence ($p < 0.01$), prompts are sampled across 5 standardized strata:
-
 | Intent Category | Distribution | Sample Prompt (EN) | نمونه پرسش فارسی |
 | :--- | :---: | :--- | :--- |
 | **Commercial Direct** | 30% ($n=300$) | *"What is the best CRM software for startups in 2026?"* | بهترین نرم‌افزار CRM برای استارتاپ‌ها در سال ۲۰۲۶ چیست؟ |
@@ -121,77 +180,24 @@ To guarantee statistical confidence ($p < 0.01$), prompts are sampled across 5 s
 
 ---
 
-## 🐍 Python SDK Example
-
-```python
-import asyncio
-from geo_scope import (
-    generate_prompt_dataset,
-    ModelRunner,
-    parse_model_response,
-    AlgoAnalyzer,
-    generate_geo_playbook
-)
-
-async def main():
-    # 1. Generate 100 prompts
-    prompts = generate_prompt_dataset(
-        niche_key="crm_sales",
-        target_brand="HubSpot",
-        competitors=["Salesforce", "Zoho CRM", "Pipedrive"],
-        total_count=100
-    )
-
-    # 2. Run multi-model inferences
-    runner = ModelRunner()
-    responses = await runner.execute_batch(prompts)
-
-    # 3. Parse features
-    parsed = [parse_model_response(r["query_item"], r["model"], r["response_text"]) for r in responses]
-
-    # 4. Statistical reverse engineering
-    analyzer = AlgoAnalyzer(parsed, "HubSpot", ["Salesforce", "Zoho CRM", "Pipedrive"])
-    results = analyzer.compute_full_analysis()
-
-    print(f"Share of Model (SoM): {results['summary']['overall_sov']}%")
-    print(f"Top-1 Recommendation Rate: {results['summary']['overall_top1_rate']}%")
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
----
-
 ## 🧪 Testing
 
 ```bash
-# Run test suite with coverage
-pytest tests/ -v --cov=geo_scope
+# Run test suite
+pytest tests/ -v
 ```
-
----
-
-## 📚 Documentation
-
-- 📖 [Scientific Methodology](docs/METHODOLOGY.md)
-- 📐 [Mathematical Formulations](docs/MATHEMATICAL_MODEL.md)
-- 🔌 [Live API Integration (OpenAI, Perplexity, Gemini, Claude)](docs/API_INTEGRATION.md)
-- 📊 [Industry Datasets & Schema](docs/DATASETS.md)
-- 🇮🇷 [راهنمای تفصیلی فارسی](docs/FA_GUIDE.md)
 
 ---
 
 ## 🔗 Related Projects in the GEO Ecosystem
 
-- 🌐 [**molavi.pro**](https://molavi.pro/): Personal website, publications & AI research by Taqi Molavi (تقی مولوی).
+- 🌐 [**molavi.pro**](https://molavi.pro/): Personal homepage & AI research by Taqi Molavi (تقی مولوی).
 - ⚡ [**mcp-geo-server**](https://github.com/tmolavi/mcp-geo-server): Model Context Protocol (MCP) Server for Generative Engine Optimization & RAG Readiness Audits by Taqi Molavi.
 - 🤖 [**mcp-agent-skills-hub**](https://github.com/tmolavi/mcp-agent-skills-hub): Curated AI Agent Skills & MCP Hub by Taghi Molavi.
 
 ---
 
 ## 📜 Citation
-
-If you use GEO-Scope in academic research or industrial benchmarks, please cite:
 
 ```bibtex
 @software{molavi2026geoscope,
