@@ -1,5 +1,7 @@
 """
-Anthropic Claude Provider (Claude 3.5 / 3.7 Sonnet)
+Anthropic Claude Provider (Claude 3.5 / 3.7 Sonnet Direct Completion)
+Note: Standard Anthropic /v1/messages API generates analytical responses based on pre-trained weights.
+Classification: LIVE BUT NOT SEARCH-GROUNDED (Direct API inference without real-time web crawl).
 """
 
 import os
@@ -12,8 +14,8 @@ class ClaudeProvider(BaseProvider):
     def __init__(self, api_key: str = None, model: str = "claude-3-7-sonnet-20250219"):
         super().__init__(
             name="claude_3_7",
-            display_name="Anthropic Claude 3.7",
-            bias_description="In-depth analytical synthesis, pros/cons balance, technical documentation",
+            display_name=f"Anthropic Claude 3.7 (Direct Completion)",
+            bias_description="In-depth analytical synthesis from model knowledge (Direct completion, not live web search-grounded)",
             cost_per_1k=8.00
         )
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY", "")

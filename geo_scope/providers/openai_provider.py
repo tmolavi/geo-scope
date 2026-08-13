@@ -1,5 +1,7 @@
 """
-OpenAI Provider (GPT-4o with Web Search)
+OpenAI Provider (GPT-4o Direct Completion)
+Note: Standard OpenAI /v1/chat/completions provides direct LLM generation based on model knowledge.
+Classification: LIVE BUT NOT SEARCH-GROUNDED (Unless piped through an external search tool).
 """
 
 import os
@@ -12,8 +14,8 @@ class OpenAIProvider(BaseProvider):
     def __init__(self, api_key: str = None, model: str = "gpt-4o"):
         super().__init__(
             name="chatgpt_search",
-            display_name=f"OpenAI {model} Search",
-            bias_description="Bing Web Index & High-DR editorial PR",
+            display_name=f"OpenAI {model} (Direct LLM Completion)",
+            bias_description="Pre-trained parametric knowledge & synthesis (Direct LLM completion, not real-time search-grounded)",
             cost_per_1k=7.50
         )
         self.api_key = api_key or os.getenv("OPENAI_API_KEY", "")
@@ -36,7 +38,7 @@ class OpenAIProvider(BaseProvider):
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are a helpful AI search assistant. Answer directly, provide ranking recommendations with clear pros/cons, and cite your sources."
+                    "content": "You are an expert market analyst. Answer user queries with direct recommendations, rankings, comparisons, and cite authoritative sources where known."
                 },
                 {"role": "user", "content": prompt_item.get("query", "")}
             ],

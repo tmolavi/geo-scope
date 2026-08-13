@@ -95,6 +95,7 @@ def _build_markdown_summary(exp_id, timestamp, summary, sov, citations, factors,
         "## 📊 Executive Summary\n",
         f"- **Target Brand**: `{brand}`",
         f"- **Total Prompts Evaluated**: `{total_q}` ({total_inf} multi-model inferences)",
+        f"- **Execution Mode**: `Simulated Baseline Benchmark (Deterministic RAG Heuristics)`",
         f"- **Overall Share of Model (SoM)**: **`{overall_sov}%`**",
         f"- **Top-1 Recommendation Pick Rate**: **`{top1_rate}%`**",
         f"- **Top Performing AI Engine**: `{best_m}`\n",
@@ -216,6 +217,7 @@ def _build_portable_html_report(exp_id, timestamp, summary, sov, citations, fact
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 20px;">
             <div>
                 <span class="badge">⟠ GEO-SCOPE EXPERIMENT</span>
+                <span class="badge" style="background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border-color: rgba(148, 163, 184, 0.4);">MODE: SIMULATED BENCHMARK</span>
                 <h1 style="margin: 8px 0 0 0; font-size: 22px; color: #ffffff;">AI Visibility Audit: {brand}</h1>
                 <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b;">ID: {exp_id} • {timestamp}</p>
             </div>

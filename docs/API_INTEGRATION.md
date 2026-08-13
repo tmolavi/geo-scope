@@ -45,11 +45,13 @@ async def query_perplexity_sonar(prompt: str, api_key: str) -> str:
         return data["choices"][0]["message"]["content"]
 ```
 
-### B. OpenAI GPT-4o with Search
+### B. OpenAI GPT-4o (Direct LLM Completion)
+*Note: Standard OpenAI API `/v1/chat/completions` generates responses based on parametric pre-trained weights and fine-tuning. It does not perform live web searches unless integrated with external search tool-calls.*
+
 ```python
 import httpx
 
-async def query_chatgpt_search(prompt: str, api_key: str) -> str:
+async def query_openai_completion(prompt: str, api_key: str) -> str:
     url = "https://api.openai.com/v1/chat/completions"
     headers = {"Authorization": f"Bearer {api_key}"}
     payload = {
@@ -78,6 +80,31 @@ async def query_gemini_grounding(prompt: str, api_key: str) -> str:
         response = await client.post(url, json=payload)
         data = response.json()
         return data["candidates"][0]["content"]["parts"][0]["text"]
+```
+
+### D. Anthropic Claude (Direct LLM Completion)
+*Note: Anthropic `/v1/messages` API generates analytical synthesis from pre-trained model knowledge. Live web grounding requires custom tool-use integration.*
+
+```python
+import httpx
+
+async def query_claude_completion(prompt: str, api_key: str) -> str:
+    url = "https://api.anthropic.com/v1/messages"
+    headers = {
+        "x-api-key": api_key,
+        "anthropic-version": "2023-06-01",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": "claude-3-7-sonnet-20250219",
+        "max_tokens": 1024,
+        "temperature": 0.2,
+        "messages": [{"role": "user", "content": prompt}]
+    }
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        response = await client.post(url, json=payload, headers=headers)
+        data = response.json()
+        return data["content"][0]["text"]
 ```
 
 ---

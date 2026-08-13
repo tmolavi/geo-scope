@@ -29,11 +29,13 @@ from geo_scope.providers.registry import registry
 def run_demo_cmd():
     """
     The 5-Minute WOW Demo experience.
-    Runs a fast 10-prompt benchmark on HubSpot vs Salesforce and outputs a visual summary.
+    Runs a fast 10-prompt benchmark on HubSpot vs Salesforce using the simulated benchmark engine.
     """
     print("\n" + "=" * 75)
     print("⟠ GEO-Scope: 5-Minute Quickstart Demo Experiment")
-    print("🎯 Target Brand: HubSpot   |   📂 Niche: CRM SaaS   |   🔢 Sample Prompts: 10")
+    print("📋 Execution Mode : [SIMULATED BENCHMARK DEMO - Zero API Key Required]")
+    print("🎯 Target Brand   : HubSpot   |   📂 Niche: CRM SaaS   |   🔢 Sample Prompts: 10")
+    print("ℹ️ Note           : Demo uses calibrated baseline simulation. For live API calls, configure provider keys.")
     print("=" * 75)
 
     prompts = generate_prompt_dataset(
@@ -130,10 +132,11 @@ def run_benchmark_cmd(args):
 
     print("\n" + "=" * 75)
     print("⟠ GEO-Scope: Generative Engine Optimization Benchmark")
-    print(f"🎯 Target Brand: {brand}")
-    print(f"👥 Competitors: {', '.join(comps)}")
-    print(f"🔢 Total Prompts: {len(prompts)} ({len(prompts) * len(models)} total inferences)")
-    print(f"🤖 Models: {', '.join(models)}")
+    print(f"🎯 Target Brand  : {brand}")
+    print(f"👥 Competitors   : {', '.join(comps)}")
+    print(f"🔢 Total Prompts : {len(prompts)} ({len(prompts) * len(models)} total inferences)")
+    print(f"🤖 Models        : {', '.join(models)}")
+    print(f"📋 Mode          : Simulated Benchmark Engine (Deterministic baseline heuristics)")
     print(f"💰 Estimated API Cost (if using live cloud APIs): ~${est_cost:.2f} USD")
     print("=" * 75)
 

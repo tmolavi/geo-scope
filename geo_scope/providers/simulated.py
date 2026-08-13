@@ -1,6 +1,7 @@
 """
 Simulated AI Engine Provider
 Provides high-fidelity, deterministic, and zero-cost RAG response modeling for benchmarking and demos.
+Classification: SIMULATED (Empirically calibrated RAG simulator).
 """
 
 import random
@@ -38,11 +39,16 @@ class SimulatedProvider(BaseProvider):
     def __init__(
         self,
         name: str = "perplexity_sonar",
-        display_name: str = "Perplexity Sonar (Simulated)",
+        display_name: str = "Perplexity Sonar (Simulated RAG)",
         bias_type: str = "ugc_heavy",
         seed: int = 42
     ):
-        super().__init__(name=name, display_name=display_name, bias_description=f"Simulated {bias_type}", cost_per_1k=0.0)
+        super().__init__(
+            name=name,
+            display_name=display_name,
+            bias_description=f"Simulated {bias_type} baseline heuristic",
+            cost_per_1k=0.0
+        )
         self.bias_type = bias_type
         self.seed = seed
         self.rnd = random.Random(seed)
