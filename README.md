@@ -340,3 +340,10 @@ pytest tests/ -v
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE) — Copyright (c) 2026 [تقی مولوی (Taqi Molavi)](https://molavi.pro/).
+
+---
+
+## 🏷️ Multilingual Keywords & Topics (فارسی / Türkçe / English)
+
+`GEO` • `Generative Engine Optimization` • `AI SEO` • `LLM Search Optimization` • `Perplexity AI` • `ChatGPT Search` • `Google Gemini Grounding` • `Claude 3.7` • `Share of Model` • `Citation Graph` • `RAG Benchmarking` • `MCP Server` • `سئو در هوش مصنوعی` • `مهندسی معکوس الگوریتم` • `بهینه‌سازی موتورهای مولد` • `سئو چت‌جی‌پی‌تی` • `هوش مصنوعی و سئو` • `تقی مولوی` • `Yapay Zeka SEO` • `Üretken Motor Optimizasyonu` • `Yapay Zeka Arama Motoru` • `LLM Görünürlük Kıyaslaması` • `Taqi Molavi`
+

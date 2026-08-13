@@ -26,8 +26,10 @@ classifiers = [
 ]
 keywords = [
     "geo", "generative-engine-optimization", "ai-seo", "llm-search",
-    "perplexity", "chatgpt-search", "gemini-grounding", "claude",
-    "share-of-model", "citation-graph", "rag-benchmarking", "taqi-molavi"
+    "perplexity", "chatgpt-search", "gemini-grounding", "claude-ai",
+    "share-of-model", "citation-graph", "rag-benchmarking", "mcp-server",
+    "hoosh-masnooi", "seo-farsi", "yapay-zeka", "yapay-zeka-seo",
+    "arama-motoru-optimizasyonu", "reverse-engineering", "taqi-molavi"
 ]
 dependencies = [
     "fastapi>=0.110.0",

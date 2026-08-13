@@ -71,3 +71,9 @@ geo-scope run --niche crm_sales --brand HubSpot --count 1000 --out output/
 - اتصال مدل‌های هوش مصنوعی بومی یا محلی (مانند Ollama / DeepSeek)
 - بهبود الگوریتم‌های تحلیل استناد و رگرسیون وزن‌ها
 - ارسال Issue یا Pull Request در [گیت‌هاب تقی مولوی](https://github.com/tmolavi/geo-scope)
+
+---
+
+### 🏷️ برچسب‌ها و کلمات کلیدی (Tags & Keywords):
+`#سئو_هوش_مصنوعی` `#مهندسی_معکوس_الگوریتم` `#GEO` `#AI_SEO` `#تقی_مولوی` `#چت_جی_پی_تی` `#پرپلکسیتی` `#جمینای` `#کلود` `#YapayZekaSEO` `#GenerativeEngineOptimization`
+

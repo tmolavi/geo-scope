@@ -373,5 +373,79 @@
     "factors_summary": {
       "ugc_community": 35
     }
+  },
+  {
+    "id": "snap_1786618272",
+    "timestamp": "2026-08-13 10:51:12",
+    "brand": "HubSpot",
+    "niche": "crm_sales",
+    "prompt_count": 1000,
+    "overall_sov": 78.8,
+    "overall_top1_rate": 44.9,
+    "best_model": "perplexity_sonar",
+    "delta_sov": 1.3,
+    "delta_top1": -2.6,
+    "is_first_run": false,
+    "factors_summary": {
+      "ugc_community": 21.5,
+      "review_aggregators": 23.0,
+      "tier1_pr_media": 22.0,
+      "knowledge_graph": 15.0,
+      "content_structure": 11.0,
+      "freshness_recency": 7.5
+    }
+  },
+  {
+    "id": "snap_1786618273",
+    "timestamp": "2026-08-13 10:51:13",
+    "brand": "HubSpot",
+    "niche": "crm_sales",
+    "prompt_count": 10,
+    "overall_sov": 80.0,
+    "overall_top1_rate": 52.5,
+    "best_model": "gemini_grounding",
+    "delta_sov": 1.2,
+    "delta_top1": 7.6,
+    "is_first_run": false,
+    "factors_summary": {
+      "ugc_community": 21.5,
+      "review_aggregators": 23.0,
+      "tier1_pr_media": 22.0,
+      "knowledge_graph": 15.0,
+      "content_structure": 11.0,
+      "freshness_recency": 7.5
+    }
+  },
+  {
+    "id": "snap_1786618273",
+    "timestamp": "2026-08-13 10:51:13",
+    "brand": "UniqueBrand_1786618273454",
+    "niche": "crm_sales",
+    "prompt_count": 100,
+    "overall_sov": 65.0,
+    "overall_top1_rate": 40.0,
+    "best_model": "chatgpt_search",
+    "delta_sov": 0.0,
+    "delta_top1": 0.0,
+    "is_first_run": true,
+    "factors_summary": {
+      "ugc_community": 30
+    }
+  },
+  {
+    "id": "snap_1786618273",
+    "timestamp": "2026-08-13 10:51:13",
+    "brand": "UniqueBrand_1786618273454",
+    "niche": "crm_sales",
+    "prompt_count": 100,
+    "overall_sov": 75.0,
+    "overall_top1_rate": 48.0,
+    "best_model": "perplexity_sonar",
+    "delta_sov": 10.0,
+    "delta_top1": 8.0,
+    "is_first_run": false,
+    "factors_summary": {
+      "ugc_community": 35
+    }
   }
 ]
