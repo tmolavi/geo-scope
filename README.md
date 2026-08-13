@@ -58,6 +58,14 @@ By evaluating a statistically significant matrix of **1,000 categorized queries*
 
 دیگر دوران تمرکز صرف روی ۱۰ لینک آبی گوگل به پایان رسیده است. هوش مصنوعی‌ها (مانند Perplexity و ChatGPT Search) مستقیماً به کاربر پاسخ نهایی می‌دهند. این ابزار با ارسال **۱,۰۰۰ سوال واقعی**، کشف می‌کند که الگوریتم هر هوش مصنوعی چه وزنی به فاکتورهایی مثل **ردیت (UGC)، سایت‌های نقد و بررسی (G2)، روابط عمومی (PR) و اسکیما** می‌دهد.
 
+### درباره نتایج آزمایش‌ها
+
+اعداد و وزن‌های نمایش‌داده‌شده در این پروژه، نتایج آزمایش‌های اولیه GEO-Scope در شرایط مشخص هستند و «فاکتور رتبه‌بندی قطعی» یا قوانین ثابت موتورهای هوش مصنوعی محسوب نمی‌شوند.
+
+هدف پروژه این است که هر پژوهشگر، متخصص یا کسب‌وکار بتواند پرامپت‌ها، برندها، رقبا، مدل‌ها، زبان و بازار خودش را وارد کند، آزمایش‌های خودش را اجرا کند و نتایج اولیه را تأیید، رد، مقایسه یا تکمیل کند.
+
+GEO-Scope قرار نیست از کاربران بخواهد نتایج اولیه این پروژه را به‌عنوان حقیقت قطعی بپذیرند؛ هدف، فراهم‌کردن بستری برای آزمایش‌پذیر کردن فرضیه‌های GEO است.
+
 ---
 
 ## 🔌 MCP Integration (Claude Desktop & Cursor)
@@ -114,6 +122,73 @@ $$\mathcal{V}_{\text{GEO}} = w_1 \cdot \text{SoM} + w_2 \cdot \mathbb{P}(\text{R
 │ 5. Structured Tables & BLUF Formatting        │ 8%      │ Token extraction density in context window│
 │ 6. Information Freshness (Recency Decay)      │ 4%      │ Temporal filtering (year/quarter penalty) │
 └───────────────────────────────────────────────┴─────────┴───────────────────────────────────────────┘
+```
+
+---
+
+## 🧪 Experimental Philosophy & Reproducibility
+
+**GEO-Scope** is **"An Open Experimental Framework for GEO & AI Visibility Research."**
+
+It is designed to function as an experimental laboratory and observatory for studying how generative engines discover, retrieve, cite, compare, and recommend brands across diverse search contexts.
+
+### Important Clarification on Baseline Metrics
+
+The numerical results and weights presented in this project — such as **Reddit/UGC 32%**, **Reviews 24%**, **PR 20%**, **Entity Grounding 12%**, **Structured Tables/BLUF 8%**, **Freshness 4%**, and observed engine behaviors (e.g. 38% Reddit citation density in Perplexity) — are empirical observations derived from the project's **INITIAL baseline experiments**.
+
+They are **NOT** claimed to be:
+- Universal ranking factors
+- Permanent weights
+- Official weights of any AI engine
+- Immutable GEO rules
+
+AI retrieval pipelines and search grounding indexes are dynamic, probabilistic, and constantly evolving. Results may change depending on:
+- **Prompt Set & Phrasing** (intent framing, question depth, specificity)
+- **Industry & Vertical** (B2B SaaS vs consumer ecommerce vs local services)
+- **Brand & Competitors** (established market leaders vs emerging entrants)
+- **Language & Market** (English, Persian, bilingual, regional queries)
+- **Country & Geographic Grounding**
+- **AI Model & Grounding System** (ChatGPT Search vs Perplexity vs Gemini vs Claude)
+- **Execution Date & Information Recency**
+- **Experimental Configuration & Temperature**
+
+---
+
+### Core Experimental Principles
+
+> **Don't trust GEO claims. Test them.**
+
+#### 1. Bring Your Own Prompts
+Anyone can use prompts and queries representing their own real market, user personas, and commercial queries.
+
+#### 2. Run Your Own Experiments
+Users can define their own brands, competitors, models, languages, markets, prompts, and scenarios.
+
+#### 3. Build Your Own Evidence
+The purpose of GEO-Scope is to enable empirical testing rather than asking users to blindly accept GEO claims.
+
+Use this standardized experimental workflow:
+$$\text{Baseline} \longrightarrow \text{Change} \longrightarrow \text{Re-test} \longrightarrow \text{Compare}$$
+
+GEO-Scope preserves complete reproducibility metadata across runs:
+- **Experiment ID**
+- **Timestamp**
+- **Models**
+- **Prompt Set**
+- **Market / Language**
+- **Brands & Competitors**
+- **Configuration**
+- **Raw Results**
+- **Metrics**
+- **Observed Changes**
+
+#### 4. Challenge the Results
+We actively encourage users to reproduce, challenge, confirm, reject, or extend the initial findings. If another researcher gets different results, that is **valuable evidence** — not a failure of GEO-Scope.
+
+```text
+Bring your own prompts.
+Run your own experiments.
+Build your own evidence.
 ```
 
 ---
