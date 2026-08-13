@@ -1,0 +1,28 @@
+name: ⚡ Report a Contradictory Finding
+description: Submit evidence or experimental results that conflict with existing GEO-Scope observations
+labels: ["contradictory-finding", "challenge", "science"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🥊 Contradictory Findings Are Welcomed!
+        We celebrate evidence that disproves, challenges, or complicates existing GEO claims.
+  - type: input
+    id: conflicting_claim
+    attributes:
+      label: Which Baseline Claim or Metric Did Your Data Contradict?
+      placeholder: e.g. "Perplexity did NOT prioritize Reddit in European B2B queries"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Your Experimental Evidence
+      description: Paste relevant tables from your summary.md and citations.csv.
+    validations:
+      required: true
+  - type: textarea
+    id: possible_reasons
+    attributes:
+      label: Why do you think the results diverged?
+      description: (e.g. Language differences, search grounding changes, different prompt structure)

@@ -1,0 +1,40 @@
+name: 🧪 Submit a New Experiment
+description: Share a new GEO benchmark experiment or niche study with the community
+labels: ["experiment", "community-research"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for contributing experimental data to GEO-Scope!
+  - type: input
+    id: experiment_title
+    attributes:
+      label: Experiment Title
+      placeholder: e.g. "Evaluating AI Visibility in Healthcare Telemedicine Platforms"
+    validations:
+      required: true
+  - type: input
+    id: brand_and_niche
+    attributes:
+      label: Target Brand & Industry
+      placeholder: e.g. Teladoc in Healthcare SaaS
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      description: What hypothesis were you testing?
+    validations:
+      required: true
+  - type: textarea
+    id: results_summary
+    attributes:
+      label: Results & Key Metrics
+      description: Paste the Share of Model (SoM), Top-1 rate, and citation breakdown from summary.md.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction_command
+    attributes:
+      label: Reproduction CLI Command
+      placeholder: geo-scope run --brand "Teladoc" --prompts healthcare.csv

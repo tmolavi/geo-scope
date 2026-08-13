@@ -1,0 +1,28 @@
+name: 🔁 Submit a Replication Result
+description: Report a replication of an existing baseline study or community experiment
+labels: ["replication", "peer-review"]
+body:
+  - type: input
+    id: original_study
+    attributes:
+      label: Original Experiment / Study ID
+      placeholder: e.g. "EXP-REDDIT-001 (Reddit UGC Correlation Study)"
+    validations:
+      required: true
+  - type: dropdown
+    id: replication_outcome
+    attributes:
+      label: Replication Outcome
+      options:
+        - "Confirmed (Similar findings within ±5%)"
+        - "Partially Confirmed (Divergence in specific models)"
+        - "Inconclusive / Inconsistent"
+    validations:
+      required: true
+  - type: textarea
+    id: comparison_details
+    attributes:
+      label: Comparison & Evidence Details
+      description: Share side-by-side metric differences observed in your replication run.
+    validations:
+      required: true

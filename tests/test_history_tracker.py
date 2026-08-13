@@ -2,11 +2,12 @@
 Tests for History Tracker & Feedback Loop Progression
 """
 
-import os
+import time
 from geo_scope.engine.history_tracker import save_benchmark_snapshot, load_all_history, get_brand_progression
 
 
 def test_history_snapshot_and_delta():
+    unique_brand = f"UniqueBrand_{int(time.time() * 1000)}"
     mock_analysis_1 = {
         "summary": {
             "overall_sov": 65.0,
@@ -17,7 +18,7 @@ def test_history_snapshot_and_delta():
     }
 
     # First audit run
-    record_1 = save_benchmark_snapshot(mock_analysis_1, "crm_sales", "TestBrand", 100)
+    record_1 = save_benchmark_snapshot(mock_analysis_1, "crm_sales", unique_brand, 100)
     assert record_1["is_first_run"] is True
     assert record_1["delta_sov"] == 0.0
 
@@ -30,7 +31,7 @@ def test_history_snapshot_and_delta():
         },
         "algorithmic_factors": {"global_average_weights": {"ugc_community": 35}}
     }
-    record_2 = save_benchmark_snapshot(mock_analysis_2, "crm_sales", "TestBrand", 100)
+    record_2 = save_benchmark_snapshot(mock_analysis_2, "crm_sales", unique_brand, 100)
     assert record_2["is_first_run"] is False
     assert record_2["delta_sov"] == 10.0
     assert record_2["delta_top1"] == 8.0
@@ -38,5 +39,5 @@ def test_history_snapshot_and_delta():
     # Load history
     history = load_all_history()
     assert len(history) >= 2
-    progression = get_brand_progression("TestBrand", "crm_sales")
-    assert len(progression) >= 2
+    progression = get_brand_progression(unique_brand, "crm_sales")
+    assert len(progression) == 2

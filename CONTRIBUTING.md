@@ -1,29 +1,37 @@
-# Contributing to GEO-Scope
+# 🤝 Contributing to GEO-Scope
 
-We welcome contributions from researchers, SEO engineers, data scientists, and developers worldwide! Whether you want to add new AI engine adapters, contribute fresh prompt datasets, improve statistical attribution models, or fix bugs, your help is appreciated.
+We welcome contributions from researchers, SEO engineers, data scientists, and developers worldwide!
 
----
-
-## 🧭 How You Can Contribute
-
-1. **Submit New Industry Benchmark Datasets**:
-   - Add prompt templates and competitor taxonomies to `geo_scope/engine/query_generator.py` or `geo_scope/data/`.
-2. **Add Custom AI Engine Adapters**:
-   - Integrate local models (Ollama, DeepSeek, vLLM) or emerging search engines in `geo_scope/engine/model_runner.py`.
-3. **Enhance Feature Extraction**:
-   - Improve regex/NLP parsing for footnotes, Markdown citations, and multi-language entity aliases in `geo_scope/engine/feature_extractor.py`.
-4. **Refine Statistical & ML Attribution**:
-   - Enhance SHAP/regression attribution algorithms in `geo_scope/engine/algo_analyzer.py`.
-5. **UI & Visualization Improvements**:
-   - Enhance dashboard UI components in `geo_scope/static/index.html`.
+Whether you want to **submit new prompt datasets**, **add an AI provider**, **reproduce or challenge findings**, or **improve statistical models**, your help is appreciated.
 
 ---
 
-## 🛠️ Development Setup
+## ⚡ 5-Minute Quick Contribution Guide
 
-1. **Fork and clone the repository**:
+### 1. Add a New Industry Prompt Dataset (Easiest!)
+- Add a CSV or JSON file under `datasets/your_industry.csv`.
+- Include 10 to 50 representative real-world queries.
+- Submit a PR!
+
+### 2. Submit or Challenge an Experiment
+- Run a benchmark on your brand/niche:
+  ```bash
+  geo-scope run --brand "My Brand" --prompts datasets/saas_crm.csv --out results/my_study/
+  ```
+- Copy `experiments/templates/experiment_template.md` to `experiments/community/my_study.md`.
+- Open a PR or submit via the **[Contradictory Finding / Experiment Issue Template](https://github.com/tmolavi/geo-scope/issues/new/choose)**.
+
+### 3. Add a New AI Search Provider
+- Subclass `BaseProvider` in `geo_scope/providers/`.
+- See the step-by-step tutorial: **[`docs/ADD_A_PROVIDER.md`](docs/ADD_A_PROVIDER.md)**.
+
+---
+
+## 🛠️ Local Development Setup
+
+1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/geo-scope.git
+   git clone https://github.com/tmolavi/geo-scope.git
    cd geo-scope
    ```
 
@@ -39,23 +47,28 @@ We welcome contributions from researchers, SEO engineers, data scientists, and d
    pip install -e .
    ```
 
-4. **Run tests**:
+4. **Run the test suite**:
    ```bash
    pytest tests/ -v
    ```
 
-5. **Start local development dashboard**:
+5. **Run the 5-Minute Demo**:
+   ```bash
+   geo-scope demo
+   ```
+
+6. **Launch the Web Dashboard**:
    ```bash
    geo-scope serve --host 0.0.0.0 --port 8000 --reload
    ```
 
 ---
 
-## 📋 Pull Request Workflow
+## 📋 Pull Request Checklist
 
-1. Create a descriptive branch (`git checkout -b feature/gemini-pro-adapter`).
-2. Implement your changes with clean commit messages.
-3. Ensure all tests pass (`pytest`) and code follows PEP 8.
-4. Push to your fork and submit a Pull Request.
+- [ ] Code follows PEP 8 style standards (`flake8`).
+- [ ] All tests pass (`pytest tests/ -v`).
+- [ ] New functionality or datasets are documented.
+- [ ] Commit message is clear and descriptive.
 
-Thank you for helping build the open science foundation for AI Visibility and GEO!
+Thank you for helping build an empirical, open-science foundation for AI Search & GEO!

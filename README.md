@@ -17,9 +17,29 @@
 [![Docker Support](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[English Overview](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [📄 Research Whitepaper](docs/WHITEPAPER.md) • [MCP Server Setup](#-mcp-integration-claude-desktop--cursor) • [Visibility Score Algorithm](#-computational-methodology--visibility-score) • [Real-World Use Cases](#-real-world-use-cases-سناریوهای-کاربردی) • [Live API Setup](docs/API_INTEGRATION.md)
+[English Overview](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [📄 Research Whitepaper](docs/WHITEPAPER.md) • [🥊 Challenge Findings](CHALLENGE.md) • [🧪 Community Experiments](experiments/) • [MCP Server Setup](#-mcp-integration-claude-desktop--cursor) • [Visibility Score Algorithm](#-computational-methodology--visibility-score) • [Real-World Use Cases](#-real-world-use-cases-سناریوهای-کاربردی) • [Live API Setup](docs/API_INTEGRATION.md)
 
 </div>
+
+---
+
+> ### 🎯 **"Don't trust GEO claims. Test them."**
+> **WHAT**: An Open Experimental Framework for Generative Engine Optimization (GEO) & AI Search Visibility Research.  
+> **WHY**: AI visibility claims are everywhere, but many are speculative or difficult to test. GEO-Scope makes GEO hypotheses empirically verifiable.  
+> **HOW**: **Bring your prompts** ➔ **Run experiments** ➔ **Measure visibility & citations** ➔ **Compare & Re-test**.
+
+### ⚡ 5-Minute Quickstart (Run Your First Benchmark)
+
+```bash
+# 1. Install GEO-Scope
+pip install -e .
+
+# 2. Run instant 5-minute terminal demo
+geo-scope demo
+
+# 3. Bring your own prompts & benchmark your brand
+geo-scope run --brand "My Brand" --competitors "Comp A, Comp B" --prompts datasets/saas_crm.csv
+```
 
 ---
 
@@ -209,7 +229,7 @@ Build your own evidence.
 
 ---
 
-## ⚡ Quickstart
+## ⚡ Quickstart & CLI Commands
 
 ### 1. Installation
 
@@ -222,21 +242,34 @@ cd geo-scope
 pip install -e .
 ```
 
-### 2. Launch Interactive Web Dashboard
+### 2. Run Instant 5-Minute Demo
+
+```bash
+geo-scope demo
+```
+
+### 3. Bring Your Own Prompts (Custom File)
+
+```bash
+# Run custom benchmark with CSV, JSON, or TXT queries
+geo-scope run --brand "My Brand" --competitors "Competitor A, Competitor B" --prompts datasets/saas_crm.csv --out results/my_brand/
+```
+
+### 4. Launch Interactive Web Dashboard
 
 ```bash
 geo-scope serve --host 0.0.0.0 --port 8000
 ```
 Open **`http://localhost:8000`** to view the live dashboard, interactive charts, prompt comparator, and custom benchmark runner.
 
-### 3. Run Benchmark from CLI
+### 5. Run Synthetic 1,000-Prompt Benchmark from CLI
 
 ```bash
 # Run a 1,000 prompt benchmark for CRM SaaS
 geo-scope run --niche crm_sales --brand HubSpot --count 1000 --out results/
 ```
 
-### 4. Run with Docker Compose
+### 6. Run with Docker Compose
 
 ```bash
 docker-compose up -d
@@ -262,6 +295,21 @@ docker-compose up -d
 # Run test suite
 pytest tests/ -v
 ```
+
+---
+
+## 📚 Documentation & Research Guides
+
+- 📖 [Scientific Methodology](docs/METHODOLOGY.md)
+- 📄 [Research Whitepaper](docs/WHITEPAPER.md)
+- 📐 [Mathematical Formulations](docs/MATHEMATICAL_MODEL.md)
+- 🥊 [Challenge Our Findings & Replication Guide](CHALLENGE.md)
+- 🧪 [Community Experiments Directory](experiments/)
+- 📂 [Bring Your Own Prompts (BYOP) Guide](docs/CUSTOM_PROMPTS_GUIDE.md)
+- 🤖 [How to Add an AI / Search Provider](docs/ADD_A_PROVIDER.md)
+- 🔌 [Live API Integration (OpenAI, Perplexity, Gemini, Claude)](docs/API_INTEGRATION.md)
+- 📊 [Industry Datasets & Schema](docs/DATASETS.md)
+- 🇮🇷 [راهنمای تفصیلی فارسی](docs/FA_GUIDE.md)
 
 ---
 

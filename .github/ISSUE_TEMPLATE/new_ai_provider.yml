@@ -1,0 +1,23 @@
+name: 🤖 Propose a New AI / Search Provider
+description: Request or contribute a new AI search model adapter (e.g. DeepSeek, Grok, Brave Search)
+labels: ["provider", "integration"]
+body:
+  - type: input
+    id: provider_name
+    attributes:
+      label: Provider / Model Name
+      placeholder: e.g. "Grok 3 (xAI) with Web Search"
+    validations:
+      required: true
+  - type: input
+    id: api_docs_url
+    attributes:
+      label: API Documentation Link
+      placeholder: https://docs.x.ai/...
+    validations:
+      required: true
+  - type: textarea
+    id: implementation_notes
+    attributes:
+      label: Implementation Notes / Pull Request Draft
+      description: Does it support citation extraction or search grounding parameters?
