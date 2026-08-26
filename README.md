@@ -321,7 +321,12 @@ pytest tests/ -v
 
 ---
 
-## 📜 Citation
+## Citation & Author
+
+Developed by **[Taqi Molavi](https://molavi.pro)** (Senior SEO Strategist & GEO Systems Architect).
+Part of the **[Molavi GEO Pyramid](https://molavi.pro/research/geo-pyramid)** research framework.
+
+### BibTeX
 
 ```bibtex
 @software{molavi2026geoscope,
@@ -346,4 +351,3 @@ This project is licensed under the [MIT License](LICENSE) — Copyright (c) 2026
 ## 🏷️ Multilingual Keywords & Topics (فارسی / Türkçe / English)
 
 `GEO` • `Generative Engine Optimization` • `AI SEO` • `LLM Search Optimization` • `Perplexity AI` • `ChatGPT Search` • `Google Gemini Grounding` • `Claude 3.7` • `Share of Model` • `Citation Graph` • `RAG Benchmarking` • `MCP Server` • `سئو در هوش مصنوعی` • `مهندسی معکوس الگوریتم` • `بهینه‌سازی موتورهای مولد` • `سئو چت‌جی‌پی‌تی` • `هوش مصنوعی و سئو` • `تقی مولوی` • `Yapay Zeka SEO` • `Üretken Motor Optimizasyonu` • `Yapay Zeka Arama Motoru` • `LLM Görünürlük Kıyaslaması` • `Taqi Molavi`
-
