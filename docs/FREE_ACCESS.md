@@ -7,6 +7,7 @@ Reviewed against operator documentation on 2026-09-06. Availability can change. 
 | Ollama on your machine | No cloud key | Uses your hardware and an installed model; model licenses apply | `ollama_local` |
 | OpenRouter free models | Your own API key | Account quotas apply; only `:free` models or `openrouter/free` accepted | `openrouter_free` |
 | MLVoca public API | No | Operator explicitly prohibits commercial use; limited shared hardware | `mlvoca_public`, explicit noncommercial opt-in |
+| User-run keyless wrapper | No cloud key in GEO-Scope | User starts the wrapper locally; upstream terms and availability apply | `keyless_local` |
 | Pollinations | Yes, currently | Generation requires account/app authorization; old anonymous examples are outdated | Not integrated as a no-key service |
 | Recorded responses | No | Analyze responses you are entitled to use; provenance remains user supplied | `--responses` |
 
@@ -19,6 +20,14 @@ geo-scope run --mode live --models mlvoca_public --count 1 --brand HubSpot
 ```
 
 Do not use this option for client audits or business workloads without the operator's permission. Prompts go to a third-party public host. Provider errors stop execution; no other accounts or services are tried. Neither this endpoint nor local Ollama measures web-search grounding.
+
+## User-run keyless wrapper
+
+`keyless_local` targets a wrapper the user has started at `127.0.0.1:1337`. It sends prompts only to that local process and labels search grounding as unverified. It does not call a hosted copy, obtain credentials from another repository, or claim to be an official ChatGPT Search result. The referenced wrapper is deprecated, so use it for local experiments after reviewing its upstream terms.
+
+```bash
+geo-scope run --mode live --models keyless_local --count 3 --brand HubSpot
+```
 
 ## OpenRouter
 

@@ -6,6 +6,7 @@ Allows dynamic discovery, registration, selection, and cost estimation of AI mod
 from typing import Dict, Any, List, Optional
 from geo_scope.providers.base import BaseProvider
 from geo_scope.providers.public_research_provider import PublicResearchProvider
+from geo_scope.providers.keyless_wrapper_provider import KeylessWrapperProvider
 from geo_scope.providers.openrouter_provider import OpenRouterProvider
 from geo_scope.providers.openai_provider import OpenAIProvider
 from geo_scope.providers.perplexity_provider import PerplexityProvider
@@ -28,6 +29,7 @@ class ProviderRegistry:
         self.register(OllamaProvider())
         self.register(OpenRouterProvider())
         self.register(PublicResearchProvider())
+        self.register(KeylessWrapperProvider())
 
     def register(self, provider: BaseProvider):
         """

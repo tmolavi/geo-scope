@@ -196,6 +196,23 @@ def test_ollama_real_http_contract_without_key(prompt, monkeypatch):
     assert asyncio.run(OllamaProvider().generate_response(prompt)).startswith("1. HubSpot")
 
 
+def test_keyless_wrapper_local_contract(prompt, monkeypatch):
+    from geo_scope.providers.keyless_wrapper_provider import KeylessWrapperProvider
+
+    def handler(request):
+        assert request.url.host == "127.0.0.1"
+        assert json.loads(request.content)["stream"] is False
+        return httpx.Response(
+            200, json={"model": "keyless-gpt-4o-mini", "choices": [{"message": {"content": "HubSpot"}}]}
+        )
+
+    original = httpx.AsyncClient
+    monkeypatch.setattr(httpx, "AsyncClient", lambda **kw: original(transport=httpx.MockTransport(handler)))
+    provider = KeylessWrapperProvider()
+    assert asyncio.run(provider.generate_response(prompt)) == "HubSpot"
+    assert provider.last_evidence["grounding"] == "unverified"
+
+
 def test_openrouter_does_not_accept_paid_model(prompt, monkeypatch):
     from geo_scope.providers.openrouter_provider import OpenRouterProvider
 

@@ -19,6 +19,7 @@ Set credentials in your process environment or your host's secret manager. `.env
 | `ollama_local` | Optional `OLLAMA_HOST`, `OLLAMA_MODEL` | Actual local inference without a cloud key; no web search |
 | `openrouter_free` | `OPENROUTER_API_KEY`, optional `OPENROUTER_MODEL` | Free direct-completion models on your own account |
 | `mlvoca_public` | `GEO_SCOPE_NONCOMMERCIAL=1` | Optional public noncommercial research endpoint; no key, no web search |
+| `keyless_local` | `KEYLESS_WRAPPER_HOST`, `KEYLESS_WRAPPER_MODEL` optional | User-run OpenAI-compatible wrapper; grounding unverified |
 
 `chatgpt_search` and `claude_3_7` remain compatibility aliases in live mode. Prefer the canonical completion IDs. Simulation uses the four historical profile IDs. Provider API outputs should not be treated as identical to consumer search products.
 
