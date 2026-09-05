@@ -6,7 +6,6 @@ from geo_scope.engine.feature_extractor import (
     extract_citations_and_domains,
     detect_brand_positions,
     analyze_content_structure,
-    parse_model_response
 )
 
 

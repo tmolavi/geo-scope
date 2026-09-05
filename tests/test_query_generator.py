@@ -2,7 +2,6 @@
 Tests for Query Generator Module
 """
 
-import pytest
 from geo_scope.engine.query_generator import generate_prompt_dataset, INDUSTRY_PRESETS
 
 

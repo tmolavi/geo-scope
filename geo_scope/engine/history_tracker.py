@@ -6,12 +6,16 @@ Tracks historical benchmark snapshots and computes before/after progression delt
 import os
 import json
 import time
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 
-HISTORY_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "benchmark_history.json")
+HISTORY_FILE = os.getenv(
+    "GEO_SCOPE_HISTORY_FILE", os.path.join(os.path.expanduser("~"), ".geo-scope", "benchmark_history.json")
+)
 
 
-def save_benchmark_snapshot(analysis_results: Dict[str, Any], niche: str, brand: str, prompt_count: int) -> Dict[str, Any]:
+def save_benchmark_snapshot(
+    analysis_results: Dict[str, Any], niche: str, brand: str, prompt_count: int
+) -> Dict[str, Any]:
     """
     Saves an execution snapshot to the persistent history log and computes progression deltas.
     """
@@ -25,9 +29,20 @@ def save_benchmark_snapshot(analysis_results: Dict[str, Any], niche: str, brand:
     current_sov = current_summary.get("overall_sov", 0.0)
     current_top1 = current_summary.get("overall_top1_rate", 0.0)
 
+    execution_mode = current_summary.get("execution_mode", "unknown")
+    provider_ids = sorted(current_summary.get("provider_provenance", {}))
     # Find previous snapshot for the same brand and niche to compute delta
-    previous_runs = [h for h in history if h.get("brand", "").lower() == brand.lower() and h.get("niche") == niche]
-    
+    previous_runs = [
+        h
+        for h in history
+        if h.get("brand", "").lower() == brand.lower()
+        and h.get("niche") == niche
+        and h.get("execution_mode", "unknown") == execution_mode
+        and h.get("provider_ids", []) == provider_ids
+        and h.get("prompt_count") == prompt_count
+        and h.get("experiment_signature") == current_summary.get("experiment_signature")
+    ]
+
     delta_sov = 0.0
     delta_top1 = 0.0
     is_first_run = True
@@ -39,6 +54,9 @@ def save_benchmark_snapshot(analysis_results: Dict[str, Any], niche: str, brand:
         delta_top1 = round(current_top1 - last_run.get("overall_top1_rate", 0.0), 1)
 
     record = {
+        "experiment_signature": current_summary.get("experiment_signature"),
+        "execution_mode": execution_mode,
+        "provider_ids": provider_ids,
         "id": snapshot_id,
         "timestamp": timestamp,
         "brand": brand,
@@ -50,7 +68,7 @@ def save_benchmark_snapshot(analysis_results: Dict[str, Any], niche: str, brand:
         "delta_sov": delta_sov,
         "delta_top1": delta_top1,
         "is_first_run": is_first_run,
-        "factors_summary": analysis_results.get("algorithmic_factors", {}).get("global_average_weights", {})
+        "factors_summary": analysis_results.get("algorithmic_factors", {}).get("global_average_weights", {}),
     }
 
     history.append(record)

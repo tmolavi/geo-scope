@@ -1,5 +1,6 @@
 # 📐 Mathematical Model: GEO Metrics & Factor Attribution
 
+> Implementation note: This document describes a research model. Fixed factor weights and composite-score coefficients are hypothesis priors, not fitted engine weights or validated causal effects. Current executable metrics and provider capabilities are documented in [API integration](API_INTEGRATION.md). Seeded simulation is repeatable; live generation is variable even at a fixed temperature.
 ## 1. Share of Model (SoM) / Share of Voice
 
 Let $\mathcal{Q} = \{q_1, q_2, \dots, q_N\}$ be the set of evaluation queries, and $\mathcal{M} = \{m_1, m_2, \dots, m_K\}$ be the set of evaluated AI models.

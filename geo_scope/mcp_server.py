@@ -6,14 +6,13 @@ Enables Claude Desktop, Cursor, Antigravity, and AI Agents to run GEO audits & b
 import sys
 import json
 import asyncio
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 from geo_scope.engine.query_generator import generate_prompt_dataset
 from geo_scope.engine.model_runner import ModelRunner
 from geo_scope.engine.feature_extractor import parse_model_response
 from geo_scope.engine.algo_analyzer import AlgoAnalyzer
 from geo_scope.engine.strategy_builder import generate_geo_playbook
-
 
 MCP_TOOLS = [
     {
@@ -23,12 +22,24 @@ MCP_TOOLS = [
             "type": "object",
             "properties": {
                 "brand": {"type": "string", "description": "Target brand name (e.g. HubSpot, Ahrefs, Notion)"},
-                "niche": {"type": "string", "description": "Industry vertical (crm_sales, seo_marketing, project_management, ai_copywriting, ecommerce_platform)", "default": "crm_sales"},
-                "competitors": {"type": "array", "items": {"type": "string"}, "description": "List of 2-5 major competitors"},
-                "prompt_count": {"type": "integer", "description": "Number of evaluation queries (e.g. 50, 200, 1000)", "default": 50}
+                "niche": {
+                    "type": "string",
+                    "description": "Industry vertical (crm_sales, seo_marketing, project_management, ai_copywriting, ecommerce_platform)",
+                    "default": "crm_sales",
+                },
+                "competitors": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "List of 2-5 major competitors",
+                },
+                "prompt_count": {
+                    "type": "integer",
+                    "description": "Number of evaluation queries (e.g. 50, 200, 1000)",
+                    "default": 50,
+                },
             },
-            "required": ["brand"]
-        }
+            "required": ["brand"],
+        },
     },
     {
         "name": "reverse_engineer_ranking_factors",
@@ -37,10 +48,10 @@ MCP_TOOLS = [
             "type": "object",
             "properties": {
                 "niche": {"type": "string", "description": "Industry vertical key", "default": "crm_sales"},
-                "target_brand": {"type": "string", "description": "Brand to evaluate against factors"}
+                "target_brand": {"type": "string", "description": "Brand to evaluate against factors"},
             },
-            "required": ["target_brand"]
-        }
+            "required": ["target_brand"],
+        },
     },
     {
         "name": "generate_geo_playbook",
@@ -49,12 +60,29 @@ MCP_TOOLS = [
             "type": "object",
             "properties": {
                 "brand": {"type": "string", "description": "Target brand name"},
-                "niche": {"type": "string", "description": "Industry vertical", "default": "crm_sales"}
+                "niche": {"type": "string", "description": "Industry vertical", "default": "crm_sales"},
             },
-            "required": ["brand"]
-        }
-    }
+            "required": ["brand"],
+        },
+    },
 ]
+
+
+for tool in MCP_TOOLS:
+    tool[
+        "description"
+    ] += " Defaults to seeded simulation. Select live and explicit providers for actual inference. Factor weights are research priors, not fitted findings."
+    tool["inputSchema"]["properties"].update(
+        {
+            "mode": {"type": "string", "enum": ["simulate", "live"], "default": "simulate"},
+            "models": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Provider IDs, e.g. ollama_local, openrouter_free, perplexity_sonar",
+            },
+            "seed": {"type": "integer", "default": 42},
+        }
+    )
 
 
 async def handle_tool_call(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
@@ -64,46 +92,64 @@ async def handle_tool_call(name: str, arguments: Dict[str, Any]) -> Dict[str, An
         comps = arguments.get("competitors", [])
         count = arguments.get("prompt_count", 50)
 
-        prompts = generate_prompt_dataset(niche_key=niche, target_brand=brand, competitors=comps, total_count=count)
-        runner = ModelRunner()
-        responses = await runner.execute_batch(prompts)
-        parsed = [parse_model_response(r["query_item"], r["model"], r["response_text"]) for r in responses]
+        prompts = generate_prompt_dataset(
+            niche_key=niche, target_brand=brand, competitors=comps, total_count=count, seed=arguments.get("seed", 42)
+        )
+        runner = ModelRunner(mode=arguments.get("mode", "simulate"), seed=arguments.get("seed", 42))
+        responses = await runner.execute_batch(prompts, models=arguments.get("models"))
+        parsed = [
+            parse_model_response(r["query_item"], r["model"], r["response_text"], r.get("provenance"))
+            for r in responses
+        ]
         analyzer = AlgoAnalyzer(parsed, brand, comps)
         analysis = analyzer.compute_full_analysis()
 
         return {
+            "execution_mode": analysis["summary"]["execution_mode"],
+            "records": parsed,
             "target_brand": brand,
             "overall_share_of_model_pct": analysis["summary"]["overall_sov"],
             "top_1_recommendation_rate_pct": analysis["summary"]["overall_top1_rate"],
             "best_performing_ai": analysis["summary"]["best_performing_model"],
             "weakest_performing_ai": analysis["summary"]["weakest_performing_model"],
             "competitor_share_of_voice": analysis["competitor_matrix"][:4],
-            "top_cited_sources": analysis["citation_analytics"]["top_cited_domains"][:5]
+            "top_cited_sources": analysis["citation_analytics"]["top_cited_domains"][:5],
         }
 
     elif name == "reverse_engineer_ranking_factors":
         brand = arguments.get("target_brand")
         niche = arguments.get("niche", "crm_sales")
-        prompts = generate_prompt_dataset(niche_key=niche, target_brand=brand, total_count=50)
-        runner = ModelRunner()
-        responses = await runner.execute_batch(prompts)
-        parsed = [parse_model_response(r["query_item"], r["model"], r["response_text"]) for r in responses]
+        prompts = generate_prompt_dataset(
+            niche_key=niche, target_brand=brand, total_count=50, seed=arguments.get("seed", 42)
+        )
+        runner = ModelRunner(mode=arguments.get("mode", "simulate"), seed=arguments.get("seed", 42))
+        responses = await runner.execute_batch(prompts, models=arguments.get("models"))
+        parsed = [
+            parse_model_response(r["query_item"], r["model"], r["response_text"], r.get("provenance"))
+            for r in responses
+        ]
         analyzer = AlgoAnalyzer(parsed, brand, [])
         analysis = analyzer.compute_full_analysis()
 
         return {
+            "status": "hypothesis_prior_not_fitted",
             "factor_weights_by_model": analysis["algorithmic_factors"]["weights_by_model"],
             "global_average_weights": analysis["algorithmic_factors"]["global_average_weights"],
-            "identified_strategic_gaps": analysis["strategic_gaps"]
+            "identified_strategic_gaps": analysis["strategic_gaps"],
         }
 
     elif name == "generate_geo_playbook":
         brand = arguments.get("brand")
         niche = arguments.get("niche", "crm_sales")
-        prompts = generate_prompt_dataset(niche_key=niche, target_brand=brand, total_count=50)
-        runner = ModelRunner()
-        responses = await runner.execute_batch(prompts)
-        parsed = [parse_model_response(r["query_item"], r["model"], r["response_text"]) for r in responses]
+        prompts = generate_prompt_dataset(
+            niche_key=niche, target_brand=brand, total_count=50, seed=arguments.get("seed", 42)
+        )
+        runner = ModelRunner(mode=arguments.get("mode", "simulate"), seed=arguments.get("seed", 42))
+        responses = await runner.execute_batch(prompts, models=arguments.get("models"))
+        parsed = [
+            parse_model_response(r["query_item"], r["model"], r["response_text"], r.get("provenance"))
+            for r in responses
+        ]
         analyzer = AlgoAnalyzer(parsed, brand, [])
         analysis = analyzer.compute_full_analysis()
         playbook = generate_geo_playbook(analysis)
@@ -116,6 +162,7 @@ def main():
     """
     Standard JSON-RPC Stdio Server loop for MCP.
     """
+    req = {}
     for line in sys.stdin:
         if not line.strip():
             continue
@@ -139,7 +186,7 @@ def main():
                     "id": msg_id,
                     "result": {
                         "content": [{"type": "text", "text": json.dumps(tool_result, ensure_ascii=False, indent=2)}]
-                    }
+                    },
                 }
                 sys.stdout.write(json.dumps(res) + "\n")
                 sys.stdout.flush()
@@ -151,13 +198,20 @@ def main():
                     "result": {
                         "protocolVersion": "2024-11-05",
                         "capabilities": {"tools": {}},
-                        "serverInfo": {"name": "geo-scope-mcp", "version": "1.0.0"}
-                    }
+                        "serverInfo": {"name": "geo-scope-mcp", "version": "1.0.0"},
+                    },
                 }
                 sys.stdout.write(json.dumps(res) + "\n")
                 sys.stdout.flush()
         except Exception as e:
-            err_res = {"jsonrpc": "2.0", "id": req.get("id"), "error": {"code": -32603, "message": str(e)}}
+            err_res = {
+                "jsonrpc": "2.0",
+                "id": req.get("id"),
+                "error": {
+                    "code": -32603,
+                    "message": f"Request failed ({type(e).__name__}); check provider configuration",
+                },
+            }
             sys.stdout.write(json.dumps(err_res) + "\n")
             sys.stdout.flush()
 

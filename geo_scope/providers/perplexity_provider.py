@@ -14,10 +14,11 @@ class PerplexityProvider(BaseProvider):
             name="perplexity_sonar",
             display_name=f"Perplexity ({model})",
             bias_description="Real-time multi-source crawl, Reddit UGC & review density",
-            cost_per_1k=5.00
+            cost_per_1k=5.00,
         )
         self.api_key = api_key or os.getenv("PERPLEXITY_API_KEY", "")
-        self.model = model
+        self.model = os.getenv("PERPLEXITY_MODEL", model)
+        self.response_kind = "search_enabled"
 
     def is_available(self) -> bool:
         return bool(self.api_key)
@@ -27,21 +28,18 @@ class PerplexityProvider(BaseProvider):
             raise ValueError("PERPLEXITY_API_KEY is not set.")
 
         url = "https://api.perplexity.ai/chat/completions"
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
+        headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
         payload = {
             "model": self.model,
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are an accurate, citation-focused search AI. Answer user queries with direct recommendations, bullet points, and source citations."
+                    "content": "You are an accurate, citation-focused search AI. Answer user queries with direct recommendations, bullet points, and source citations.",
                 },
-                {"role": "user", "content": prompt_item.get("query", "")}
+                {"role": "user", "content": prompt_item.get("query", "")},
             ],
             "temperature": 0.2,
-            "return_citations": True
+            "return_citations": True,
         }
 
         async with httpx.AsyncClient(timeout=45.0) as client:
@@ -50,6 +48,13 @@ class PerplexityProvider(BaseProvider):
             data = response.json()
             content = data["choices"][0]["message"]["content"]
             citations = data.get("citations", [])
+            self.last_evidence = {
+                "citations": citations,
+                "model": data.get("model"),
+                "usage": data.get("usage", {}),
+                "request_settings": {"temperature": 0.2},
+                "search_results": data.get("search_results", []),
+            }
             if citations:
                 content += "\n\n### Grounding Citations:\n"
                 for c in citations:

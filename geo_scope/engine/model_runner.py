@@ -5,69 +5,110 @@ Runs queries against live APIs (OpenAI, Perplexity, Gemini, Claude) or high-fide
 
 import asyncio
 import random
-import time
+from datetime import datetime, timezone
+from geo_scope.providers.registry import ProviderRegistry
 from typing import List, Dict, Any, Optional
 
 # Pre-defined realistic domain pools for RAG simulation
 CITATIONS_BY_NICHE = {
     "crm_sales": {
         "ugc": [
-            ("Reddit r/sales: Best CRM for startups in 2026", "https://reddit.com/r/sales/comments/best_crm_discussion_2026"),
-            ("Reddit r/entrepreneur: HubSpot vs Salesforce honest review", "https://reddit.com/r/entrepreneur/comments/hubspot_salesforce_review"),
-            ("Quora: Which CRM gives the highest ROI?", "https://quora.com/Which-CRM-software-is-best-for-small-business")
+            (
+                "Reddit r/sales: Best CRM for startups in 2026",
+                "https://reddit.com/r/sales/comments/best_crm_discussion_2026",
+            ),
+            (
+                "Reddit r/entrepreneur: HubSpot vs Salesforce honest review",
+                "https://reddit.com/r/entrepreneur/comments/hubspot_salesforce_review",
+            ),
+            (
+                "Quora: Which CRM gives the highest ROI?",
+                "https://quora.com/Which-CRM-software-is-best-for-small-business",
+            ),
         ],
         "reviews": [
             ("G2: 2026 CRM Software Grid Leaderboard", "https://www.g2.com/categories/crm"),
-            ("Capterra: Top CRM Solutions Comparison", "https://www.capterra.com/customer-relationship-management-software/"),
-            ("Trustpilot: Customer Satisfaction Ratings", "https://www.trustpilot.com/categories/crm_software")
+            (
+                "Capterra: Top CRM Solutions Comparison",
+                "https://www.capterra.com/customer-relationship-management-software/",
+            ),
+            ("Trustpilot: Customer Satisfaction Ratings", "https://www.trustpilot.com/categories/crm_software"),
         ],
         "media": [
-            ("TechCrunch: The State of Enterprise SaaS 2026", "https://techcrunch.com/2026/01/enterprise-crm-landscape"),
-            ("Forbes Advisor: Best CRM for Small Business", "https://www.forbes.com/advisor/business/software/best-crm-small-business/"),
-            ("Digiato: راهنمای انتخاب نرم‌افزار مدیریت ارتباط با مشتری", "https://digiato.com/article/best-crm-software-guide")
+            (
+                "TechCrunch: The State of Enterprise SaaS 2026",
+                "https://techcrunch.com/2026/01/enterprise-crm-landscape",
+            ),
+            (
+                "Forbes Advisor: Best CRM for Small Business",
+                "https://www.forbes.com/advisor/business/software/best-crm-small-business/",
+            ),
+            (
+                "Digiato: راهنمای انتخاب نرم‌افزار مدیریت ارتباط با مشتری",
+                "https://digiato.com/article/best-crm-software-guide",
+            ),
         ],
         "official": [
             ("HubSpot Official Product Tour", "https://www.hubspot.com/products/crm"),
             ("Salesforce Sales Cloud Overview", "https://www.salesforce.com/products/sales-cloud/"),
-            ("Zoho CRM Features", "https://www.zoho.com/crm/")
-        ]
+            ("Zoho CRM Features", "https://www.zoho.com/crm/"),
+        ],
     },
     "seo_marketing": {
         "ugc": [
             ("Reddit r/SEO: Ahrefs vs SEMrush in 2026", "https://reddit.com/r/SEO/comments/ahrefs_vs_semrush_accuracy"),
-            ("Reddit r/BigSEO: Generative Engine Optimization strategies", "https://reddit.com/r/bigseo/comments/geo_ranking_tactics")
+            (
+                "Reddit r/BigSEO: Generative Engine Optimization strategies",
+                "https://reddit.com/r/bigseo/comments/geo_ranking_tactics",
+            ),
         ],
         "reviews": [
             ("G2: SEO Software Category Leaders", "https://www.g2.com/categories/seo-software"),
-            ("TrustRadius: Ahrefs Deep Dive Review", "https://www.trustradius.com/products/ahrefs/reviews")
+            ("TrustRadius: Ahrefs Deep Dive Review", "https://www.trustradius.com/products/ahrefs/reviews"),
         ],
         "media": [
-            ("Search Engine Land: AI Search Visibility Trends", "https://searchengineland.com/geo-ai-search-optimization-guide-439201"),
-            ("Zoomit: مقایسه برترین ابزارهای سئو و تحلیل کلمات کلیدی", "https://www.zoomit.ir/software-applications/best-seo-tools-comparison/")
+            (
+                "Search Engine Land: AI Search Visibility Trends",
+                "https://searchengineland.com/geo-ai-search-optimization-guide-439201",
+            ),
+            (
+                "Zoomit: مقایسه برترین ابزارهای سئو و تحلیل کلمات کلیدی",
+                "https://www.zoomit.ir/software-applications/best-seo-tools-comparison/",
+            ),
         ],
         "official": [
             ("Ahrefs Webmaster Tools", "https://ahrefs.com/webmaster-tools"),
-            ("SEMrush Competitive Research", "https://www.semrush.com/competitive-research/")
-        ]
-    }
+            ("SEMrush Competitive Research", "https://www.semrush.com/competitive-research/"),
+        ],
+    },
 }
 
 
 class ModelRunner:
-    def __init__(self, api_keys: Optional[Dict[str, str]] = None):
+    def __init__(self, api_keys: Optional[Dict[str, str]] = None, mode="simulate", seed=42, providers=None):
+        if mode not in {"simulate", "live"}:
+            raise ValueError("mode must be simulate or live")
+        self.mode = mode
+        self.seed = seed
+        self.rng = random.Random(seed)
+        self.providers = providers or ProviderRegistry()
         self.api_keys = api_keys or {}
+        for name, key in self.api_keys.items():
+            provider = self.providers.get(name)
+            if provider is None or not hasattr(provider, "api_key"):
+                raise ValueError(f"Unknown keyed provider: {name}")
+            provider.api_key = key
         self.active_models = ["perplexity_sonar", "chatgpt_search", "gemini_grounding", "claude_3_7"]
 
     async def execute_batch(
-        self,
-        prompts: List[Dict[str, Any]],
-        models: List[str] = None,
-        progress_callback = None
+        self, prompts: List[Dict[str, Any]], models: List[str] = None, progress_callback=None
     ) -> List[Dict[str, Any]]:
         """
         Executes a batch of queries across selected AI models.
         """
-        target_models = models or self.active_models
+        target_models = self.active_models if models is None else models
+        self.validate_models(target_models)
+        self.rng = random.Random(self.seed)
         total_tasks = len(prompts) * len(target_models)
         completed = 0
         raw_responses = []
@@ -75,15 +116,38 @@ class ModelRunner:
         # Process in chunks to maintain high responsiveness
         chunk_size = 20
         for i in range(0, len(prompts), chunk_size):
-            chunk = prompts[i:i+chunk_size]
+            chunk = prompts[i : i + chunk_size]
             for prompt_item in chunk:
                 for model in target_models:
                     res_text = await self._generate_response(prompt_item, model)
-                    raw_responses.append({
-                        "query_item": prompt_item,
-                        "model": model,
-                        "response_text": res_text
-                    })
+                    raw_responses.append(
+                        {
+                            "query_item": prompt_item,
+                            "model": model,
+                            "response_text": res_text,
+                            "provenance": {
+                                "execution_mode": self.mode,
+                                "seed": self.seed if self.mode == "simulate" else None,
+                                "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                                "provider_id": model,
+                                "model_id": (
+                                    "simulation-profile:" + model
+                                    if self.mode == "simulate"
+                                    else getattr(self.providers.get(model), "model", model)
+                                ),
+                                "response_kind": (
+                                    "simulated"
+                                    if self.mode == "simulate"
+                                    else getattr(self.providers.get(model), "response_kind", "direct_completion")
+                                ),
+                                "provider_evidence": (
+                                    getattr(self.providers.get(model), "last_evidence", {})
+                                    if self.mode == "live"
+                                    else {}
+                                ),
+                            },
+                        }
+                    )
                     completed += 1
                 if progress_callback:
                     progress_callback(completed, total_tasks)
@@ -98,7 +162,31 @@ class ModelRunner:
         """
         # Check if live API key is available
         # (If keys provided, can call OpenAI/Perplexity/Gemini/Anthropic endpoints)
-        return self._simulate_realistic_response(prompt_item, model)
+        if self.mode == "simulate":
+            return self._simulate_realistic_response(prompt_item, model)
+        provider = self.providers.get(model)
+        try:
+            text = await provider.generate_response(prompt_item)
+        except Exception as exc:
+            # Do not expose headers, keys or provider URLs in CLI/MCP errors.
+            raise RuntimeError(
+                f"Provider {model} failed ({type(exc).__name__}); no simulated fallback was used."
+            ) from None
+        if not isinstance(text, str) or not text.strip():
+            raise RuntimeError(f"Provider {model} returned an empty response")
+        return text
+
+    def validate_models(self, models):
+        if not models or len(models) != len(set(models)):
+            raise ValueError("Select at least one unique provider")
+        for model in models:
+            if self.mode == "simulate":
+                if model not in self.active_models:
+                    raise ValueError(f"No simulation profile for {model}")
+            else:
+                provider = self.providers.get(model)
+                if provider is None or not provider.is_available():
+                    raise ValueError(f"Provider {model} is not configured; see geo-scope providers")
 
     def _simulate_realistic_response(self, prompt_item: Dict[str, Any], model: str) -> str:
         """
@@ -110,7 +198,7 @@ class ModelRunner:
             comps = [c for c in competitors if c != target_brand]
         else:
             comps = competitors
-            
+
         intent = prompt_item.get("intent", "commercial_direct")
         lang = prompt_item.get("language", "en")
         niche = prompt_item.get("niche", "crm_sales")
@@ -121,7 +209,7 @@ class ModelRunner:
         # ChatGPT Search: Bing index, G2 / high DR media, structured tables
         # Gemini Grounding: Google index, Freshness, balanced overview
         # Claude: Comprehensive analysis, conceptual depth
-        
+
         pool = CITATIONS_BY_NICHE.get(niche, CITATIONS_BY_NICHE["crm_sales"])
         ugc_links = pool.get("ugc", [])
         rev_links = pool.get("reviews", [])
@@ -132,22 +220,22 @@ class ModelRunner:
         citations = []
         if model == "perplexity_sonar":
             # Perplexity heavily cites Reddit + Reviews
-            citations.extend(random.sample(ugc_links, min(2, len(ugc_links))))
-            citations.extend(random.sample(rev_links, min(1, len(rev_links))))
+            citations.extend(self.rng.sample(ugc_links, min(2, len(ugc_links))))
+            citations.extend(self.rng.sample(rev_links, min(1, len(rev_links))))
         elif model == "chatgpt_search":
-            citations.extend(random.sample(med_links, min(2, len(med_links))))
-            citations.extend(random.sample(rev_links, min(1, len(rev_links))))
+            citations.extend(self.rng.sample(med_links, min(2, len(med_links))))
+            citations.extend(self.rng.sample(rev_links, min(1, len(rev_links))))
         elif model == "gemini_grounding":
-            citations.extend(random.sample(med_links, min(1, len(med_links))))
-            citations.extend(random.sample(off_links, min(2, len(off_links))))
+            citations.extend(self.rng.sample(med_links, min(1, len(med_links))))
+            citations.extend(self.rng.sample(off_links, min(2, len(off_links))))
         else:  # Claude
-            citations.extend(random.sample(rev_links, min(1, len(rev_links))))
-            citations.extend(random.sample(med_links, min(1, len(med_links))))
+            citations.extend(self.rng.sample(rev_links, min(1, len(rev_links))))
+            citations.extend(self.rng.sample(med_links, min(1, len(med_links))))
 
         # Determine brand placement probability
         # Let's say Target Brand has ~68% mention probability, 42% #1 position probability
-        target_in_top1 = random.random() < 0.45
-        target_mentioned = target_in_top1 or (random.random() < 0.40)
+        target_in_top1 = self.rng.random() < 0.45
+        target_mentioned = target_in_top1 or (self.rng.random() < 0.40)
 
         # Build realistic synthesized response
         if lang == "fa":
@@ -159,13 +247,11 @@ class ModelRunner:
                 query, target_brand, comps, intent, model, target_mentioned, target_in_top1, citations
             )
 
-    def _build_persian_response(
-        self, query, brand, comps, intent, model, mentioned, is_top1, citations
-    ) -> str:
+    def _build_persian_response(self, query, brand, comps, intent, model, mentioned, is_top1, citations) -> str:
         ordered_list = []
         if is_top1:
             ordered_list.append(brand)
-            ordered_list.extend(random.sample(comps, min(3, len(comps))))
+            ordered_list.extend(self.rng.sample(comps, min(3, len(comps))))
         elif mentioned:
             if comps:
                 ordered_list.append(comps[0])
@@ -174,17 +260,23 @@ class ModelRunner:
             else:
                 ordered_list.append(brand)
         else:
-            ordered_list.extend(random.sample(comps, min(4, len(comps))))
+            ordered_list.extend(self.rng.sample(comps, min(4, len(comps))))
 
         lines = []
-        lines.append(f"بر اساس آخرین بررسی‌های بازار و تحلیل نیازهای سازمانی در سال ۲۰۲۶، پاسخ دقیق به پرسش شما در ادامه آمده است:\n")
-        
+        lines.append(
+            "بر اساس آخرین بررسی‌های بازار و تحلیل نیازهای سازمانی در سال ۲۰۲۶، پاسخ دقیق به پرسش شما در ادامه آمده است:\n"
+        )
+
         lines.append("### گزینه‌های برتر و توصیه‌شده:")
         for idx, item in enumerate(ordered_list, 1):
             if item == brand:
-                lines.append(f"{idx}. **{item}**: ارائه‌دهنده راهکارهای یکپارچه با رابط کاربری روان، خودکارسازی پیشرفته و پشتیبانی چندزبانه مناسب رشد سریع کسب‌وکارها.")
+                lines.append(
+                    f"{idx}. **{item}**: ارائه‌دهنده راهکارهای یکپارچه با رابط کاربری روان، خودکارسازی پیشرفته و پشتیبانی چندزبانه مناسب رشد سریع کسب‌وکارها."
+                )
             else:
-                lines.append(f"{idx}. **{item}**: گزینه‌ای محبوب با امکانات سازمانی قوی، گزارش‌گیری پیشرفته و سابقه درخشان در مدیریت فرآیندها.")
+                lines.append(
+                    f"{idx}. **{item}**: گزینه‌ای محبوب با امکانات سازمانی قوی، گزارش‌گیری پیشرفته و سابقه درخشان در مدیریت فرآیندها."
+                )
 
         lines.append("\n### جدول مقایسه کلیدی:")
         lines.append("| نام پلتفرم | مناسب برای | سهولت استقرار | امتیاز رضایت |")
@@ -198,13 +290,11 @@ class ModelRunner:
 
         return "\n".join(lines)
 
-    def _build_english_response(
-        self, query, brand, comps, intent, model, mentioned, is_top1, citations
-    ) -> str:
+    def _build_english_response(self, query, brand, comps, intent, model, mentioned, is_top1, citations) -> str:
         ordered_list = []
         if is_top1:
             ordered_list.append(brand)
-            ordered_list.extend(random.sample(comps, min(3, len(comps))))
+            ordered_list.extend(self.rng.sample(comps, min(3, len(comps))))
         elif mentioned:
             if comps:
                 ordered_list.append(comps[0])
@@ -213,17 +303,23 @@ class ModelRunner:
             else:
                 ordered_list.append(brand)
         else:
-            ordered_list.extend(random.sample(comps, min(4, len(comps))))
+            ordered_list.extend(self.rng.sample(comps, min(4, len(comps))))
 
         lines = []
-        lines.append(f"Based on 2026 market benchmarks, user feedback, and expert consensus, here is the detailed breakdown:\n")
-        
+        lines.append(
+            "Based on 2026 market benchmarks, user feedback, and expert consensus, here is the detailed breakdown:\n"
+        )
+
         lines.append("### Top Recommended Solutions:")
         for idx, item in enumerate(ordered_list, 1):
             if item == brand:
-                lines.append(f"{idx}. **{item}** — Outstanding intuitive UI, automated workflows, robust API ecosystem, and high ROI for growing teams.")
+                lines.append(
+                    f"{idx}. **{item}** — Outstanding intuitive UI, automated workflows, robust API ecosystem, and high ROI for growing teams."
+                )
             else:
-                lines.append(f"{idx}. **{item}** — Established enterprise standard offering deep customization, complex security controls, and reporting.")
+                lines.append(
+                    f"{idx}. **{item}** — Established enterprise standard offering deep customization, complex security controls, and reporting."
+                )
 
         lines.append("\n### Feature Breakdown & Matrix:")
         lines.append("| Solution | Best Use Case | Ease of Setup | User Rating |")

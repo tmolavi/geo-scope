@@ -2,7 +2,6 @@
 Tests for Algo Analyzer Module with Realistic LLM Mocks
 """
 
-import pytest
 from geo_scope.engine.algo_analyzer import AlgoAnalyzer
 from geo_scope.engine.feature_extractor import parse_model_response
 
@@ -21,7 +20,7 @@ def test_algo_analyzer_computation():
             "target_sentiment": "positive",
             "all_brands_stats": {"HubSpot": {"mentioned": True, "is_top_1": True, "sentiment": "positive"}},
             "citations": [{"domain": "reddit.com", "category": "ugc_forums"}],
-            "response_length": 500
+            "response_length": 500,
         },
         {
             "query_id": "qry_0002",
@@ -35,8 +34,8 @@ def test_algo_analyzer_computation():
             "target_sentiment": "neutral",
             "all_brands_stats": {"HubSpot": {"mentioned": False, "is_top_1": False, "sentiment": "neutral"}},
             "citations": [{"domain": "g2.com", "category": "review_aggregators"}],
-            "response_length": 450
-        }
+            "response_length": 450,
+        },
     ]
 
     analyzer = AlgoAnalyzer(mock_records, "HubSpot", ["Salesforce", "Zoho CRM"])
@@ -59,7 +58,7 @@ def test_mock_llm_multi_model_scenarios():
         "intent": "commercial_direct",
         "language": "en",
         "target_brand": "HubSpot",
-        "expected_entities": ["HubSpot", "Salesforce", "Zoho CRM"]
+        "expected_entities": ["HubSpot", "Salesforce", "Zoho CRM"],
     }
 
     # Perplexity mock: High Reddit citations
@@ -67,7 +66,7 @@ def test_mock_llm_multi_model_scenarios():
     Based on community recommendations:
     1. **HubSpot**: Highly regarded by startup founders for easy setup.
     2. **Salesforce**: Enterprise choice.
-    
+
     Sources:
     - [Reddit Discussion](https://reddit.com/r/sales/crm_post)
     - [G2 CRM Grid](https://g2.com/categories/crm)
@@ -78,7 +77,7 @@ def test_mock_llm_multi_model_scenarios():
     Leading CRM tools in 2026:
     1. **Salesforce**: Market leader.
     2. **HubSpot**: Best for inbound sales.
-    
+
     References:
     - [TechCrunch Enterprise Review](https://techcrunch.com/2026/crm)
     - [Forbes Advisor](https://forbes.com/best-crm)
@@ -89,7 +88,7 @@ def test_mock_llm_multi_model_scenarios():
     Comprehensive evaluation:
     1. **HubSpot**: Balanced ROI and strong API ecosystem.
     2. **Zoho CRM**: Cost effective.
-    
+
     Citations:
     - [Wikipedia Article](https://wikipedia.org/wiki/HubSpot)
     """

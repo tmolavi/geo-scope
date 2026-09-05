@@ -14,20 +14,26 @@ class OllamaProvider(BaseProvider):
             name="ollama_local",
             display_name=f"Ollama Local ({model})",
             bias_description="Local open-weight inference without cloud web search grounding",
-            cost_per_1k=0.0
+            cost_per_1k=0.0,
         )
-        self.host = host
-        self.model = model
+        self.host = os.getenv("OLLAMA_HOST", host).rstrip("/")
+        self.model = os.getenv("OLLAMA_MODEL", model)
 
     async def generate_response(self, prompt_item: Dict[str, Any]) -> str:
         url = f"{self.host}/api/generate"
         payload = {
             "model": self.model,
             "prompt": f"Analyze and recommend solutions with pros/cons and structured lists:\n\n{prompt_item.get('query', '')}",
-            "stream": False
+            "stream": False,
+            "options": {"temperature": 0.2, "num_predict": 1024},
         }
         async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post(url, json=payload)
             response.raise_for_status()
             data = response.json()
+            self.last_evidence = {
+                "model": data.get("model", self.model),
+                "eval_count": data.get("eval_count"),
+                "request_settings": {"temperature": 0.2, "num_predict": 1024},
+            }
             return data.get("response", "")

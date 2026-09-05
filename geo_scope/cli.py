@@ -13,9 +13,8 @@ import asyncio
 import os
 import sys
 import json
-import time
 
-from geo_scope.engine.query_generator import generate_prompt_dataset, INDUSTRY_PRESETS
+from geo_scope.engine.query_generator import generate_prompt_dataset
 from geo_scope.engine.query_loader import load_custom_prompts
 from geo_scope.engine.model_runner import ModelRunner
 from geo_scope.engine.feature_extractor import parse_model_response
@@ -35,7 +34,9 @@ def run_demo_cmd():
     print("⟠ GEO-Scope: 5-Minute Quickstart Demo Experiment")
     print("📋 Execution Mode : [SIMULATED BENCHMARK DEMO - Zero API Key Required]")
     print("🎯 Target Brand   : HubSpot   |   📂 Niche: CRM SaaS   |   🔢 Sample Prompts: 10")
-    print("ℹ️ Note           : Demo uses calibrated baseline simulation. For live API calls, configure provider keys.")
+    print(
+        "ℹ️ Note           : Demo uses calibrated baseline simulation. For live API calls, use run --mode live --models <provider> with your provider configuration."
+    )
     print("=" * 75)
 
     prompts = generate_prompt_dataset(
@@ -43,12 +44,14 @@ def run_demo_cmd():
         target_brand="HubSpot",
         competitors=["Salesforce", "Zoho CRM", "Pipedrive"],
         language="both",
-        total_count=10
+        total_count=10,
     )
 
     runner = ModelRunner()
     models = ["perplexity_sonar", "chatgpt_search", "gemini_grounding", "claude_3_7"]
-    print(f"\n[1/3] Running multi-model inference across {len(models)} AI engines ({len(prompts) * len(models)} calls)...")
+    print(
+        f"\n[1/3] Running multi-model inference across {len(models)} AI engines ({len(prompts) * len(models)} calls)..."
+    )
 
     responses = asyncio.run(runner.execute_batch(prompts, models=models))
     print("✓ Inference completed.")
@@ -56,12 +59,12 @@ def run_demo_cmd():
     print("\n[2/3] Extracting brand mentions, ranks, and citation graph...")
     parsed = []
     for r in responses:
-        item = parse_model_response(r["query_item"], r["model"], r["response_text"])
+        item = parse_model_response(r["query_item"], r["model"], r["response_text"], r.get("provenance"))
         item["full_response_text"] = r["response_text"]
         item["query_text"] = r["query_item"]["query"]
         parsed.append(item)
 
-    print("\n[3/3] Reverse-engineering algorithm weights & generating report...")
+    print("\n[3/3] Computing visibility metrics & generating report...")
     analyzer = AlgoAnalyzer(parsed, "HubSpot", ["Salesforce", "Zoho CRM", "Pipedrive"])
     analysis = analyzer.compute_full_analysis()
 
@@ -72,14 +75,16 @@ def run_demo_cmd():
     print("\n" + "=" * 75)
     print("📊 DEMO EXPERIMENTAL BENCHMARK SUMMARY")
     print("=" * 75)
-    print(f"• Target Brand Share of Model (SoM) : {analysis['summary']['overall_sov']}%")
+    print(f"• Target Brand Mention Rate (Share of Model) : {analysis['summary']['overall_sov']}%")
     print(f"• Top-1 Primary Recommendation Rate : {analysis['summary']['overall_top1_rate']}%")
     print(f"• Top Performing AI Engine          : {analysis['summary']['best_performing_model']}")
     print(f"• Lowest Performing AI Engine       : {analysis['summary']['weakest_performing_model']}")
     print("-" * 75)
     print("🤖 Model Breakdown:")
     for m, st in analysis["share_of_model"]["by_model"].items():
-        print(f"  - {m:<20}: Mention Rate: {st['mention_rate_pct']}% | Top-1: {st['top1_rate_pct']}% | Avg Rank: #{st['avg_rank']}")
+        print(
+            f"  - {m:<20}: Mention Rate: {st['mention_rate_pct']}% | Top-1: {st['top1_rate_pct']}% | Avg Rank: #{st['avg_rank']}"
+        )
     print("-" * 75)
     print("🏆 Competitor Matrix:")
     for c in analysis["competitor_matrix"]:
@@ -93,7 +98,7 @@ def run_demo_cmd():
     print(f"  📊 Queries CSV Breakdown  : {artifacts['queries_csv']}")
     print(f"  🔗 Citations Graph CSV    : {artifacts['citations_csv']}")
     print("\n✨ Ready to test your own brand? Run:")
-    print("   geo-scope run --brand \"Your Brand\" --prompts my_prompts.csv\n")
+    print('   geo-scope run --brand "Your Brand" --prompts my_prompts.csv\n')
 
 
 def run_benchmark_cmd(args):
@@ -103,16 +108,17 @@ def run_benchmark_cmd(args):
 
     os.makedirs(args.out, exist_ok=True)
     brand = args.brand.strip() if args.brand else "My Brand"
-    comps = [c.strip() for c in args.competitors.split(",") if c.strip()] if args.competitors else ["Competitor A", "Competitor B"]
+    comps = (
+        [c.strip() for c in args.competitors.split(",") if c.strip()]
+        if args.competitors
+        else ["Competitor A", "Competitor B"]
+    )
 
     # 1. Load Prompts
     if args.prompts:
         print(f"\n[1/4] Loading custom user prompts from '{args.prompts}'...")
         prompts = load_custom_prompts(
-            file_path=args.prompts,
-            default_brand=brand,
-            default_competitors=comps,
-            default_niche=args.niche
+            file_path=args.prompts, default_brand=brand, default_competitors=comps, default_niche=args.niche
         )
         print(f"✓ Loaded {len(prompts)} custom prompts.")
     else:
@@ -122,13 +128,16 @@ def run_benchmark_cmd(args):
             target_brand=brand,
             competitors=comps,
             language=args.lang,
-            total_count=args.count
+            total_count=args.count,
+            seed=args.seed,
         )
         print(f"✓ Synthesized {len(prompts)} prompts.")
 
     # Cost Estimation & Dry Run Check
-    models = ["perplexity_sonar", "chatgpt_search", "gemini_grounding", "claude_3_7"]
-    est_cost = registry.estimate_total_cost(models, len(prompts))
+    models = [m.strip() for m in args.models.split(",") if m.strip()]
+    runner = ModelRunner(mode=args.mode, seed=args.seed)
+    if not args.responses:
+        runner.validate_models(models)
 
     print("\n" + "=" * 75)
     print("⟠ GEO-Scope: Generative Engine Optimization Benchmark")
@@ -136,8 +145,10 @@ def run_benchmark_cmd(args):
     print(f"👥 Competitors   : {', '.join(comps)}")
     print(f"🔢 Total Prompts : {len(prompts)} ({len(prompts) * len(models)} total inferences)")
     print(f"🤖 Models        : {', '.join(models)}")
-    print(f"📋 Mode          : Simulated Benchmark Engine (Deterministic baseline heuristics)")
-    print(f"💰 Estimated API Cost (if using live cloud APIs): ~${est_cost:.2f} USD")
+    print(f"📋 Mode          : {'imported' if args.responses else args.mode} | seed: {args.seed}")
+    print(
+        "Usage: live cloud charges and rate limits depend on the selected provider; token usage is recorded when returned."
+    )
     print("=" * 75)
 
     if args.dry_run:
@@ -146,41 +157,52 @@ def run_benchmark_cmd(args):
 
     # 2. Inferences
     print(f"\n[2/4] Executing batch inference across {len(models)} AI models...")
-    runner = ModelRunner()
+    runner = ModelRunner(mode=args.mode, seed=args.seed)
 
     def progress(done, total):
         pct = int((done / total) * 100)
         print(f"\rProgress: [{done}/{total}] {pct}% completed...", end="", flush=True)
 
-    raw_responses = asyncio.run(runner.execute_batch(prompts, models=models, progress_callback=progress))
+    if args.responses:
+        from geo_scope.engine.response_import import load_responses
+
+        raw_responses = load_responses(args.responses)
+        brands = {r["query_item"]["target_brand"] for r in raw_responses}
+        if brands != {brand}:
+            raise ValueError("Imported target_brand must match --brand in every response")
+        prompts = list({r["query_item"]["id"]: r["query_item"] for r in raw_responses}.values())
+        comps = sorted({entity for q in prompts for entity in q["expected_entities"] if entity != brand})
+        models = sorted({r["model"] for r in raw_responses})
+    else:
+        raw_responses = asyncio.run(runner.execute_batch(prompts, models=models, progress_callback=progress))
     print("\n✓ Inferences completed.")
 
     # 3. Extraction
-    print(f"\n[3/4] Parsing brand mentions, rankings, and citation graphs...")
+    print("\n[3/4] Parsing brand mentions, rankings, and citation graphs...")
     parsed = []
     for item in raw_responses:
         q_item = item["query_item"]
         model = item["model"]
         text = item["response_text"]
-        p_record = parse_model_response(q_item, model, text)
+        p_record = parse_model_response(q_item, model, text, item.get("provenance"))
         p_record["full_response_text"] = text
         p_record["query_text"] = q_item["query"]
         parsed.append(p_record)
     print(f"✓ Processed {len(parsed)} model outputs.")
 
     # 4. Statistical Analysis & Report Generation
-    print(f"\n[4/4] Reverse-engineering algorithm weights & building portable reports...")
+    print("\n[4/4] Computing visibility metrics & building portable reports...")
     analyzer = AlgoAnalyzer(parsed, brand, comps)
     analysis = analyzer.compute_full_analysis()
     delta_record = save_benchmark_snapshot(analysis, args.niche, brand, len(prompts))
-    playbook = generate_geo_playbook(analysis, delta_info=delta_record)
+    analysis["playbook"] = generate_geo_playbook(analysis, delta_info=delta_record)
 
     artifacts = generate_experiment_artifacts(analysis, parsed, prompts, out_dir=args.out)
 
     print("\n" + "=" * 75)
     print("📊 EXECUTIVE BENCHMARK RESULTS")
     print("=" * 75)
-    print(f"• Target Brand Share of Model (SoM) : {analysis['summary']['overall_sov']}%")
+    print(f"• Target Brand Mention Rate (Share of Model) : {analysis['summary']['overall_sov']}%")
     print(f"• Top-1 Recommendation Rate         : {analysis['summary']['overall_top1_rate']}%")
     print(f"• Top Performing AI Engine          : {analysis['summary']['best_performing_model']}")
     print(f"• Weakest Performing AI Engine       : {analysis['summary']['weakest_performing_model']}")
@@ -201,14 +223,19 @@ def run_benchmark_cmd(args):
 
 def serve_dashboard_cmd(args):
     import uvicorn
+
     print(f"🚀 Starting GEO-Scope Web Dashboard on http://{args.host}:{args.port}")
     uvicorn.run("geo_scope.server:app", host=args.host, port=args.port, reload=args.reload)
 
 
 def main():
+    # Respect the terminal encoding while making symbols safe on Windows consoles.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(errors="backslashreplace")
     parser = argparse.ArgumentParser(
         prog="geo-scope",
-        description="GEO-Scope: Generative Engine Optimization (GEO) & AI Algorithm Reverse-Engineering CLI"
+        description="GEO-Scope: Generative Engine Optimization (GEO) & AI Algorithm Reverse-Engineering CLI",
     )
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
@@ -219,13 +246,36 @@ def main():
     run_parser = subparsers.add_parser("run", help="Run an AI visibility benchmark experiment")
     run_parser.add_argument("--demo", action="store_true", help="Run quick demo benchmark")
     run_parser.add_argument("--brand", type=str, default="HubSpot", help="Target Brand Name")
-    run_parser.add_argument("--competitors", type=str, default="Salesforce,Zoho CRM,Pipedrive", help="Comma-separated competitors list")
-    run_parser.add_argument("--prompts", type=str, default=None, help="Path to custom prompts file (.csv, .json, .txt, .yaml)")
+    run_parser.add_argument(
+        "--competitors", type=str, default="Salesforce,Zoho CRM,Pipedrive", help="Comma-separated competitors list"
+    )
+    run_parser.add_argument(
+        "--prompts", type=str, default=None, help="Path to custom prompts file (.csv, .json, .txt, .yaml)"
+    )
     run_parser.add_argument("--niche", type=str, default="crm_sales", help="Industry preset key")
-    run_parser.add_argument("--count", type=int, default=50, help="Total prompts count when generating synthetically (default: 50)")
+    run_parser.add_argument(
+        "--count", type=int, default=50, help="Total prompts count when generating synthetically (default: 50)"
+    )
     run_parser.add_argument("--lang", type=str, default="both", choices=["fa", "en", "both"], help="Query language")
     run_parser.add_argument("--out", type=str, default="results", help="Output directory for reports")
-    run_parser.add_argument("--dry-run", action="store_true", help="Simulate prompt loading and cost without calling models")
+    run_parser.add_argument(
+        "--dry-run", action="store_true", help="Simulate prompt loading and cost without calling models"
+    )
+
+    run_parser.add_argument(
+        "--mode",
+        choices=["simulate", "live"],
+        default="simulate",
+        help="Explicit execution mode; live never falls back to simulation",
+    )
+    run_parser.add_argument(
+        "--models",
+        default="perplexity_sonar,chatgpt_search,gemini_grounding,claude_3_7",
+        help="Comma-separated provider IDs; use providers to list",
+    )
+    run_parser.add_argument("--seed", type=int, default=42, help="Dataset and simulation seed")
+    run_parser.add_argument("--responses", help="Analyze a saved raw_responses.json without API access")
+    subparsers.add_parser("providers", help="List available providers and response capabilities")
 
     # Command: serve
     serve_parser = subparsers.add_parser("serve", help="Start the interactive Web Dashboard & API server")
@@ -246,21 +296,24 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "demo":
+    if args.command == "providers":
+        print(json.dumps(registry.list_all(), ensure_ascii=False, indent=2))
+    elif args.command == "demo":
         run_demo_cmd()
     elif args.command == "run":
-        run_benchmark_cmd(args)
+        try:
+            run_benchmark_cmd(args)
+        except (ValueError, RuntimeError, OSError) as exc:
+            parser.exit(2, f"Error: {exc}\n")
     elif args.command == "serve":
         serve_dashboard_cmd(args)
     elif args.command == "mcp":
         from geo_scope.mcp_server import main as mcp_main
+
         mcp_main()
     elif args.command == "generate":
         prompts = generate_prompt_dataset(
-            niche_key=args.niche,
-            target_brand=args.brand,
-            language=args.lang,
-            total_count=args.count
+            niche_key=args.niche, target_brand=args.brand, language=args.lang, total_count=args.count
         )
         with open(args.out, "w", encoding="utf-8") as f:
             json.dump(prompts, f, ensure_ascii=False, indent=2)

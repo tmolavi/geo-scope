@@ -6,6 +6,8 @@ Analyzes parsed AI outputs to compute Share of Model, Citation Distributions, an
 from typing import List, Dict, Any
 from collections import defaultdict, Counter
 import numpy as np
+import hashlib
+import json
 
 
 class AlgoAnalyzer:
@@ -26,8 +28,27 @@ class AlgoAnalyzer:
         competitor_matrix = self._compute_competitor_matrix()
         gaps_and_opportunities = self._generate_strategic_gaps(sov_data, citation_data, algo_weights)
 
+        modes = sorted({r.get("provenance", {}).get("execution_mode", "unknown") for r in self.records})
         return {
             "summary": {
+                "experiment_signature": hashlib.sha256(
+                    json.dumps(
+                        sorted(
+                            {
+                                (
+                                    r.get("query_text", ""),
+                                    r["model"],
+                                    r.get("provenance", {}).get("model_id", "unknown"),
+                                )
+                                for r in self.records
+                            }
+                        ),
+                        ensure_ascii=False,
+                    ).encode()
+                ).hexdigest(),
+                "execution_mode": modes[0] if len(modes) == 1 else "mixed",
+                "measurement_scope": "Observed responses for this prompt set; no causal ranking-factor inference",
+                "provider_provenance": {r["model"]: r.get("provenance", {}) for r in self.records},
                 "total_queries_tested": len(set(r["query_id"] for r in self.records)),
                 "total_ai_executions": len(self.records),
                 "target_brand": self.target_brand,
@@ -42,13 +63,13 @@ class AlgoAnalyzer:
             "algorithmic_factors": algo_weights,
             "intent_sensitivity": intent_breakdown,
             "competitor_matrix": competitor_matrix,
-            "strategic_gaps": gaps_and_opportunities
+            "strategic_gaps": gaps_and_opportunities,
         }
 
     def _compute_share_of_voice(self) -> Dict[str, Any]:
         models = sorted(list(set(r["model"] for r in self.records)))
         by_model = {}
-        
+
         total_target_mentions = 0
         total_target_top1 = 0
         total_records = len(self.records)
@@ -56,25 +77,27 @@ class AlgoAnalyzer:
         for model in models:
             m_records = [r for r in self.records if r["model"] == model]
             n = len(m_records) or 1
-            
+
             target_mentions = sum(1 for r in m_records if r["target_mentioned"])
             target_top1 = sum(1 for r in m_records if r["target_is_top_1"])
-            
+
             # Rank average (for queries where target was mentioned)
-            ranks = [r["target_rank"] for r in m_records if r["target_mentioned"] and r["target_rank"] > 0]
-            avg_rank = float(np.mean(ranks)) if ranks else 0.0
-            
+            ranks = [r["target_rank"] for r in m_records if r["target_mentioned"] and (r["target_rank"] or 0) > 0]
+            avg_rank = float(np.mean(ranks)) if ranks else None
+
             # Sentiment breakdown
             sentiments = Counter(r["target_sentiment"] for r in m_records if r["target_mentioned"])
-            
+
             by_model[model] = {
                 "total_queries": n,
                 "mention_count": target_mentions,
                 "mention_rate_pct": round((target_mentions / n) * 100, 1),
                 "top1_count": target_top1,
                 "top1_rate_pct": round((target_top1 / n) * 100, 1),
-                "avg_rank": round(avg_rank, 2),
-                "sentiment_dist": dict(sentiments)
+                "avg_rank": round(avg_rank, 2) if avg_rank is not None else None,
+                "rank_known_count": len(ranks),
+                "rank_unknown_count": target_mentions - len(ranks),
+                "sentiment_dist": dict(sentiments),
             }
             total_target_mentions += target_mentions
             total_target_top1 += target_top1
@@ -91,7 +114,7 @@ class AlgoAnalyzer:
             "overall_target_sov": overall_sov,
             "overall_target_top1_rate": overall_top1,
             "best_model": best_m,
-            "weakest_model": weakest_m
+            "weakest_model": weakest_m,
         }
 
     def _compute_citation_analytics(self) -> Dict[str, Any]:
@@ -111,10 +134,7 @@ class AlgoAnalyzer:
                 all_citations.append(cite)
 
         total_citations = sum(category_counts.values()) or 1
-        cat_percentages = {
-            k: round((v / total_citations) * 100, 1)
-            for k, v in category_counts.items()
-        }
+        cat_percentages = {k: round((v / total_citations) * 100, 1) for k, v in category_counts.items()}
 
         top_domains = [{"domain": dom, "count": cnt} for dom, cnt in domain_counts.most_common(12)]
 
@@ -123,54 +143,54 @@ class AlgoAnalyzer:
             "category_distribution": dict(category_counts),
             "category_percentages": cat_percentages,
             "top_cited_domains": top_domains,
-            "model_citation_breakdown": {m: dict(c) for m, c in model_citation_dist.items()}
+            "model_citation_breakdown": {m: dict(c) for m, c in model_citation_dist.items()},
         }
 
     def _reverse_engineer_factor_weights(self) -> Dict[str, Any]:
         """
         Reverse engineers the estimated weight of each ranking vector per AI model.
-        Calibrated based on empirical GEO benchmark regressions and live RAG behaviors.
+        Research priors for hypothesis design; not fitted from these response records.
         """
         factor_definitions = {
             "ugc_community": {
                 "name_fa": "حضور در ردیت و فروم‌های تخصصی (UGC)",
                 "name_en": "Reddit & Community UGC Mentions",
                 "description_fa": "میزان بحث و نظرات واقعی کاربران در ردیت، کورا و انجمن‌ها",
-                "description_en": "Authentic discussion density on Reddit, Quora, and forums"
+                "description_en": "Authentic discussion density on Reddit, Quora, and forums",
             },
             "review_aggregators": {
                 "name_fa": "رهبری در سایت‌های بررسی (G2 / Capterra)",
                 "name_en": "Review Site Ratings & Grid Rank (G2/Capterra)",
                 "description_fa": "تعداد بررسی‌ها و امتیاز بالا در پایگاه‌های تخصصی مقایسه نرم‌افزار",
-                "description_en": "High volume of verified 4.5+ star reviews on review aggregators"
+                "description_en": "High volume of verified 4.5+ star reviews on review aggregators",
             },
             "tier1_pr_media": {
                 "name_fa": "پوشش رسانه‌ای تراز اول (PR & Media)",
                 "name_en": "Tier-1 Editorial PR & News Media",
                 "description_fa": "مقالات و نام بردن در مجلات معتبر مانند فوربز، تک‌کرانچ، زومیت و دیجیاتو",
-                "description_en": "Features and mentions in high-DR authoritative publications"
+                "description_en": "Features and mentions in high-DR authoritative publications",
             },
             "knowledge_graph": {
                 "name_fa": "موجودیت رسمی در گراف دانش (Wikipedia / Schema)",
                 "name_en": "Knowledge Graph & Entity Grounding (Wikipedia)",
                 "description_fa": "وجود صفحه رسمی در ویکی‌پدیا، ویکی‌دیتا و ساختار داده سازمان‌یافته",
-                "description_en": "Verified entity status in Wikidata, Wikipedia, and organization schema"
+                "description_en": "Verified entity status in Wikidata, Wikipedia, and organization schema",
             },
             "content_structure": {
                 "name_fa": "ساختاردهی محتوا (جداول مقایسه، آمار و بولت)",
                 "name_en": "Structured Content (Comparison Tables & Stats)",
                 "description_fa": "استفاده از آمار دقیق، جداول شفاف و پاسخ مستقیم در ابتدای صفحه",
-                "description_en": "Direct answers, quantitative statistics, and Markdown/HTML tables"
+                "description_en": "Direct answers, quantitative statistics, and Markdown/HTML tables",
             },
             "freshness_recency": {
                 "name_fa": "تازگی و به‌روزرسانی مداوم (Freshness Index)",
                 "name_en": "Information Freshness & Recency Bias",
                 "description_fa": "مطالب منتشر شده در سال جاری و به‌روزرسانی مداوم صفحات قیمت‌گذاری",
-                "description_en": "Recent publications, active changelogs, and 2026 updated content"
-            }
+                "description_en": "Recent publications, active changelogs, and 2026 updated content",
+            },
         }
 
-        # Algorithm weight vectors deduced per model
+        # Fixed prior vectors, not observed algorithm weights
         weights_by_model = {
             "perplexity_sonar": {
                 "ugc_community": 38,
@@ -178,7 +198,7 @@ class AlgoAnalyzer:
                 "tier1_pr_media": 14,
                 "knowledge_graph": 8,
                 "content_structure": 10,
-                "freshness_recency": 6
+                "freshness_recency": 6,
             },
             "chatgpt_search": {
                 "ugc_community": 16,
@@ -186,7 +206,7 @@ class AlgoAnalyzer:
                 "tier1_pr_media": 28,
                 "knowledge_graph": 12,
                 "content_structure": 12,
-                "freshness_recency": 6
+                "freshness_recency": 6,
             },
             "gemini_grounding": {
                 "ugc_community": 14,
@@ -194,7 +214,7 @@ class AlgoAnalyzer:
                 "tier1_pr_media": 24,
                 "knowledge_graph": 22,
                 "content_structure": 8,
-                "freshness_recency": 12
+                "freshness_recency": 12,
             },
             "claude_3_7": {
                 "ugc_community": 18,
@@ -202,8 +222,8 @@ class AlgoAnalyzer:
                 "tier1_pr_media": 22,
                 "knowledge_graph": 18,
                 "content_structure": 14,
-                "freshness_recency": 6
-            }
+                "freshness_recency": 6,
+            },
         }
 
         # Global average weights
@@ -214,8 +234,9 @@ class AlgoAnalyzer:
 
         return {
             "factor_definitions": factor_definitions,
+            "status": "hypothesis_prior_not_fitted",
             "weights_by_model": weights_by_model,
-            "global_average_weights": avg_weights
+            "global_average_weights": avg_weights,
         }
 
     def _compute_intent_sensitivity(self) -> Dict[str, Any]:
@@ -225,10 +246,10 @@ class AlgoAnalyzer:
         for intent in intents:
             i_records = [r for r in self.records if r["intent"] == intent]
             n = len(i_records) or 1
-            
+
             target_mentions = sum(1 for r in i_records if r["target_mentioned"])
             target_top1 = sum(1 for r in i_records if r["target_is_top_1"])
-            
+
             intent_stats[intent] = {
                 "query_count": n,
                 "mention_rate_pct": round((target_mentions / n) * 100, 1),
@@ -251,21 +272,27 @@ class AlgoAnalyzer:
                 if stats.get("sentiment") == "positive":
                     competitor_stats[brand]["positive"] += 1
 
+        total_brand_mentions = sum(st["mentions"] for st in competitor_stats.values())
         matrix = []
         for brand in self.all_brands:
             st = competitor_stats[brand]
             mention_rate = round((st["mentions"] / total_queries) * 100, 1)
             top1_rate = round((st["top1"] / total_queries) * 100, 1)
-            matrix.append({
-                "brand": brand,
-                "is_target": brand == self.target_brand,
-                "total_mentions": st["mentions"],
-                "mention_rate_pct": mention_rate,
-                "top1_count": st["top1"],
-                "top1_rate_pct": top1_rate,
-                "positive_sentiment_count": st["positive"],
-                "sentiment_score": round((st["positive"] / (st["mentions"] or 1)) * 100, 1)
-            })
+            matrix.append(
+                {
+                    "brand": brand,
+                    "is_target": brand == self.target_brand,
+                    "share_of_voice_pct": (
+                        round(st["mentions"] / total_brand_mentions * 100, 1) if total_brand_mentions else 0.0
+                    ),
+                    "total_mentions": st["mentions"],
+                    "mention_rate_pct": mention_rate,
+                    "top1_count": st["top1"],
+                    "top1_rate_pct": top1_rate,
+                    "positive_sentiment_count": st["positive"],
+                    "sentiment_score": round((st["positive"] / (st["mentions"] or 1)) * 100, 1),
+                }
+            )
 
         # Sort by mention rate descending
         matrix.sort(key=lambda x: x["mention_rate_pct"], reverse=True)
@@ -274,41 +301,14 @@ class AlgoAnalyzer:
     def _generate_strategic_gaps(
         self, sov_data: Dict[str, Any], citation_data: Dict[str, Any], algo_weights: Dict[str, Any]
     ) -> List[Dict[str, Any]]:
-        gaps = []
-        
-        # Check Perplexity gap
-        p_data = sov_data["by_model"].get("perplexity_sonar", {})
-        if p_data.get("mention_rate_pct", 0) < 60:
-            gaps.append({
-                "title_fa": "شکاف سیگنال ردیت در پلتفرم Perplexity",
-                "title_en": "Reddit & UGC Citation Gap in Perplexity",
-                "priority": "HIGH",
-                "finding_fa": f"در مدل Perplexity نرخ دیده‌شدن برند {p_data.get('mention_rate_pct', 0)}٪ است، در حالی که ۳۸٪ وزن الگوریتم Perplexity متکی بر تاپیک‌های Reddit و نظرات انجمن‌هاست.",
-                "finding_en": f"Brand visibility in Perplexity is {p_data.get('mention_rate_pct', 0)}%, while Perplexity algorithm assigns 38% weight to Reddit & UGC discussions.",
-                "action_fa": "راه‌اندازی کمپین فعال در ساب‌ردیت‌های تخصصی (یا ویرگول و فروم‌های مرتبط) و پاسخ‌دهی به تاپیک‌های مقایسه‌ای.",
-                "action_en": "Launch structured discussions in targeted subreddits and provide authentic problem-solving answers."
-            })
-
-        # Check Review aggregator gap
-        gaps.append({
-            "title_fa": "بهینه‌سازی صفحات مقایسه‌ای در پایگاه‌های بررسی (G2 / Capterra)",
-            "title_en": "Comparison Pages Dominance on G2 / Capterra",
-            "priority": "HIGH",
-            "finding_fa": "سایت‌های بررسی نرم‌افزار ۲۴٪ از کل منابع استناد شده توسط ChatGPT و Claude را تشکیل می‌دهند.",
-            "finding_en": "Review aggregators represent 24% of all cited citations across ChatGPT and Claude.",
-            "action_fa": "افزایش تعداد ریویوهای وریفای‌شده ۴.۵ ستاره به همراه پر کردن کامل ماتریس قابلیت‌ها در پروفایل G2.",
-            "action_en": "Collect 50+ verified reviews highlighting specific use-cases and competitive differentiators on G2."
-        })
-
-        # Check Schema and Direct Data
-        gaps.append({
-            "title_fa": "پیاده‌سازی ساختار داده شفاف و جداول مقایسه مستقیم در سایت",
-            "title_en": "Implement Structured Comparison Tables & FAQ Schema",
-            "priority": "MEDIUM",
-            "finding_fa": "هوش مصنوعی‌ها محتواهایی که دارای جدول مشخصات و درصدها و قیمت شفاف هستند را ۳.۲ برابر بیشتر در رتبه اول پیشنهاد می‌دهند.",
-            "finding_en": "AI synthesizers are 3.2x more likely to place brands in #1 rank when structured comparison tables with explicit pricing are present.",
-            "action_fa": "ایجاد صفحات لندینگ 'مقایسه برند ما با رقبا' با جدول‌های دقیق HTML و اسکیما Product و FAQ.",
-            "action_en": "Publish 'Brand vs Competitor' comparison landing pages with HTML tables and Product/FAQ schema markup."
-        })
-
-        return gaps
+        return [
+            {
+                "title_en": "Validate visibility opportunities with controlled follow-up experiments",
+                "title_fa": "اعتبارسنجی فرصت‌های دیده‌شدن با آزمایش‌های کنترل‌شده",
+                "priority": "RESEARCH",
+                "finding_en": "Mention and citation distributions describe these responses; they do not establish ranking causes.",
+                "finding_fa": "توزیع اشاره‌ها و منابع، پاسخ‌های این آزمایش را توصیف می‌کند؛ علت رتبه‌بندی را اثبات نمی‌کند.",
+                "action_en": "Review raw responses, label ambiguous ranks, and compare matched prompt sets before changing strategy.",
+                "action_fa": "پاسخ‌های خام و رتبه‌های مبهم را بررسی کنید و مجموعه پرسش‌های یکسان را مقایسه کنید.",
+            }
+        ]

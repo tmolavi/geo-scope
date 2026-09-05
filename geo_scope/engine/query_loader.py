@@ -13,7 +13,7 @@ def load_custom_prompts(
     file_path: str,
     default_brand: str = "My Brand",
     default_competitors: Optional[List[str]] = None,
-    default_niche: str = "custom_benchmark"
+    default_niche: str = "custom_benchmark",
 ) -> List[Dict[str, Any]]:
     """
     Parses a user-supplied prompt dataset file into standard GEO-Scope prompt objects.
@@ -49,35 +49,39 @@ def load_custom_prompts(
         if isinstance(item, str):
             query_text = item.strip()
             intent = _infer_intent(query_text)
-            lang = "fa" if any('\u0600' <= ch <= '\u06FF' for ch in query_text) else "en"
-            standardized.append({
-                "id": f"byop_{idx:04d}",
-                "query": query_text,
-                "intent": intent,
-                "language": lang,
-                "niche": default_niche,
-                "target_brand": default_brand,
-                "primary_subject": default_brand,
-                "expected_entities": all_brands,
-                "difficulty": "user_defined"
-            })
+            lang = "fa" if any("\u0600" <= ch <= "\u06ff" for ch in query_text) else "en"
+            standardized.append(
+                {
+                    "id": f"byop_{idx:04d}",
+                    "query": query_text,
+                    "intent": intent,
+                    "language": lang,
+                    "niche": default_niche,
+                    "target_brand": default_brand,
+                    "primary_subject": default_brand,
+                    "expected_entities": all_brands,
+                    "difficulty": "user_defined",
+                }
+            )
         elif isinstance(item, dict):
             query_text = item.get("query") or item.get("prompt") or item.get("question") or item.get("text") or ""
             if not query_text:
                 continue
             intent = item.get("intent") or _infer_intent(query_text)
-            lang = item.get("language") or ("fa" if any('\u0600' <= ch <= '\u06FF' for ch in query_text) else "en")
-            standardized.append({
-                "id": item.get("id", f"byop_{idx:04d}"),
-                "query": query_text.strip(),
-                "intent": intent,
-                "language": lang,
-                "niche": item.get("niche", default_niche),
-                "target_brand": item.get("target_brand", default_brand),
-                "primary_subject": item.get("primary_subject", default_brand),
-                "expected_entities": item.get("expected_entities", all_brands),
-                "difficulty": item.get("difficulty", "user_defined")
-            })
+            lang = item.get("language") or ("fa" if any("\u0600" <= ch <= "\u06ff" for ch in query_text) else "en")
+            standardized.append(
+                {
+                    "id": item.get("id", f"byop_{idx:04d}"),
+                    "query": query_text.strip(),
+                    "intent": intent,
+                    "language": lang,
+                    "niche": item.get("niche", default_niche),
+                    "target_brand": item.get("target_brand", default_brand),
+                    "primary_subject": item.get("primary_subject", default_brand),
+                    "expected_entities": item.get("expected_entities", all_brands),
+                    "difficulty": item.get("difficulty", "user_defined"),
+                }
+            )
 
     return standardized
 
@@ -108,12 +112,14 @@ def _load_from_csv(path: str) -> List[Dict[str, Any]]:
             for row in reader:
                 q = row.get(query_col, "").strip()
                 if q:
-                    prompts.append({
-                        "query": q,
-                        "intent": row.get("intent", "").strip(),
-                        "language": row.get("language", "").strip(),
-                        "niche": row.get("niche", "").strip()
-                    })
+                    prompts.append(
+                        {
+                            "query": q,
+                            "intent": row.get("intent", "").strip(),
+                            "language": row.get("language", "").strip(),
+                            "niche": row.get("niche", "").strip(),
+                        }
+                    )
         else:
             # Plain lines
             f.seek(0)
@@ -150,6 +156,7 @@ def _load_from_txt(path: str) -> List[str]:
 def _load_from_yaml(path: str) -> List[Any]:
     try:
         import yaml
+
         with open(path, "r", encoding="utf-8") as f:
             data = yaml.safe_load(f)
         if isinstance(data, list):
@@ -165,9 +172,14 @@ def _infer_intent(query: str) -> str:
     q = query.lower()
     if any(w in q for w in ["vs", "compare", "comparison", "alternative", "versus", "مقایسه", "تفاوت", "جایگزین"]):
         return "comparative"
-    if any(w in q for w in ["how to", "how do", "fix", "solve", "guide", "tutorial", "چگونه", "چطور", "حل مشکل", "راهنما"]):
+    if any(
+        w in q for w in ["how to", "how do", "fix", "solve", "guide", "tutorial", "چگونه", "چطور", "حل مشکل", "راهنما"]
+    ):
         return "problem_solving"
-    if any(w in q for w in ["review", "scam", "complaint", "reddit", "trust", "is it good", "نظر", "معایب", "شکایت", "اعتبار"]):
+    if any(
+        w in q
+        for w in ["review", "scam", "complaint", "reddit", "trust", "is it good", "نظر", "معایب", "شکایت", "اعتبار"]
+    ):
         return "reputation_sentiment"
     if any(w in q for w in ["best", "top", "pricing", "cost", "cheap", "buy", "بهترین", "قیمت", "خرید", "برترین"]):
         return "commercial_direct"

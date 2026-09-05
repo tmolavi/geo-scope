@@ -9,12 +9,8 @@ from geo_scope.engine.history_tracker import save_benchmark_snapshot, load_all_h
 def test_history_snapshot_and_delta():
     unique_brand = f"UniqueBrand_{int(time.time() * 1000)}"
     mock_analysis_1 = {
-        "summary": {
-            "overall_sov": 65.0,
-            "overall_top1_rate": 40.0,
-            "best_performing_model": "chatgpt_search"
-        },
-        "algorithmic_factors": {"global_average_weights": {"ugc_community": 30}}
+        "summary": {"overall_sov": 65.0, "overall_top1_rate": 40.0, "best_performing_model": "chatgpt_search"},
+        "algorithmic_factors": {"global_average_weights": {"ugc_community": 30}},
     }
 
     # First audit run
@@ -24,12 +20,8 @@ def test_history_snapshot_and_delta():
 
     # Second audit run with improved metrics
     mock_analysis_2 = {
-        "summary": {
-            "overall_sov": 75.0,
-            "overall_top1_rate": 48.0,
-            "best_performing_model": "perplexity_sonar"
-        },
-        "algorithmic_factors": {"global_average_weights": {"ugc_community": 35}}
+        "summary": {"overall_sov": 75.0, "overall_top1_rate": 48.0, "best_performing_model": "perplexity_sonar"},
+        "algorithmic_factors": {"global_average_weights": {"ugc_community": 35}},
     }
     record_2 = save_benchmark_snapshot(mock_analysis_2, "crm_sales", unique_brand, 100)
     assert record_2["is_first_run"] is False

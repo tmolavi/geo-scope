@@ -1,122 +1,57 @@
-# 🔌 Live API Integration Guide
+# Live provider integration
 
-GEO-Scope supports running benchmarks using **Live API Endpoints** (OpenAI, Perplexity, Google Gemini, Anthropic Claude) or using the built-in **High-Fidelity GEO Simulation Engine**.
-
----
-
-## 1. Setting Up API Keys
-
-Set your environment variables in your terminal or in a `.env` file:
+GEO-Scope uses the same execution contract in CLI, HTTP and MCP. `simulate` is a seeded, offline demo. `live` calls the selected providers and fails explicitly if configuration, connectivity or inference fails. There is no automatic simulated fallback.
 
 ```bash
-# OpenAI (ChatGPT Search / GPT-4o)
-export OPENAI_API_KEY="sk-proj-..."
-
-# Perplexity AI (Sonar / Sonar Pro Search)
-export PERPLEXITY_API_KEY="pplx-..."
-
-# Google Gemini (Gemini 1.5 Pro / Gemini 2.0 with Search Grounding)
-export GEMINI_API_KEY="AIzaSy..."
-
-# Anthropic (Claude 3.5 / Claude 3.7 Sonnet)
-export ANTHROPIC_API_KEY="sk-ant-..."
+geo-scope providers
+geo-scope run --mode simulate --seed 42 --count 10 --brand HubSpot
+geo-scope run --mode live --models perplexity_sonar --count 3 --brand HubSpot
 ```
 
----
+Set credentials in your process environment or your host's secret manager. `.env` files are not automatically loaded. Never commit real keys.
 
-## 2. Model Adapters Implementation
+| Provider ID | Environment | Response capability |
+| --- | --- | --- |
+| `perplexity_sonar` | `PERPLEXITY_API_KEY`, optional `PERPLEXITY_MODEL` | Search-enabled Sonar; provider citations retained |
+| `gemini_grounding` | `GEMINI_API_KEY`, optional `GEMINI_MODEL` | Google Search tool enabled; grounding metadata retained |
+| `openai_completion` | `OPENAI_API_KEY`, optional `OPENAI_MODEL` | Direct completion; not a ChatGPT Search benchmark |
+| `claude_completion` | `ANTHROPIC_API_KEY`, optional `ANTHROPIC_MODEL` | Direct completion; not a Claude web-search benchmark |
+| `ollama_local` | Optional `OLLAMA_HOST`, `OLLAMA_MODEL` | Actual local inference without a cloud key; no web search |
+| `openrouter_free` | `OPENROUTER_API_KEY`, optional `OPENROUTER_MODEL` | Free direct-completion models on your own account |
+| `mlvoca_public` | `GEO_SCOPE_NONCOMMERCIAL=1` | Optional public noncommercial research endpoint; no key, no web search |
 
-### A. Perplexity API (Sonar Pro Search)
-```python
-import httpx
+`chatgpt_search` and `claude_3_7` remain compatibility aliases in live mode. Prefer the canonical completion IDs. Simulation uses the four historical profile IDs. Provider API outputs should not be treated as identical to consumer search products.
 
-async def query_perplexity_sonar(prompt: str, api_key: str) -> str:
-    url = "https://api.perplexity.ai/chat/completions"
-    headers = {"Authorization": f"Bearer {api_key}"}
-    payload = {
-        "model": "sonar-pro",
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.2,
-        "return_citations": True
-    }
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.post(url, json=payload, headers=headers)
-        data = response.json()
-        return data["choices"][0]["message"]["content"]
+Select a model available to your account using its model environment variable. Model lifecycle, pricing and quotas are controlled by each provider. No fixed cost per query or completion-time guarantee is made. Actual usage metadata is retained when provided. A 429 or other provider failure stops the run; do not rotate accounts or keys to evade limits.
+
+## Without a cloud key
+
+See [Free and local access](FREE_ACCESS.md). Install and start Ollama separately, pull a model suitable for your machine, set `OLLAMA_MODEL` to its installed name, then run:
+
+```bash
+geo-scope run --mode live --models ollama_local --count 3 --brand HubSpot
 ```
 
-### B. OpenAI GPT-4o (Direct LLM Completion)
-*Note: Standard OpenAI API `/v1/chat/completions` generates responses based on parametric pre-trained weights and fine-tuning. It does not perform live web searches unless integrated with external search tool-calls.*
+## Recorded-response analysis
 
-```python
-import httpx
+Each successful CLI run exports all prompts, raw responses, parsed records, CSVs, and experiment metadata. Reanalyze without any API call:
 
-async def query_openai_completion(prompt: str, api_key: str) -> str:
-    url = "https://api.openai.com/v1/chat/completions"
-    headers = {"Authorization": f"Bearer {api_key}"}
-    payload = {
-        "model": "gpt-4o",
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.2
-    }
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.post(url, json=payload, headers=headers)
-        data = response.json()
-        return data["choices"][0]["message"]["content"]
+```bash
+geo-scope run --responses results/raw_responses.json --brand HubSpot --out replay
 ```
 
-### C. Google Gemini with Search Grounding
-```python
-import httpx
+Imports are labeled `imported` and preserve their claimed source mode. Importing a file does not independently authenticate its origin. The expected schema is an array of objects with `query_item` (`id`, `query`, `target_brand`, `expected_entities`), `model`, `response_text`, and optional `provenance`.
 
-async def query_gemini_grounding(prompt: str, api_key: str) -> str:
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key={api_key}"
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "tools": [{"google_search": {}}],
-        "generationConfig": {"temperature": 0.2}
-    }
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.post(url, json=payload)
-        data = response.json()
-        return data["candidates"][0]["content"]["parts"][0]["text"]
+## Codex / MCP
+
+Launch the installed `geo-scope mcp` command as a stdio MCP server. Call `audit_ai_visibility` with explicit parameters:
+
+```json
+{"brand":"HubSpot","prompt_count":3,"mode":"live","models":["ollama_local"],"seed":42}
 ```
 
-### D. Anthropic Claude (Direct LLM Completion)
-*Note: Anthropic `/v1/messages` API generates analytical synthesis from pre-trained model knowledge. Live web grounding requires custom tool-use integration.*
+MCP defaults to simulation for an offline first run. Its results include execution mode and response records. The legacy `reverse_engineer_ranking_factors` tool returns labeled research priors, not newly estimated engine weights.
 
-```python
-import httpx
+## Interpretation
 
-async def query_claude_completion(prompt: str, api_key: str) -> str:
-    url = "https://api.anthropic.com/v1/messages"
-    headers = {
-        "x-api-key": api_key,
-        "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json"
-    }
-    payload = {
-        "model": "claude-3-7-sonnet-20250219",
-        "max_tokens": 1024,
-        "temperature": 0.2,
-        "messages": [{"role": "user", "content": prompt}]
-    }
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.post(url, json=payload, headers=headers)
-        data = response.json()
-        return data["content"][0]["text"]
-```
-
----
-
-## 3. Rate Limiting & Cost Estimation
-
-For a standard 1,000 prompt benchmark across 4 models (4,000 total inferences):
-
-| Model | Cost per 1,000 queries (approx.) | Concurrency Limit |
-| :--- | :--- | :--- |
-| Perplexity Sonar Pro | ~$5.00 | 20 req/sec |
-| OpenAI GPT-4o Search | ~$7.50 | 50 req/sec |
-| Google Gemini 1.5 Pro | ~$3.50 | 30 req/sec |
-| Claude 3.7 Sonnet | ~$8.00 | 20 req/sec |
-| **Total Full Run** | **~$24.00** | **~3-5 minutes total execution** |
+`search_enabled` means the adapter requested a search-capable API/tool. Inspect grounding metadata for evidence that a particular answer used search. Text URLs alone are unverified references. Direct-completion responses, simulations and grounded answers must be distinguished in any comparison.

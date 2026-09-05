@@ -1,5 +1,6 @@
 # 🔬 Scientific Methodology: Reverse-Engineering AI Visibility
 
+> Implementation note: This document describes a research model. Fixed factor weights and composite-score coefficients are hypothesis priors, not fitted engine weights or validated causal effects. Current executable metrics and provider capabilities are documented in [API integration](API_INTEGRATION.md). Seeded simulation is repeatable; live generation is variable even at a fixed temperature.
 ## 1. Abstract & Problem Statement
 
 Generative AI Search Engines (Perplexity, ChatGPT Search, Google Gemini Grounding, Anthropic Claude) construct direct answers using **Retrieval-Augmented Generation (RAG)** instead of traditional PageRank search result links.
@@ -41,7 +42,7 @@ Intent Strata Distribution (N = 1,000):
 ## 3. Controlled Experimental Variables
 
 When running multi-model evaluation pipelines:
-- **Temperature & Top_p**: Fixed across deterministic runs ($\text{Temperature} = 0.2$ for reproducible synthesis).
+- **Temperature & Top_p**: Recorded for comparison across live runs ($\text{Temperature} = 0.2$ to document generation settings).
 - **Temporal Synchronization**: Prompts are executed concurrently across models to eliminate recency drift.
 - **Geographic Grounding**: Defaulted to global/neutral grounding with configurable regional subtags.
 - **Entity Alias Normalization**: Brand names are mapped via regex matching both canonical names and common variations (e.g., `HubSpot`, `hubspot`, `هاب‌اسپات`).

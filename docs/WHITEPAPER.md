@@ -1,5 +1,6 @@
 # 📄 Whitepaper: The Mathematical Foundations of Generative Engine Optimization (GEO)
 ### Reverse-Engineering Retrieval-Augmented Synthesis & Brand Visibility in Large Language Models
+> Implementation note: This document describes a research model. Fixed factor weights and composite-score coefficients are hypothesis priors, not fitted engine weights or validated causal effects. Current executable metrics and provider capabilities are documented in [API integration](API_INTEGRATION.md). Seeded simulation is repeatable; live generation is variable even at a fixed temperature.
 
 **Author**: Taqi Molavi ([تقی مولوی](https://molavi.pro/))  
 **Affiliation**: GEO-Scope Open Source Initiative  
@@ -68,7 +69,7 @@ Higher citation entropy reflects broader source aggregation, whereas lower entro
 ### 2.4 Composite GEO Visibility Score ($\mathcal{V}_{\text{GEO}}$)
 $$\mathcal{V}_{\text{GEO}} = \alpha \cdot \text{SoM} + \beta \cdot \mathbb{P}(\text{Rank}_1) + \gamma \cdot \mathcal{S}_{\text{Sentiment}} + \delta \cdot \mathcal{C}_{\text{Authority}}$$
 
-Where standard calibrated parameters are $\alpha = 0.40, \beta = 0.30, \gamma = 0.15, \delta = 0.15$.
+Where illustrative prior parameters are $\alpha = 0.40, \beta = 0.30, \gamma = 0.15, \delta = 0.15$.
 
 ---
 

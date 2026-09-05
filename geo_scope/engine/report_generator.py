@@ -6,6 +6,7 @@ Builds portable Markdown, HTML, JSON, and CSV research artifacts.
 import os
 import json
 import time
+from html import escape
 from typing import Dict, Any, List
 from geo_scope.engine.export_manager import export_records_to_csv, export_citations_to_csv
 
@@ -15,7 +16,7 @@ def generate_experiment_artifacts(
     parsed_records: List[Dict[str, Any]],
     prompts: List[Dict[str, Any]],
     out_dir: str = "results",
-    experiment_id: str = None
+    experiment_id: str = None,
 ) -> Dict[str, str]:
     """
     Generates all portable experiment artifacts inside out_dir.
@@ -30,14 +31,45 @@ def generate_experiment_artifacts(
     factors_data = analysis_results.get("algorithmic_factors", {})
     competitors = analysis_results.get("competitor_matrix", [])
 
+    # Archive all inputs and outputs so parsing can be independently replayed.
+    raw_records = [
+        {
+            "query_item": next((q for q in prompts if q.get("id") == r["query_id"]), {}),
+            "model": r["model"],
+            "response_text": r.get("full_response_text", ""),
+            "provenance": r.get("provenance", {}),
+        }
+        for r in parsed_records
+    ]
+    for filename, data in (
+        ("raw_responses.json", raw_records),
+        ("parsed_records.json", parsed_records),
+        ("prompts.json", prompts),
+    ):
+        with open(os.path.join(out_dir, filename), "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
     # 1. Generate summary.md
-    md_content = _build_markdown_summary(exp_id, timestamp, summary, sov_data, citations_data, factors_data, competitors)
+    md_content = _build_markdown_summary(
+        exp_id, timestamp, summary, sov_data, citations_data, factors_data, competitors
+    )
     md_path = os.path.join(out_dir, "summary.md")
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(md_content)
 
     # 2. Generate report.html (Standalone Portable)
-    html_content = _build_portable_html_report(exp_id, timestamp, summary, sov_data, citations_data, factors_data, competitors)
+    def html_safe(value):
+        if isinstance(value, str):
+            return escape(value, quote=True)
+        if isinstance(value, dict):
+            return {escape(str(k), quote=True): html_safe(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [html_safe(v) for v in value]
+        return value
+
+    html_content = _build_portable_html_report(
+        exp_id, timestamp, *[html_safe(v) for v in (summary, sov_data, citations_data, factors_data, competitors)]
+    )
     html_path = os.path.join(out_dir, "report.html")
     with open(html_path, "w", encoding="utf-8") as f:
         f.write(html_content)
@@ -49,12 +81,14 @@ def generate_experiment_artifacts(
         "framework": "GEO-Scope v1.0.0",
         "author_credit": "Taqi Molavi (https://molavi.pro/)",
         "repository": "https://github.com/tmolavi/geo-scope",
+        "playbook": analysis_results.get("playbook", {}),
         "summary": summary,
         "share_of_model": sov_data,
         "citation_analytics": citations_data,
         "algorithmic_factors": factors_data,
         "competitor_matrix": competitors,
-        "sample_prompts": prompts[:20]
+        "prompts": prompts,
+        "records": parsed_records,
     }
     json_path = os.path.join(out_dir, "experiment.json")
     with open(json_path, "w", encoding="utf-8") as f:
@@ -72,12 +106,13 @@ def generate_experiment_artifacts(
         f.write(citations_csv)
 
     return {
+        "raw_responses_json": os.path.join(out_dir, "raw_responses.json"),
         "experiment_id": exp_id,
         "summary_md": md_path,
         "report_html": html_path,
         "experiment_json": json_path,
         "queries_csv": queries_csv_path,
-        "citations_csv": citations_csv_path
+        "citations_csv": citations_csv_path,
     }
 
 
@@ -95,35 +130,53 @@ def _build_markdown_summary(exp_id, timestamp, summary, sov, citations, factors,
         "## 📊 Executive Summary\n",
         f"- **Target Brand**: `{brand}`",
         f"- **Total Prompts Evaluated**: `{total_q}` ({total_inf} multi-model inferences)",
-        f"- **Execution Mode**: `Simulated Baseline Benchmark (Deterministic RAG Heuristics)`",
-        f"- **Overall Share of Model (SoM)**: **`{overall_sov}%`**",
+        f"- **Execution Mode**: `{summary.get('execution_mode', 'unknown')}`",
+        f"- **Overall Mention Rate (Share of Model)**: **`{overall_sov}%`**",
         f"- **Top-1 Recommendation Pick Rate**: **`{top1_rate}%`**",
         f"- **Top Performing AI Engine**: `{best_m}`\n",
         "## 🤖 Model-by-Model Visibility Breakdown\n",
         "| AI Engine | Mention Rate (SoM %) | Top #1 Pick Rate (%) | Average List Rank |",
-        "| :--- | :---: | :---: | :---: |"
+        "| :--- | :---: | :---: | :---: |",
     ]
 
+    for provider_id, provenance in summary.get("provider_provenance", {}).items():
+        lines.insert(
+            10,
+            f"- **Provider {provider_id}**: {provenance.get('response_kind', 'unknown')}; model {provenance.get('model_id', 'unknown')}",
+        )
     by_model = sov.get("by_model", {})
     for m, st in by_model.items():
-        lines.append(f"| **{m}** | {st.get('mention_rate_pct', 0)}% | {st.get('top1_rate_pct', 0)}% | #{st.get('avg_rank', 0)} |")
+        lines.append(
+            f"| **{m}** | {st.get('mention_rate_pct', 0)}% | {st.get('top1_rate_pct', 0)}% | {st.get('avg_rank') if st.get('avg_rank') is not None else 'N/A'} |"
+        )
 
     lines.append("\n## 🏆 Competitor Share of Voice Matrix\n")
-    lines.append("| Brand Entity | Mention Rate (SoV %) | Top-1 Recommendation Rate (%) | Status |")
-    lines.append("| :--- | :---: | :---: | :---: |")
+    lines.append(
+        "| Brand Entity | Mention Rate (%) | Share of brand-response mentions (%) | Top-1 Recommendation Rate (%) | Status |"
+    )
+    lines.append("| :--- | :---: | :---: | :---: | :---: |")
     for c in competitors:
         is_t = "🎯 Target Brand" if c.get("is_target") else "Competitor"
-        lines.append(f"| **{c.get('brand')}** | {c.get('mention_rate_pct')}% | {c.get('top1_rate_pct')}% | {is_t} |")
+        lines.append(
+            f"| **{c.get('brand')}** | {c.get('mention_rate_pct')}% | {c.get('share_of_voice_pct')}% | {c.get('top1_rate_pct')}% | {is_t} |"
+        )
 
-    lines.append("\n## 🔗 Top Cited Grounding Sources\n")
+    lines.append("\n## 🔗 Referenced Sources (see citation provenance)\n")
     lines.append("| Rank | Domain | Category | Citation Count |")
     lines.append("| :---: | :--- | :--- | :---: |")
     top_doms = citations.get("top_cited_domains", [])[:8]
     for idx, d in enumerate(top_doms, 1):
-        lines.append(f"| #{idx} | `{d.get('domain')}` | Grounding Source | {d.get('count')} citations |")
+        lines.append(f"| #{idx} | `{d.get('domain')}` | Referenced URL | {d.get('count')} citations |")
 
+    lines.append(
+        "\nRanking-factor weights are labeled hypothesis priors, not fitted findings. Unknown ranks are excluded from average rank. Top-1 rate uses all responses as denominator. Referenced URLs alone do not prove web search.\n"
+    )
     lines.append("\n---\n")
-    lines.append("> **Experimental Reproducibility Notice**: Results reflect the specific prompt matrix and experimental parameters evaluated. Reproduce this experiment using `geo-scope run --brand \"" + brand + "\" --prompts <file>`.")
+    lines.append(
+        '> **Experimental Reproducibility Notice**: Results reflect the specific prompt matrix and experimental parameters evaluated. Reanalyze recorded responses using `geo-scope run --responses raw_responses.json --brand "'
+        + brand
+        + '" --prompts <file>`.'
+    )
 
     return "\n".join(lines)
 
@@ -141,13 +194,17 @@ def _build_portable_html_report(exp_id, timestamp, summary, sov, citations, fact
             <td style="padding: 10px 14px; font-weight: bold; border-bottom: 1px solid #1e293b;">{m}</td>
             <td style="padding: 10px 14px; text-align: center; color: #818cf8; font-weight: bold; border-bottom: 1px solid #1e293b;">{st.get('mention_rate_pct', 0)}%</td>
             <td style="padding: 10px 14px; text-align: center; color: #fbbf24; font-weight: bold; border-bottom: 1px solid #1e293b;">{st.get('top1_rate_pct', 0)}%</td>
-            <td style="padding: 10px 14px; text-align: center; color: #94a3b8; border-bottom: 1px solid #1e293b;">#{st.get('avg_rank', 0)}</td>
+            <td style="padding: 10px 14px; text-align: center; color: #94a3b8; border-bottom: 1px solid #1e293b;">{st.get('avg_rank') if st.get('avg_rank') is not None else 'N/A'}</td>
         </tr>
         """
 
     comp_rows = ""
     for c in competitors:
-        is_target_badge = '<span style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Target Brand</span>' if c.get("is_target") else '<span style="color: #64748b; font-size: 11px;">Competitor</span>'
+        is_target_badge = (
+            '<span style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Target Brand</span>'
+            if c.get("is_target")
+            else '<span style="color: #64748b; font-size: 11px;">Competitor</span>'
+        )
         comp_rows += f"""
         <tr>
             <td style="padding: 10px 14px; font-weight: bold; border-bottom: 1px solid #1e293b;">{c.get('brand')}</td>
@@ -217,7 +274,7 @@ def _build_portable_html_report(exp_id, timestamp, summary, sov, citations, fact
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 20px;">
             <div>
                 <span class="badge">⟠ GEO-SCOPE EXPERIMENT</span>
-                <span class="badge" style="background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border-color: rgba(148, 163, 184, 0.4);">MODE: SIMULATED BENCHMARK</span>
+                <span class="badge" style="background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border-color: rgba(148, 163, 184, 0.4);">MODE: {summary.get("execution_mode", "unknown")}</span>
                 <h1 style="margin: 8px 0 0 0; font-size: 22px; color: #ffffff;">AI Visibility Audit: {brand}</h1>
                 <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b;">ID: {exp_id} • {timestamp}</p>
             </div>
@@ -226,9 +283,11 @@ def _build_portable_html_report(exp_id, timestamp, summary, sov, citations, fact
             </div>
         </div>
 
+        <p>Scope: {summary.get('measurement_scope', 'Recorded response analysis')}. Factor weights are research priors. N/A means no explicit rank.</p>
+        <p>Provider capabilities: {', '.join(str(k) + ': ' + str(v.get('response_kind', 'unknown')) for k, v in summary.get('provider_provenance', {}).items())}</p>
         <div class="kpi-grid">
             <div class="kpi-card">
-                <div class="kpi-title">Share of Model (SoM)</div>
+                <div class="kpi-title">Mention Rate (Share of Model)</div>
                 <div class="kpi-val" style="color: #818cf8;">{overall_sov}%</div>
             </div>
             <div class="kpi-card">

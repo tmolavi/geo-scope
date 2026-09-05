@@ -18,7 +18,7 @@ TEMPLATES_BY_INTENT = {
             "کدام {topic} بیشترین امنیت و پایداری را دارد؟",
             "بهترین جایگزین‌های پیشرفته برای {topic} سنتی چیست؟",
             "برای یک تیم حرفه‌ای کدام {topic} بیشترین بازدهی را دارد؟",
-            "معرفی بهترین {topic}های ایرانی و بین‌المللی با پشتیبانی عالی"
+            "معرفی بهترین {topic}های ایرانی و بین‌المللی با پشتیبانی عالی",
         ],
         "en": [
             "What is the best {topic} in {year}?",
@@ -30,8 +30,8 @@ TEMPLATES_BY_INTENT = {
             "Which {topic} is considered the industry leader right now?",
             "Best modern {topic} platforms with AI capabilities in {year}",
             "If I have to choose one {topic} for my company, which one should it be?",
-            "Top rated {topic} alternatives with easy onboarding"
-        ]
+            "Top rated {topic} alternatives with easy onboarding",
+        ],
     },
     "comparative": {
         "fa": [
@@ -44,7 +44,7 @@ TEMPLATES_BY_INTENT = {
             "جایگزین‌های برتر برای {entity_a} که امکانات مشابهی دارند کدامند؟",
             "چرا بعضی شرکت‌ها از {entity_a} به {entity_b} مهاجرت می‌کنند؟",
             "جدول مقایسه ویژگی‌های کلیدی {entity_a} و {entity_b}",
-            "نظرات کاربران در مورد مزایا و معایب {entity_a} نسبت به رقبا"
+            "نظرات کاربران در مورد مزایا و معایب {entity_a} نسبت به رقبا",
         ],
         "en": [
             "Comprehensive comparison between {entity_a} vs {entity_b}: which is better?",
@@ -56,8 +56,8 @@ TEMPLATES_BY_INTENT = {
             "Top 5 best alternatives to {entity_a} that offer better pricing",
             "Which one has better customer satisfaction: {entity_a} or {entity_b}?",
             "{entity_a} vs {entity_b} vs {entity_c}: full benchmark review",
-            "Real user experiences comparing {entity_a} with standard {topic} tools"
-        ]
+            "Real user experiences comparing {entity_a} with standard {topic} tools",
+        ],
     },
     "problem_solving": {
         "fa": [
@@ -70,7 +70,7 @@ TEMPLATES_BY_INTENT = {
             "اشتباهات رایج در پیاده‌سازی {topic} برای رفع {problem}",
             "تأثیر استفاده از {topic} بر سرعت و دقت حل {problem} چقدر است؟",
             "ابزارهای هوشمند {topic} چطور به خودکارسازی {problem} کمک می‌کنند؟",
-            "تجارب شرکت‌های موفق در حل چالش {problem} به کمک {topic}"
+            "تجارب شرکت‌های موفق در حل چالش {problem} به کمک {topic}",
         ],
         "en": [
             "How to effectively solve {problem} using modern {topic} solutions?",
@@ -82,8 +82,8 @@ TEMPLATES_BY_INTENT = {
             "Which specific features of {topic} are essential for eliminating {problem}?",
             "Case study: how leading brands resolved {problem} using {topic}",
             "Cost-effective ways to manage {problem} with modern {topic} architectures",
-            "What tools integrate best with {topic} to completely automate {problem}?"
-        ]
+            "What tools integrate best with {topic} to completely automate {problem}?",
+        ],
     },
     "long_tail_niche": {
         "fa": [
@@ -96,7 +96,7 @@ TEMPLATES_BY_INTENT = {
             "راهنمای خرید {topic} برای صنایع تخصصی و سازمان‌های بزرگ",
             "بهترین {topic} رایگان یا اوپن‌سورس با کیفیت نزدیک به نسخه‌های پولی",
             "پلتفرم‌های نسل جدید {topic} که در سال {year} سر و صدا به پا کرده‌اند",
-            "تجربه کاربری و سرعت لود در کدام {topic} بالاترین امتیاز را دارد؟"
+            "تجربه کاربری و سرعت لود در کدام {topic} بالاترین امتیاز را دارد؟",
         ],
         "en": [
             "Best lightweight cloud-based {topic} for teams under 10 members in {year}",
@@ -108,8 +108,8 @@ TEMPLATES_BY_INTENT = {
             "Best high-compliance {topic} for regulated industries (healthcare, finance)",
             "Emerging next-generation {topic} software gaining traction in {year}",
             "How to customize your {topic} workflow without writing complex code",
-            "Top zero-cost or freemium {topic} tools that actually deliver results"
-        ]
+            "Top zero-cost or freemium {topic} tools that actually deliver results",
+        ],
     },
     "reputation_sentiment": {
         "fa": [
@@ -122,7 +122,7 @@ TEMPLATES_BY_INTENT = {
             "چالش‌های امنیتی و حریم خصوصی در استفاده از {entity_a}",
             "چه کسانی نباید از {entity_a} استفاده کنند؟ موارد منع استفاده",
             "تجربه کار بلندمدت با {entity_a}: آیا بعد از ۶ ماه همچنان رضایت‌بخش است؟",
-            "مقایسه میزان رضایت مشتریان {entity_a} با رقبای اصلی بازار"
+            "مقایسه میزان رضایت مشتریان {entity_a} با رقبای اصلی بازار",
         ],
         "en": [
             "Is {entity_a} trustworthy and legit? Deep dive into user reviews & sentiment",
@@ -134,9 +134,9 @@ TEMPLATES_BY_INTENT = {
             "Who should NOT use {entity_a}? Key disqualifying use cases",
             "Long-term user reviews on {entity_a}: satisfaction after 12 months",
             "Hidden costs, price increases, and renewal traps in {entity_a}",
-            "Real user ratings across G2, Trustpilot, and Reddit for {entity_a}"
-        ]
-    }
+            "Real user ratings across G2, Trustpilot, and Reddit for {entity_a}",
+        ],
+    },
 }
 
 INDUSTRY_PRESETS = {
@@ -152,15 +152,15 @@ INDUSTRY_PRESETS = {
             "اتوماسیون فرآیند فروش و پایپ‌لاین",
             "یکپارچه‌سازی ایمیل و پیام‌رسان‌ها با پرونده مشتری",
             "گزارش‌گیری دقیق از عملکرد تیم فروش",
-            "مدیریت کمپین‌های بازاریابی و نرخ تبدیل"
+            "مدیریت کمپین‌های بازاریابی و نرخ تبدیل",
         ],
         "problems_en": [
             "lead tracking and preventing pipeline leaks",
             "sales automation and funnel optimization",
             "omnichannel customer communication sync",
             "accurate sales forecasting and rep reporting",
-            "marketing campaign attribution and ROI tracking"
-        ]
+            "marketing campaign attribution and ROI tracking",
+        ],
     },
     "seo_marketing": {
         "name_fa": "ابزارهای سئو و بازاریابی دیجیتال",
@@ -174,15 +174,15 @@ INDUSTRY_PRESETS = {
             "تحلیل بک‌لینک و خطاهای تکنیکال سایت",
             "بهینه‌سازی محتوا برای دیده‌شدن در هوش مصنوعی (GEO)",
             "رهگیری رتبه کلمات در نتایج جستجو",
-            "کاهش بانس‌ریت و افزایش ورودی ارگانیک"
+            "کاهش بانس‌ریت و افزایش ورودی ارگانیک",
         ],
         "problems_en": [
             "competitor keyword gap discovery",
             "backlink audit and technical site health fixing",
             "optimizing content for AI visibility and GEO",
             "accurate multi-location rank tracking",
-            "reducing bounce rate and boosting organic search traffic"
-        ]
+            "reducing bounce rate and boosting organic search traffic",
+        ],
     },
     "project_management": {
         "name_fa": "مدیریت پروژه و وظایف تیم‌ها",
@@ -196,15 +196,15 @@ INDUSTRY_PRESETS = {
             "مدیریت اسپرینت‌ها و متدولوژی چابک (Agile)",
             "ردیابی زمان و بودجه پروژه‌ها",
             "جلوگیری از فراموشی ددلاین‌ها",
-            "یکپارچگی با اسلک و گوگل درایو"
+            "یکپارچگی با اسلک و گوگل درایو",
         ],
         "problems_en": [
             "cross-functional coordination in remote teams",
             "agile sprint planning and backlog management",
             "time tracking and project budget overruns",
             "deadline monitoring and automated task reminders",
-            "native integrations with Slack, GitHub, and Google Drive"
-        ]
+            "native integrations with Slack, GitHub, and Google Drive",
+        ],
     },
     "ai_copywriting": {
         "name_fa": "ابزارهای تولید محتوا با هوش مصنوعی",
@@ -218,15 +218,15 @@ INDUSTRY_PRESETS = {
             "حفظ اصالت محتوا و عدم شناسایی به عنوان اسپم",
             "تولید سریع متن پست‌های شبکه‌های اجتماعی",
             "ترجمه و بومی‌سازی محتوا به زبان‌های مختلف",
-            "بهینه‌سازی سئو و سرپ مقالات با هوش مصنوعی"
+            "بهینه‌سازی سئو و سرپ مقالات با هوش مصنوعی",
         ],
         "problems_en": [
             "generating long-form blog posts matching brand voice",
             "maintaining factual accuracy and avoiding AI hallucination",
             "scaling multi-channel social media copy",
             "multilingual content localization and translation",
-            "SERP-optimized content generation with high readability"
-        ]
+            "SERP-optimized content generation with high readability",
+        ],
     },
     "ecommerce_platform": {
         "name_fa": "پلتفرم‌های فروشگاه‌ساز اینترنتی",
@@ -240,16 +240,16 @@ INDUSTRY_PRESETS = {
             "سرعت بارگذاری بالا در ترافیک سنگین جشنواره‌ها",
             "سئو فنی و بهینه‌سازی ساختار محصولات",
             "مدیریت سفارشات چندکاناله",
-            "طراحی صفحات فرود جذاب با نرخ تبدیل بالا"
+            "طراحی صفحات فرود جذاب با نرخ تبدیل بالا",
         ],
         "problems_en": [
             "payment gateway integration and inventory sync",
             "high page speed handling peak flash-sale traffic",
             "technical SEO and rich snippet product markup",
             "omnichannel inventory and order fulfillment",
-            "high-converting landing page creation with custom checkout"
-        ]
-    }
+            "high-converting landing page creation with custom checkout",
+        ],
+    },
 }
 
 
@@ -260,59 +260,56 @@ def generate_prompt_dataset(
     language: str = "both",  # "fa", "en", "both"
     total_count: int = 1000,
     custom_topic: str = None,
-    custom_problems: List[str] = None
+    custom_problems: List[str] = None,
+    seed: int = 42,
 ) -> List[Dict[str, Any]]:
     """
     Generates a structured dataset of N prompts (e.g. 1000) for AI benchmarking.
     """
+    rng = random.Random(seed)
     preset = INDUSTRY_PRESETS.get(niche_key, INDUSTRY_PRESETS["crm_sales"])
-    
+
     brand = target_brand if target_brand else preset["target_brand"]
     comp_list = competitors if competitors and len(competitors) > 0 else preset["competitors"]
     all_brands = [brand] + comp_list
-    
+
     topic_fa = custom_topic if custom_topic else preset["topic_fa"]
     topic_en = custom_topic if custom_topic else preset["topic_en"]
-    
+
     problems_fa = custom_problems if custom_problems else preset["problems_fa"]
     problems_en = custom_problems if custom_problems else preset["problems_en"]
-    
+
     intents = ["commercial_direct", "comparative", "problem_solving", "long_tail_niche", "reputation_sentiment"]
     intent_weights = [0.30, 0.25, 0.20, 0.15, 0.10]
-    
+
     langs = ["fa", "en"] if language == "both" else [language]
-    
+
     prompts = []
     current_year = "2026"
-    
+
     for i in range(total_count):
         # Choose intent based on distribution
-        intent = random.choices(intents, weights=intent_weights, k=1)[0]
-        lang = random.choice(langs)
-        
+        intent = rng.choices(intents, weights=intent_weights, k=1)[0]
+        lang = rng.choice(langs)
+
         template_list = TEMPLATES_BY_INTENT[intent][lang]
-        template = random.choice(template_list)
-        
+        template = rng.choice(template_list)
+
         # Pick entities for comparative
-        entity_a = brand if random.random() < 0.6 else random.choice(comp_list)
+        entity_a = brand if rng.random() < 0.6 else rng.choice(comp_list)
         other_comps = [c for c in all_brands if c != entity_a]
-        entity_b = random.choice(other_comps) if other_comps else "Competitor B"
+        entity_b = rng.choice(other_comps) if other_comps else "Competitor B"
         other_comps2 = [c for c in other_comps if c != entity_b]
-        entity_c = random.choice(other_comps2) if other_comps2 else "Competitor C"
-        
-        problem = random.choice(problems_fa if lang == "fa" else problems_en)
+        entity_c = rng.choice(other_comps2) if other_comps2 else "Competitor C"
+
+        problem = rng.choice(problems_fa if lang == "fa" else problems_en)
         topic = topic_fa if lang == "fa" else topic_en
-        
+
         # Fill template
         query_text = template.format(
-            topic=topic,
-            entity_a=entity_a,
-            entity_b=entity_b,
-            entity_c=entity_c,
-            problem=problem,
-            year=current_year
+            topic=topic, entity_a=entity_a, entity_b=entity_b, entity_c=entity_c, problem=problem, year=current_year
         )
-        
+
         prompt_item = {
             "id": f"qry_{i+1:04d}",
             "query": query_text,
@@ -322,10 +319,10 @@ def generate_prompt_dataset(
             "target_brand": brand,
             "primary_subject": entity_a if intent in ["comparative", "reputation_sentiment"] else topic,
             "expected_entities": all_brands,
-            "difficulty": random.choice(["high_intent", "exploratory", "niche_tail"]),
+            "difficulty": rng.choice(["high_intent", "exploratory", "niche_tail"]),
         }
         prompts.append(prompt_item)
-        
+
     return prompts
 
 

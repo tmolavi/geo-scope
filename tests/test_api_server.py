@@ -2,7 +2,6 @@
 Tests for FastAPI Server Endpoints
 """
 
-import pytest
 from fastapi.testclient import TestClient
 from geo_scope.server import app
 
@@ -24,9 +23,10 @@ def test_get_presets():
 
 
 def test_benchmark_status_and_results():
+    assert client.post("/api/run_benchmark", json={"prompt_count": 2, "mode": "simulate"}).status_code == 200
     status_res = client.get("/api/benchmark_status")
     assert status_res.status_code == 200
-    
+
     results_res = client.get("/api/benchmark_results")
     assert results_res.status_code == 200
     data = results_res.json()

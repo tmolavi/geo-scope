@@ -19,21 +19,17 @@ def test_generate_experiment_artifacts():
                 "overall_sov": 75.0,
                 "overall_top1_rate": 45.0,
                 "best_performing_model": "perplexity_sonar",
-                "weakest_performing_model": "claude_3_7"
+                "weakest_performing_model": "claude_3_7",
             },
             "share_of_model": {
-                "by_model": {
-                    "perplexity_sonar": {"mention_rate_pct": 80.0, "top1_rate_pct": 50.0, "avg_rank": 1.2}
-                }
+                "by_model": {"perplexity_sonar": {"mention_rate_pct": 80.0, "top1_rate_pct": 50.0, "avg_rank": 1.2}}
             },
-            "citation_analytics": {
-                "top_cited_domains": [{"domain": "reddit.com", "count": 12}]
-            },
+            "citation_analytics": {"top_cited_domains": [{"domain": "reddit.com", "count": 12}]},
             "algorithmic_factors": {"global_average_weights": {"ugc_community": 32.0}},
             "competitor_matrix": [
                 {"brand": "HubSpot", "mention_rate_pct": 75.0, "top1_rate_pct": 45.0, "is_target": True},
-                {"brand": "Salesforce", "mention_rate_pct": 60.0, "top1_rate_pct": 30.0, "is_target": False}
-            ]
+                {"brand": "Salesforce", "mention_rate_pct": 60.0, "top1_rate_pct": 30.0, "is_target": False},
+            ],
         }
 
         mock_parsed = [
@@ -48,13 +44,15 @@ def test_generate_experiment_artifacts():
                 "target_is_top_1": True,
                 "target_sentiment": "positive",
                 "citation_count": 2,
-                "response_length": 400
+                "response_length": 400,
             }
         ]
 
         mock_prompts = [{"id": "q1", "query": "Best CRM?", "intent": "commercial_direct"}]
 
-        artifacts = generate_experiment_artifacts(mock_analysis, mock_parsed, mock_prompts, out_dir=temp_dir, experiment_id="EXP-TEST-001")
+        artifacts = generate_experiment_artifacts(
+            mock_analysis, mock_parsed, mock_prompts, out_dir=temp_dir, experiment_id="EXP-TEST-001"
+        )
 
         assert os.path.exists(artifacts["summary_md"])
         assert os.path.exists(artifacts["report_html"])

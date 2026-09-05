@@ -4,7 +4,7 @@ Defines the standard contract for all AI search and LLM engines.
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any
 
 
 class BaseProvider(ABC):
@@ -13,6 +13,8 @@ class BaseProvider(ABC):
     """
 
     def __init__(self, name: str, display_name: str, bias_description: str = "", cost_per_1k: float = 0.0):
+        self.response_kind = "direct_completion"
+        self.last_evidence = {}
         self.name = name
         self.display_name = display_name
         self.bias_description = bias_description
@@ -43,8 +45,10 @@ class BaseProvider(ABC):
         """
         return {
             "id": self.name,
+            "response_kind": self.response_kind,
+            "model_id": getattr(self, "model", None),
             "display_name": self.display_name,
             "bias_description": self.bias_description,
             "cost_per_1k_usd": self.cost_per_1k,
-            "is_available": self.is_available()
+            "is_available": self.is_available(),
         }

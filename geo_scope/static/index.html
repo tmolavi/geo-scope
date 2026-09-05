@@ -77,6 +77,8 @@
     </style>
 </head>
 <body class="min-h-screen bg-[#0b0f19] text-gray-100 flex flex-col">
+<div id="executionNotice" style="padding:12px;text-align:center;background:#1e293b;color:#fff">GEO-Scope: ready for an explicit benchmark. Default: seeded simulation.</div>
+
 
     <!-- Top Navbar -->
     <header class="border-b border-gray-800 bg-[#0d1322]/90 sticky top-0 z-50 backdrop-blur-md">
@@ -104,7 +106,7 @@
                 </button>
                 <button onclick="openNewBenchmarkModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white font-medium text-xs sm:text-sm shadow-md shadow-indigo-500/25 transition flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    <span data-i18n="btn_new_benchmark">اجرای بنچمارک ۱۰۰۰ سوال جدید</span>
+                    <span data-i18n="btn_new_benchmark">اجرای بنچمارک جدید</span>
                 </button>
             </div>
         </div>
@@ -118,7 +120,7 @@
             <div class="flex items-center gap-3">
                 <div class="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
                 <div>
-                    <div id="statusTitle" class="text-sm font-bold text-indigo-200">در حال اجرای چرخه تحلیل ۱۰۰۰ سوال...</div>
+                    <div id="statusTitle" class="text-sm font-bold text-indigo-200">در حال اجرای تحلیل...</div>
                     <div id="statusSub" class="text-xs text-indigo-400/80">ارزیابی خروجی‌های ChatGPT، Perplexity، Gemini و Claude</div>
                 </div>
             </div>
@@ -136,13 +138,13 @@
                 📊 <span data-i18n="tab_overview">داشبورد سهم دیده‌شدن (Share of Model)</span>
             </button>
             <button onclick="switchTab('reverse_engineering')" id="tab-reverse_engineering" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
-                🧬 <span data-i18n="tab_algorithm">مهندسی معکوس وزن‌های الگوریتم</span>
+                🧬 <span data-i18n="tab_algorithm">فرضیه‌های عوامل رتبه‌بندی</span>
             </button>
             <button onclick="switchTab('citation_graph')" id="tab-citation_graph" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
                 🌐 <span data-i18n="tab_citations">گراف منابع و دامنه‌های استناد شده</span>
             </button>
             <button onclick="switchTab('prompts_explorer')" id="tab-prompts_explorer" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
-                🔍 <span data-i18n="tab_prompts">کاوشگر ۱۰۰۰ پرسش و مقایسه مدل‌ها</span>
+                🔍 <span data-i18n="tab_prompts">کاوشگر پرسش‌ها و مقایسه مدل‌ها</span>
             </button>
             <button onclick="switchTab('geo_playbook')" id="tab-geo_playbook" class="tab-btn px-4 py-2.5 rounded-xl text-gray-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
                 🚀 <span data-i18n="tab_playbook">استراتژی و نقشه راه اقدام (GEO Playbook)</span>
@@ -161,15 +163,15 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="glass-panel p-5 rounded-2xl border border-gray-800 relative overflow-hidden">
                     <div class="text-xs font-semibold text-gray-400" data-i18n="kpi_queries_count">کل سوالات ارزیابی شده</div>
-                    <div id="kpi-queries" class="text-2xl sm:text-3xl font-black text-white mt-1.5 font-mono">1,000</div>
+                    <div id="kpi-queries" class="text-2xl sm:text-3xl font-black text-white mt-1.5 font-mono">—</div>
                     <div class="text-[11px] text-emerald-400 mt-2 flex items-center gap-1">
-                        <span>●</span> ۴ مدل اصلی (۴,۰۰۰ اجرا)
+                        <span id="kpi-executions">—</span>
                     </div>
                 </div>
 
                 <div class="glass-panel p-5 rounded-2xl border border-indigo-500/30 relative overflow-hidden bg-gradient-to-br from-indigo-950/20 to-transparent">
                     <div class="text-xs font-semibold text-indigo-300" data-i18n="kpi_brand_sov">سهم دیده‌شدن برند شما (SoM)</div>
-                    <div id="kpi-sov" class="text-2xl sm:text-3xl font-black text-indigo-400 mt-1.5 font-mono">72.4%</div>
+                    <div id="kpi-sov" class="text-2xl sm:text-3xl font-black text-indigo-400 mt-1.5 font-mono">—</div>
                     <div class="text-[11px] text-gray-400 mt-2">
                         برند هدف: <span id="kpi-target-brand" class="font-bold text-white">HubSpot</span>
                     </div>
@@ -177,7 +179,7 @@
 
                 <div class="glass-panel p-5 rounded-2xl border border-gray-800 relative overflow-hidden">
                     <div class="text-xs font-semibold text-gray-400" data-i18n="kpi_top1_rate">نرخ پیشنهاد در رتبه اول (#1)</div>
-                    <div id="kpi-top1" class="text-2xl sm:text-3xl font-black text-amber-400 mt-1.5 font-mono">44.8%</div>
+                    <div id="kpi-top1" class="text-2xl sm:text-3xl font-black text-amber-400 mt-1.5 font-mono">—</div>
                     <div class="text-[11px] text-gray-400 mt-2">
                         توصیه به عنوان گزینه اصلی
                     </div>
@@ -185,7 +187,7 @@
 
                 <div class="glass-panel p-5 rounded-2xl border border-gray-800 relative overflow-hidden">
                     <div class="text-xs font-semibold text-gray-400" data-i18n="kpi_best_engine">بهترین عملکرد در موتور</div>
-                    <div id="kpi-best-engine" class="text-xl sm:text-2xl font-black text-purple-300 mt-2">Perplexity</div>
+                    <div id="kpi-best-engine" class="text-xl sm:text-2xl font-black text-purple-300 mt-2">—</div>
                     <div class="text-[11px] text-purple-400 mt-2">
                         بیشترین استناد ارگانیک
                     </div>
@@ -216,7 +218,7 @@
                             <h3 class="text-base font-bold text-white flex items-center gap-2">
                                 <span>🏆</span> <span data-i18n="chart_comp_title">ماتریس رقابتی برندها (Share of Voice)</span>
                             </h3>
-                            <p class="text-xs text-gray-400 mt-0.5">مقایسه حضور برند شما با رقبای اصلی در ۱۰۰۰ پرسش</p>
+                            <p class="text-xs text-gray-400 mt-0.5">مقایسه حضور برند شما با رقبای اصلی در پرسش‌های این آزمایش</p>
                         </div>
                     </div>
                     <div class="h-64 relative">
@@ -255,7 +257,7 @@
                 <!-- Factor Importance Breakdown -->
                 <div class="lg:col-span-6 glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
                     <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <span>⚖️</span> <span data-i18n="factor_weights_title">میانگین وزن سیگنال‌های رتبه‌بندی کشف‌شده</span>
+                        <span>⚖️</span> <span data-i18n="factor_weights_title">فرض‌های اولیه پژوهش — وزن‌های اندازه‌گیری‌شده نیستند</span>
                     </h3>
                     <p class="text-xs text-gray-400">کدام متغیرها بیشترین همبستگی را با رتبه ۱ در پاسخ هوش مصنوعی دارند؟</p>
                     <div id="factorsList" class="space-y-3 pt-1">
@@ -337,7 +339,7 @@
                 <!-- Top Cited Domains Table -->
                 <div class="lg:col-span-7 glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
                     <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <span>🔗</span> <span data-i18n="top_domains_title">۱۲ دامنه پر استناد در پاسخ‌های ۱۰۰۰ پرسش</span>
+                        <span>🔗</span> <span data-i18n="top_domains_title">۱۲ دامنه پر استناد در پاسخ‌های این آزمایش</span>
                     </h3>
                     <p class="text-xs text-gray-400">دامنه‌هایی که بیشترین حضور را در لینک‌های پانویس هوش مصنوعی داشته‌اند</p>
                     <div class="overflow-x-auto">
@@ -427,7 +429,7 @@
                     <div class="text-xs font-bold uppercase tracking-wider text-indigo-400">نقشه راه عملیاتی ۵ مرحله‌ای</div>
                     <h2 class="text-xl font-extrabold text-white">استراتژی تسلط بر نتایج هوش مصنوعی برای <span id="playbookBrandName" class="text-indigo-300">HubSpot</span></h2>
                     <p class="text-xs text-gray-300 leading-relaxed max-w-2xl">
-                        این برنامه اقدام بر اساس تحلیل مهندسی معکوس ۱۰۰۰ سوال و کشف وزن سیگنال‌های رتبه‌بندی در سال ۲۰۲۶ تدوین شده است.
+                        این برنامه، پیشنهادهای پژوهشی برای بررسی و آزمایش بعدی است؛ اثر توصیه‌ها اندازه‌گیری نشده است.
                     </p>
                 </div>
                 <div class="flex items-center gap-2">
@@ -580,7 +582,14 @@
             </div>
 
             <div class="space-y-4 text-xs">
-                <div>
+                <div style="margin-bottom:12px">
+<label for="modalExecutionMode">Execution mode / نوع اجرا</label>
+<select id="modalExecutionMode" style="background:#1e293b;padding:8px"><option value="simulate">Seeded simulation / شبیه‌سازی</option><option value="live">Live providers / اجرای واقعی</option></select>
+<label for="modalProviders">Providers (comma separated)</label>
+<input id="modalProviders" style="background:#1e293b;padding:8px;width:100%" value="perplexity_sonar,chatgpt_search,gemini_grounding,claude_3_7" />
+<p>Live: ollama_local, openrouter_free, openai_completion, claude_completion, perplexity_sonar, gemini_grounding. Cloud keys are configured on the server.</p>
+</div>
+<div>
                     <label class="block font-semibold text-gray-300 mb-1.5">انتخاب صنعت و الگو (Industry Niche):</label>
                     <select id="modalNicheSelect" onchange="onPresetChange()" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-800 border border-gray-700 text-gray-200 focus:outline-none focus:border-indigo-500">
                         <option value="crm_sales">نرم‌افزارهای CRM و فروش (HubSpot, Salesforce, Zoho)</option>
@@ -636,7 +645,7 @@
                     انصراف
                 </button>
                 <button onclick="startBenchmark()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-xs font-bold text-white shadow-lg shadow-indigo-500/30">
-                    شروع تحلیل و کشف الگوریتم
+                    شروع آزمایش
                 </button>
             </div>
         </div>
@@ -682,11 +691,11 @@
 
         const I18N = {
             fa: {
-                btn_new_benchmark: "اجرای بنچمارک ۱۰۰۰ سوال جدید",
+                btn_new_benchmark: "اجرای بنچمارک جدید",
                 tab_overview: "داشبورد سهم دیده‌شدن (Share of Model)",
-                tab_algorithm: "مهندسی معکوس وزن‌های الگوریتم",
+                tab_algorithm: "فرضیه‌های عوامل رتبه‌بندی",
                 tab_citations: "گراف منابع و دامنه‌های استناد شده",
-                tab_prompts: "کاوشگر ۱۰۰۰ پرسش و مقایسه مدل‌ها",
+                tab_prompts: "کاوشگر پرسش‌ها و مقایسه مدل‌ها",
                 tab_playbook: "استراتژی و نقشه راه اقدام (GEO Playbook)",
                 kpi_queries_count: "کل سوالات ارزیابی شده",
                 kpi_brand_sov: "سهم دیده‌شدن برند شما (SoM)",
@@ -696,16 +705,16 @@
                 chart_comp_title: "ماتریس رقابتی برندها (Share of Voice)",
                 intent_breakdown_title: "تحلیل حساسیت به قصد جستجوی کاربر (Search Intent)",
                 radar_title: "توزیع وزن فاکتورهای الگوریتم بر اساس مدل",
-                factor_weights_title: "میانگین وزن سیگنال‌های رتبه‌بندی کشف‌شده",
+                factor_weights_title: "فرض‌های اولیه پژوهش — وزن‌های اندازه‌گیری‌شده نیستند",
                 pie_citations_title: "توزیع دسته‌بندی منابع استناد شده",
-                top_domains_title: "۱۲ دامنه پر استناد در پاسخ‌های ۱۰۰۰ پرسش",
+                top_domains_title: "۱۲ دامنه پر استناد در پاسخ‌های این آزمایش",
             },
             en: {
-                btn_new_benchmark: "Run 1,000 Prompts Benchmark",
+                btn_new_benchmark: "Run New Benchmark",
                 tab_overview: "Share of Model Dashboard",
                 tab_algorithm: "Algorithm Reverse-Engineering",
                 tab_citations: "Citations & Source Graph",
-                tab_prompts: "1,000 Prompts Explorer",
+                tab_prompts: "Prompts Explorer",
                 tab_playbook: "GEO Strategy Playbook",
                 kpi_queries_count: "Total Queries Evaluated",
                 kpi_brand_sov: "Your Brand Share of Model",
@@ -715,9 +724,9 @@
                 chart_comp_title: "Brand Share of Voice Matrix",
                 intent_breakdown_title: "Search Intent Sensitivity Breakdown",
                 radar_title: "Algorithm Factor Weights by Model",
-                factor_weights_title: "Reverse-Engineered Ranking Factors",
+                factor_weights_title: "Research Priors — Not Fitted Ranking Factors",
                 pie_citations_title: "Cited Sources Distribution",
-                top_domains_title: "Top 12 Cited Domains in 1,000 Prompts",
+                top_domains_title: "Top 12 Cited Domains in Recorded Responses",
             }
         };
 
@@ -848,10 +857,12 @@
         }
 
         function renderDashboard(data) {
+            document.getElementById("executionNotice").textContent = "Execution mode: " + data.summary.execution_mode + " | Research priors are separate from observed metrics";
             const sum = data.summary;
             const sov = data.analysis.share_of_model;
             
             document.getElementById('kpi-queries').innerText = sum.total_queries_tested.toLocaleString();
+            document.getElementById('kpi-executions').textContent = sum.total_ai_executions + ' responses';
             document.getElementById('kpi-sov').innerText = `${sum.overall_sov}%`;
             document.getElementById('kpi-top1').innerText = `${sum.overall_top1_rate}%`;
             document.getElementById('kpi-target-brand').innerText = sum.target_brand;
@@ -990,7 +1001,7 @@
                         </div>
                         <div class="text-right min-w-[70px]">
                             <div class="text-sm font-black text-indigo-400 font-mono">${w}%</div>
-                            <div class="text-[10px] text-gray-500">ضریب اثر</div>
+                            <div class="text-[10px] text-gray-500">وزن فرضی</div>
                         </div>
                     </div>
                 `;
@@ -1277,7 +1288,7 @@
             document.getElementById('runningBanner').classList.remove('hidden');
 
             try {
-                await fetch('/api/run_benchmark', {
+                const response = await fetch('/api/run_benchmark', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1285,12 +1296,16 @@
                         target_brand: brand,
                         competitors: comps,
                         language: lang,
-                        prompt_count: count
+                        prompt_count: count,
+                        mode: document.getElementById("modalExecutionMode").value,
+                        models: document.getElementById("modalProviders").value.split(",").map(s => s.trim()).filter(Boolean)
                     })
                 });
+                if (!response.ok) { const error = await response.json(); throw new Error(error.detail || "Benchmark failed"); }
                 pollBenchmarkStatus();
             } catch (err) {
-                console.error("Error starting benchmark:", err);
+                document.getElementById("runningBanner").classList.add("hidden");
+                document.getElementById("executionNotice").textContent = err.message;
             }
         }
 
@@ -1311,6 +1326,7 @@
                             await fetchResults();
                             await fetchPrompts(1);
                         }
+                        if (!status.has_results) document.getElementById("executionNotice").textContent = status.status_text;
                         clearInterval(interval);
                     }
                 } catch (err) {
@@ -1326,7 +1342,11 @@
         function formatModelName(modelKey) {
             const names = {
                 perplexity_sonar: "Perplexity Sonar",
-                chatgpt_search: "ChatGPT Search",
+                chatgpt_search: "OpenAI completion (legacy ID)",
+                openai_completion: "OpenAI completion",
+                claude_completion: "Claude completion",
+                ollama_local: "Ollama local",
+                openrouter_free: "OpenRouter free",
                 gemini_grounding: "Google Gemini",
                 claude_3_7: "Claude 3.7"
             };

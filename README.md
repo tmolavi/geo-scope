@@ -4,7 +4,7 @@
 
 ### Generative Engine Optimization (GEO) & AI Search Visibility Reverse-Engineering
 
-**An open-source scientific benchmark and reverse-engineering platform to discover how brands, products, and content are ranked and cited across AI engines.**
+**An open-source research platform for reproducible AI visibility experiments, traceable provider responses, and GEO hypothesis testing.**
 
 *توسعه‌داده‌شده توسط [تقی مولوی (Taqi Molavi)](https://molavi.pro/) — بخشی از اکوسیستم پژوهشی GEO در کنار [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
 
@@ -28,6 +28,19 @@
 > **WHY**: AI visibility claims are everywhere, but many are speculative or difficult to test. GEO-Scope makes GEO hypotheses empirically verifiable.  
 > **HOW**: **Bring your prompts** ➔ **Run experiments** ➔ **Measure visibility & citations** ➔ **Compare & Re-test**.
 
+### Execution you can inspect
+
+GEO-Scope supports seeded offline demos, actual provider inference, and recorded-response analysis. Every exported run identifies its mode and retains the full response evidence. Live inference never falls back to simulation. Ranking-factor profiles are clearly labeled research priors; visibility measurements come from the recorded responses.
+
+```bash
+geo-scope providers
+geo-scope run --mode live --models ollama_local --count 3 --brand HubSpot
+geo-scope run --mode live --models perplexity_sonar --count 3 --brand HubSpot
+geo-scope run --responses results/raw_responses.json --brand HubSpot --out replay
+```
+
+See [live and Codex/MCP setup](docs/API_INTEGRATION.md) and [free/local access with operator conditions](docs/FREE_ACCESS.md). Install a local model for Ollama; cloud providers require your own credentials. Optional public noncommercial research access is documented separately.
+
 ### ⚡ 5-Minute Quickstart (Run Your First Benchmark)
 
 ```bash
@@ -38,12 +51,14 @@ pip install -e .
 geo-scope demo
 
 # 3. Bring your own prompts & benchmark your brand
-geo-scope run --brand "My Brand" --competitors "Comp A, Comp B" --prompts datasets/saas_crm.csv
+geo-scope run --brand "My Brand" --competitors "Comp A, Comp B" --mode simulate --count 10
 ```
 
 ---
 
-## 🖥️ Live Terminal & MCP Workflow Demo
+## 🖥️ Illustrative Terminal & MCP Workflow Demo
+
+The following is a presentation example, not evidence of a live measurement.
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -66,9 +81,9 @@ geo-scope run --brand "My Brand" --competitors "Comp A, Comp B" --prompts datase
 
 ## 🌐 English Overview
 
-**GEO-Scope** is an open-source platform created by **[Taqi Molavi](https://molavi.pro/)** that reverse-engineers the ranking and citation mechanics of modern search-augmented AI models (**ChatGPT Search, Perplexity Sonar, Google Gemini Grounding, and Anthropic Claude 3.7**).
+**GEO-Scope** is an open-source platform created by **[Taqi Molavi](https://molavi.pro/)** for studying observed brand mentions, explicit recommendation positions, and source references across configured AI providers. Search-enabled and direct-completion adapters are identified separately.
 
-By evaluating a statistically significant matrix of **1,000 categorized queries** across 5 search intent strata, GEO-Scope gives brands, growth engineers, and researchers complete visibility into how AI synthesizers discover, rank, and cite content.
+Evaluate up to **1,000 categorized queries** across 5 intent groups, or bring your own prompts. Statistical validity depends on sampling, annotation quality and repeated observations, not query count alone.
 
 ---
 
@@ -76,11 +91,11 @@ By evaluating a statistically significant matrix of **1,000 categorized queries*
 
 **GEO-Scope** یک فریم‌ورک استاندارد و پژوهشی متن‌باز طراحی شده توسط **[تقی مولوی](https://molavi.pro/)** برای مهندسی معکوس الگوریتم‌های دیده‌شدن در هوش مصنوعی (**GEO / AI SEO**) است.
 
-دیگر دوران تمرکز صرف روی ۱۰ لینک آبی گوگل به پایان رسیده است. هوش مصنوعی‌ها (مانند Perplexity و ChatGPT Search) مستقیماً به کاربر پاسخ نهایی می‌دهند. این ابزار با ارسال **۱,۰۰۰ سوال واقعی**، کشف می‌کند که الگوریتم هر هوش مصنوعی چه وزنی به فاکتورهایی مثل **ردیت (UGC)، سایت‌های نقد و بررسی (G2)، روابط عمومی (PR) و اسکیما** می‌دهد.
+این ابزار برای آزمایش دیده‌شدن برند، ترتیب پیشنهادهای صریح و منابع پاسخ‌های هوش مصنوعی طراحی شده است. اجرای واقعی، شبیه‌سازی و تحلیل پاسخ‌های ذخیره‌شده از هم مشخص‌اند و پاسخ‌های خام برای بررسی مستقل نگهداری می‌شوند.
 
 ### درباره نتایج آزمایش‌ها
 
-اعداد و وزن‌های نمایش‌داده‌شده در این پروژه، نتایج آزمایش‌های اولیه GEO-Scope در شرایط مشخص هستند و «فاکتور رتبه‌بندی قطعی» یا قوانین ثابت موتورهای هوش مصنوعی محسوب نمی‌شوند.
+وزن‌های ثابت پروژه فرض‌های اولیه پژوهش هستند و از اجرای جدید تخمین زده نمی‌شوند. معیارهای دیده‌شدن از پاسخ‌های ثبت‌شده محاسبه می‌شوند؛ منشأ هر پاسخ و نوع اجرا همراه نتیجه ثبت می‌شود.
 
 هدف پروژه این است که هر پژوهشگر، متخصص یا کسب‌وکار بتواند پرامپت‌ها، برندها، رقبا، مدل‌ها، زبان و بازار خودش را وارد کند، آزمایش‌های خودش را اجرا کند و نتایج اولیه را تأیید، رد، مقایسه یا تکمیل کند.
 
@@ -120,7 +135,7 @@ GEO-Scope includes a native **Model Context Protocol (MCP)** server, allowing yo
 
 ### Available MCP Tools in Claude / Cursor:
 1. `audit_ai_visibility(brand, niche, competitors, prompt_count)`: Calculates Share of Model (SoM) and Top-1 rank across AI engines.
-2. `reverse_engineer_ranking_factors(target_brand, niche)`: Deduces platform-specific weights (Reddit vs G2 vs PR vs Freshness).
+2. `reverse_engineer_ranking_factors(target_brand, niche)`: Returns labeled platform-specific research priors (Reddit vs G2 vs PR vs Freshness); does not fit weights.
 3. `generate_geo_playbook(brand, niche)`: Generates actionable on-page and off-page GEO strategies.
 
 ---
@@ -154,7 +169,7 @@ It is designed to function as an experimental laboratory and observatory for stu
 
 ### Important Clarification on Baseline Metrics
 
-The numerical results and weights presented in this project — such as **Reddit/UGC 32%**, **Reviews 24%**, **PR 20%**, **Entity Grounding 12%**, **Structured Tables/BLUF 8%**, **Freshness 4%**, and observed engine behaviors (e.g. 38% Reddit citation density in Perplexity) — are empirical observations derived from the project's **INITIAL baseline experiments**.
+The numerical factor profiles in the repository are **hypothesis priors**, not weights estimated from the current benchmark. Simulation examples illustrate the workflow. Live visibility results must be interpreted using their saved prompts, actual model, execution date and provider evidence.
 
 They are **NOT** claimed to be:
 - Universal ranking factors
@@ -252,7 +267,7 @@ geo-scope demo
 
 ```bash
 # Run custom benchmark with CSV, JSON, or TXT queries
-geo-scope run --brand "My Brand" --competitors "Competitor A, Competitor B" --prompts datasets/saas_crm.csv --out results/my_brand/
+geo-scope run --brand "My Brand" --competitors "Competitor A, Competitor B" --mode simulate --count 10 --out results/my_brand/
 ```
 
 ### 4. Launch Interactive Web Dashboard

@@ -2,7 +2,6 @@
 Tests for Provider Architecture & Registry
 """
 
-import pytest
 import asyncio
 from geo_scope.providers.registry import registry
 from geo_scope.providers.simulated import SimulatedProvider
@@ -12,9 +11,10 @@ def test_provider_registry_contains_defaults():
     providers = registry.list_all()
     names = [p["id"] for p in providers]
     assert "perplexity_sonar" in names
-    assert "chatgpt_search" in names
+    assert "openai_completion" in names
+    assert registry.get("chatgpt_search").name == "openai_completion"
     assert "gemini_grounding" in names
-    assert "claude_3_7" in names
+    assert "claude_completion" in names
 
 
 def test_cost_estimation():
@@ -29,7 +29,7 @@ def test_simulated_provider_generation():
         "id": "p1",
         "query": "Best CRM in 2026",
         "target_brand": "HubSpot",
-        "expected_entities": ["HubSpot", "Salesforce"]
+        "expected_entities": ["HubSpot", "Salesforce"],
     }
     res = asyncio.run(sim.generate_response(prompt_item))
     assert isinstance(res, str)
