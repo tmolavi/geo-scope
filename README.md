@@ -103,40 +103,29 @@ GEO-Scope قرار نیست از کاربران بخواهد نتایج اولی
 
 ---
 
-## 🔌 MCP Integration (Claude Desktop & Cursor)
+## 🔌 MCP Integration (Codex, Antigravity, Claude, Cursor and other clients)
 
-GEO-Scope includes a native **Model Context Protocol (MCP)** server, allowing you to run AI visibility audits directly inside **Claude Desktop**, **Cursor**, **Windsurf**, or custom AI agents.
+GEO-Scope includes a native **Model Context Protocol (MCP)** stdio server, allowing local MCP clients such as **Codex**, **Antigravity**, **Claude Desktop**, **Cursor**, **Windsurf**, or custom AI agents to run the same tools. Cloud clients require a separately deployed authenticated MCP HTTP transport; the repository does not pretend that the local dashboard is one.
 
-### Configuration for Claude Desktop (`claude_desktop_config.json`)
-
-```json
-{
-  "mcpServers": {
-    "geo-scope": {
-      "command": "python3",
-      "args": ["-m", "geo_scope.mcp_server"]
-    }
-  }
-}
-```
-
-### Configuration for Cursor IDE (`.cursor/mcp.json`)
+### Common configuration (`claude_desktop_config.json`, Cursor, Windsurf or Antigravity MCP settings)
 
 ```json
 {
   "mcpServers": {
     "geo-scope": {
-      "command": "geo-scope",
+      "command": "/absolute/path/to/geo-scope/.venv/bin/geo-scope",
       "args": ["mcp"]
     }
   }
 }
 ```
 
-### Available MCP Tools in Claude / Cursor:
+### Available MCP Tools:
 1. `audit_ai_visibility(brand, niche, competitors, prompt_count)`: Calculates Share of Model (SoM) and Top-1 rank across AI engines.
 2. `reverse_engineer_ranking_factors(target_brand, niche)`: Returns labeled platform-specific research priors (Reddit vs G2 vs PR vs Freshness); does not fit weights.
 3. `generate_geo_playbook(brand, niche)`: Generates actionable on-page and off-page GEO strategies.
+
+See [client-specific setup, smoke test and Cloud boundary](docs/CLIENT_INTEGRATIONS.md).
 
 ---
 
