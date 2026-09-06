@@ -17,7 +17,7 @@
 [![Docker Support](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[English Overview](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [📄 Research Whitepaper](docs/WHITEPAPER.md) • [🥊 Challenge Findings](CHALLENGE.md) • [🧪 Community Experiments](experiments/) • [MCP Server Setup](#-mcp-integration-claude-desktop--cursor) • [Visibility Score Algorithm](#-computational-methodology--visibility-score) • [Real-World Use Cases](#-real-world-use-cases-سناریوهای-کاربردی) • [Live API Setup](docs/API_INTEGRATION.md)
+[English Overview](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [📄 Research Whitepaper](docs/WHITEPAPER.md) • [🥊 Challenge Findings](CHALLENGE.md) • [🧪 Community Experiments](experiments/) • [راهنمای نصب و استفاده](docs/CLIENT_INTEGRATIONS.md) • [MCP Server Setup](#-mcp-integration-claude-desktop--cursor) • [Visibility Score Algorithm](#-computational-methodology--visibility-score) • [Real-World Use Cases](#-real-world-use-cases-سناریوهای-کاربردی) • [Live API Setup](docs/API_INTEGRATION.md)
 
 </div>
 
@@ -40,6 +40,8 @@ geo-scope run --responses results/raw_responses.json --brand HubSpot --out repla
 ```
 
 See [live and Codex/MCP setup](docs/API_INTEGRATION.md) and [free/local access with operator conditions](docs/FREE_ACCESS.md). Install a local model for Ollama; cloud providers require your own credentials. Optional public noncommercial research access is documented separately.
+
+**New here?** Start with the [installation and usage guide](docs/CLIENT_INTEGRATIONS.md), or see the [provider/API setup](docs/API_INTEGRATION.md) for live runs.
 
 ### ⚡ 5-Minute Quickstart (Run Your First Benchmark)
 
