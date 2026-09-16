@@ -1,7 +1,7 @@
 """
 OpenAI Provider (GPT-4o Direct Completion)
 Note: Standard OpenAI /v1/chat/completions provides direct LLM generation based on model knowledge.
-Classification: LIVE BUT NOT SEARCH-GROUNDED (Unless piped through an external search tool).
+Classification: LIVE BUT NOT SEARCH-GROUNDED (Direct API completion, parametric knowledge).
 """
 
 import os
@@ -20,6 +20,7 @@ class OpenAIProvider(BaseProvider):
         )
         self.api_key = api_key or os.getenv("OPENAI_API_KEY", "")
         self.model = os.getenv("OPENAI_MODEL", model)
+        self.search_grounded = False
 
     def is_available(self) -> bool:
         return bool(self.api_key)
@@ -46,9 +47,12 @@ class OpenAIProvider(BaseProvider):
             response = await client.post(url, json=payload, headers=headers)
             response.raise_for_status()
             data = response.json()
+            content = data["choices"][0]["message"]["content"]
             self.last_evidence = {
-                "model": data.get("model"),
+                "model": data.get("model", self.model),
                 "usage": data.get("usage", {}),
-                "request_settings": {"temperature": 0.2},
+                "citations": [],
+                "raw_payload": data,
+                "request_settings": {"temperature": 0.2, "search_grounded": False},
             }
-            return data["choices"][0]["message"]["content"]
+            return content

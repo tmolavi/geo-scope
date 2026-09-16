@@ -120,8 +120,10 @@ def _build_markdown_summary(exp_id, timestamp, summary, sov, citations, factors,
     brand = summary.get("target_brand", "Target Brand")
     total_q = summary.get("total_queries_tested", 0)
     total_inf = summary.get("total_ai_executions", 0)
-    overall_sov = summary.get("overall_sov", 0.0)
-    top1_rate = summary.get("overall_top1_rate", 0.0)
+    overall_sov = summary.get("overall_sov")
+    overall_sov_str = f"{overall_sov}%" if overall_sov is not None else "N/A"
+    top1_rate = summary.get("overall_top1_rate")
+    top1_rate_str = f"{top1_rate}%" if top1_rate is not None else "N/A"
     best_m = summary.get("best_performing_model", "N/A")
 
     lines = [
@@ -131,8 +133,8 @@ def _build_markdown_summary(exp_id, timestamp, summary, sov, citations, factors,
         f"- **Target Brand**: `{brand}`",
         f"- **Total Prompts Evaluated**: `{total_q}` ({total_inf} multi-model inferences)",
         f"- **Execution Mode**: `{summary.get('execution_mode', 'unknown')}`",
-        f"- **Overall Mention Rate (Share of Model)**: **`{overall_sov}%`**",
-        f"- **Top-1 Recommendation Pick Rate**: **`{top1_rate}%`**",
+        f"- **Overall Mention Rate (Share of Model)**: **`{overall_sov_str}`**",
+        f"- **Top-1 Recommendation Pick Rate**: **`{top1_rate_str}`**",
         f"- **Top Performing AI Engine**: `{best_m}`\n",
         "## 🤖 Model-by-Model Visibility Breakdown\n",
         "| AI Engine | Mention Rate (SoM %) | Top #1 Pick Rate (%) | Average List Rank |",
@@ -146,8 +148,10 @@ def _build_markdown_summary(exp_id, timestamp, summary, sov, citations, factors,
         )
     by_model = sov.get("by_model", {})
     for m, st in by_model.items():
+        m_rate = f"{st.get('mention_rate_pct')}%" if st.get('mention_rate_pct') is not None else "N/A"
+        t_rate = f"{st.get('top1_rate_pct')}%" if st.get('top1_rate_pct') is not None else "N/A"
         lines.append(
-            f"| **{m}** | {st.get('mention_rate_pct', 0)}% | {st.get('top1_rate_pct', 0)}% | {st.get('avg_rank') if st.get('avg_rank') is not None else 'N/A'} |"
+            f"| **{m}** | {m_rate} | {t_rate} | {st.get('avg_rank') if st.get('avg_rank') is not None else 'N/A'} |"
         )
 
     lines.append("\n## 🏆 Competitor Share of Voice Matrix\n")
@@ -157,8 +161,11 @@ def _build_markdown_summary(exp_id, timestamp, summary, sov, citations, factors,
     lines.append("| :--- | :---: | :---: | :---: | :---: |")
     for c in competitors:
         is_t = "🎯 Target Brand" if c.get("is_target") else "Competitor"
+        m_rate = f"{c.get('mention_rate_pct')}%" if c.get('mention_rate_pct') is not None else "N/A"
+        sov_rate = f"{c.get('share_of_voice_pct')}%" if c.get('share_of_voice_pct') is not None else "N/A"
+        t_rate = f"{c.get('top1_rate_pct')}%" if c.get('top1_rate_pct') is not None else "N/A"
         lines.append(
-            f"| **{c.get('brand')}** | {c.get('mention_rate_pct')}% | {c.get('share_of_voice_pct')}% | {c.get('top1_rate_pct')}% | {is_t} |"
+            f"| **{c.get('brand')}** | {m_rate} | {sov_rate} | {t_rate} | {is_t} |"
         )
 
     lines.append("\n## 🔗 Referenced Sources (see citation provenance)\n")
@@ -183,17 +190,21 @@ def _build_markdown_summary(exp_id, timestamp, summary, sov, citations, factors,
 
 def _build_portable_html_report(exp_id, timestamp, summary, sov, citations, factors, competitors):
     brand = summary.get("target_brand", "Target Brand")
-    overall_sov = summary.get("overall_sov", 0.0)
-    top1_rate = summary.get("overall_top1_rate", 0.0)
+    overall_sov = summary.get("overall_sov")
+    overall_sov_str = f"{overall_sov}%" if overall_sov is not None else "N/A"
+    top1_rate = summary.get("overall_top1_rate")
+    top1_rate_str = f"{top1_rate}%" if top1_rate is not None else "N/A"
     total_q = summary.get("total_queries_tested", 0)
 
     model_rows = ""
     for m, st in sov.get("by_model", {}).items():
+        m_rate = f"{st.get('mention_rate_pct')}%" if st.get('mention_rate_pct') is not None else "N/A"
+        t_rate = f"{st.get('top1_rate_pct')}%" if st.get('top1_rate_pct') is not None else "N/A"
         model_rows += f"""
         <tr>
             <td style="padding: 10px 14px; font-weight: bold; border-bottom: 1px solid #1e293b;">{m}</td>
-            <td style="padding: 10px 14px; text-align: center; color: #818cf8; font-weight: bold; border-bottom: 1px solid #1e293b;">{st.get('mention_rate_pct', 0)}%</td>
-            <td style="padding: 10px 14px; text-align: center; color: #fbbf24; font-weight: bold; border-bottom: 1px solid #1e293b;">{st.get('top1_rate_pct', 0)}%</td>
+            <td style="padding: 10px 14px; text-align: center; color: #818cf8; font-weight: bold; border-bottom: 1px solid #1e293b;">{m_rate}</td>
+            <td style="padding: 10px 14px; text-align: center; color: #fbbf24; font-weight: bold; border-bottom: 1px solid #1e293b;">{t_rate}</td>
             <td style="padding: 10px 14px; text-align: center; color: #94a3b8; border-bottom: 1px solid #1e293b;">{st.get('avg_rank') if st.get('avg_rank') is not None else 'N/A'}</td>
         </tr>
         """
@@ -205,11 +216,13 @@ def _build_portable_html_report(exp_id, timestamp, summary, sov, citations, fact
             if c.get("is_target")
             else '<span style="color: #64748b; font-size: 11px;">Competitor</span>'
         )
+        m_rate = f"{c.get('mention_rate_pct')}%" if c.get('mention_rate_pct') is not None else "N/A"
+        t_rate = f"{c.get('top1_rate_pct')}%" if c.get('top1_rate_pct') is not None else "N/A"
         comp_rows += f"""
         <tr>
             <td style="padding: 10px 14px; font-weight: bold; border-bottom: 1px solid #1e293b;">{c.get('brand')}</td>
-            <td style="padding: 10px 14px; text-align: center; color: #818cf8; font-weight: bold; border-bottom: 1px solid #1e293b;">{c.get('mention_rate_pct')}%</td>
-            <td style="padding: 10px 14px; text-align: center; color: #fbbf24; font-weight: bold; border-bottom: 1px solid #1e293b;">{c.get('top1_rate_pct')}%</td>
+            <td style="padding: 10px 14px; text-align: center; color: #818cf8; font-weight: bold; border-bottom: 1px solid #1e293b;">{m_rate}</td>
+            <td style="padding: 10px 14px; text-align: center; color: #fbbf24; font-weight: bold; border-bottom: 1px solid #1e293b;">{t_rate}</td>
             <td style="padding: 10px 14px; text-align: center; border-bottom: 1px solid #1e293b;">{is_target_badge}</td>
         </tr>
         """

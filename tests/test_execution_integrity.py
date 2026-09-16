@@ -62,16 +62,25 @@ def test_live_calls_provider_and_keeps_evidence(prompt):
 def test_failed_live_never_simulates_or_exposes_secrets(prompt):
     registry = ProviderRegistry()
     registry.register(RecordingProvider(fail=True))
-    with pytest.raises(RuntimeError) as exc:
-        asyncio.run(ModelRunner(mode="live", providers=registry).execute_batch([prompt], ["recording"]))
-    assert "no simulated fallback" in str(exc.value)
-    assert "private-provider-error-secret" not in str(exc.value)
+    records = asyncio.run(ModelRunner(mode="live", providers=registry).execute_batch([prompt], ["recording"]))
+    assert records[0]["status"] == "failed"
+    assert records[0]["provenance"]["execution_mode"] == "live"
+    assert records[0]["provenance"]["fallback_disabled"] is True
+    # Verify no secret leaked into records or error
+    dumped = json.dumps(records[0])
+    assert "private-provider-error-secret" not in dumped
 
 
-def test_missing_key_rejected_before_calls(prompt, monkeypatch):
+def test_missing_key_returns_structured_failure_without_simulation(prompt, monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
-    with pytest.raises(ValueError, match="not configured"):
-        asyncio.run(ModelRunner(mode="live").execute_batch([prompt], ["openai_completion"]))
+    records = asyncio.run(ModelRunner(mode="live").execute_batch([prompt], ["openai_completion"]))
+    assert len(records) == 1
+    assert records[0]["status"] == "failed"
+    assert records[0]["error"]["type"] == "missing_credentials"
+    assert records[0]["provenance"]["execution_mode"] == "live"
+    assert records[0]["provenance"]["fallback_disabled"] is True
+    # Ensure simulator was not called
+    assert "simulation" not in records[0]["provenance"]["model_id"]
 
 
 def test_simulation_is_repeatable_and_does_not_touch_global_rng(prompt):

@@ -29,6 +29,10 @@ class AlgoAnalyzer:
         gaps_and_opportunities = self._generate_strategic_gaps(sov_data, citation_data, algo_weights)
 
         modes = sorted({r.get("provenance", {}).get("execution_mode", "unknown") for r in self.records})
+        successful_records = [r for r in self.records if r.get("status") != "failed" and r.get("target_mentioned") is not None]
+        failed_records = [r for r in self.records if r.get("status") == "failed" or r.get("target_mentioned") is None]
+        measurement_status = "valid" if len(successful_records) > 0 else "insufficient_data"
+
         return {
             "summary": {
                 "experiment_signature": hashlib.sha256(
@@ -48,9 +52,14 @@ class AlgoAnalyzer:
                 ).hexdigest(),
                 "execution_mode": modes[0] if len(modes) == 1 else "mixed",
                 "measurement_scope": "Observed responses for this prompt set; no causal ranking-factor inference",
+                "measurement_status": measurement_status,
+                "reason": "no successful observations" if len(successful_records) == 0 else None,
                 "provider_provenance": {r["model"]: r.get("provenance", {}) for r in self.records},
                 "total_queries_tested": len(set(r["query_id"] for r in self.records)),
                 "total_ai_executions": len(self.records),
+                "successful_executions": len(successful_records),
+                "failed_executions": len(failed_records),
+                "failure_rate_pct": round((len(failed_records) / len(self.records)) * 100, 1) if self.records else 0.0,
                 "target_brand": self.target_brand,
                 "competitors": self.competitors,
                 "overall_sov": sov_data["overall_target_sov"],
@@ -72,42 +81,56 @@ class AlgoAnalyzer:
 
         total_target_mentions = 0
         total_target_top1 = 0
-        total_records = len(self.records)
+        total_valid_records = 0
 
         for model in models:
             m_records = [r for r in self.records if r["model"] == model]
-            n = len(m_records) or 1
+            m_valid = [r for r in m_records if r.get("status") != "failed" and r.get("target_mentioned") is not None]
+            m_failed = [r for r in m_records if r.get("status") == "failed" or r.get("target_mentioned") is None]
+            n_valid = len(m_valid)
+            n_total = len(m_records)
+            total_valid_records += n_valid
 
-            target_mentions = sum(1 for r in m_records if r["target_mentioned"])
-            target_top1 = sum(1 for r in m_records if r["target_is_top_1"])
+            target_mentions = sum(1 for r in m_valid if r.get("target_mentioned") is True)
+            target_top1 = sum(1 for r in m_valid if r.get("target_is_top_1") is True)
 
             # Rank average (for queries where target was mentioned)
-            ranks = [r["target_rank"] for r in m_records if r["target_mentioned"] and (r["target_rank"] or 0) > 0]
+            ranks = [r["target_rank"] for r in m_valid if r.get("target_mentioned") and (r.get("target_rank") or 0) > 0]
             avg_rank = float(np.mean(ranks)) if ranks else None
 
             # Sentiment breakdown
-            sentiments = Counter(r["target_sentiment"] for r in m_records if r["target_mentioned"])
+            sentiments = Counter(r.get("target_sentiment") for r in m_valid if r.get("target_mentioned"))
+
+            obs_mention_rate = round((target_mentions / n_valid) * 100, 1) if n_valid > 0 else None
+            obs_top1_rate = round((target_top1 / n_valid) * 100, 1) if n_valid > 0 else None
 
             by_model[model] = {
-                "total_queries": n,
+                "total_queries": n_total,
+                "successful_queries": n_valid,
+                "failed_queries": len(m_failed),
+                "failure_rate_pct": round((len(m_failed) / n_total) * 100, 1) if n_total else 0.0,
                 "mention_count": target_mentions,
-                "mention_rate_pct": round((target_mentions / n) * 100, 1),
+                "mention_rate_pct": obs_mention_rate,
+                "observed_mention_rate_pct": obs_mention_rate,
                 "top1_count": target_top1,
-                "top1_rate_pct": round((target_top1 / n) * 100, 1),
+                "top1_rate_pct": obs_top1_rate,
                 "avg_rank": round(avg_rank, 2) if avg_rank is not None else None,
                 "rank_known_count": len(ranks),
                 "rank_unknown_count": target_mentions - len(ranks),
                 "sentiment_dist": dict(sentiments),
+                "status": "failed" if n_valid == 0 and len(m_failed) > 0 else ("partial" if m_failed else "success"),
+                "measurement_status": "valid" if n_valid > 0 else "insufficient_data",
             }
             total_target_mentions += target_mentions
             total_target_top1 += target_top1
 
-        overall_sov = round((total_target_mentions / total_records) * 100, 1) if total_records else 0
-        overall_top1 = round((total_target_top1 / total_records) * 100, 1) if total_records else 0
+        overall_sov = round((total_target_mentions / total_valid_records) * 100, 1) if total_valid_records > 0 else None
+        overall_top1 = round((total_target_top1 / total_valid_records) * 100, 1) if total_valid_records > 0 else None
 
-        # Best and weakest model
-        best_m = max(by_model.keys(), key=lambda m: by_model[m]["mention_rate_pct"]) if by_model else "N/A"
-        weakest_m = min(by_model.keys(), key=lambda m: by_model[m]["mention_rate_pct"]) if by_model else "N/A"
+        # Best and weakest model among those with successful runs
+        active_models = [m for m, st in by_model.items() if st["successful_queries"] > 0]
+        best_m = max(active_models, key=lambda m: (by_model[m]["mention_rate_pct"] or 0)) if active_models else "N/A"
+        weakest_m = min(active_models, key=lambda m: (by_model[m]["mention_rate_pct"] or 0)) if active_models else "N/A"
 
         return {
             "by_model": by_model,
@@ -115,6 +138,7 @@ class AlgoAnalyzer:
             "overall_target_top1_rate": overall_top1,
             "best_model": best_m,
             "weakest_model": weakest_m,
+            "measurement_status": "valid" if total_valid_records > 0 else "insufficient_data",
         }
 
     def _compute_citation_analytics(self) -> Dict[str, Any]:
@@ -245,24 +269,28 @@ class AlgoAnalyzer:
 
         for intent in intents:
             i_records = [r for r in self.records if r["intent"] == intent]
-            n = len(i_records) or 1
+            i_valid = [r for r in i_records if r.get("status") != "failed" and r.get("target_mentioned") is not None]
+            n = len(i_valid)
 
-            target_mentions = sum(1 for r in i_records if r["target_mentioned"])
-            target_top1 = sum(1 for r in i_records if r["target_is_top_1"])
+            target_mentions = sum(1 for r in i_valid if r.get("target_mentioned") is True)
+            target_top1 = sum(1 for r in i_valid if r.get("target_is_top_1") is True)
 
             intent_stats[intent] = {
-                "query_count": n,
-                "mention_rate_pct": round((target_mentions / n) * 100, 1),
-                "top1_rate_pct": round((target_top1 / n) * 100, 1),
+                "query_count": len(i_records),
+                "successful_query_count": n,
+                "mention_rate_pct": round((target_mentions / n) * 100, 1) if n > 0 else None,
+                "top1_rate_pct": round((target_top1 / n) * 100, 1) if n > 0 else None,
+                "measurement_status": "valid" if n > 0 else "insufficient_data",
             }
 
         return intent_stats
 
     def _compute_competitor_matrix(self) -> List[Dict[str, Any]]:
         competitor_stats = defaultdict(lambda: {"mentions": 0, "top1": 0, "positive": 0})
-        total_queries = len(self.records) or 1
+        valid_records = [r for r in self.records if r.get("status") != "failed" and r.get("target_mentioned") is not None]
+        total_valid = len(valid_records)
 
-        for r in self.records:
+        for r in valid_records:
             brand_stats = r.get("all_brands_stats", {})
             for brand, stats in brand_stats.items():
                 if stats.get("mentioned", False):
@@ -276,26 +304,26 @@ class AlgoAnalyzer:
         matrix = []
         for brand in self.all_brands:
             st = competitor_stats[brand]
-            mention_rate = round((st["mentions"] / total_queries) * 100, 1)
-            top1_rate = round((st["top1"] / total_queries) * 100, 1)
+            mention_rate = round((st["mentions"] / total_valid) * 100, 1) if total_valid > 0 else None
+            top1_rate = round((st["top1"] / total_valid) * 100, 1) if total_valid > 0 else None
+            sov_pct = round((st["mentions"] / total_brand_mentions) * 100, 1) if total_brand_mentions > 0 else None
             matrix.append(
                 {
                     "brand": brand,
                     "is_target": brand == self.target_brand,
-                    "share_of_voice_pct": (
-                        round(st["mentions"] / total_brand_mentions * 100, 1) if total_brand_mentions else 0.0
-                    ),
+                    "share_of_voice_pct": sov_pct,
                     "total_mentions": st["mentions"],
                     "mention_rate_pct": mention_rate,
                     "top1_count": st["top1"],
                     "top1_rate_pct": top1_rate,
                     "positive_sentiment_count": st["positive"],
-                    "sentiment_score": round((st["positive"] / (st["mentions"] or 1)) * 100, 1),
+                    "sentiment_score": round((st["positive"] / (st["mentions"] or 1)) * 100, 1) if st["mentions"] > 0 else None,
+                    "measurement_status": "valid" if total_valid > 0 else "insufficient_data",
                 }
             )
 
-        # Sort by mention rate descending
-        matrix.sort(key=lambda x: x["mention_rate_pct"], reverse=True)
+        # Sort by mention rate descending (None values last)
+        matrix.sort(key=lambda x: (x["mention_rate_pct"] is not None, x["mention_rate_pct"] or 0), reverse=True)
         return matrix
 
     def _generate_strategic_gaps(

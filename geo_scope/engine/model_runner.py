@@ -1,13 +1,19 @@
 """
 Model Runner & Engine Simulator
-Runs queries against live APIs (OpenAI, Perplexity, Gemini, Claude) or high-fidelity GEO Simulation.
+Runs queries against live APIs (OpenAI, Perplexity, Gemini, Claude) via ProviderRegistry,
+or high-fidelity deterministic GEO Simulation. Never silently falls back from LIVE to SIMULATION.
 """
 
 import asyncio
 import random
 from datetime import datetime, timezone
-from geo_scope.providers.registry import ProviderRegistry
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
+
+from geo_scope.engine.execution_mode import ExecutionMode
+from geo_scope.engine.persistence import RawRunStore
+from geo_scope.providers.registry import ProviderRegistry, registry as default_registry
+from geo_scope.providers.models import ProviderResponse
+
 
 # Pre-defined realistic domain pools for RAG simulation
 CITATIONS_BY_NICHE = {
@@ -85,26 +91,47 @@ CITATIONS_BY_NICHE = {
 
 
 class ModelRunner:
-    def __init__(self, api_keys: Optional[Dict[str, str]] = None, mode="simulate", seed=42, providers=None):
-        if mode not in {"simulate", "live"}:
-            raise ValueError("mode must be simulate or live")
-        self.mode = mode
+    def __init__(
+        self,
+        api_keys: Optional[Dict[str, str]] = None,
+        mode: Union[str, ExecutionMode] = ExecutionMode.SIMULATION,
+        seed: int = 42,
+        providers: Optional[ProviderRegistry] = None,
+        run_store: Optional[RawRunStore] = None,
+        experiment_id: Optional[str] = None,
+        raise_on_failure: bool = False,
+    ):
+        if isinstance(mode, ExecutionMode):
+            self.mode = mode
+        else:
+            self.mode = ExecutionMode.from_string(mode)
+
         self.seed = seed
         self.rng = random.Random(seed)
         self.providers = providers or ProviderRegistry()
         self.api_keys = api_keys or {}
+        self.run_store = run_store
+        self.experiment_id = experiment_id or f"EXP-{int(datetime.now(timezone.utc).timestamp())}"
+        self.raise_on_failure = raise_on_failure
+
         for name, key in self.api_keys.items():
             provider = self.providers.get(name)
             if provider is None or not hasattr(provider, "api_key"):
                 raise ValueError(f"Unknown keyed provider: {name}")
             provider.api_key = key
+
         self.active_models = ["perplexity_sonar", "chatgpt_search", "gemini_grounding", "claude_3_7"]
 
     async def execute_batch(
-        self, prompts: List[Dict[str, Any]], models: List[str] = None, progress_callback=None
+        self,
+        prompts: List[Dict[str, Any]],
+        models: Optional[List[str]] = None,
+        progress_callback=None,
     ) -> List[Dict[str, Any]]:
         """
-        Executes a batch of queries across selected AI models.
+        Executes a batch of queries across selected AI engines.
+        In LIVE mode: invokes real providers via ProviderRegistry and persists raw evidence.
+        In SIMULATION mode: uses deterministic simulation only.
         """
         target_models = self.active_models if models is None else models
         self.validate_models(target_models)
@@ -113,80 +140,106 @@ class ModelRunner:
         completed = 0
         raw_responses = []
 
-        # Process in chunks to maintain high responsiveness
+        # If persistence is active, store prompts
+        if self.run_store:
+            self.run_store.save_prompts(prompts)
+
+        # Process in chunks to maintain responsiveness and avoid overwhelming event loop
         chunk_size = 20
         for i in range(0, len(prompts), chunk_size):
             chunk = prompts[i : i + chunk_size]
             for prompt_item in chunk:
                 for model in target_models:
-                    res_text = await self._generate_response(prompt_item, model)
-                    raw_responses.append(
-                        {
+                    if self.mode == ExecutionMode.SIMULATION:
+                        res_text = self._simulate_realistic_response(prompt_item, model)
+                        record = {
                             "query_item": prompt_item,
                             "model": model,
                             "response_text": res_text,
+                            "status": "success",
+                            "error": None,
                             "provenance": {
-                                "execution_mode": self.mode,
-                                "seed": self.seed if self.mode == "simulate" else None,
+                                "execution_mode": ExecutionMode.SIMULATION.value,
+                                "seed": self.seed,
                                 "timestamp_utc": datetime.now(timezone.utc).isoformat(),
                                 "provider_id": model,
-                                "model_id": (
-                                    "simulation-profile:" + model
-                                    if self.mode == "simulate"
-                                    else getattr(self.providers.get(model), "model", model)
-                                ),
-                                "response_kind": (
-                                    "simulated"
-                                    if self.mode == "simulate"
-                                    else getattr(self.providers.get(model), "response_kind", "direct_completion")
-                                ),
-                                "provider_evidence": (
-                                    getattr(self.providers.get(model), "last_evidence", {})
-                                    if self.mode == "live"
-                                    else {}
-                                ),
+                                "model_id": "simulation-profile:" + model,
+                                "response_kind": "simulated",
+                                "search_grounded": False,
+                                "provider_evidence": {},
+                                "fallback_disabled": True,
                             },
                         }
-                    )
+                    else:
+                        # LIVE EXECUTION PATH
+                        provider = self.providers.resolve(model)
+                        provider_resp = await provider.generate(prompt_item, execution_mode=ExecutionMode.LIVE.value)
+
+                        # Raw persistence hook
+                        if self.run_store:
+                            raw_rec = provider_resp.to_raw_record(
+                                experiment_id=self.experiment_id,
+                                run_id=f"run_{self.experiment_id}",
+                                prompt_id=str(prompt_item.get("id", "")),
+                                prompt=prompt_item.get("query", ""),
+                            )
+                            self.run_store.append_raw_record(raw_rec)
+
+                        if provider_resp.is_failed() and self.raise_on_failure:
+                            err_type = provider_resp.error.get("type", "Error") if provider_resp.error else "Error"
+                            raise RuntimeError(
+                                f"Provider {model} failed ({err_type}); no simulated fallback was used."
+                            )
+
+                        record = {
+                            "query_item": prompt_item,
+                            "model": model,
+                            "response_text": provider_resp.text,
+                            "status": provider_resp.status,
+                            "error": provider_resp.error,
+                            "provenance": {
+                                "execution_mode": ExecutionMode.LIVE.value,
+                                "seed": None,
+                                "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                                "provider_id": provider.name,
+                                "model_id": provider_resp.model,
+                                "response_kind": provider_resp.metadata.get("response_kind", provider.response_kind),
+                                "search_grounded": provider_resp.metadata.get("search_grounded", False),
+                                "provider_evidence": {
+                                    "citations": provider_resp.citations,
+                                    "raw_payload": provider_resp.raw,
+                                    "grounding_metadata": provider_resp.metadata.get("grounding_metadata", {}),
+                                    "usage": provider_resp.usage,
+                                    "latency_ms": provider_resp.latency_ms,
+                                    "status": provider_resp.status,
+                                    "error": provider_resp.error,
+                                },
+                                "status": provider_resp.status,
+                                "error": provider_resp.error,
+                                "fallback_disabled": True,
+                            },
+                        }
+
+                    raw_responses.append(record)
                     completed += 1
                 if progress_callback:
                     progress_callback(completed, total_tasks)
-            # Brief async yield
             await asyncio.sleep(0.01)
 
         return raw_responses
 
-    async def _generate_response(self, prompt_item: Dict[str, Any], model: str) -> str:
-        """
-        Generates response using live API if keys available, or ultra-realistic RAG simulator.
-        """
-        # Check if live API key is available
-        # (If keys provided, can call OpenAI/Perplexity/Gemini/Anthropic endpoints)
-        if self.mode == "simulate":
-            return self._simulate_realistic_response(prompt_item, model)
-        provider = self.providers.get(model)
-        try:
-            text = await provider.generate_response(prompt_item)
-        except Exception as exc:
-            # Do not expose headers, keys or provider URLs in CLI/MCP errors.
-            raise RuntimeError(
-                f"Provider {model} failed ({type(exc).__name__}); no simulated fallback was used."
-            ) from None
-        if not isinstance(text, str) or not text.strip():
-            raise RuntimeError(f"Provider {model} returned an empty response")
-        return text
-
-    def validate_models(self, models):
+    def validate_models(self, models: List[str]):
         if not models or len(models) != len(set(models)):
             raise ValueError("Select at least one unique provider")
         for model in models:
-            if self.mode == "simulate":
+            if self.mode == ExecutionMode.SIMULATION:
                 if model not in self.active_models:
                     raise ValueError(f"No simulation profile for {model}")
             else:
+                # In live mode, verify provider exists in registry
                 provider = self.providers.get(model)
-                if provider is None or not provider.is_available():
-                    raise ValueError(f"Provider {model} is not configured; see geo-scope providers")
+                if provider is None:
+                    raise ValueError(f"Provider {model} is not registered; see geo-scope providers")
 
     def _simulate_realistic_response(self, prompt_item: Dict[str, Any], model: str) -> str:
         """
@@ -204,22 +257,14 @@ class ModelRunner:
         niche = prompt_item.get("niche", "crm_sales")
         query = prompt_item.get("query", "")
 
-        # Bias modeling per AI architecture:
-        # Perplexity: High Reddit citation weight (40%), direct bullet points, numbered citations
-        # ChatGPT Search: Bing index, G2 / high DR media, structured tables
-        # Gemini Grounding: Google index, Freshness, balanced overview
-        # Claude: Comprehensive analysis, conceptual depth
-
         pool = CITATIONS_BY_NICHE.get(niche, CITATIONS_BY_NICHE["crm_sales"])
         ugc_links = pool.get("ugc", [])
         rev_links = pool.get("reviews", [])
         med_links = pool.get("media", [])
         off_links = pool.get("official", [])
 
-        # Citation assignment based on model bias
         citations = []
         if model == "perplexity_sonar":
-            # Perplexity heavily cites Reddit + Reviews
             citations.extend(self.rng.sample(ugc_links, min(2, len(ugc_links))))
             citations.extend(self.rng.sample(rev_links, min(1, len(rev_links))))
         elif model == "chatgpt_search":
@@ -232,12 +277,9 @@ class ModelRunner:
             citations.extend(self.rng.sample(rev_links, min(1, len(rev_links))))
             citations.extend(self.rng.sample(med_links, min(1, len(med_links))))
 
-        # Determine brand placement probability
-        # Let's say Target Brand has ~68% mention probability, 42% #1 position probability
         target_in_top1 = self.rng.random() < 0.45
         target_mentioned = target_in_top1 or (self.rng.random() < 0.40)
 
-        # Build realistic synthesized response
         if lang == "fa":
             return self._build_persian_response(
                 query, target_brand, comps, intent, model, target_mentioned, target_in_top1, citations
@@ -262,12 +304,10 @@ class ModelRunner:
         else:
             ordered_list.extend(self.rng.sample(comps, min(4, len(comps))))
 
-        lines = []
-        lines.append(
-            "بر اساس آخرین بررسی‌های بازار و تحلیل نیازهای سازمانی در سال ۲۰۲۶، پاسخ دقیق به پرسش شما در ادامه آمده است:\n"
-        )
-
-        lines.append("### گزینه‌های برتر و توصیه‌شده:")
+        lines = [
+            "بر اساس آخرین بررسی‌های بازار و تحلیل نیازهای سازمانی در سال ۲۰۲۶، پاسخ دقیق به پرسش شما در ادامه آمده است:\n",
+            "### گزینه‌های برتر و توصیه‌شده:",
+        ]
         for idx, item in enumerate(ordered_list, 1):
             if item == brand:
                 lines.append(
@@ -305,12 +345,10 @@ class ModelRunner:
         else:
             ordered_list.extend(self.rng.sample(comps, min(4, len(comps))))
 
-        lines = []
-        lines.append(
-            "Based on 2026 market benchmarks, user feedback, and expert consensus, here is the detailed breakdown:\n"
-        )
-
-        lines.append("### Top Recommended Solutions:")
+        lines = [
+            "Based on 2026 market benchmarks, user feedback, and expert consensus, here is the detailed breakdown:\n",
+            "### Top Recommended Solutions:",
+        ]
         for idx, item in enumerate(ordered_list, 1):
             if item == brand:
                 lines.append(

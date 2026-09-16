@@ -26,8 +26,8 @@ def save_benchmark_snapshot(
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
     current_summary = analysis_results.get("summary", {})
-    current_sov = current_summary.get("overall_sov", 0.0)
-    current_top1 = current_summary.get("overall_top1_rate", 0.0)
+    current_sov = current_summary.get("overall_sov")
+    current_top1 = current_summary.get("overall_top1_rate")
 
     execution_mode = current_summary.get("execution_mode", "unknown")
     provider_ids = sorted(current_summary.get("provider_provenance", {}))
@@ -47,11 +47,15 @@ def save_benchmark_snapshot(
     delta_top1 = 0.0
     is_first_run = True
 
-    if previous_runs:
+    if previous_runs and current_sov is not None:
         is_first_run = False
         last_run = previous_runs[-1]
-        delta_sov = round(current_sov - last_run.get("overall_sov", 0.0), 1)
-        delta_top1 = round(current_top1 - last_run.get("overall_top1_rate", 0.0), 1)
+        last_sov = last_run.get("overall_sov")
+        last_top1 = last_run.get("overall_top1_rate")
+        if last_sov is not None:
+            delta_sov = round(current_sov - last_sov, 1)
+        if last_top1 is not None and current_top1 is not None:
+            delta_top1 = round(current_top1 - last_top1, 1)
 
     record = {
         "experiment_signature": current_summary.get("experiment_signature"),

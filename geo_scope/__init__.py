@@ -13,9 +13,11 @@ from geo_scope.engine.feature_extractor import (
     extract_citations_and_domains,
     detect_brand_positions,
 )
+from geo_scope.engine.execution_mode import ExecutionMode
+from geo_scope.engine.persistence import RawRunStore
 from geo_scope.engine.model_runner import ModelRunner
-from geo_scope.engine.algo_analyzer import AlgoAnalyzer
 from geo_scope.engine.strategy_builder import generate_geo_playbook
+from geo_scope.mavi import MAVIEngine, MAVIReport, LayerWeights
 
 __all__ = [
     "__version__",
@@ -24,7 +26,12 @@ __all__ = [
     "parse_model_response",
     "extract_citations_and_domains",
     "detect_brand_positions",
+    "ExecutionMode",
+    "RawRunStore",
     "ModelRunner",
     "AlgoAnalyzer",
     "generate_geo_playbook",
+    "MAVIEngine",
+    "MAVIReport",
+    "LayerWeights",
 ]

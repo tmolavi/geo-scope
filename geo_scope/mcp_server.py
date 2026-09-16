@@ -84,9 +84,40 @@ for tool in MCP_TOOLS:
         }
     )
 
+MCP_TOOLS.append(
+    {
+        "name": "measure_mavi",
+        "description": "Measures the Molavi AI Visibility Index (MAVI) across L1-L5 layers (Technical Accessibility, Semantic Extractability, Entity Clarity, Citation Readiness, Observed AI Visibility). Computes measured multi-layer scores with partial normalization and zero score fabrication.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string", "description": "Target webpage URL (e.g. https://example.com/product)"},
+                "html_content": {"type": "string", "description": "Raw HTML content to audit via SAGE (L1-L4)"},
+                "brand": {"type": "string", "description": "Target entity or brand name"},
+                "experiment_data": {"type": "object", "description": "Exported GEO-Scope experiment analysis JSON for L5"},
+                "custom_weights": {"type": "object", "description": "Custom weights dictionary for L1-L5"},
+                "manual_layers": {"type": "object", "description": "Manual layer overrides (labeled as manual_override)"},
+            },
+        },
+    }
+)
+
 
 async def handle_tool_call(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
-    if name == "audit_ai_visibility":
+    if name == "measure_mavi":
+        from geo_scope.mavi import MAVIEngine
+
+        engine = MAVIEngine(weights=arguments.get("custom_weights"))
+        report = engine.measure(
+            html_content=arguments.get("html_content"),
+            url=arguments.get("url"),
+            target_brand=arguments.get("brand"),
+            experiment_data=arguments.get("experiment_data"),
+            manual_layers=arguments.get("manual_layers"),
+        )
+        return report.to_dict()
+
+    elif name == "audit_ai_visibility":
         brand = arguments.get("brand")
         niche = arguments.get("niche", "crm_sales")
         comps = arguments.get("competitors", [])

@@ -20,6 +20,7 @@ class ClaudeProvider(BaseProvider):
         )
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY", "")
         self.model = os.getenv("ANTHROPIC_MODEL", model)
+        self.search_grounded = False
 
     def is_available(self) -> bool:
         return bool(self.api_key)
@@ -47,8 +48,10 @@ class ClaudeProvider(BaseProvider):
             response.raise_for_status()
             data = response.json()
             self.last_evidence = {
-                "model": data.get("model"),
+                "model": data.get("model", self.model),
                 "usage": data.get("usage", {}),
-                "request_settings": {"temperature": 0.2, "max_tokens": 1024},
+                "citations": [],
+                "raw_payload": data,
+                "request_settings": {"temperature": 0.2, "max_tokens": 1024, "search_grounded": False},
             }
             return "\n".join(block["text"] for block in data["content"] if block.get("type") == "text")

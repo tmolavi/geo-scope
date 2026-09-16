@@ -1,5 +1,6 @@
 """
 Google Gemini Provider (Search Grounding Enabled)
+Classification: LIVE SEARCH-GROUNDED (Google Search Grounding Tool).
 """
 
 import os
@@ -19,6 +20,7 @@ class GeminiProvider(BaseProvider):
         self.api_key = api_key or os.getenv("GEMINI_API_KEY", "")
         self.response_kind = "search_enabled"
         self.model = os.getenv("GEMINI_MODEL", model)
+        self.search_grounded = True
 
     def is_available(self) -> bool:
         return bool(self.api_key)
@@ -42,9 +44,19 @@ class GeminiProvider(BaseProvider):
             if not candidates:
                 raise ValueError("Gemini returned no candidates")
             candidate = candidates[0]
+            grounding_meta = candidate.get("groundingMetadata", {})
+            citations = []
+            for chunk in grounding_meta.get("groundingChunks", []):
+                web = chunk.get("web", {})
+                if web.get("uri"):
+                    citations.append(web["uri"])
+
             self.last_evidence = {
-                "grounding_metadata": candidate.get("groundingMetadata", {}),
+                "grounding_metadata": grounding_meta,
+                "citations": citations,
                 "usage": data.get("usageMetadata", {}),
-                "request_settings": {"temperature": 0.2},
+                "model": self.model,
+                "raw_payload": data,
+                "request_settings": {"temperature": 0.2, "search_grounded": True},
             }
             return "\n".join(part.get("text", "") for part in candidate["content"]["parts"])

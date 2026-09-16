@@ -51,7 +51,7 @@ class BenchmarkRequest(BaseModel):
     competitors: Optional[List[str]] = None
     language: str = "both"  # "fa", "en", "both"
     prompt_count: int = Field(default=50, ge=1, le=10000)
-    mode: Literal["simulate", "live"] = "simulate"
+    mode: Literal["simulate", "simulation", "live"] = "simulation"
     seed: int = 42
     models: Optional[List[str]] = ["perplexity_sonar", "chatgpt_search", "gemini_grounding", "claude_3_7"]
     custom_topic: Optional[str] = None

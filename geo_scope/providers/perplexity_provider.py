@@ -1,5 +1,6 @@
 """
 Perplexity AI Provider (Sonar / Sonar Pro Search)
+Classification: LIVE SEARCH-GROUNDED (Real-time web crawl & synthesis).
 """
 
 import os
@@ -19,6 +20,7 @@ class PerplexityProvider(BaseProvider):
         self.api_key = api_key or os.getenv("PERPLEXITY_API_KEY", "")
         self.model = os.getenv("PERPLEXITY_MODEL", model)
         self.response_kind = "search_enabled"
+        self.search_grounded = True
 
     def is_available(self) -> bool:
         return bool(self.api_key)
@@ -50,9 +52,10 @@ class PerplexityProvider(BaseProvider):
             citations = data.get("citations", [])
             self.last_evidence = {
                 "citations": citations,
-                "model": data.get("model"),
+                "model": data.get("model", self.model),
                 "usage": data.get("usage", {}),
-                "request_settings": {"temperature": 0.2},
+                "raw_payload": data,
+                "request_settings": {"temperature": 0.2, "search_grounded": True},
                 "search_results": data.get("search_results", []),
             }
             if citations:

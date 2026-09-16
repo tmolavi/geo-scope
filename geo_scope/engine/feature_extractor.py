@@ -230,6 +230,33 @@ def parse_model_response(
     Parses a single AI model response and extracts full GEO metrics.
     """
     provenance = provenance or {}
+    is_failed = provenance.get("status") == "failed"
+    if is_failed or not isinstance(response_text, str) or not response_text.strip():
+        return {
+            "provenance": provenance,
+            "status": "failed",
+            "error": provenance.get("error") or {"type": "empty_response", "message": "No response text received", "retryable": False},
+            "citation_basis": "failed_execution",
+            "full_response_text": response_text or "",
+            "query_text": query_item.get("query", ""),
+            "target_mention_order": None,
+            "query_id": query_item.get("id"),
+            "model": model_name,
+            "intent": query_item.get("intent"),
+            "language": query_item.get("language"),
+            "target_brand": query_item.get("target_brand"),
+            "target_mentioned": None,  # Distinguish missing observation from zero visibility
+            "target_rank": None,
+            "target_is_top_1": None,
+            "target_sentiment": None,
+            "sentiment_method": "none",
+            "all_brands_stats": {},
+            "citation_count": 0,
+            "citations": [],
+            "content_structure": {"word_count": 0, "has_table": False, "has_bullets": False, "has_statistics": False, "structured_score": 0},
+            "response_length": len(response_text) if response_text else 0,
+        }
+
     evidence = provenance.get("provider_evidence", {})
     structured_urls = list(evidence.get("citations", []))
     for chunk in evidence.get("grounding_metadata", {}).get("groundingChunks", []):
@@ -247,6 +274,8 @@ def parse_model_response(
     )
 
     return {
+        "status": "success",
+        "error": None,
         "provenance": provenance,
         "citation_basis": "provider_metadata" if structured_urls else "text_urls_unverified",
         "full_response_text": response_text,

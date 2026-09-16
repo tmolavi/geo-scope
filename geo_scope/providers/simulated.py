@@ -72,6 +72,13 @@ class SimulatedProvider(BaseProvider):
         self.bias_type = bias_type
         self.seed = seed
         self.rnd = random.Random(seed)
+        self.response_kind = "simulated"
+
+    def get_metadata(self) -> Dict[str, Any]:
+        meta = super().get_metadata()
+        meta["mode_support"] = ["simulation"]
+        meta["response_kind"] = "simulated"
+        return meta
 
     async def generate_response(self, prompt_item: Dict[str, Any]) -> str:
         target_brand = prompt_item.get("target_brand", "HubSpot")
