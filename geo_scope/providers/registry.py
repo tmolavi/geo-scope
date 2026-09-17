@@ -34,6 +34,13 @@ class ProviderRegistry:
         "keyless": "keyless_local",
         "hamzad": "hamzad_gateway",
         "hamzad-gateway": "hamzad_gateway",
+        "gemini-2.5-flash": "hamzad_gemini",
+        "gpt-4o": "hamzad_openai",
+        "gpt-4o-mini": "hamzad_openai",
+        "claude-3-5-sonnet": "hamzad_claude",
+        "claude-3.5-sonnet": "hamzad_claude",
+        "sonar-pro": "hamzad_perplexity",
+        "perplexity-sonar": "hamzad_perplexity",
     }
 
     def __init__(self):

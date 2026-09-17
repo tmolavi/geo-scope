@@ -1,0 +1,30 @@
+benchmark_version: "2026.1-live"
+dataset_name: "geo-seo-digital-agency-iran-2026.1"
+execution_mode: "live"
+benchmark_mode: "discovery"
+research_status: "peer_review_ready"
+methodology_version: "1.0.0"
+description: "GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark — Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms"
+
+sampling:
+  niche: "seo_geo_digital_marketing_iran"
+  target_brand: "Web24"
+  competitors:
+    - "Novin"
+    - "Dimarketing"
+    - "Triboon"
+    - "DMN Agency"
+  count: 30
+  language: "both"
+  custom_prompts_file: "benchmark/prompts/prompts.jsonl"
+
+providers:
+  - "gemini-2.5-flash"
+  - "gpt-4o"
+  - "claude-3-5-sonnet"
+  - "sonar-pro"
+
+cost_limits:
+  max_cost_usd: 15.00
+  max_prompts: 100
+  dry_run: false

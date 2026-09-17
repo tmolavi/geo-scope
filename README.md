@@ -60,14 +60,17 @@ geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1
 
 ---
 
-### 📊 Public Benchmark & Evidence Dataset v1
+### 📊 Public Benchmark & Evidence Datasets
 
-GEO-Scope includes public, reproducible benchmark datasets under `benchmark/` with SHA-256 cryptographic verification and 95% bootstrap confidence intervals:
+GEO-Scope includes public, reproducible benchmark datasets under `benchmark/releases/` with SHA-256 cryptographic verification, full execution provenance, and 95% bootstrap confidence intervals:
 
-- **Dataset Verification**: `geo-scope benchmark verify --dataset benchmark/geo-scope-benchmark-2026.1`
-- **Metric Reproduction**: `geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1`
-- **Jupyter / Python Analysis**: `python notebooks/benchmark_analysis.py`
-- **Methodology & Documentation**: See [Benchmark Methodology](docs/benchmark-methodology.md) and [Release Checklist](docs/benchmark-release-checklist.md).
+- **2026.1 Live Benchmark Release**:
+  - *Title*: **GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark**
+  - *Subtitle*: *Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms*
+  - *Question Layer*: [AnswerPath GEO](https://github.com/tmolavi/answerpath-geo) integration with separated observed user questions and generated prompt hypotheses.
+  - *Verification*: `geo-scope benchmark verify --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1`
+  - *Reproduction*: `geo-scope benchmark reproduce --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1`
+- **Methodology & Documentation**: See [Benchmark Methodology](docs/benchmark-methodology.md) and [Release Notes](docs/releases/release-2026.1-geo-seo-digital-agency-iran.md).
 
 ---
 

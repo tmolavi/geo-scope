@@ -393,16 +393,21 @@ class LiveBenchmarkRunner:
                 diff = "low"
 
             prompts.append({
-                "prompt_id": f"prompt_{idx+1:04d}",
-                "text": p["query"],
+                "prompt_id": p.get("prompt_id") or p.get("id") or f"prompt_{idx+1:04d}",
+                "text": p.get("text") or p.get("question") or p.get("query", ""),
+                "question": p.get("question") or p.get("text") or p.get("query", ""),
+                "source_type": p.get("source_type", "generated"),
+                "source_reference": p.get("source_reference", "answerpath"),
                 "intent": p.get("intent", "informational"),
-                "intent_stratum": p.get("intent", "informational"),
-                "category": self.profile.sampling.categories[idx % len(self.profile.sampling.categories)] if self.profile.sampling.categories else "software",
+                "intent_stratum": p.get("intent_stratum") or p.get("intent", "informational"),
+                "category": p.get("category") or (self.profile.sampling.categories[idx % len(self.profile.sampling.categories)] if self.profile.sampling.categories else "software"),
                 "language": p.get("language", "en"),
-                "difficulty": diff,
-                "niche": self.profile.sampling.niche,
-                "target_brand": self.profile.sampling.target_brand,
-                "competitors": self.profile.sampling.competitors,
+                "difficulty": p.get("difficulty", diff),
+                "niche": p.get("niche", self.profile.sampling.niche),
+                "target_brand": p.get("target_brand", self.profile.sampling.target_brand),
+                "competitors": p.get("competitors", self.profile.sampling.competitors),
+                "confidence": p.get("confidence", 1.0),
+                "entities": p.get("entities", [self.profile.sampling.target_brand] + self.profile.sampling.competitors),
             })
         return prompts
 

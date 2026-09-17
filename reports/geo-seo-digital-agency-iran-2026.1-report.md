@@ -1,12 +1,12 @@
-# GEO-Scope Public Research Report: test-resume-dataset
+# GEO-Scope Public Research Report: geo-seo-digital-agency-iran-2026.1
 
 ## 1. Executive Summary & Epistemic Positioning
 - **Benchmark Version**: `2026.1-live`
 - **Benchmark Mode**: `DISCOVERY` (Official strict evaluation vs operational discovery)
 - **Execution Mode**: `live`
-- **Research Status**: `experimental_observation`
-- **Dataset Size**: 2 prompts | 3 observations across 1 providers
-- **Execution Provenance**: 0 native observations | 0 fallback-routed observations | 2 failed
+- **Research Status**: `peer_review_ready`
+- **Dataset Size**: 30 prompts | 120 observations across 4 providers
+- **Execution Provenance**: 0 native observations | 51 fallback-routed observations | 69 failed
 - **Core Epistemic Standard**: All reported metrics represent empirical multi-model observations and statistical associations. They do **not** claim to uncover internal proprietary AI ranking algorithms.
 
 ## 2. Execution Provenance & Model Separation
@@ -23,7 +23,10 @@ Requests redirected to fallback or surrogate backends (never merged silently wit
 
 | Requested Provider/Model | Actual Routed Backend | Trigger Reason | Observations | Avg Latency (ms) | Status |
 |--------------------------|-----------------------|----------------|--------------|------------------|--------|
-| None | - | - | 0 | - | Zero fallback routing detected |
+| gemini-2.5-flash (gemini-2.5-flash) | groq (qwen/qwen3.8-27b) | Upstream inactive / surrogate | 7 | 6821.5 | `FALLBACK_RECORDED` |
+| gpt-4o (gpt-4o) | avalai (gpt-4o-mini) | Upstream inactive / surrogate | 30 | 6800.4 | `FALLBACK_RECORDED` |
+| claude-3-5-sonnet (claude-3-5-sonnet) | groq (qwen/qwen3.8-27b) | Upstream inactive / surrogate | 7 | 7703.3 | `FALLBACK_RECORDED` |
+| sonar-pro (sonar-pro) | groq (qwen/qwen3.8-27b) | Upstream inactive / surrogate | 7 | 6804.7 | `FALLBACK_RECORDED` |
 
 ## 3. Question Provenance & Demand Stratification
 
@@ -39,32 +42,37 @@ Measurements derived from structured exploration prompt templates (never conflat
 
 | Brand | Template Mention Rate | Template Top-1 Rate | Sample Size | Category |
 |-------|-----------------------|---------------------|-------------|----------|
-| HubSpot | 100.0% | 100.0% | 1 | Research Template (`generated`) |
-| Salesforce | 0.0% | 0.0% | 1 | Research Template (`generated`) |
-| Zoho CRM | 0.0% | 0.0% | 1 | Research Template (`generated`) |
-| Pipedrive | 0.0% | 0.0% | 1 | Research Template (`generated`) |
+| Web24 | 0.0% | 0.0% | 51 | Research Template (`generated`) |
+| Novin | 0.0% | 100.0% | 51 | Research Template (`generated`) |
+| Dimarketing | 0.0% | 0.0% | 51 | Research Template (`generated`) |
+| Triboon | 0.0% | 0.0% | 51 | Research Template (`generated`) |
+| DMN Agency | 0.0% | 0.0% | 51 | Research Template (`generated`) |
 
 ### C. Combined Operational Visibility
 Blended operational index across all valid evaluation queries:
 
 | Metric Dimension | Total Prompts | Observed Prompts | Generated Prompts | Source Reference |
 |------------------|---------------|------------------|-------------------|------------------|
-| Question Pool | 2 | 0 | 2 | `answerpath` |
+| Question Pool | 30 | 0 | 30 | `answerpath` |
 
 ## 4. Brand Visibility Performance (95% Bootstrap CIs)
 
 | Brand | Target | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |
 |-------|--------|----------------|-----------------------|---------------------|----------|
-| HubSpot | ★ Yes | 100.0% | 100.0% [100.0%, 100.0%] | 100.0% [100.0%, 100.0%] | #1.0 |
-| Salesforce | No | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
-| Zoho CRM | No | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
-| Pipedrive | No | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
+| Web24 | ★ Yes | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | #0.0 |
+| Novin | No | N/A | 0.0% [0.0%, 0.0%] | 100.0% [100.0%, 100.0%] | - |
+| Dimarketing | No | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
+| Triboon | No | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
+| DMN Agency | No | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
 
 ## 4. Multi-Model Provider Analysis
 
 | Provider | Success Obs | Failed Obs | Target Mention Rate | Target Top-1 Rate | Avg Latency (ms) |
 |----------|-------------|------------|---------------------|-------------------|------------------|
-| ollama_local | 1 | 2 | 100.0% [100.0%, 100.0%] | 100.0% [100.0%, 100.0%] | - |
+| gemini-2.5-flash | 7 | 23 | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | 6821.5 |
+| gpt-4o | 30 | 0 | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | 6800.4 |
+| claude-3-5-sonnet | 7 | 23 | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | 7703.3 |
+| sonar-pro | 7 | 23 | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | 6804.7 |
 
 ## 5. Empirical Factor Associations (Prior vs. Observed)
 
@@ -81,6 +89,6 @@ Blended operational index across all valid evaluation queries:
 
 ## 7. Reproduction Protocol
 ```bash
-geo-scope benchmark verify --dataset benchmark/test-resume-dataset
-geo-scope benchmark reproduce --dataset benchmark/test-resume-dataset
+geo-scope benchmark verify --dataset benchmark/geo-seo-digital-agency-iran-2026.1
+geo-scope benchmark reproduce --dataset benchmark/geo-seo-digital-agency-iran-2026.1
 ```
