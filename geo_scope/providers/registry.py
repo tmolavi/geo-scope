@@ -13,6 +13,7 @@ from geo_scope.providers.perplexity_provider import PerplexityProvider
 from geo_scope.providers.gemini_provider import GeminiProvider
 from geo_scope.providers.claude_provider import ClaudeProvider
 from geo_scope.providers.ollama_provider import OllamaProvider
+from geo_scope.providers.hamzad_provider import HamzadProvider
 
 
 class ProviderRegistry:
@@ -31,6 +32,8 @@ class ProviderRegistry:
         "openrouter": "openrouter_free",
         "public": "mlvoca_public",
         "keyless": "keyless_local",
+        "hamzad": "hamzad_gateway",
+        "hamzad-gateway": "hamzad_gateway",
     }
 
     def __init__(self):
@@ -47,6 +50,14 @@ class ProviderRegistry:
         self.register(OpenRouterProvider())
         self.register(PublicResearchProvider())
         self.register(KeylessWrapperProvider())
+
+        # Hamzad Gateway adapters (zero-secret inference proxied via Hamzad)
+        self.register(HamzadProvider(name="hamzad_gateway", target_provider="gemini", target_model="gemini-2.5-flash"))
+        self.register(HamzadProvider(name="hamzad_gemini", target_provider="gemini", target_model="gemini-2.5-flash"))
+        self.register(HamzadProvider(name="hamzad_openai", target_provider="openai", target_model="gpt-4o-mini"))
+        self.register(HamzadProvider(name="hamzad_claude", target_provider="claude", target_model="anthropic/claude-3.5-sonnet"))
+        self.register(HamzadProvider(name="hamzad_perplexity", target_provider="perplexity", target_model="sonar-pro"))
+        self.register(HamzadProvider(name="hamzad_groq", target_provider="groq", target_model="qwen/qwen3.8-27b"))
 
     def register(self, provider: BaseProvider):
         """
@@ -92,6 +103,7 @@ class ProviderRegistry:
             ("OpenRouter", "openrouter_free", "parametric (free tier)"),
             ("Keyless Wrapper", "keyless_local", "unverified wrapper"),
             ("Public Research", "mlvoca_public", "public endpoint"),
+            ("Hamzad Gateway", "hamzad_gateway", "gateway proxied (zero-secret)"),
         ]
 
         for display, provider_id, grounding in ordered_keys:
