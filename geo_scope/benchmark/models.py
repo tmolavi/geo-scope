@@ -43,19 +43,39 @@ class BenchmarkManifest(BaseModel):
             "fallbacks_recorded": True,
         }
     )
+    question_provenance: Optional[Dict[str, Any]] = Field(
+        default_factory=lambda: {
+            "observed_count": 0,
+            "generated_count": 0,
+            "source_reference": "answerpath",
+        }
+    )
 
 
 class PromptRecord(BaseModel):
     prompt_id: str
-    text: str
+    text: str = ""
+    question: Optional[str] = None
+    source_type: str = "generated"  # "observed" | "generated"
+    source_reference: str = "answerpath"  # "answerpath" | "user" | "search_console" | "custom"
     intent: Optional[str] = None
     intent_stratum: str = "informational"
     category: Optional[str] = "software"
+    entities: List[str] = Field(default_factory=list)
+    confidence: float = 1.0
     language: str = "en"
     difficulty: Optional[str] = "medium"  # "low" | "medium" | "high"
     niche: str = "crm_sales"
-    target_brand: str
+    target_brand: str = ""
     competitors: List[str] = Field(default_factory=list)
+
+    def model_post_init(self, __context: Any) -> None:
+        if not self.text and self.question:
+            self.text = self.question
+        elif not self.question and self.text:
+            self.question = self.text
+        if not self.entities and self.target_brand:
+            self.entities = [self.target_brand] + [c for c in self.competitors if c != self.target_brand]
 
 
 class ObservationRecord(BaseModel):
@@ -153,6 +173,10 @@ class BenchmarkMetrics(BaseModel):
     native_visibility: Optional[Dict[str, Any]] = None
     fallback_visibility: Optional[Dict[str, Any]] = None
     total_observed_visibility: Optional[Dict[str, Any]] = None
+    observed_visibility: Optional[Dict[str, Any]] = None
+    generated_visibility: Optional[Dict[str, Any]] = None
+    combined_operational_visibility: Optional[Dict[str, Any]] = None
+    question_provenance: Optional[Dict[str, Any]] = None
     execution_class_breakdown: Dict[str, int] = Field(default_factory=dict)
     strata: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
     top_cited_domains: List[Dict[str, Any]] = Field(default_factory=list)

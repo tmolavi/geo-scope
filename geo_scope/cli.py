@@ -443,6 +443,40 @@ def benchmark_cmd(args):
         if not res["success"]:
             sys.exit(1)
 
+    elif sub == "prepare":
+        from geo_scope.questions.discovery import prepare_benchmark_dataset
+        obs_inputs = getattr(args, "observed", []) or []
+        if isinstance(obs_inputs, str):
+            obs_inputs = [x.strip() for x in obs_inputs.split(",") if x.strip()]
+        gen_inputs = getattr(args, "generated", []) or []
+        if isinstance(gen_inputs, str):
+            gen_inputs = [x.strip() for x in gen_inputs.split(",") if x.strip()]
+        comps = (
+            [c.strip() for c in args.competitors.split(",") if c.strip()]
+            if getattr(args, "competitors", None)
+            else ["Competitor A", "Competitor B"]
+        )
+        res = prepare_benchmark_dataset(
+            topic=args.topic,
+            observed_inputs=obs_inputs,
+            generated_inputs=gen_inputs,
+            include_default_generated=not getattr(args, "no_default_generated", False),
+            brand=getattr(args, "brand", "My Brand"),
+            competitors=comps,
+            out_dir=getattr(args, "out", "benchmark"),
+            dataset_id=getattr(args, "dataset_id", None),
+            category=getattr(args, "category", "GEO"),
+            threshold=getattr(args, "threshold", 0.88),
+        )
+        print(f"\n✓ Prepared versioned benchmark dataset in '{res['directory']}'")
+        print(f"• Dataset ID        : {res['dataset_id']}")
+        print(f"• Total Prompts     : {res['total_prompts']}")
+        print(f"• Observed Prompts  : {res['observed_count']} (Real demand -> {res['observed_file']})")
+        print(f"• Generated Prompts : {res['generated_count']} (Templates -> {res['generated_file']})")
+        print(f"• Unified Prompts   : {res['prompts_file']}")
+        print(f"• Manifest File     : {res['manifest_file']}")
+        print(f"• Provenance File   : {res['provenance_file']}")
+
     elif sub == "export":
         out_dir = args.out
         dataset_id = args.dataset_id or "geo-scope-benchmark-2026.1"
@@ -497,6 +531,42 @@ def benchmark_cmd(args):
         else:
             print(validator.format_report(results))
 
+
+def prompts_cmd(args):
+    """
+    Question discovery, clustering, and candidate prompt generation powered by AnswerPath GEO.
+    """
+    action = getattr(args, "prompts_action", "discover")
+    if action == "discover":
+        from geo_scope.questions.discovery import discover_questions, format_discovery_report
+        inputs = getattr(args, "input", []) or []
+        if isinstance(inputs, str):
+            inputs = [x.strip() for x in inputs.split(",") if x.strip()]
+        comps = (
+            [c.strip() for c in args.competitors.split(",") if c.strip()]
+            if getattr(args, "competitors", None)
+            else []
+        )
+        result = discover_questions(
+            topic=args.topic,
+            input_paths=inputs,
+            include_generated=not getattr(args, "no_generated", False),
+            threshold=getattr(args, "threshold", 0.88),
+            category=getattr(args, "category", "GEO"),
+            target_brand=getattr(args, "brand", ""),
+            competitors=comps,
+        )
+        if getattr(args, "json", False):
+            print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
+        else:
+            print(format_discovery_report(result))
+
+        if getattr(args, "out", None):
+            out_p = Path(args.out)
+            out_p.mkdir(parents=True, exist_ok=True)
+            (out_p / "questions.json").write_text(json.dumps([q.to_dict() for q in result.questions], ensure_ascii=False, indent=2), encoding="utf-8")
+            (out_p / "prompts.jsonl").write_text("\n".join(json.dumps(p, ensure_ascii=False) for p in result.recommended_prompts) + "\n", encoding="utf-8")
+            print(f"\n📁 Discovered question artifacts written to '{args.out}/'")
 
 
 def hamzad_cmd(args):
@@ -675,6 +745,35 @@ def main():
     prov_check_p.add_argument("--prompt", type=str, default="Reply with exactly OK.", help="Validation prompt")
     prov_check_p.add_argument("--json", action="store_true", help="Output JSON results")
 
+    # benchmark prepare
+    prep_p = bmk_subparsers.add_parser("prepare", help="Prepare a versioned benchmark dataset with separated observed and generated prompts")
+    prep_p.add_argument("--topic", type=str, required=True, help="Topic, niche, or product domain")
+    prep_p.add_argument("--observed", action="append", default=[], help="Path to observed user queries / logs (.json, .jsonl, .csv, .zip, .txt)")
+    prep_p.add_argument("--generated", action="append", default=[], help="Path to custom generated prompt files")
+    prep_p.add_argument("--no-default-generated", action="store_true", help="Omit default AnswerPath template research prompts")
+    prep_p.add_argument("--brand", type=str, default="My Brand", help="Target Brand Name")
+    prep_p.add_argument("--competitors", type=str, default=None, help="Comma-separated competitors list")
+    prep_p.add_argument("--category", type=str, default="GEO", help="Benchmark category name")
+    prep_p.add_argument("--threshold", type=float, default=0.88, help="Clustering similarity threshold")
+    prep_p.add_argument("--dataset-id", type=str, default=None, help="Custom dataset ID")
+    prep_p.add_argument("--out", type=str, default="benchmark", help="Output directory")
+
+    # Command: prompts
+    prompts_parser = subparsers.add_parser("prompts", help="Question discovery, intent extraction, and prompt clustering via AnswerPath GEO")
+    prompts_subparsers = prompts_parser.add_subparsers(dest="prompts_action", help="Prompts action")
+
+    # prompts discover
+    disc_p = prompts_subparsers.add_parser("discover", help="Discover user questions, cluster by intent, and generate candidate benchmark sets")
+    disc_p.add_argument("topic", type=str, help="Topic, niche, or industry to mine questions for")
+    disc_p.add_argument("--input", action="append", default=[], help="Owned export or log file/directory (.json, .jsonl, .csv, .zip, .txt)")
+    disc_p.add_argument("--no-generated", action="store_true", help="Only mine observed questions (omit template generator)")
+    disc_p.add_argument("--threshold", type=float, default=0.88, help="Deduplication and clustering similarity threshold (0.0-1.0)")
+    disc_p.add_argument("--category", type=str, default="GEO", help="Domain category tag")
+    disc_p.add_argument("--brand", type=str, default="", help="Target Brand Name")
+    disc_p.add_argument("--competitors", type=str, default=None, help="Comma-separated competitors list")
+    disc_p.add_argument("--out", type=str, default=None, help="Output directory to save questions.json and prompts.jsonl")
+    disc_p.add_argument("--json", action="store_true", help="Output structured JSON instead of human-readable report")
+
     # Command: hamzad
     hamzad_parser = subparsers.add_parser("hamzad", help="Hamzad AI Gateway connectivity, authentication & smoke inference")
     hamzad_subparsers = hamzad_parser.add_subparsers(dest="hamzad_action", help="Hamzad action")
@@ -724,6 +823,8 @@ def main():
         mavi_cmd(args)
     elif args.command == "benchmark":
         benchmark_cmd(args)
+    elif args.command == "prompts":
+        prompts_cmd(args)
     elif args.command == "hamzad":
         hamzad_cmd(args)
     elif args.command == "serve":

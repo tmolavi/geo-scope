@@ -248,6 +248,33 @@ class BenchmarkCalculator:
         native_vis = format_visibility_dict(native_metrics_list, len(native_obs))
         fallback_vis = format_visibility_dict(fallback_metrics_list, len(fallback_obs))
         total_vis = format_visibility_dict(total_metrics_list, len(successful_obs))
+
+        # 9. Question Source Stratification (Observed vs Generated)
+        observed_obs = [
+            o for o in successful_obs
+            if prompts_by_id.get(o.get("prompt_id"), {}).get("source_type", "generated") == "observed"
+        ]
+        generated_obs = [
+            o for o in successful_obs
+            if prompts_by_id.get(o.get("prompt_id"), {}).get("source_type", "generated") != "observed"
+        ]
+        observed_metrics_list = self._compute_brand_metrics_list(observed_obs, citations, brands)
+        generated_metrics_list = self._compute_brand_metrics_list(generated_obs, citations, brands)
+
+        observed_vis = format_visibility_dict(observed_metrics_list, len(observed_obs))
+        generated_vis = format_visibility_dict(generated_metrics_list, len(generated_obs))
+        combined_vis = total_vis
+
+        obs_prompts_count = sum(1 for p in prompts if p.get("source_type") == "observed")
+        gen_prompts_count = sum(1 for p in prompts if p.get("source_type") != "observed")
+        question_prov = {
+            "observed_count": obs_prompts_count,
+            "generated_count": gen_prompts_count,
+            "source_reference": "answerpath",
+            "observed_observations": len(observed_obs),
+            "generated_observations": len(generated_obs),
+        }
+
         exec_breakdown = {
             "native": len(native_obs),
             "fallback": len(fallback_obs),
@@ -269,6 +296,10 @@ class BenchmarkCalculator:
             native_visibility=native_vis,
             fallback_visibility=fallback_vis,
             total_observed_visibility=total_vis,
+            observed_visibility=observed_vis,
+            generated_visibility=generated_vis,
+            combined_operational_visibility=combined_vis,
+            question_provenance=question_prov,
             execution_class_breakdown=exec_breakdown,
             strata=strata_dict,
             top_cited_domains=top_domains,

@@ -25,7 +25,33 @@ Requests redirected to fallback or surrogate backends (never merged silently wit
 |--------------------------|-----------------------|----------------|--------------|------------------|--------|
 | None | - | - | 0 | - | Zero fallback routing detected |
 
-## 3. Brand Visibility Performance (95% Bootstrap CIs)
+## 3. Question Provenance & Demand Stratification
+
+### A. Observed Question Results (Real User Demand)
+Measurements derived strictly from real recorded user queries and customer logs:
+
+| Brand | Observed Mention Rate | Observed Top-1 Rate | Sample Size | Demand Confidence |
+|-------|-----------------------|---------------------|-------------|-------------------|
+| None | - | - | 0 | No observed questions in run |
+
+### B. Generated Research Prompt Results (Exploration Templates)
+Measurements derived from structured exploration prompt templates (never conflated with real user demand):
+
+| Brand | Template Mention Rate | Template Top-1 Rate | Sample Size | Category |
+|-------|-----------------------|---------------------|-------------|----------|
+| HubSpot | 100.0% | 100.0% | 1 | Research Template (`generated`) |
+| Salesforce | 0.0% | 0.0% | 1 | Research Template (`generated`) |
+| Zoho CRM | 0.0% | 0.0% | 1 | Research Template (`generated`) |
+| Pipedrive | 0.0% | 0.0% | 1 | Research Template (`generated`) |
+
+### C. Combined Operational Visibility
+Blended operational index across all valid evaluation queries:
+
+| Metric Dimension | Total Prompts | Observed Prompts | Generated Prompts | Source Reference |
+|------------------|---------------|------------------|-------------------|------------------|
+| Question Pool | 2 | 0 | 2 | `answerpath` |
+
+## 4. Brand Visibility Performance (95% Bootstrap CIs)
 
 | Brand | Target | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |
 |-------|--------|----------------|-----------------------|---------------------|----------|

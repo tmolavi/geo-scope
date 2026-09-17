@@ -510,7 +510,65 @@ class LiveBenchmarkRunner:
 
         lines.extend([
             "",
-            "## 3. Brand Visibility Performance (95% Bootstrap CIs)",
+            "## 3. Question Provenance & Demand Stratification",
+            "",
+            "### A. Observed Question Results (Real User Demand)",
+            "Measurements derived strictly from real recorded user queries and customer logs:",
+            "",
+            "| Brand | Observed Mention Rate | Observed Top-1 Rate | Sample Size | Demand Confidence |",
+            "|-------|-----------------------|---------------------|-------------|-------------------|",
+        ])
+
+        obs_vis = metrics.get("observed_visibility", {})
+        obs_brands = obs_vis.get("brands", {})
+        obs_n = obs_vis.get("sample_size", 0)
+        if not obs_brands or obs_n == 0:
+            lines.append("| None | - | - | 0 | No observed questions in run |")
+        else:
+            for b_name, b_data in obs_brands.items():
+                m_pct = f"{b_data.get('mention_rate', 0):.1f}%" if b_data.get('mention_rate') is not None else "N/A"
+                t_pct = f"{b_data.get('top1_rate', 0):.1f}%" if b_data.get('top1_rate') is not None else "N/A"
+                lines.append(f"| {b_name} | {m_pct} | {t_pct} | {obs_n} | High (`observed`) |")
+
+        lines.extend([
+            "",
+            "### B. Generated Research Prompt Results (Exploration Templates)",
+            "Measurements derived from structured exploration prompt templates (never conflated with real user demand):",
+            "",
+            "| Brand | Template Mention Rate | Template Top-1 Rate | Sample Size | Category |",
+            "|-------|-----------------------|---------------------|-------------|----------|",
+        ])
+
+        gen_vis = metrics.get("generated_visibility", {})
+        gen_brands = gen_vis.get("brands", {})
+        gen_n = gen_vis.get("sample_size", 0)
+        if not gen_brands or gen_n == 0:
+            lines.append("| None | - | - | 0 | Zero generated templates |")
+        else:
+            for b_name, b_data in gen_brands.items():
+                m_pct = f"{b_data.get('mention_rate', 0):.1f}%" if b_data.get('mention_rate') is not None else "N/A"
+                t_pct = f"{b_data.get('top1_rate', 0):.1f}%" if b_data.get('top1_rate') is not None else "N/A"
+                lines.append(f"| {b_name} | {m_pct} | {t_pct} | {gen_n} | Research Template (`generated`) |")
+
+        lines.extend([
+            "",
+            "### C. Combined Operational Visibility",
+            "Blended operational index across all valid evaluation queries:",
+            "",
+            "| Metric Dimension | Total Prompts | Observed Prompts | Generated Prompts | Source Reference |",
+            "|------------------|---------------|------------------|-------------------|------------------|",
+        ])
+
+        q_prov = metrics.get("question_provenance", {})
+        tot_p = metrics.get("total_prompts", len(prompts))
+        obs_p = q_prov.get("observed_count", 0)
+        gen_p = q_prov.get("generated_count", tot_p - obs_p)
+        ref_s = q_prov.get("source_reference", "answerpath")
+        lines.append(f"| Question Pool | {tot_p} | {obs_p} | {gen_p} | `{ref_s}` |")
+
+        lines.extend([
+            "",
+            "## 4. Brand Visibility Performance (95% Bootstrap CIs)",
             "",
             "| Brand | Target | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |",
             "|-------|--------|----------------|-----------------------|---------------------|----------|",

@@ -117,20 +117,62 @@ Automated benchmark reports explicitly segment findings into:
 
 ---
 
-## 7. Verification & Reproduction Protocol
+---
+
+## 7. Question Source Layer & Demand Provenance (AnswerPath GEO)
+
+To eliminate benchmark prompt fabrication and prevent synthetic exploration queries from being misattributed to real consumer search demand, GEO-Scope integrates **AnswerPath GEO** as its question discovery layer.
+
+### 7.1 Separation of Responsibilities
+
+- **AnswerPath GEO**: Discovers raw user questions from owned chat logs, CRM exports, and search logs; classifies intent (`learn`, `compare`, `buy`, `trust`, `solve`); clusters semantic duplicates; and synthesizes structured exploration templates.
+- **GEO-Scope**: Ingests prompts, executes multi-provider LLM evaluations, extracts entities and citations, records model execution provenance, and computes stratified visibility metrics.
+
+### 7.2 Question Provenance Schema
+
+Every evaluation prompt is tagged with origin provenance:
+```json
+{
+  "prompt_id": "PRM-001",
+  "question": "best GEO agency in Iran",
+  "source_type": "observed",
+  "source_reference": "answerpath:observed",
+  "intent": "commercial",
+  "category": "GEO",
+  "entities": ["Target Brand"],
+  "confidence": 0.95
+}
+```
+
+### 7.3 Demand Stratification in Reports & Metrics
+
+Research reports and computed `metrics.json` strictly segment:
+1. **Observed Question Results**: Performance on genuine recorded user queries.
+2. **Generated Research Prompt Results**: Performance on exploratory research templates.
+3. **Combined Operational Visibility**: Blended multi-query index.
+
+---
+
+## 8. Verification & Reproduction Protocol
 
 Any published GEO-Scope benchmark can be verified locally:
 ```bash
-# 1. Check live provider routing & fallback integrity
+# 1. Discover user questions and candidate prompt clusters
+geo-scope prompts discover "GEO Agency" --out results/prompts-pool
+
+# 2. Prepare a versioned benchmark dataset with separated observed and generated prompts
+geo-scope benchmark prepare --topic "GEO Agency" --brand "My Brand" --out benchmark
+
+# 3. Check live provider routing & fallback integrity
 geo-scope benchmark providers-check --profile benchmark/profiles/geo-scope-live-2026.1.yaml
 
-# 2. Run benchmark in discovery or strict mode
+# 4. Run benchmark in discovery or strict mode
 geo-scope benchmark run --profile benchmark/profiles/geo-scope-live-2026.1.yaml --mode discovery
 geo-scope benchmark run --profile benchmark/profiles/geo-scope-live-2026.1.yaml --mode strict
 
-# 3. Cryptographic file integrity verification
+# 5. Cryptographic file integrity verification
 geo-scope benchmark verify --dataset benchmark/geo-scope-benchmark-2026.1
 
-# 4. Metric reproduction and bootstrap recalculation
+# 6. Metric reproduction and bootstrap recalculation
 geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1
 ```

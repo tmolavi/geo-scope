@@ -70,6 +70,20 @@ class BenchmarkBuilder:
             for p in prompts:
                 f.write(json.dumps(p, ensure_ascii=False) + "\n")
 
+        # Write partitioned prompts directory
+        prompts_sub_dir = target_dir / "prompts"
+        prompts_sub_dir.mkdir(parents=True, exist_ok=True)
+        obs_prompts = [p for p in prompts if p.get("source_type") == "observed"]
+        gen_prompts = [p for p in prompts if p.get("source_type") != "observed"]
+
+        with open(prompts_sub_dir / "observed.jsonl", "w", encoding="utf-8") as f:
+            for p in obs_prompts:
+                f.write(json.dumps(p, ensure_ascii=False) + "\n")
+
+        with open(prompts_sub_dir / "generated.jsonl", "w", encoding="utf-8") as f:
+            for p in gen_prompts:
+                f.write(json.dumps(p, ensure_ascii=False) + "\n")
+
         (target_dir / "brands.json").write_text(
             json.dumps(brands, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
@@ -104,6 +118,29 @@ class BenchmarkBuilder:
             json.dumps(metrics_obj.model_dump(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
 
+        # Write provenance.json
+        provenance_payload = {
+            "dataset_id": self.dataset_id,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "execution_mode": execution_mode,
+            "benchmark_mode": benchmark_mode,
+            "question_provenance": {
+                "total_prompts": len(prompts),
+                "observed_count": len(obs_prompts),
+                "generated_count": len(gen_prompts),
+                "source_reference": "answerpath",
+                "observed_sources": list({p.get("source_reference", "observed") for p in obs_prompts}),
+                "generated_sources": list({p.get("source_reference", "generated") for p in gen_prompts}),
+            },
+            "model_provenance": model_provenance or {
+                "validated": True,
+                "fallbacks_recorded": True,
+            },
+        }
+        (target_dir / "provenance.json").write_text(
+            json.dumps(provenance_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+
         # 3. Write documentation
         if methodology_md is None:
             methodology_md = f"""# GEO-Scope Benchmark Methodology ({self.dataset_id})
@@ -115,6 +152,11 @@ This benchmark evaluates Generative Engine Optimization (GEO) performance, brand
 - **Execution Mode**: `{execution_mode}`
 - **Research Status**: `{research_status}`
 - **Strict Separation**: Synthetic simulation runs are explicitly marked `demo_only` and must not be cited as real provider behavior.
+
+## Question & Model Provenance
+- **Observed Prompts**: {len(obs_prompts)} (Real user demand)
+- **Generated Prompts**: {len(gen_prompts)} (Research exploration templates)
+- **Model Provenance**: Explicit tracking of native vs fallback routes.
 
 ## Measured Metrics
 1. **Share of Model (SoM)**: Percentage of total observed brand mentions attributed to the brand.
@@ -134,6 +176,8 @@ This benchmark evaluates Generative Engine Optimization (GEO) performance, brand
 GEO-Scope Public Benchmark & Evidence Dataset.
 
 - Total Prompts: {len(prompts)}
+  - Observed User Questions: {len(obs_prompts)}
+  - Generated Research Prompts: {len(gen_prompts)}
 - Total Observations: {len(observations)}
 - Providers: {len(providers)}
 - Brands: {len(brands)}
@@ -174,6 +218,8 @@ geo-scope benchmark reproduce --dataset .
             dataset_hash=composite_hash,
             counts={
                 "prompts": len(prompts),
+                "observed_prompts": len(obs_prompts),
+                "generated_prompts": len(gen_prompts),
                 "observations": len(observations),
                 "citations": len(citations),
                 "brands": len(brands),
@@ -186,6 +232,11 @@ geo-scope benchmark reproduce --dataset .
             model_provenance=model_provenance or {
                 "validated": True,
                 "fallbacks_recorded": True,
+            },
+            question_provenance={
+                "observed_count": len(obs_prompts),
+                "generated_count": len(gen_prompts),
+                "source_reference": "answerpath",
             },
         )
         (target_dir / "manifest.json").write_text(
