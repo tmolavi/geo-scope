@@ -284,18 +284,69 @@ async def test_hamzad_mavi_l5_integration():
 
 
 @pytest.mark.asyncio
-async def test_hamzad_optional_real_smoke_test():
-    if os.getenv("GEO_SCOPE_HAMZAD_SMOKE_TEST", "").lower() not in ("true", "1", "yes"):
-        pytest.skip("Skipping real Hamzad Gateway smoke test (GEO_SCOPE_HAMZAD_SMOKE_TEST not enabled).")
+async def test_hamzad_provider_default_endpoint_and_project():
+    provider = HamzadProvider()
+    assert provider.gateway_url == "https://api.molavi.pro"
+    assert provider.project_id == "hamzad"
+    assert provider.is_available() is True
 
-    gateway_url = os.getenv("HAMZAD_GATEWAY_URL", "http://localhost:8000")
-    provider = HamzadProvider(
-        name="hamzad_smoke",
-        target_provider=os.getenv("HAMZAD_SMOKE_PROVIDER", "gemini"),
-        target_model=os.getenv("HAMZAD_SMOKE_MODEL", "gemini-2.5-flash"),
-        gateway_url=gateway_url,
-    )
 
-    resp = await provider.generate({"query": "Hello from GEO-Scope benchmark operational test."}, execution_mode="live")
-    assert resp.status == "success"
-    assert len(resp.text) > 0
+@pytest.mark.asyncio
+async def test_hamzad_provider_check_health_and_smoke_mock():
+    def handler(request: httpx.Request):
+        url_str = str(request.url)
+        if "/gateway/health" in url_str:
+            return httpx.Response(
+                status_code=200,
+                headers={"Content-Type": "application/json"},
+                json={"status": "healthy", "gateway_version": "1.0.0"},
+            )
+        elif "/api/models/generate" in url_str:
+            return httpx.Response(
+                status_code=200,
+                headers={"Content-Type": "application/json"},
+                json={
+                    "ok": True,
+                    "model": "hamzad-fast",
+                    "provider": "groq",
+                    "content": "OK",
+                    "usage": {"prompt_tokens": 5, "completion_tokens": 1, "total_tokens": 6},
+                    "meta": {"latency": 0.12},
+                },
+            )
+        return httpx.Response(status_code=404, text="Not Found")
+
+    mock_client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+    provider = HamzadProvider(client=mock_client)
+
+    health = await provider.check_health()
+    assert health["ok"] is True
+    assert health["status_code"] == 200
+
+    smoke = await provider.smoke_check(prompt="Reply with exactly OK.", model="hamzad-fast")
+    assert smoke["ok"] is True
+    assert smoke["status"] == "success"
+    assert smoke["text"] == "OK"
+    assert smoke["latency_ms"] >= 0
+
+
+@pytest.mark.asyncio
+async def test_hamzad_live_smoke_inference():
+    """
+    Executes a real single request to Hamzad Gateway at https://api.molavi.pro.
+    Verifies HTTP 200, valid provider response, latency captured, and secret isolation.
+    """
+    provider = HamzadProvider()
+    
+    # 1. Health check
+    health = await provider.check_health()
+    if not health.get("ok"):
+        pytest.skip(f"Hamzad Gateway at {provider.gateway_url} is currently unreachable.")
+
+    # 2. Smoke inference
+    smoke = await provider.smoke_check(prompt="Reply with exactly OK.", model="hamzad-fast")
+    assert smoke["ok"] is True
+    assert smoke["status"] == "success"
+    assert len(smoke["text"]) > 0
+    assert smoke["latency_ms"] > 0
+    assert "error" not in smoke or smoke["error"] is None

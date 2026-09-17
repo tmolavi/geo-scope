@@ -23,15 +23,19 @@ from geo_scope.benchmark.reproducer import BenchmarkReproducer
 from geo_scope.providers.hamzad_provider import HamzadProvider
 
 
-async def check_gateway_connectivity(gateway_url: str, timeout: float = 2.0) -> bool:
+async def check_gateway_connectivity(gateway_url: str, timeout: float = 3.0) -> bool:
     """
     Checks whether the Hamzad AI Gateway endpoint is reachable.
     """
     try:
         async with httpx.AsyncClient(timeout=httpx.Timeout(timeout, connect=timeout)) as client:
-            resp = await client.get(f"{gateway_url.rstrip('/')}/health")
-            if resp.status_code < 500:
-                return True
+            for path in ["/gateway/health", "/health", "/"]:
+                try:
+                    resp = await client.get(f"{gateway_url.rstrip('/')}{path}")
+                    if resp.status_code < 500:
+                        return True
+                except Exception:
+                    continue
     except Exception:
         pass
     return False
@@ -95,7 +99,7 @@ def main():
     print(f"Within Budget:      {'✓ YES' if cost_est['within_budget'] else '❌ NO'}")
     print("-------------------------------------------\n")
 
-    gateway_url = os.getenv("HAMZAD_GATEWAY_URL", "http://localhost:8000")
+    gateway_url = os.getenv("HAMZAD_GATEWAY_URL", "https://api.molavi.pro")
     print(f"🌐 Target Hamzad AI Gateway: {gateway_url}")
 
     if args.check_connection:

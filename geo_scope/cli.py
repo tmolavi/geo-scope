@@ -472,6 +472,59 @@ def benchmark_cmd(args):
         print(f"✓ Benchmark dataset package exported to: {pkg_path}")
 
 
+def hamzad_cmd(args):
+    """
+    Validate Hamzad AI Gateway connectivity, authentication, and smoke inference.
+    """
+    from geo_scope.providers.hamzad_provider import HamzadProvider
+
+    action = getattr(args, "hamzad_action", "check") or "check"
+    if action == "check":
+        gateway_url = (getattr(args, "url", None) or os.getenv("HAMZAD_GATEWAY_URL", "https://api.molavi.pro")).rstrip("/")
+        api_key = os.getenv("HAMZAD_API_KEY") or os.getenv("HAMZAD_MASTER_API_KEY", "")
+        project_id = os.getenv("HAMZAD_PROJECT_ID", "hamzad")
+
+        print("\n" + "=" * 75)
+        print("🌐 Hamzad AI Gateway Diagnostic & Smoke Check")
+        print("=" * 75)
+        print(f"• Gateway Endpoint : {gateway_url}")
+        print(f"• Project ID       : {project_id}")
+        print(f"• Authentication   : {'Configured (Bearer / Header)' if api_key else 'Public / Default Project'}")
+        print("-" * 75)
+
+        provider = HamzadProvider(gateway_url=gateway_url, project_id=project_id, api_key=api_key)
+
+        # 1. Health check
+        print("1. Testing Gateway Reachability & Health...")
+        health = asyncio.run(provider.check_health())
+        if health.get("ok"):
+            print(f"   ✓ Reachable: {health.get('path')} (HTTP {health.get('status_code')})")
+        else:
+            print(f"   ❌ Health check failed: {health.get('error')}")
+
+        # 2. Smoke inference
+        print("\n2. Testing Model Inference (Smoke Query)...")
+        prompt = getattr(args, "prompt", "Reply with exactly OK.")
+        model = getattr(args, "model", "hamzad-fast")
+        smoke = asyncio.run(provider.smoke_check(prompt=prompt, model=model))
+
+        if smoke.get("ok"):
+            print(f"   ✓ Inference Successful (HTTP 200)")
+            print(f"   • Model     : {smoke.get('model')}")
+            print(f"   • Provider  : {smoke.get('provider')}")
+            print(f"   • Latency   : {smoke.get('latency_ms')} ms")
+            print(f"   • Response  : {smoke.get('text')}")
+        else:
+            print(f"   ❌ Inference Failed: {smoke.get('error')}")
+
+        print("=" * 75)
+        if health.get("ok") and smoke.get("ok"):
+            print("🎉 Hamzad AI Gateway is fully operational and ready for GEO-Scope benchmarks.\n")
+        else:
+            print("⚠️ Some checks failed. Verify network connectivity or configuration.\n")
+            sys.exit(1)
+
+
 def main():
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -580,6 +633,16 @@ def main():
     export_p.add_argument("--mode", type=str, default="synthetic", choices=["live", "synthetic"], help="Execution mode")
     export_p.add_argument("--status", type=str, default="demo_only", choices=["peer_review_ready", "demo_only"], help="Research status")
 
+    # Command: hamzad
+    hamzad_parser = subparsers.add_parser("hamzad", help="Hamzad AI Gateway connectivity, authentication & smoke inference")
+    hamzad_subparsers = hamzad_parser.add_subparsers(dest="hamzad_action", help="Hamzad action")
+
+    # hamzad check
+    hamzad_check_p = hamzad_subparsers.add_parser("check", help="Verify gateway health, authentication, and execute smoke query")
+    hamzad_check_p.add_argument("--url", type=str, default=None, help="Override gateway URL (default: https://api.molavi.pro)")
+    hamzad_check_p.add_argument("--model", type=str, default="hamzad-fast", help="Target model (default: hamzad-fast)")
+    hamzad_check_p.add_argument("--prompt", type=str, default="Reply with exactly OK.", help="Smoke prompt")
+
     # Command: providers
     prov_parser = subparsers.add_parser("providers", help="List available providers and configuration status")
     prov_parser.add_argument("--json", action="store_true", help="Output raw JSON instead of aligned table")
@@ -619,6 +682,8 @@ def main():
         mavi_cmd(args)
     elif args.command == "benchmark":
         benchmark_cmd(args)
+    elif args.command == "hamzad":
+        hamzad_cmd(args)
     elif args.command == "serve":
         serve_dashboard_cmd(args)
     elif args.command == "mcp":
@@ -638,3 +703,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

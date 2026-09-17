@@ -12,6 +12,7 @@ Set credentials in your process environment or your host's secret manager. `.env
 
 | Provider ID | Environment | Response capability |
 | --- | --- | --- |
+| `hamzad_gateway` | `HAMZAD_GATEWAY_URL` (default: `https://api.molavi.pro`), `HAMZAD_PROJECT_ID` (default: `hamzad`), `HAMZAD_API_KEY` | Unified gateway routing across Gemini, OpenAI, Claude, Perplexity & fast backends |
 | `perplexity_sonar` | `PERPLEXITY_API_KEY`, optional `PERPLEXITY_MODEL` | Search-enabled Sonar; provider citations retained |
 | `gemini_grounding` | `GEMINI_API_KEY`, optional `GEMINI_MODEL` | Google Search tool enabled; grounding metadata retained |
 | `openai_completion` | `OPENAI_API_KEY`, optional `OPENAI_MODEL` | Direct completion; not a ChatGPT Search benchmark |
@@ -22,6 +23,14 @@ Set credentials in your process environment or your host's secret manager. `.env
 | `keyless_local` | `KEYLESS_WRAPPER_HOST`, `KEYLESS_WRAPPER_MODEL` optional | User-run OpenAI-compatible wrapper; grounding unverified |
 
 `chatgpt_search` and `claude_3_7` remain compatibility aliases in live mode. Prefer the canonical completion IDs. Simulation uses the four historical profile IDs. Provider API outputs should not be treated as identical to consumer search products.
+
+## Hamzad AI Gateway Verification
+
+To test gateway reachability, health, and run a smoke inference query:
+
+```bash
+geo-scope hamzad check
+```
 
 Select a model available to your account using its model environment variable. Model lifecycle, pricing and quotas are controlled by each provider. No fixed cost per query or completion-time guarantee is made. Actual usage metadata is retained when provided. A 429 or other provider failure stops the run; do not rotate accounts or keys to evade limits.
 
