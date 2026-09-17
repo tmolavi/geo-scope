@@ -241,7 +241,25 @@ class BenchmarkCalculator:
                 "share_pct": round((cnt / total_cits) * 100.0, 2) if total_cits > 0 else 0.0,
             })
 
-        # 6. Empirical Factor Analysis
+        # 6. Category Visibility Matrix (Brand x Provider)
+        cat_matrix: Dict[str, Dict[str, Optional[float]]] = {}
+        for b in brands:
+            bname = b.get("name")
+            is_target = b.get("is_target", False)
+            cat_matrix[bname] = {}
+            for p in providers:
+                pid = p.get("id") or p.get("provider_id")
+                p_obs = [o for o in successful_obs if o.get("provider_id") == pid or o.get("model") == pid]
+                if not p_obs:
+                    cat_matrix[bname][pid] = None
+                else:
+                    if is_target:
+                        m_count = sum(1 for o in p_obs if o.get("brand_mentioned"))
+                    else:
+                        m_count = sum(1 for o in p_obs if bname in o.get("mentioned_brands", []))
+                    cat_matrix[bname][pid] = round((m_count / len(p_obs)) * 100.0, 2)
+
+        # 7. Empirical Factor Analysis
         factor_analysis = self._compute_factor_analysis(successful_obs, citations)
 
         return BenchmarkMetrics(
@@ -257,6 +275,7 @@ class BenchmarkCalculator:
             providers=provider_metrics_dict,
             strata=strata_dict,
             top_cited_domains=top_domains,
+            category_visibility_matrix=cat_matrix,
             factor_analysis=factor_analysis,
         )
 

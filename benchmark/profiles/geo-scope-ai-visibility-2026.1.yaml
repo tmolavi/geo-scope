@@ -1,0 +1,47 @@
+benchmark_version: "2026.1-live"
+dataset_name: "geo-scope-ai-visibility-2026.1"
+execution_mode: "live"
+research_status: "experimental_observation"
+methodology_version: "1.0.0"
+description: "GEO-Scope AI Visibility Benchmark 2026.1: Multi-Model AI Search & Recommendation Study across AI SEO & GEO tools."
+
+providers:
+  - hamzad_gemini
+  - hamzad_perplexity
+  - hamzad_openai
+  - hamzad_claude
+
+models:
+  hamzad_gemini: "gemini-2.5-flash"
+  hamzad_perplexity: "sonar-pro"
+  hamzad_openai: "gpt-4o-mini"
+  hamzad_claude: "anthropic/claude-3.5-sonnet"
+
+sampling:
+  niche: "ai_seo_geo"
+  target_brand: "Semrush"
+  competitors:
+    - "Ahrefs"
+    - "Moz"
+    - "Surfer SEO"
+    - "Clearscope"
+    - "MarketMuse"
+    - "Conductor"
+    - "SAGE"
+  categories:
+    - "ai_search_visibility"
+    - "generative_engine_optimization"
+    - "content_optimization_tools"
+    - "ai_seo_analytics"
+  count: 100
+  language: "en"
+  difficulty_mix:
+    discovery: 0.30
+    comparison: 0.30
+    commercial: 0.25
+    educational: 0.15
+
+cost_limits:
+  max_prompts: 100
+  max_cost_usd: 25.0
+  dry_run: false

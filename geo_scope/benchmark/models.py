@@ -132,4 +132,5 @@ class BenchmarkMetrics(BaseModel):
     providers: Dict[str, ProviderBenchmarkMetrics] = Field(default_factory=dict)
     strata: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
     top_cited_domains: List[Dict[str, Any]] = Field(default_factory=list)
+    category_visibility_matrix: Dict[str, Dict[str, Optional[float]]] = Field(default_factory=dict)
     factor_analysis: Optional[StatisticalFactorAnalysis] = None
