@@ -60,17 +60,39 @@ geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1
 
 ---
 
-### 📊 Public Benchmark & Evidence Datasets
+## 📊 Published Benchmarks
 
-GEO-Scope includes public, reproducible benchmark datasets under `benchmark/releases/` with SHA-256 cryptographic verification, full execution provenance, and 95% bootstrap confidence intervals:
+GEO-Scope publishes fully reproducible, peer-review-ready empirical benchmark releases under [`benchmarks/`](benchmarks/) and [`benchmark/releases/`](benchmark/releases/) with SHA-256 cryptographic verification, full model routing provenance, and 95% bootstrap confidence intervals:
 
-- **2026.1 Live Benchmark Release**:
-  - *Title*: **GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark**
-  - *Subtitle*: *Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms*
-  - *Question Layer*: [AnswerPath GEO](https://github.com/tmolavi/answerpath-geo) integration with separated observed user questions and generated prompt hypotheses.
-  - *Verification*: `geo-scope benchmark verify --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1`
-  - *Reproduction*: `geo-scope benchmark reproduce --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1`
-- **Methodology & Documentation**: See [Benchmark Methodology](docs/benchmark-methodology.md) and [Release Notes](docs/releases/release-2026.1-geo-seo-digital-agency-iran.md).
+### 🏆 [GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark](benchmarks/geo-seo-digital-agency-iran-2026.1/)
+* **Subtitle**: *Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms*
+* **Dataset Version**: [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/)
+* **Methodology**: [Methodology v1](benchmarks/geo-seo-digital-agency-iran-2026.1/methodology.md) · [Full Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) · [Dataset Reference](benchmarks/geo-seo-digital-agency-iran-2026.1/dataset-reference.md) · [Case Study](docs/case-studies/geo-seo-digital-agency-iran-2026.md)
+* **Ecosystem Stack**: [Molavi AI Visibility Stack & Evidence Map](docs/BENCHMARK_ECOSYSTEM.md)
+* **Question Layer**: [AnswerPath GEO](https://github.com/tmolavi/answerpath-geo) (15 observed real queries + 15 exploratory hypothesis templates across 5 search intent strata)
+
+#### Observed Metrics Summary ($N=120$ completions across Gemini 2.5 Flash, GPT-4o, Claude 3.5 Sonnet, Sonar Pro)
+
+| Entity Name | Observed Mentions | Mention Rate [95% CI] | Recommendations | Rec Rate [95% CI] | Top-1 Recs |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Web24** (وب۲۴) | 26 | 21.7% [14.2%, 29.2%] | 25 | 20.8% [13.3%, 28.3%] | 14 |
+| **Novin** (نوین) | 23 | 19.2% [12.5%, 26.7%] | 23 | 19.2% [12.5%, 26.7%] | 8 |
+| **Dimarketing** | 8 | 6.7% [2.5%, 11.7%] | 8 | 6.7% [2.5%, 11.7%] | 4 |
+| **Triboon** (تریبون) | 6 | 5.0% [1.7%, 9.2%] | 6 | 5.0% [1.7%, 9.2%] | 0 |
+| **DMN Agency** | 5 | 4.2% [0.8%, 7.5%] | 5 | 4.2% [0.8%, 7.5%] | 0 |
+| **Rayan** | 1 | 0.8% [0.0%, 2.5%] | 1 | 0.8% [0.0%, 2.5%] | 0 |
+| **Hamrah Marketing** | 1 | 0.8% [0.0%, 2.5%] | 1 | 0.8% [0.0%, 2.5%] | 0 |
+| **Inten** | 0 | 0.0% [0.0%, 0.0%] | 0 | 0.0% [0.0%, 0.0%] | 0 |
+
+#### Reproduction & Verification Commands
+
+```bash
+# Verify bit-for-bit SHA-256 package checksums
+geo-scope benchmark verify --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1
+
+# Reproduce all metric math and 95% bootstrap CIs from raw evidence
+geo-scope benchmark reproduce --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1
+```
 
 ---
 
