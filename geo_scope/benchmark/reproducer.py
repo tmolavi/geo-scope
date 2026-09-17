@@ -79,7 +79,8 @@ class BenchmarkReproducer:
                     if line.strip():
                         citations.append(json.loads(line))
 
-        brands = json.loads((path / "brands.json").read_text(encoding="utf-8"))
+        brands_file = (path / "entities.json") if (path / "entities.json").exists() else (path / "brands.json")
+        brands = json.loads(brands_file.read_text(encoding="utf-8"))
         providers = json.loads((path / "providers.json").read_text(encoding="utf-8"))
         expected_metrics_raw = json.loads((path / "metrics.json").read_text(encoding="utf-8"))
 

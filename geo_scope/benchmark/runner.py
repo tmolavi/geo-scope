@@ -191,8 +191,15 @@ class LiveBenchmarkRunner:
                         prov_resp = None
 
                     # Parse response features
+                    entity_names = [b["name"] for b in brands]
                     parsed = parse_model_response(
-                        query_item={"query": p_text, "intent": prompt.get("intent_stratum", "informational"), "niche": prompt["niche"]},
+                        query_item={
+                            "query": p_text,
+                            "intent": prompt.get("intent_stratum", "informational"),
+                            "niche": prompt["niche"],
+                            "expected_entities": entity_names,
+                            "target_brand": self.profile.sampling.target_brand,
+                        },
                         model_name=prov_id,
                         response_text=resp_text,
                     )
@@ -233,6 +240,22 @@ class LiveBenchmarkRunner:
                         status = "failed"
                         exec_class = "failed"
 
+                    all_stats = parsed.get("all_brands_stats", {})
+                    mentioned = [b for b, s in all_stats.items() if s.get("mentioned")]
+                    entity_ranks = {b: s.get("rank") for b, s in all_stats.items() if s.get("rank") is not None}
+                    top1_entity = next((b for b, s in all_stats.items() if s.get("is_top_1")), None)
+                    if not top1_entity and mentioned:
+                        sorted_order = sorted(
+                            [b for b in mentioned if all_stats[b].get("mention_order")],
+                            key=lambda x: all_stats[x].get("mention_order", 999),
+                        )
+                        if sorted_order:
+                            top1_entity = sorted_order[0]
+
+                    target_b = self.profile.sampling.target_brand
+                    is_top1_tgt = (top1_entity == target_b) if target_b else (bool(top1_entity))
+                    target_rank = entity_ranks.get(target_b) if target_b else (min(entity_ranks.values()) if entity_ranks else None)
+
                     obs_rec = {
                         "observation_id": f"obs_{len(existing_obs) + len(new_obs) + 1:05d}",
                         "prompt_id": pid,
@@ -246,12 +269,12 @@ class LiveBenchmarkRunner:
                         "execution_class": exec_class,
                         "execution_mode": self.profile.execution_mode,
                         "status": status,
-                        "brand_mentioned": parsed.get("target_mentioned", False) if status == "success" else False,
-                        "brand_rank": parsed.get("target_rank") if status == "success" else None,
-                        "is_top1": parsed.get("target_is_top_1", False) if status == "success" else False,
-                        "top1_brand": self.profile.sampling.target_brand if parsed.get("target_is_top_1") else (self.profile.sampling.competitors[0] if self.profile.sampling.competitors else None),
-                        "mentioned_brands": parsed.get("mentioned_brands", []),
-                        "competitor_ranks": parsed.get("competitor_ranks", {}),
+                        "brand_mentioned": (target_b in mentioned) if target_b else bool(mentioned),
+                        "brand_rank": target_rank if status == "success" else None,
+                        "is_top1": is_top1_tgt if status == "success" else False,
+                        "top1_brand": top1_entity,
+                        "mentioned_brands": mentioned,
+                        "competitor_ranks": entity_ranks,
                         "sentiment": parsed.get("sentiment", "neutral"),
                         "latency_ms": latency_ms,
                         "response_hash": resp_hash,
@@ -392,6 +415,7 @@ class LiveBenchmarkRunner:
             elif idx % 3 == 0:
                 diff = "low"
 
+            entities_list = self.profile.sampling.get_entities()
             prompts.append({
                 "prompt_id": p.get("prompt_id") or p.get("id") or f"prompt_{idx+1:04d}",
                 "text": p.get("text") or p.get("question") or p.get("query", ""),
@@ -404,17 +428,25 @@ class LiveBenchmarkRunner:
                 "language": p.get("language", "en"),
                 "difficulty": p.get("difficulty", diff),
                 "niche": p.get("niche", self.profile.sampling.niche),
-                "target_brand": p.get("target_brand", self.profile.sampling.target_brand),
+                "target_brand": p.get("target_brand", self.profile.sampling.target_brand or ""),
                 "competitors": p.get("competitors", self.profile.sampling.competitors),
                 "confidence": p.get("confidence", 1.0),
-                "entities": p.get("entities", [self.profile.sampling.target_brand] + self.profile.sampling.competitors),
+                "entities": p.get("entities", entities_list),
             })
         return prompts
 
     def _build_brands_list(self) -> List[Dict[str, Any]]:
-        brands = [{"name": self.profile.sampling.target_brand, "is_target": True, "domain": f"{self.profile.sampling.target_brand.lower()}.com"}]
-        for comp in self.profile.sampling.competitors:
-            brands.append({"name": comp, "is_target": False, "domain": f"{comp.lower().replace(' ', '')}.com"})
+        entities = self.profile.sampling.get_entities()
+        target_brand = self.profile.sampling.target_brand
+        brands = []
+        for ent in entities:
+            is_tgt = (ent == target_brand) if target_brand else False
+            brands.append({
+                "name": ent,
+                "entity": ent,
+                "is_target": is_tgt,
+                "domain": f"{ent.lower().replace(' ', '')}.com",
+            })
         return brands
 
     def _build_providers_list(self) -> List[Dict[str, Any]]:
@@ -573,10 +605,10 @@ class LiveBenchmarkRunner:
 
         lines.extend([
             "",
-            "## 4. Brand Visibility Performance (95% Bootstrap CIs)",
+            "## 4. Evaluated Entity Visibility Performance (95% Bootstrap CIs)",
             "",
-            "| Brand | Target | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |",
-            "|-------|--------|----------------|-----------------------|---------------------|----------|",
+            "| Entity | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |",
+            "|--------|----------------|-----------------------|---------------------|----------|",
         ])
 
         for b in metrics.get("brands", []):
@@ -587,24 +619,22 @@ class LiveBenchmarkRunner:
             t_str = f"{t['value']:.1f}% [{t.get('ci_lower', 0):.1f}%, {t.get('ci_upper', 0):.1f}%]" if t.get("value") is not None else "N/A"
             som_str = f"{som['value']:.1f}%" if som.get("value") is not None else "N/A"
             ar_str = f"#{b['avg_rank']:.1f}" if b.get("avg_rank") is not None else "-"
-            tgt = "★ Yes" if b.get("is_target") else "No"
-            lines.append(f"| {b['brand']} | {tgt} | {som_str} | {m_str} | {t_str} | {ar_str} |")
+            lines.append(f"| {b['brand']} | {som_str} | {m_str} | {t_str} | {ar_str} |")
 
         lines.extend([
             "",
-            "## 4. Multi-Model Provider Analysis",
+            "## 5. Multi-Model Provider Analysis",
             "",
-            "| Provider | Success Obs | Failed Obs | Target Mention Rate | Target Top-1 Rate | Avg Latency (ms) |",
-            "|----------|-------------|------------|---------------------|-------------------|------------------|",
+            "| Provider | Success Obs | Failed Obs | Avg Latency (ms) | Status |",
+            "|----------|-------------|------------|------------------|--------|",
         ])
 
         for pid, pdata in metrics.get("providers", {}).items():
-            tm = pdata.get("target_mention_rate", {})
-            tt = pdata.get("target_top1_rate", {})
-            tm_str = f"{tm['value']:.1f}% [{tm.get('ci_lower', 0):.1f}%, {tm.get('ci_upper', 0):.1f}%]" if tm.get("value") is not None else "N/A"
-            tt_str = f"{tt['value']:.1f}% [{tt.get('ci_lower', 0):.1f}%, {tt.get('ci_upper', 0):.1f}%]" if tt.get("value") is not None else "N/A"
             lat_str = f"{pdata.get('mean_latency_ms', 0):.1f}" if pdata.get("mean_latency_ms") is not None else "-"
-            lines.append(f"| {pid} | {pdata.get('successful_observations', 0)} | {pdata.get('failed_observations', 0)} | {tm_str} | {tt_str} | {lat_str} |")
+            succ = pdata.get('successful_observations', 0)
+            fail = pdata.get('failed_observations', 0)
+            stat = "Active" if succ > 0 else "Inactive"
+            lines.append(f"| {pid} | {succ} | {fail} | {lat_str} | {stat} |")
 
         lines.extend([
             "",

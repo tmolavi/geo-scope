@@ -7,7 +7,7 @@ GEO-Scope Public Benchmark & Evidence Dataset.
   - Generated Research Prompts: 30
 - Total Observations: 120
 - Providers: 4
-- Brands: 5
+- Brands: 8
 - Execution Mode: `live`
 - Research Status: `peer_review_ready`
 

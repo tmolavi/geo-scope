@@ -42,11 +42,14 @@ Measurements derived from structured exploration prompt templates (never conflat
 
 | Brand | Template Mention Rate | Template Top-1 Rate | Sample Size | Category |
 |-------|-----------------------|---------------------|-------------|----------|
-| Web24 | 0.0% | 0.0% | 51 | Research Template (`generated`) |
-| Novin | 0.0% | 100.0% | 51 | Research Template (`generated`) |
-| Dimarketing | 0.0% | 0.0% | 51 | Research Template (`generated`) |
-| Triboon | 0.0% | 0.0% | 51 | Research Template (`generated`) |
-| DMN Agency | 0.0% | 0.0% | 51 | Research Template (`generated`) |
+| Web24 | 78.4% | 68.6% | 51 | Research Template (`generated`) |
+| Novin | 86.3% | 7.8% | 51 | Research Template (`generated`) |
+| Dimarketing | 80.4% | 11.8% | 51 | Research Template (`generated`) |
+| Triboon | 56.9% | 0.0% | 51 | Research Template (`generated`) |
+| DMN Agency | 21.6% | 2.0% | 51 | Research Template (`generated`) |
+| Rayan | 0.0% | 0.0% | 51 | Research Template (`generated`) |
+| Hamrah Marketing | 0.0% | 0.0% | 51 | Research Template (`generated`) |
+| Inten | 0.0% | 0.0% | 51 | Research Template (`generated`) |
 
 ### C. Combined Operational Visibility
 Blended operational index across all valid evaluation queries:
@@ -55,24 +58,27 @@ Blended operational index across all valid evaluation queries:
 |------------------|---------------|------------------|-------------------|------------------|
 | Question Pool | 30 | 0 | 30 | `answerpath` |
 
-## 4. Brand Visibility Performance (95% Bootstrap CIs)
+## 4. Evaluated Entity Visibility Performance (95% Bootstrap CIs)
 
-| Brand | Target | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |
-|-------|--------|----------------|-----------------------|---------------------|----------|
-| Web24 | ★ Yes | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | #0.0 |
-| Novin | No | N/A | 0.0% [0.0%, 0.0%] | 100.0% [100.0%, 100.0%] | - |
-| Dimarketing | No | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
-| Triboon | No | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
-| DMN Agency | No | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
+| Entity | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |
+|--------|----------------|-----------------------|---------------------|----------|
+| Web24 | 24.2% | 78.4% [66.7%, 90.2%] | 68.6% [54.9%, 82.3%] | #1.1 |
+| Novin | 26.7% | 86.3% [76.5%, 94.2%] | 7.8% [2.0%, 15.7%] | #2.0 |
+| Dimarketing | 24.8% | 80.4% [68.6%, 90.2%] | 11.8% [3.9%, 21.6%] | #2.1 |
+| Triboon | 17.6% | 56.9% [43.1%, 70.6%] | 0.0% [0.0%, 0.0%] | #1.8 |
+| DMN Agency | 6.7% | 21.6% [9.8%, 33.3%] | 2.0% [0.0%, 5.9%] | #0.8 |
+| Rayan | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | #0.0 |
+| Hamrah Marketing | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | #0.0 |
+| Inten | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | #0.0 |
 
-## 4. Multi-Model Provider Analysis
+## 5. Multi-Model Provider Analysis
 
-| Provider | Success Obs | Failed Obs | Target Mention Rate | Target Top-1 Rate | Avg Latency (ms) |
-|----------|-------------|------------|---------------------|-------------------|------------------|
-| gemini-2.5-flash | 7 | 23 | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | 6821.5 |
-| gpt-4o | 30 | 0 | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | 6800.4 |
-| claude-3-5-sonnet | 7 | 23 | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | 7703.3 |
-| sonar-pro | 7 | 23 | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | 6804.7 |
+| Provider | Success Obs | Failed Obs | Avg Latency (ms) | Status |
+|----------|-------------|------------|------------------|--------|
+| gemini-2.5-flash | 7 | 23 | 6821.5 | Active |
+| gpt-4o | 30 | 0 | 6800.4 | Active |
+| claude-3-5-sonnet | 7 | 23 | 7703.3 | Active |
+| sonar-pro | 7 | 23 | 6804.7 | Active |
 
 ## 5. Empirical Factor Associations (Prior vs. Observed)
 

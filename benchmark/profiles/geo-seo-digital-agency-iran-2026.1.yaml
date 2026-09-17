@@ -8,12 +8,15 @@ description: "GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark — Measur
 
 sampling:
   niche: "seo_geo_digital_marketing_iran"
-  target_brand: "Web24"
-  competitors:
+  entities:
+    - "Web24"
     - "Novin"
     - "Dimarketing"
     - "Triboon"
     - "DMN Agency"
+    - "Rayan"
+    - "Hamrah Marketing"
+    - "Inten"
   count: 30
   language: "both"
   custom_prompts_file: "benchmark/prompts/prompts.jsonl"

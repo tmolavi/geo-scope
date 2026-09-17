@@ -14,13 +14,25 @@ except ImportError:
 
 class SamplingConfig(BaseModel):
     niche: str = "crm_sales"
-    target_brand: str = "HubSpot"
-    competitors: List[str] = Field(default_factory=lambda: ["Salesforce", "Zoho CRM", "Pipedrive"])
+    entities: List[str] = Field(default_factory=list)
+    target_brand: Optional[str] = None
+    competitors: List[str] = Field(default_factory=list)
     categories: List[str] = Field(default_factory=lambda: ["crm", "sales_automation", "pipeline_management"])
     count: int = 30
     language: str = "both"
     difficulty_mix: Dict[str, float] = Field(default_factory=lambda: {"low": 0.2, "medium": 0.6, "high": 0.2})
     custom_prompts_file: Optional[str] = None
+
+    def get_entities(self) -> List[str]:
+        if self.entities:
+            return list(self.entities)
+        ents = []
+        if self.target_brand:
+            ents.append(self.target_brand)
+        for c in self.competitors:
+            if c not in ents:
+                ents.append(c)
+        return ents or ["Brand"]
 
 
 class CostLimits(BaseModel):

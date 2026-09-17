@@ -20,6 +20,7 @@ def discover_questions(
     category: str = "GEO",
     target_brand: str = "",
     competitors: Optional[List[str]] = None,
+    entities: Optional[List[str]] = None,
 ) -> DiscoveryResult:
     """
     Mode 1: Research Discovery
@@ -31,14 +32,14 @@ def discover_questions(
         for p in input_paths:
             inputs.extend(extract_records(p))
 
-    entities = ([target_brand] if target_brand else []) + (competitors or [])
+    resolved_entities = entities or (([target_brand] if target_brand else []) + (competitors or []))
     connector = AnswerPathConnector(threshold=threshold)
     return connector.mine_questions(
         topic=topic,
         inputs=inputs,
         include_generated=include_generated,
         category=category,
-        entities=entities,
+        entities=resolved_entities,
     )
 
 
@@ -49,6 +50,7 @@ def prepare_benchmark_dataset(
     include_default_generated: bool = True,
     brand: str = "My Brand",
     competitors: Optional[List[str]] = None,
+    entities: Optional[List[str]] = None,
     out_dir: str = "benchmark",
     dataset_id: Optional[str] = None,
     category: str = "GEO",

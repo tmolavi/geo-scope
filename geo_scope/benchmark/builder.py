@@ -84,6 +84,9 @@ class BenchmarkBuilder:
             for p in gen_prompts:
                 f.write(json.dumps(p, ensure_ascii=False) + "\n")
 
+        (target_dir / "entities.json").write_text(
+            json.dumps(brands, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
         (target_dir / "brands.json").write_text(
             json.dumps(brands, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )

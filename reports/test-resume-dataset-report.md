@@ -39,10 +39,7 @@ Measurements derived from structured exploration prompt templates (never conflat
 
 | Brand | Template Mention Rate | Template Top-1 Rate | Sample Size | Category |
 |-------|-----------------------|---------------------|-------------|----------|
-| HubSpot | 100.0% | 100.0% | 1 | Research Template (`generated`) |
-| Salesforce | 0.0% | 0.0% | 1 | Research Template (`generated`) |
-| Zoho CRM | 0.0% | 0.0% | 1 | Research Template (`generated`) |
-| Pipedrive | 0.0% | 0.0% | 1 | Research Template (`generated`) |
+| Brand | 0.0% | 0.0% | 1 | Research Template (`generated`) |
 
 ### C. Combined Operational Visibility
 Blended operational index across all valid evaluation queries:
@@ -51,20 +48,17 @@ Blended operational index across all valid evaluation queries:
 |------------------|---------------|------------------|-------------------|------------------|
 | Question Pool | 2 | 0 | 2 | `answerpath` |
 
-## 4. Brand Visibility Performance (95% Bootstrap CIs)
+## 4. Evaluated Entity Visibility Performance (95% Bootstrap CIs)
 
-| Brand | Target | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |
-|-------|--------|----------------|-----------------------|---------------------|----------|
-| HubSpot | ★ Yes | 100.0% | 100.0% [100.0%, 100.0%] | 100.0% [100.0%, 100.0%] | #1.0 |
-| Salesforce | No | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
-| Zoho CRM | No | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
-| Pipedrive | No | 0.0% | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
+| Entity | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |
+|--------|----------------|-----------------------|---------------------|----------|
+| Brand | N/A | 0.0% [0.0%, 0.0%] | 0.0% [0.0%, 0.0%] | - |
 
-## 4. Multi-Model Provider Analysis
+## 5. Multi-Model Provider Analysis
 
-| Provider | Success Obs | Failed Obs | Target Mention Rate | Target Top-1 Rate | Avg Latency (ms) |
-|----------|-------------|------------|---------------------|-------------------|------------------|
-| ollama_local | 1 | 2 | 100.0% [100.0%, 100.0%] | 100.0% [100.0%, 100.0%] | - |
+| Provider | Success Obs | Failed Obs | Avg Latency (ms) | Status |
+|----------|-------------|------------|------------------|--------|
+| ollama_local | 1 | 2 | - | Active |
 
 ## 5. Empirical Factor Associations (Prior vs. Observed)
 

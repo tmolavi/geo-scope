@@ -101,82 +101,101 @@ def extract_citations_and_domains(text: str) -> Tuple[List[str], List[Dict[str, 
     return sorted(extracted_urls), classified_sources
 
 
+KNOWN_ENTITY_ALIASES = {
+    "web24": ["web24", "وب۲۴", "وب 24", "وب24", "وب ۲۴"],
+    "novin": ["novin", "نوین", "novin digital", "novin media", "آژانس نوین", "رسانه تجارت نوین"],
+    "dimarketing": ["dimarketing", "دی مارکتینگ", "دی‌مارکتینگ"],
+    "triboon": ["triboon", "تریبون"],
+    "dmn agency": ["dmn", "dmn agency", "دی‌ام‌ان", "دی ام ان", "دی‌ام‌ن", "دی ام ن"],
+    "rayan": ["rayan", "رایان"],
+    "hamrah marketing": ["hamrah marketing", "همراه مارکتینگ"],
+    "inten": ["inten", "اینتن"],
+    "hubspot": ["hubspot", "هاب اسپات"],
+    "salesforce": ["salesforce", "سیلزفورس"],
+    "zoho crm": ["zoho", "zoho crm", "زوهو"],
+    "pipedrive": ["pipedrive", "پایپ درایو"],
+}
+
+
+def _find_entity_matches(entity: str, text: str) -> List[Tuple[int, int]]:
+    """Finds all start/end character spans of an entity or its known aliases in text."""
+    variants = [entity] + KNOWN_ENTITY_ALIASES.get(entity.strip().lower(), [])
+    spans = []
+    seen = set()
+    for var in variants:
+        if not var:
+            continue
+        escaped = re.escape(var)
+        pattern = re.compile(rf"(?<![\w\u0600-\u06FF]){escaped}(?![\w\u0600-\u06FF])", re.IGNORECASE)
+        for m in pattern.finditer(text):
+            span = (m.start(), m.end())
+            if span not in seen:
+                seen.add(span)
+                spans.append(span)
+    return sorted(spans, key=lambda s: s[0])
+
+
 def detect_brand_positions(text: str, brands: List[str]) -> Dict[str, Dict[str, Any]]:
     """
-    Detects presence, rank order (1st, 2nd, 3rd, etc.), and sentiment of each brand.
+    Detects presence, rank order (1st, 2nd, 3rd, etc.), and sentiment of each brand/entity.
     """
     results = {}
     lines = text.split("\n")
 
     first_mentions = {}
+    brand_spans = {}
     for brand in brands:
-        match = re.search(rf"\b{re.escape(brand)}\b", text, re.IGNORECASE)
-        if match:
-            first_mentions[brand] = match.start()
+        spans = _find_entity_matches(brand, text)
+        brand_spans[brand] = spans
+        if spans:
+            first_mentions[brand] = spans[0][0]
+
     mention_order = {brand: index + 1 for index, brand in enumerate(sorted(first_mentions, key=first_mentions.get))}
+
     for brand in brands:
-        # Check if brand appears in text (case insensitive, word boundary)
-        pattern = re.compile(rf"\b{re.escape(brand)}\b", re.IGNORECASE)
-        matches = list(pattern.finditer(text))
+        spans = brand_spans.get(brand, [])
+        is_mentioned = len(spans) > 0
+        mention_count = len(spans)
 
-        is_mentioned = len(matches) > 0
-        mention_count = len(matches)
-
-        # Rank detection: check numbered lists (e.g. "1. HubSpot", "1- HubSpot", "### 1. HubSpot")
+        # Rank detection: check numbered lists (e.g. "1. HubSpot", "### ۱. وب۲۴ (Web24)")
         list_rank = 999
+        variants = [brand] + KNOWN_ENTITY_ALIASES.get(brand.strip().lower(), [])
 
         for idx, line in enumerate(lines):
-            # Check for list numbering like "1. Brand", "1- Brand", "۱. Brand"
             list_match = re.match(r"^(?:[#\*\-\s]*)([\d\u06f0-\u06f9]+)[\.\-\)]\s*(.*)", line.strip())
             if list_match:
                 num_str = list_match.group(1)
-                # convert Persian numbers if any
                 num_str = num_str.translate(str.maketrans("۰۱۲۳۴۵۶۷۸۹", "0123456789"))
                 try:
                     num_val = int(num_str)
-                    content_after = list_match.group(2)
-                    if num_val > 0 and pattern.match(content_after.lstrip("* _")):
-                        list_rank = min(list_rank, num_val)
+                    content_after = list_match.group(2).lstrip("* _#`:")
+                    if num_val > 0:
+                        for var in variants:
+                            escaped_var = re.escape(var)
+                            if re.match(rf"^(?<![\w\u0600-\u06FF]){escaped_var}(?![\w\u0600-\u06FF])", content_after, re.IGNORECASE):
+                                list_rank = min(list_rank, num_val)
+                                break
                 except ValueError:
                     pass
+
         final_rank = list_rank if list_rank != 999 else (None if is_mentioned else 0)
 
         # Sentiment heuristic around brand context
         sentiment = "neutral"
         if is_mentioned:
             context_window = ""
-            for m in matches:
-                start = max(0, m.start() - 100)
-                end = min(len(text), m.end() + 100)
+            for start_pos, end_pos in spans:
+                start = max(0, start_pos - 100)
+                end = min(len(text), end_pos + 100)
                 context_window += " " + text[start:end]
 
             pos_words = [
-                "best",
-                "top",
-                "leading",
-                "excellent",
-                "superior",
-                "recommended",
-                "قدرتمند",
-                "بهترین",
-                "برتر",
-                "توصیه",
-                "عالی",
-                "محبوب",
+                "best", "top", "leading", "excellent", "superior", "recommended",
+                "قدرتمند", "بهترین", "برتر", "توصیه", "عالی", "محبوب", "پیشرو", "معتبر", "کیفیت"
             ]
             neg_words = [
-                "worst",
-                "expensive",
-                "slow",
-                "poor",
-                "complaint",
-                "lacks",
-                "ضعیف",
-                "گران",
-                "کند",
-                "نقص",
-                "مشکل",
-                "پیچیده",
+                "worst", "expensive", "slow", "poor", "complaint", "lacks",
+                "ضعیف", "گران", "کند", "نقص", "مشکل", "پیچیده", "نامعتبر"
             ]
 
             pos_count = sum(1 for w in pos_words if w in context_window.lower())
@@ -192,7 +211,7 @@ def detect_brand_positions(text: str, brands: List[str]) -> Dict[str, Dict[str, 
         results[brand] = {
             "mentioned": is_mentioned,
             "mention_order": mention_order.get(brand),
-            "rank_basis": "numbered_list" if list_rank != 999 else "unknown",
+            "rank_basis": "numbered_list" if list_rank != 999 else ("paragraph_order" if is_mentioned else "unknown"),
             "mention_count": mention_count,
             "rank": final_rank if is_mentioned else 0,
             "is_top_1": final_rank == 1 if is_mentioned else False,
