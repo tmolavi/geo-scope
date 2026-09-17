@@ -1,0 +1,46 @@
+benchmark_version: "2026.1-live"
+dataset_name: "geo-scope-ai-visibility-2026.1-smoke"
+execution_mode: "live"
+research_status: "experimental_observation"
+methodology_version: "1.0.0"
+description: "GEO-Scope AI Visibility Benchmark 2026.1 Smoke Test: Real operational multi-model study across SEO / GEO / AI Visibility Tools."
+
+providers:
+  - hamzad_gemini
+  - hamzad_perplexity
+  - hamzad_openai
+  - hamzad_claude
+
+models:
+  hamzad_gemini: "gemini-2.5-flash"
+  hamzad_perplexity: "sonar-pro"
+  hamzad_openai: "gpt-4o-mini"
+  hamzad_claude: "anthropic/claude-3.5-sonnet"
+
+sampling:
+  niche: "ai_seo_geo"
+  target_brand: "Semrush"
+  competitors:
+    - "Ahrefs"
+    - "Moz"
+    - "Surfer SEO"
+    - "Clearscope"
+    - "MarketMuse"
+  categories:
+    - "ai_search_visibility"
+    - "generative_engine_optimization"
+    - "content_optimization_tools"
+    - "ai_seo_analytics"
+  count: 25
+  language: "en"
+  custom_prompts_file: "benchmark/prompts/smoke_prompts_25.jsonl"
+  difficulty_mix:
+    discovery: 0.32
+    comparison: 0.32
+    commercial: 0.24
+    educational: 0.12
+
+cost_limits:
+  max_prompts: 25
+  max_cost_usd: 10.0
+  dry_run: false

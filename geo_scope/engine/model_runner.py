@@ -228,6 +228,79 @@ class ModelRunner:
 
         return raw_responses
 
+    async def execute_single(self, query_item: Dict[str, Any], model: str) -> Dict[str, Any]:
+        """
+        Executes a single query against a specific provider or simulation model.
+        """
+        if self.mode == ExecutionMode.SIMULATION:
+            res_text = self._simulate_realistic_response(query_item, model)
+            return {
+                "query_item": query_item,
+                "model": model,
+                "response_text": res_text,
+                "status": "success",
+                "error": None,
+                "provider_response": None,
+                "provenance": {
+                    "execution_mode": ExecutionMode.SIMULATION.value,
+                    "seed": self.seed,
+                    "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                    "provider_id": model,
+                    "model_id": "simulation-profile:" + model,
+                    "response_kind": "simulated",
+                    "search_grounded": False,
+                    "provider_evidence": {},
+                    "fallback_disabled": True,
+                },
+            }
+        else:
+            # LIVE EXECUTION PATH
+            provider = self.providers.resolve(model)
+            provider_resp = await provider.generate(query_item, execution_mode=ExecutionMode.LIVE.value)
+
+            if self.run_store:
+                raw_rec = provider_resp.to_raw_record(
+                    experiment_id=self.experiment_id,
+                    run_id=f"run_{self.experiment_id}",
+                    prompt_id=str(query_item.get("prompt_id") or query_item.get("id", "")),
+                    prompt=query_item.get("query") or query_item.get("prompt", ""),
+                )
+                self.run_store.append_raw_record(raw_rec)
+
+            if provider_resp.is_failed() and self.raise_on_failure:
+                err_type = provider_resp.error.get("type", "Error") if provider_resp.error else "Error"
+                raise RuntimeError(f"Provider {model} failed ({err_type}); no simulated fallback was used.")
+
+            return {
+                "query_item": query_item,
+                "model": model,
+                "response_text": provider_resp.text,
+                "status": provider_resp.status,
+                "error": provider_resp.error,
+                "provider_response": provider_resp,
+                "provenance": {
+                    "execution_mode": ExecutionMode.LIVE.value,
+                    "seed": None,
+                    "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                    "provider_id": provider.name,
+                    "model_id": provider_resp.model,
+                    "response_kind": provider_resp.metadata.get("response_kind", provider.response_kind),
+                    "search_grounded": provider_resp.metadata.get("search_grounded", False),
+                    "provider_evidence": {
+                        "citations": provider_resp.citations,
+                        "raw_payload": provider_resp.raw,
+                        "grounding_metadata": provider_resp.metadata.get("grounding_metadata", {}),
+                        "usage": provider_resp.usage,
+                        "latency_ms": provider_resp.latency_ms,
+                        "status": provider_resp.status,
+                        "error": provider_resp.error,
+                    },
+                    "status": provider_resp.status,
+                    "error": provider_resp.error,
+                    "fallback_disabled": True,
+                },
+            }
+
     def validate_models(self, models: List[str]):
         if not models or len(models) != len(set(models)):
             raise ValueError("Select at least one unique provider")

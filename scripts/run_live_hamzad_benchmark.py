@@ -23,24 +23,17 @@ from geo_scope.benchmark.reproducer import BenchmarkReproducer
 from geo_scope.providers.hamzad_provider import HamzadProvider
 
 
-async def check_gateway_connectivity(gateway_url: str, timeout: float = 5.0) -> bool:
+async def check_gateway_connectivity(gateway_url: str, timeout: float = 2.0) -> bool:
     """
     Checks whether the Hamzad AI Gateway endpoint is reachable.
     """
     try:
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            # Check root or health endpoint
-            for path in ["/health", "/docs", "/api/models/generate", ""]:
-                try:
-                    resp = await client.get(f"{gateway_url.rstrip('/')}{path}")
-                    if resp.status_code < 500:
-                        return True
-                except httpx.HTTPStatusError:
-                    continue
-                except httpx.RequestError:
-                    continue
+        async with httpx.AsyncClient(timeout=httpx.Timeout(timeout, connect=timeout)) as client:
+            resp = await client.get(f"{gateway_url.rstrip('/')}/health")
+            if resp.status_code < 500:
+                return True
     except Exception:
-        return False
+        pass
     return False
 
 

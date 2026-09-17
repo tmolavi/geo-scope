@@ -65,6 +65,7 @@ class HamzadProvider(BaseProvider):
         self.api_key = api_key or os.getenv("HAMZAD_API_KEY") or os.getenv("HAMZAD_MASTER_API_KEY", "")
         self.project_id = project_id or os.getenv("HAMZAD_PROJECT_ID", "geo_scope")
         self.timeout = float(os.getenv("HAMZAD_TIMEOUT", str(timeout)))
+        self.connect_timeout = float(os.getenv("HAMZAD_CONNECT_TIMEOUT", "2.0"))
         self.response_kind = "gateway_proxied"
         self._client = client
         
@@ -113,12 +114,13 @@ class HamzadProvider(BaseProvider):
         if self.api_key:
             headers["X-API-Key"] = self.api_key
 
+        timeout_obj = httpx.Timeout(self.timeout, connect=min(self.connect_timeout, self.timeout))
         if self._client is not None:
             response = await self._client.post(endpoint, json=payload, headers=headers)
             response.raise_for_status()
             data = response.json()
         else:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
+            async with httpx.AsyncClient(timeout=timeout_obj) as client:
                 response = await client.post(endpoint, json=payload, headers=headers)
                 response.raise_for_status()
                 data = response.json()
