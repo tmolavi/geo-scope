@@ -371,6 +371,77 @@ def mavi_cmd(args):
         print(f"\n💾 MAVI report written to '{args.out}'")
 
 
+def benchmark_cmd(args):
+    from geo_scope.benchmark.builder import BenchmarkBuilder
+    from geo_scope.benchmark.hasher import verify_dataset_checksums
+    from geo_scope.benchmark.reproducer import BenchmarkReproducer
+
+    sub = getattr(args, "benchmark_action", None)
+    if not sub:
+        print("Usage: geo-scope benchmark [verify|reproduce|export] [options]")
+        return
+
+    if sub == "verify":
+        dataset_path = args.dataset
+        res = verify_dataset_checksums(dataset_path)
+        if res["valid"]:
+            print(f"✓ Checksum Verification PASSED: {res['total_files']} files verified intact in '{dataset_path}'")
+        else:
+            print(f"✗ Checksum Verification FAILED in '{dataset_path}':")
+            for m in res.get("mismatches", []):
+                print(f"  - Mismatch: {m['file']} (expected: {m['expected'][:10]}..., got: {m['actual'][:10]}...)")
+            for mf in res.get("missing_files", []):
+                print(f"  - Missing file: {mf}")
+            for ef in res.get("extra_files", []):
+                print(f"  - Extra unverified file: {ef}")
+            sys.exit(1)
+
+    elif sub == "reproduce":
+        dataset_path = args.dataset
+        reproducer = BenchmarkReproducer(tolerance=getattr(args, "tolerance", 0.05))
+        res = reproducer.verify_and_reproduce(dataset_path)
+        print(res["report"])
+        if getattr(args, "out", None):
+            with open(args.out, "w", encoding="utf-8") as f:
+                json.dump(res, f, ensure_ascii=False, indent=2)
+            print(f"Reproduction result saved to {args.out}")
+        if not res["success"]:
+            sys.exit(1)
+
+    elif sub == "export":
+        out_dir = args.out
+        dataset_id = args.dataset_id or "geo-scope-benchmark-2026.1"
+        builder = BenchmarkBuilder(dataset_id=dataset_id)
+        
+        # Load experiment if provided
+        exp_file = args.experiment
+        if exp_file and os.path.exists(exp_file):
+            with open(exp_file, "r", encoding="utf-8") as f:
+                exp_data = json.load(f)
+            prompts = exp_data.get("prompts", [])
+            obs = exp_data.get("records", [])
+            cits = exp_data.get("citations", [])
+            brands = exp_data.get("brands", [])
+            providers = exp_data.get("providers", [])
+            exec_mode = exp_data.get("execution_mode", args.mode)
+            res_status = exp_data.get("research_status", args.status)
+        else:
+            print(f"Error: Experiment file not found at '{exp_file}'", file=sys.stderr)
+            sys.exit(1)
+
+        pkg_path = builder.build_package(
+            out_dir=out_dir,
+            prompts=prompts,
+            observations=obs,
+            citations=cits,
+            brands=brands,
+            providers=providers,
+            execution_mode=exec_mode,
+            research_status=res_status,
+        )
+        print(f"✓ Benchmark dataset package exported to: {pkg_path}")
+
+
 def main():
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -446,6 +517,28 @@ def main():
     )
     mavi_parser.add_argument("--out", type=str, default=None, help="Output file path to save report")
 
+    # Command: benchmark
+    bmk_parser = subparsers.add_parser("benchmark", help="Public benchmark dataset verification, reproduction & export")
+    bmk_subparsers = bmk_parser.add_subparsers(dest="benchmark_action", help="Benchmark action")
+
+    # benchmark verify
+    verify_p = bmk_subparsers.add_parser("verify", help="Verify SHA-256 checksums of a benchmark dataset")
+    verify_p.add_argument("--dataset", type=str, required=True, help="Path to benchmark dataset directory")
+
+    # benchmark reproduce
+    reproduce_p = bmk_subparsers.add_parser("reproduce", help="Verify checksums and recompute all metrics from raw observations")
+    reproduce_p.add_argument("--dataset", type=str, required=True, help="Path to benchmark dataset directory")
+    reproduce_p.add_argument("--tolerance", type=float, default=0.05, help="Numerical tolerance for float comparison")
+    reproduce_p.add_argument("--out", type=str, default=None, help="Optional output JSON file for reproduction report")
+
+    # benchmark export
+    export_p = bmk_subparsers.add_parser("export", help="Export an experiment run to a benchmark dataset package")
+    export_p.add_argument("--experiment", type=str, required=True, help="Path to experiment JSON file")
+    export_p.add_argument("--out", type=str, default="benchmark", help="Target parent directory for benchmark package")
+    export_p.add_argument("--dataset-id", type=str, default="geo-scope-benchmark-2026.1", help="Dataset identifier")
+    export_p.add_argument("--mode", type=str, default="synthetic", choices=["live", "synthetic"], help="Execution mode")
+    export_p.add_argument("--status", type=str, default="demo_only", choices=["peer_review_ready", "demo_only"], help="Research status")
+
     # Command: providers
     prov_parser = subparsers.add_parser("providers", help="List available providers and configuration status")
     prov_parser.add_argument("--json", action="store_true", help="Output raw JSON instead of aligned table")
@@ -483,6 +576,8 @@ def main():
             parser.exit(2, f"Error: {exc}\n")
     elif args.command == "mavi":
         mavi_cmd(args)
+    elif args.command == "benchmark":
+        benchmark_cmd(args)
     elif args.command == "serve":
         serve_dashboard_cmd(args)
     elif args.command == "mcp":

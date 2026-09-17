@@ -54,7 +54,22 @@ geo-scope demo
 
 # 3. Bring your own prompts & benchmark your brand
 geo-scope run --brand "My Brand" --competitors "Comp A, Comp B" --mode simulate --count 10
+
+# 4. Verify & reproduce public benchmark datasets
+geo-scope benchmark verify --dataset benchmark/geo-scope-benchmark-2026.1
+geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1
 ```
+
+---
+
+### 📊 Public Benchmark & Evidence Dataset v1
+
+GEO-Scope includes public, reproducible benchmark datasets under `benchmark/` with SHA-256 cryptographic verification and 95% bootstrap confidence intervals:
+
+- **Dataset Verification**: `geo-scope benchmark verify --dataset benchmark/geo-scope-benchmark-2026.1`
+- **Metric Reproduction**: `geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1`
+- **Jupyter / Python Analysis**: `python notebooks/benchmark_analysis.py`
+- **Methodology & Documentation**: See [Benchmark Methodology](docs/benchmark-methodology.md) and [Release Checklist](docs/benchmark-release-checklist.md).
 
 ---
 

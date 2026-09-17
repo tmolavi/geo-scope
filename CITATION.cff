@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use GEO-Scope in your academic research or benchmarks, please cite it as below."
-title: "GEO-Scope: Generative Engine Optimization (GEO) & AI Search Reverse-Engineering Framework"
-version: 1.0.0
-date-released: 2026-08-12
+title: "GEO-Scope: Open Public Benchmark & Empirical AI Visibility Measurement Framework"
+version: 2026.1.0
+date-released: 2026-09-17
 url: "https://github.com/tmolavi/geo-scope"
 license: MIT
 authors:
@@ -11,17 +11,14 @@ authors:
     alias: "tmolavi"
 keywords:
   - "Generative Engine Optimization"
-  - "GEO"
-  - "AI SEO"
+  - "GEO Benchmark"
+  - "AI Visibility Benchmark"
   - "LLM Citation Analysis"
   - "Share of Model"
+  - "Empirical AI Measurement"
   - "Perplexity"
   - "ChatGPT Search"
   - "Gemini Grounding"
   - "Claude AI"
   - "MCP Server"
-  - "Yapay Zeka SEO"
-  - "Arama Motoru Optimizasyonu"
-  - "Hoosh Masnooi"
-  - "SEO Farsi"
   - "Taqi Molavi"

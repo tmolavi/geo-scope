@@ -1,0 +1,90 @@
+# GEO-Scope Public Benchmark & Evidence Dataset Methodology v1
+
+## 1. Executive Summary & Epistemic Positioning
+GEO-Scope provides a standardized, reproducible public benchmark framework for measuring generative AI search visibility, Share of Model (SoM), top-recommendation positioning, and citation provenance.
+
+### Core Epistemic Commitments:
+1. **Empirical Measurement over Algorithmic Speculation**: LLMs and generative search engines are complex, probabilistic systems. GEO-Scope does **not** claim to "reverse-engineer proprietary AI ranking algorithms." Instead, it conducts controlled empirical experiments and reports observed statistical associations.
+2. **Deterministic Reproducibility**: All benchmark datasets are versioned, SHA-256 hashed, and include raw JSONL observation records enabling any researcher to verify and recompute metrics bit-for-bit.
+3. **Rigorous Uncertainty Bounds**: All visibility rates (Mention Rate, Top-1 Rate, Share of Model) are reported alongside **95% non-parametric bootstrap confidence intervals**.
+4. **Strict Live vs. Synthetic Separation**: Synthetic / simulated evaluations are permanently tagged with `execution_mode: "synthetic"` and `research_status: "demo_only"`. Only experiments executed against real live provider APIs with verifiable provenance receive `research_status: "peer_review_ready"` or `"published"`.
+
+---
+
+## 2. Dataset Architecture & File Taxonomy
+
+Every versioned benchmark release resides under `benchmark/<dataset_id>/` and follows this schema:
+
+| File | Format | Description |
+|------|--------|-------------|
+| `manifest.json` | JSON | Dataset metadata, git commit, parser version, sample counts, and SHA-256 hashes. |
+| `prompts.jsonl` | JSONL | Stratified evaluation queries with intent labels and entity parameters. |
+| `brands.json` | JSON | Evaluated target brands and competitor entities with verified domains. |
+| `providers.json` | JSON | Target LLM engines and search providers (ChatGPT, Perplexity, Gemini, Claude). |
+| `observations.jsonl` | JSONL | Raw model responses, parsed mention ranks, sentiment, latency, and status. |
+| `citations.jsonl` | JSONL | Extracted citation URLs, source domains, and attribution anchors. |
+| `metrics.json` | JSON | Computed benchmark metrics with point estimates and 95% bootstrap CIs. |
+| `methodology.md` | Markdown | Experiment methodology specification for the dataset release. |
+| `README.md` | Markdown | Dataset introduction and quickstart reproduction instructions. |
+| `checksums.sha256` | Text | Standard SHA-256 checksums file for cryptographic verification. |
+
+---
+
+## 3. Sampling & Prompt Stratification
+
+To prevent domain bias and benchmark hacking, prompts are stratified across five distinct search intent categories:
+
+1. **Commercial Direct**: High-intent buyer queries seeking top tools or category recommendations (e.g., *"Best CRM software for B2B startups"*).
+2. **Comparative (Head-to-Head)**: Direct comparison queries evaluating feature tradeoffs (e.g., *"HubSpot vs Salesforce pricing and ease of use"*).
+3. **Alternative & Migration**: Replacement and transition queries (e.g., *"Top alternatives to Salesforce with lower cost"*).
+4. **Feature & Technical Capability**: Functional queries testing specific feature support (e.g., *"Which CRM has the best native email automation?"*).
+5. **Pricing & ROI**: Commercial evaluations focused on budget, tiers, and hidden fees (e.g., *"HubSpot pricing breakdown for small teams"*).
+
+---
+
+## 4. Metric Definitions & Mathematical Formulation
+
+### 4.1 Mention Rate ($R_{	ext{mention}}$)
+The proportion of successful multi-model observations in which the brand was explicitly identified:
+$$R_{	ext{mention}} = rac{\sum_{i=1}^{N_{	ext{success}}} \mathbb{I}(	ext{brand} \in 	ext{Observation}_i)}{N_{	ext{success}}}$$
+
+*Semantics Rule*: If $N_{	ext{success}} = 0$, $R_{	ext{mention}} = 	ext{null}$ (`status: "insufficient_data"`).
+
+### 4.2 Top-1 Primary Recommendation Rate ($R_{	ext{top1}}$)
+The proportion of successful multi-model observations where the brand was ranked as the primary (#1) recommended option:
+$$R_{	ext{top1}} = rac{\sum_{i=1}^{N_{	ext{success}}} \mathbb{I}(	ext{Rank}(	ext{brand}) = 1)}{N_{	ext{success}}}$$
+
+### 4.3 Share of Model / Share of Voice ($	ext{SoM}$)
+The share of total brand mentions across all evaluated competitors captured by the target brand:
+$$	ext{SoM} = rac{M_{	ext{target}}}{\sum_{b \in 	ext{Brands}} M_b} 	imes 100\%$$
+
+### 4.4 Citation Rate ($R_{	ext{citation}}$)
+The percentage of observations where the brand's primary domain or direct authoritative coverage was cited as a grounded source.
+
+### 4.5 95% Bootstrap Confidence Intervals
+Confidence intervals are estimated via non-parametric percentile bootstrap:
+1. Resample $N_{	ext{success}}$ observations with replacement $B = 1,000$ times.
+2. Compute the mean metric $\hat{	heta}^{*b}$ for each replicate $b \in [1, B]$.
+3. Set $	ext{CI}_{95} = [\hat{	heta}^{*}_{(0.025)}, \hat{	heta}^{*}_{(0.975)}]$.
+
+---
+
+## 5. Statistical Factor Analysis Guardrails
+
+When analyzing factors correlating with high generative visibility:
+- Terminology must strictly use **"Observed association"** or **"Empirical correlation"**.
+- Causal terms like "ranking factor", "algorithm weight", or "guaranteed booster" are forbidden.
+- Analyses must report Spearman rank correlation ($r_s$), 95% confidence intervals, Cohen's $d$ effect sizes, and sample sizes.
+
+---
+
+## 6. Verification & Reproduction Protocol
+
+Any published GEO-Scope benchmark can be verified locally:
+```bash
+# 1. Cryptographic file integrity verification
+geo-scope benchmark verify --dataset benchmark/geo-scope-benchmark-2026.1
+
+# 2. Metric reproduction and bootstrap recalculation
+geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1
+```

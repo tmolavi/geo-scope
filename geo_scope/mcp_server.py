@@ -102,9 +102,52 @@ MCP_TOOLS.append(
     }
 )
 
+MCP_TOOLS.append(
+    {
+        "name": "verify_benchmark",
+        "description": "Verifies SHA-256 cryptographic integrity and bit-level authenticity of a GEO-Scope benchmark dataset.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "dataset_path": {"type": "string", "description": "Path to benchmark dataset directory"},
+            },
+            "required": ["dataset_path"],
+        },
+    }
+)
+
+MCP_TOOLS.append(
+    {
+        "name": "reproduce_benchmark",
+        "description": "Cryptographically verifies a benchmark dataset and recomputes all metrics from raw observations.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "dataset_path": {"type": "string", "description": "Path to benchmark dataset directory"},
+                "tolerance": {"type": "number", "description": "Numerical tolerance for float comparison", "default": 0.05},
+            },
+            "required": ["dataset_path"],
+        },
+    }
+)
+
 
 async def handle_tool_call(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
-    if name == "measure_mavi":
+    if name == "verify_benchmark":
+        from geo_scope.benchmark.hasher import verify_dataset_checksums
+
+        dataset_path = arguments.get("dataset_path")
+        return verify_dataset_checksums(dataset_path)
+
+    elif name == "reproduce_benchmark":
+        from geo_scope.benchmark.reproducer import BenchmarkReproducer
+
+        dataset_path = arguments.get("dataset_path")
+        tolerance = float(arguments.get("tolerance", 0.05))
+        reproducer = BenchmarkReproducer(tolerance=tolerance)
+        return reproducer.verify_and_reproduce(dataset_path)
+
+    elif name == "measure_mavi":
         from geo_scope.mavi import MAVIEngine
 
         engine = MAVIEngine(weights=arguments.get("custom_weights"))
