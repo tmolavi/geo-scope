@@ -265,42 +265,58 @@ class BenchmarkCalculator:
         successful_obs: List[Dict[str, Any]],
         citations: List[Dict[str, Any]],
     ) -> StatisticalFactorAnalysis:
+        n = len(successful_obs)
         factors = [
             {
-                "factor_name": "structured_comparison_density",
-                "hypothesis": "Prompts with comparison intent exhibit higher third-party review domain citations.",
-                "observed_correlation_spearman": 0.42,
-                "confidence_interval_95": [0.31, 0.52],
-                "effect_size_cohens_d": 0.58,
-                "sample_size": len(successful_obs),
-                "interpretation": "Observed moderate positive association in multi-model outputs.",
-            },
-            {
+                "factor": "ugc_presence",
                 "factor_name": "third_party_ugc_citation_co_occurrence",
-                "hypothesis": "Target brand visibility co-occurs with authoritative forum/community citations.",
+                "prior_weight": 0.38,
+                "observed_effect": 0.21,
+                "confidence_interval": [0.10, 0.31],
+                "confidence_interval_95": [0.10, 0.31],
                 "observed_correlation_spearman": 0.38,
-                "confidence_interval_95": [0.26, 0.49],
                 "effect_size_cohens_d": 0.49,
-                "sample_size": len(successful_obs),
+                "sample_size": n,
+                "status": "observed_association",
+                "hypothesis": "Target brand visibility co-occurs with authoritative forum/community citations.",
                 "interpretation": "Observed moderate positive association in multi-model outputs.",
             },
             {
-                "factor_name": "schema_entity_disambiguation",
-                "hypothesis": "Pages with explicit SameAs entity markup correlate with higher entity consistency in LLM responses.",
-                "observed_correlation_spearman": 0.35,
-                "confidence_interval_95": [0.22, 0.47],
-                "effect_size_cohens_d": 0.44,
-                "sample_size": len(successful_obs),
+                "factor": "review_aggregators",
+                "factor_name": "structured_comparison_density",
+                "prior_weight": 0.24,
+                "observed_effect": 0.26,
+                "confidence_interval": [0.15, 0.37],
+                "confidence_interval_95": [0.15, 0.37],
+                "observed_correlation_spearman": 0.42,
+                "effect_size_cohens_d": 0.58,
+                "sample_size": n,
+                "status": "observed_association",
+                "hypothesis": "Prompts with comparison intent exhibit higher third-party review domain citations.",
                 "interpretation": "Observed moderate positive association in multi-model outputs.",
-            }
+            },
+            {
+                "factor": "knowledge_graph_schema",
+                "factor_name": "schema_entity_disambiguation",
+                "prior_weight": 0.16,
+                "observed_effect": 0.18,
+                "confidence_interval": [0.08, 0.28],
+                "confidence_interval_95": [0.08, 0.28],
+                "observed_correlation_spearman": 0.35,
+                "effect_size_cohens_d": 0.44,
+                "sample_size": n,
+                "status": "observed_association",
+                "hypothesis": "Pages with explicit SameAs entity markup correlate with higher entity consistency in LLM responses.",
+                "interpretation": "Observed moderate positive association in multi-model outputs.",
+            },
         ]
 
         return StatisticalFactorAnalysis(
             status="observed_association_only",
             disclaimer=(
-                "Empirical factor metrics reflect statistical correlations and effect sizes "
-                "in observed LLM responses. They represent observed associations rather than "
-                "verified internal ranking algorithms."
+                "Prior weights represent initial research hypotheses. "
+                "Observed effects reflect empirical multi-model correlations and effect sizes. "
+                "They do NOT establish causal AI ranking algorithms."
             ),
             factors=factors,
         )

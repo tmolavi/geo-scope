@@ -1,0 +1,42 @@
+benchmark_version: "2026.1-live"
+dataset_name: "geo-scope-live-2026.1"
+execution_mode: "live"
+research_status: "experimental_observation"
+
+providers:
+  - perplexity_sonar
+  - gemini_grounding
+  - openai_completion
+  - claude_completion
+
+models:
+  perplexity_sonar: "sonar-medium"
+  gemini_grounding: "gemini-1.5-pro"
+  openai_completion: "gpt-4o-mini"
+  claude_completion: "claude-3-7-sonnet"
+
+sampling:
+  niche: "crm_sales"
+  target_brand: "HubSpot"
+  competitors:
+    - "Salesforce"
+    - "Zoho CRM"
+    - "Pipedrive"
+  categories:
+    - "crm"
+    - "sales_automation"
+    - "pipeline_management"
+  count: 30
+  language: "both"
+  difficulty_mix:
+    low: 0.2
+    medium: 0.6
+    high: 0.2
+
+cost_limits:
+  max_prompts: 50
+  max_cost_usd: 15.0
+  dry_run: false
+
+methodology_version: "1.0.0"
+description: "GEO-Scope Official Live Multi-Provider Benchmark for CRM SaaS (2026.1)"

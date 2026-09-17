@@ -23,6 +23,8 @@ from geo_scope.benchmark.hasher import (
 from geo_scope.benchmark.calculator import BenchmarkCalculator, calculate_bootstrap_ci
 from geo_scope.benchmark.builder import BenchmarkBuilder
 from geo_scope.benchmark.reproducer import BenchmarkReproducer
+from geo_scope.benchmark.profile import BenchmarkProfile
+from geo_scope.benchmark.runner import LiveBenchmarkRunner, estimate_benchmark_cost
 
 __all__ = [
     "BenchmarkManifest",
@@ -43,4 +45,7 @@ __all__ = [
     "calculate_bootstrap_ci",
     "BenchmarkBuilder",
     "BenchmarkReproducer",
+    "BenchmarkProfile",
+    "LiveBenchmarkRunner",
+    "estimate_benchmark_cost",
 ]

@@ -149,15 +149,25 @@ geo-scope benchmark reproduce --dataset .
         composite_hash = compute_composite_hash(file_hashes)
 
         # 5. Write manifest.json
+        p_ids = [p.get("id") or p.get("provider_id", "") for p in providers]
+        m_ids = [p.get("model") or p.get("id", "") for p in providers]
+        bmk_ver = "2026.1-live" if execution_mode == "live" else "2026.1-synthetic"
+
         manifest = BenchmarkManifest(
             version="2026.1",
+            benchmark_version=bmk_ver,
             dataset_id=self.dataset_id,
+            dataset_name=self.dataset_id,
             created_at=datetime.now(timezone.utc).isoformat(),
             execution_mode=execution_mode,
             research_status=research_status,
             description=description,
             git_commit=get_git_commit(target_dir),
             parser_version="1.0.0",
+            providers=p_ids,
+            models=m_ids,
+            experiment_ids=[self.dataset_id],
+            dataset_hash=composite_hash,
             counts={
                 "prompts": len(prompts),
                 "observations": len(observations),

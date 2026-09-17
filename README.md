@@ -2,22 +2,20 @@
 
 # ⟠ GEO-Scope
 
-### Generative Engine Optimization (GEO) & AI Search Visibility Reverse-Engineering
+### Open Framework for Measuring AI Visibility through Reproducible Multi-Provider Experiments
 
-**An open-source research platform for reproducible AI visibility experiments, traceable provider responses, and GEO hypothesis testing.**
+**An open-source research platform for empirical AI visibility benchmarks, traceable multi-model provider responses, and reproducible GEO experiments.**
 
 *توسعه‌داده‌شده توسط [تقی مولوی (Taqi Molavi)](https://molavi.pro/) — بخشی از اکوسیستم پژوهشی GEO در کنار [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
 
 [![Website](https://img.shields.io/badge/Website-molavi.pro-blue?logo=googlechrome&logoColor=white)](https://molavi.pro/)
-[![Whitepaper](https://img.shields.io/badge/Research-Whitepaper%202026-teal?logo=arxiv&logoColor=white)](docs/WHITEPAPER.md)
+[![Research Transparency](https://img.shields.io/badge/Research-Transparency%20%26%20Limitations-blueviolet?logo=readme&logoColor=white)](docs/research-transparency.md)
+[![Benchmark Methodology](https://img.shields.io/badge/Benchmark-Methodology%20v1-teal?logo=arxiv&logoColor=white)](docs/benchmark-methodology.md)
 [![MCP Ready](https://img.shields.io/badge/MCP-Protocol%20Ready-8A2BE2?logo=anthropic&logoColor=white)](geo_scope/mcp_server.py)
 [![CI](https://github.com/tmolavi/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/tmolavi/geo-scope/actions)
-[![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://pypi.org/project/geo-scope/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Docker Support](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[English Overview](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [📄 Research Whitepaper](docs/WHITEPAPER.md) • [🥊 Challenge Findings](CHALLENGE.md) • [🧪 Community Experiments](experiments/) • [راهنمای نصب و استفاده](docs/CLIENT_INTEGRATIONS.md) • [MCP Server Setup](#-mcp-integration-claude-desktop--cursor) • [Visibility Score Algorithm](#-computational-methodology--visibility-score) • [Real-World Use Cases](#-real-world-use-cases-سناریوهای-کاربردی) • [Live API Setup](docs/API_INTEGRATION.md)
+[English Overview](#-english-overview) • [راهنمای فارسی](#-راهنمای-فارسی) • [🔬 Research Transparency](docs/research-transparency.md) • [📊 Benchmark Methodology](docs/benchmark-methodology.md) • [📄 Research Report](reports/geo-scope-live-2026.1-report.md) • [راهنمای نصب و استفاده](docs/CLIENT_INTEGRATIONS.md) • [MCP Server Setup](#-mcp-integration-claude-desktop--cursor) • [Live API Setup](docs/API_INTEGRATION.md)
 
 </div>
 

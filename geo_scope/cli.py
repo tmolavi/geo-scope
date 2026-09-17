@@ -375,13 +375,43 @@ def benchmark_cmd(args):
     from geo_scope.benchmark.builder import BenchmarkBuilder
     from geo_scope.benchmark.hasher import verify_dataset_checksums
     from geo_scope.benchmark.reproducer import BenchmarkReproducer
+    from geo_scope.benchmark.profile import BenchmarkProfile
+    from geo_scope.benchmark.runner import LiveBenchmarkRunner, estimate_benchmark_cost
 
     sub = getattr(args, "benchmark_action", None)
     if not sub:
-        print("Usage: geo-scope benchmark [verify|reproduce|export] [options]")
+        print("Usage: geo-scope benchmark [run|estimate-cost|verify|reproduce|export] [options]")
         return
 
-    if sub == "verify":
+    if sub == "run":
+        profile_path = args.profile
+        profile = BenchmarkProfile.from_file(profile_path)
+        runner = LiveBenchmarkRunner(profile=profile, out_dir=getattr(args, "out", "benchmark"))
+        res = runner.run(resume=getattr(args, "resume", False), dry_run=getattr(args, "dry_run", False))
+        if res.get("dry_run"):
+            print("\n📊 Dry Run Cost Estimation:")
+            print(json.dumps(res["cost_estimate"], indent=2))
+        else:
+            print(f"\n✓ Benchmark completed successfully!")
+            print(f"📁 Dataset Package : {res['dataset_path']}")
+            print(f"📄 Research Report : {res['report_path']}")
+
+    elif sub == "estimate-cost":
+        profile_path = args.profile
+        profile = BenchmarkProfile.from_file(profile_path)
+        est = estimate_benchmark_cost(profile)
+        print("\n💰 Benchmark Cost Estimation:")
+        print(f"• Benchmark Version : {est['benchmark_version']}")
+        print(f"• Dataset Name      : {est['dataset_name']}")
+        print(f"• Execution Mode    : {est['execution_mode']}")
+        print(f"• Prompts Count     : {est['prompt_count']}")
+        print(f"• Providers ({est['provider_count']})   : {', '.join(est['providers'])}")
+        print(f"• Total Calls       : {est['total_inferences']}")
+        print(f"• Estimated Cost    : ${est['estimated_cost_usd']:.4f} USD")
+        print(f"• Budget Limit      : ${est['max_cost_limit_usd']:.2f} USD")
+        print(f"• Within Budget     : {'✓ Yes' if est['within_budget'] else '✗ Exceeds budget'}")
+
+    elif sub == "verify":
         dataset_path = args.dataset
         res = verify_dataset_checksums(dataset_path)
         if res["valid"]:
@@ -520,6 +550,17 @@ def main():
     # Command: benchmark
     bmk_parser = subparsers.add_parser("benchmark", help="Public benchmark dataset verification, reproduction & export")
     bmk_subparsers = bmk_parser.add_subparsers(dest="benchmark_action", help="Benchmark action")
+
+    # benchmark run
+    run_bmk_p = bmk_subparsers.add_parser("run", help="Run a live or synthetic multi-provider benchmark from a profile YAML")
+    run_bmk_p.add_argument("--profile", type=str, required=True, help="Path to benchmark profile YAML file")
+    run_bmk_p.add_argument("--out", type=str, default="benchmark", help="Target output directory")
+    run_bmk_p.add_argument("--resume", action="store_true", help="Resume interrupted benchmark execution")
+    run_bmk_p.add_argument("--dry-run", action="store_true", help="Estimate cost and validate profile without executing calls")
+
+    # benchmark estimate-cost
+    est_p = bmk_subparsers.add_parser("estimate-cost", help="Estimate API inference cost and call counts for a benchmark profile")
+    est_p.add_argument("--profile", type=str, required=True, help="Path to benchmark profile YAML file")
 
     # benchmark verify
     verify_p = bmk_subparsers.add_parser("verify", help="Verify SHA-256 checksums of a benchmark dataset")
