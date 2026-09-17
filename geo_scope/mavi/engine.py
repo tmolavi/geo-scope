@@ -82,8 +82,8 @@ class MAVIEngine:
                 )
         else:
             measurement_mode = "measured"
-            # 1. Evaluate SAGE Layers L1-L4 from HTML (if provided)
-            if html_content:
+            # 1. Evaluate SAGE Layers L1-L4 from HTML or URL
+            if html_content or url:
                 sage = SAGEEvaluator(html_content=html_content, url=url, target_brand=target_brand, http_status=http_status)
                 layers["L1"] = sage.evaluate_l1_technical_accessibility(weight=self.weights.l1_technical_accessibility)
                 layers["L2"] = sage.evaluate_l2_semantic_extractability(weight=self.weights.l2_semantic_extractability)
@@ -94,7 +94,7 @@ class MAVIEngine:
                     ("L1", "Technical Accessibility", self.weights.l1_technical_accessibility),
                     ("L2", "Semantic Extractability", self.weights.l2_semantic_extractability),
                     ("L3", "Entity Clarity", self.weights.l3_entity_clarity),
-                    ("L4", "Citation Readiness", self.weights.l4_citation_readiness),
+                    ("L4", "Retrieval / Citation Readiness", self.weights.l4_citation_readiness),
                 ]:
                     layers[lid] = LayerResult(
                         layer_id=lid,
@@ -102,8 +102,8 @@ class MAVIEngine:
                         weight=w,
                         score=None,
                         status="not_measured",
-                        provenance=LayerProvenance(source="sage", metric_version="1.0.0", evidence_count=0),
-                        details={"reason": "No HTML content supplied for SAGE audit"},
+                        provenance=LayerProvenance(source="sage", metric_version="2.0.0", evidence_count=0),
+                        details={"reason": "No HTML content or URL supplied for SAGE audit"},
                         findings=[f"{lid} {lname} not measured (supply HTML or URL to measure)."],
                     )
 
@@ -115,7 +115,10 @@ class MAVIEngine:
             )
 
         # 3. Compute Partial Scoring and Normalization
-        active_layers = [l for l in layers.values() if l.status in ("measured", "manual_override") and l.score is not None]
+        active_layers = [
+            l for l in layers.values()
+            if l.status in ("measured", "measured_synthetic", "manual_override") and l.score is not None
+        ]
         measured_count = len(active_layers)
         total_layers = len(layers)
 
@@ -137,12 +140,18 @@ class MAVIEngine:
                 normalized = 0.0
 
             mavi_score = normalized
-            if measured_count < total_layers:
-                final_mode = "partial_measured" if measurement_mode != "manual_override" else "manual_override"
+            if measurement_mode == "manual_override":
+                final_mode = "manual_override"
+                norm_basis = f"Manual override score across {measured_count}/{total_layers} layers"
+            elif layers.get("L5") and layers["L5"].status == "measured_synthetic":
+                final_mode = "measured_synthetic"
+                norm_basis = f"Normalized across {measured_count}/{total_layers} layers (includes synthetic L5)"
+            elif measured_count < total_layers:
+                final_mode = "partial_measured"
                 active_names = [l.layer_id for l in active_layers]
                 norm_basis = f"Normalized across {measured_count}/{total_layers} measured layers ({', '.join(active_names)}); active weight sum = {active_weights_sum:.2f}"
             else:
-                final_mode = measurement_mode
+                final_mode = "measured"
                 norm_basis = "Complete 5-layer measurement index (100% layer coverage)"
 
             grade = (
@@ -180,55 +189,41 @@ class MAVIEngine:
         total_layers: int,
     ) -> ConfidenceAssessment:
         """
-        Calculates MAVI confidence score from empirical data completeness.
+        Calculates MAVI confidence score from empirical data completeness and source validity.
         """
-        factors = {}
-        # Factor 1: Layer Completeness (40% weight)
-        layer_ratio = measured_count / max(total_layers, 1)
-        factors["layer_completeness_ratio"] = round(layer_ratio, 2)
-        score_comp_1 = layer_ratio * 0.40
+        factors: Dict[str, Any] = {
+            "measured_layers_count": measured_count,
+            "total_layers": total_layers,
+            "freshness_days": 0,
+        }
 
-        # Factor 2: L5 Observation Volume & Diversity (35% weight)
         l5 = layers.get("L5")
-        if l5 and l5.status == "measured" and l5.score is not None:
-            evidence = l5.provenance.evidence_count
-            providers = l5.details.get("providers_count", 1)
-            # Scaling: 50+ observations + 3+ providers = 1.0
-            obs_score = min(1.0, evidence / 50.0) * 0.70 + min(1.0, providers / 3.0) * 0.30
-            factors["l5_observations_count"] = evidence
-            factors["l5_providers_count"] = providers
-            factors["l5_evidence_completeness"] = round(obs_score, 2)
-            score_comp_2 = obs_score * 0.35
-        else:
-            factors["l5_evidence_completeness"] = 0.0
-            score_comp_2 = 0.0
+        l5_source_type = l5.source_type if l5 else "not_measured"
+        l5_obs = (l5.provenance.successful_observations or l5.provenance.evidence_count) if l5 else 0
 
-        # Factor 3: SAGE Audit Depth (25% weight)
-        l1 = layers.get("L1")
-        if l1 and l1.status == "measured":
-            words = l1.details.get("word_count", 0)
-            schemas = layers.get("L3", LayerResult("L3", "", 0, None, "", LayerProvenance(""))).details.get("schemas_count", 0)
-            sage_depth = min(1.0, (words / 300.0) * 0.5 + min(1.0, schemas) * 0.5)
-            factors["sage_audit_depth"] = round(sage_depth, 2)
-            score_comp_3 = sage_depth * 0.25
-        else:
-            factors["sage_audit_depth"] = 0.0
-            score_comp_3 = 0.0
+        factors["l5_source_type"] = l5_source_type
+        factors["l5_successful_observations"] = l5_obs
 
-        total_confidence = round(score_comp_1 + score_comp_2 + score_comp_3, 2)
-
-        if total_confidence >= 0.75:
+        if measured_count == 5 and l5_source_type == "observed_live" and l5_obs >= 10:
             level = "High"
-        elif total_confidence >= 0.50:
+            score = 0.95
+        elif measured_count >= 4 and l5_source_type in ("observed_live", "not_measured"):
             level = "Medium"
-        elif total_confidence >= 0.25:
+            score = 0.75 if l5_source_type == "observed_live" else 0.65
+        elif measured_count >= 4 and l5_source_type == "synthetic":
+            level = "Medium"
+            score = 0.60
+            factors["synthetic_l5_penalty"] = "Confidence reduced due to simulation-based L5."
+        elif measured_count >= 2:
             level = "Low"
+            score = 0.40
         else:
             level = "Insufficient"
+            score = 0.0
 
         return ConfidenceAssessment(
             confidence_level=level,
-            confidence_score=total_confidence,
+            confidence_score=score,
             factors=factors,
         )
 
