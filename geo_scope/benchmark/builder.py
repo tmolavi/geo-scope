@@ -51,6 +51,7 @@ class BenchmarkBuilder:
         description: Optional[str] = None,
         methodology_md: Optional[str] = None,
         readme_md: Optional[str] = None,
+        provider_validation: Optional[Dict[str, Any]] = None,
     ) -> Path:
         target_dir = Path(out_dir) / self.dataset_id
         target_dir.mkdir(parents=True, exist_ok=True)
@@ -177,6 +178,7 @@ geo-scope benchmark reproduce --dataset .
             },
             file_hashes=file_hashes,
             composite_dataset_hash=composite_hash,
+            provider_validation=provider_validation,
         )
         (target_dir / "manifest.json").write_text(
             json.dumps(manifest.model_dump(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

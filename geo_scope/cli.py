@@ -471,6 +471,28 @@ def benchmark_cmd(args):
         )
         print(f"✓ Benchmark dataset package exported to: {pkg_path}")
 
+    elif sub == "providers-check":
+        import asyncio
+        from geo_scope.benchmark.validator import ProviderValidator
+        gateway_url = getattr(args, "url", None) or os.getenv("HAMZAD_GATEWAY_URL", "https://api.molavi.pro")
+
+        if getattr(args, "profile", None) and os.path.exists(args.profile):
+            profile = BenchmarkProfile.from_file(args.profile)
+            providers_to_check = profile.providers
+        elif getattr(args, "providers", None):
+            providers_to_check = [p.strip() for p in args.providers.split(",") if p.strip()]
+        else:
+            providers_to_check = ["gemini-2.5-flash", "gpt-4o", "claude-3-5-sonnet", "sonar-pro"]
+
+        validator = ProviderValidator(gateway_url=gateway_url)
+        results = asyncio.run(validator.validate_all(providers_to_check, prompt=getattr(args, "prompt", "Reply with exactly OK.")))
+
+        if getattr(args, "json", False):
+            print(json.dumps({p: res.to_manifest_dict() for p, res in results.items()}, indent=2))
+        else:
+            print(validator.format_report(results))
+
+
 
 def hamzad_cmd(args):
     """
@@ -632,6 +654,14 @@ def main():
     export_p.add_argument("--dataset-id", type=str, default="geo-scope-benchmark-2026.1", help="Dataset identifier")
     export_p.add_argument("--mode", type=str, default="synthetic", choices=["live", "synthetic"], help="Execution mode")
     export_p.add_argument("--status", type=str, default="demo_only", choices=["peer_review_ready", "demo_only"], help="Research status")
+
+    # benchmark providers-check
+    prov_check_p = bmk_subparsers.add_parser("providers-check", help="Verify live provider routing, model identity & fallback integrity")
+    prov_check_p.add_argument("--profile", type=str, default=None, help="Path to benchmark profile YAML file")
+    prov_check_p.add_argument("--providers", type=str, default=None, help="Comma-separated providers to validate")
+    prov_check_p.add_argument("--url", type=str, default=None, help="Override Hamzad Gateway URL")
+    prov_check_p.add_argument("--prompt", type=str, default="Reply with exactly OK.", help="Validation prompt")
+    prov_check_p.add_argument("--json", action="store_true", help="Output JSON results")
 
     # Command: hamzad
     hamzad_parser = subparsers.add_parser("hamzad", help="Hamzad AI Gateway connectivity, authentication & smoke inference")

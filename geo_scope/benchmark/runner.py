@@ -31,6 +31,7 @@ from geo_scope.engine.feature_extractor import (
 )
 from geo_scope.providers.models import sanitize_sensitive_data
 from geo_scope.providers.registry import registry
+from geo_scope.benchmark.validator import ProviderValidator
 
 
 def estimate_benchmark_cost(profile: BenchmarkProfile) -> Dict[str, Any]:
@@ -84,6 +85,7 @@ class LiveBenchmarkRunner:
         self,
         resume: bool = False,
         dry_run: bool = False,
+        validate_providers: bool = True,
     ) -> Dict[str, Any]:
         cost_est = estimate_benchmark_cost(self.profile)
         if dry_run or self.profile.cost_limits.dry_run:
@@ -99,7 +101,25 @@ class LiveBenchmarkRunner:
         brands = self._build_brands_list()
         providers_info = self._build_providers_list()
 
-        # 2. Check for Resume State
+        # 2. Pre-Flight Provider Validation & Integrity Check
+        provider_validation_manifest = None
+        if self.profile.execution_mode == "live" and validate_providers:
+            print("🔍 Performing Pre-Flight Provider Validation & Integrity Check...")
+            validator = ProviderValidator()
+            validation_results = asyncio.run(validator.validate_all(self.profile.providers))
+
+            failed = [p for p, res in validation_results.items() if not res.is_valid()]
+            if failed:
+                report_str = validator.format_report(validation_results)
+                print("\n" + report_str + "\n")
+                raise ValueError(
+                    f"Benchmark integrity violation: Provider(s) {failed} failed validation "
+                    f"(fallback or model mismatch detected). Benchmark execution halted."
+                )
+            print("✓ All requested providers passed integrity validation.")
+            provider_validation_manifest = {p: res.to_manifest_dict() for p, res in validation_results.items()}
+
+        # 3. Check for Resume State
         completed_keys = set()
         existing_obs = []
         existing_cits = []
@@ -115,7 +135,7 @@ class LiveBenchmarkRunner:
                         completed_keys.add((rec["prompt_id"], rec["provider_id"]))
             print(f"✓ Found {len(completed_keys)} previously completed observation records.")
 
-        # 3. Execute Live Inferences
+        # 4. Execute Live Inferences
         mode = ExecutionMode.from_string(self.profile.execution_mode)
         runner = ModelRunner(mode=mode)
         new_obs = []
@@ -253,6 +273,7 @@ class LiveBenchmarkRunner:
             execution_mode=self.profile.execution_mode,
             research_status=self.profile.research_status,
             description=self.profile.description or f"GEO-Scope Live Benchmark {self.dataset_id}",
+            provider_validation=provider_validation_manifest,
         )
 
         # 5. Clean up partial state file

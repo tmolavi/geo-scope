@@ -30,6 +30,7 @@ class BenchmarkManifest(BaseModel):
     counts: Dict[str, int] = Field(default_factory=dict)
     file_hashes: Dict[str, str] = Field(default_factory=dict)
     composite_dataset_hash: Optional[str] = None
+    provider_validation: Optional[Dict[str, Any]] = None
 
 
 class PromptRecord(BaseModel):

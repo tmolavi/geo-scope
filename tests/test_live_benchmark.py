@@ -105,7 +105,7 @@ def test_live_runner_resume_logic(tmp_path):
     }) + "\n", encoding="utf-8")
 
     # When runner executes with resume=True, it loads partial records
-    res = runner.run(resume=True)
+    res = runner.run(resume=True, validate_providers=False)
     assert res["success"] is True
     assert res["total_observations"] >= 2
 
