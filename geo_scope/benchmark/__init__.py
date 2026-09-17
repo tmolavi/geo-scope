@@ -3,6 +3,7 @@ GEO-Scope Public Benchmark & Evidence Dataset Module.
 """
 
 from geo_scope.benchmark.models import (
+    BenchmarkExecutionMode,
     BenchmarkManifest,
     PromptRecord,
     ObservationRecord,
@@ -13,6 +14,7 @@ from geo_scope.benchmark.models import (
     MetricEstimate,
     StatisticalFactorAnalysis,
 )
+from geo_scope.benchmark.validator import ProviderValidator, ProviderValidationResult
 from geo_scope.benchmark.hasher import (
     compute_file_sha256,
     compute_dataset_checksums,

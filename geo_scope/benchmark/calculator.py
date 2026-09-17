@@ -96,12 +96,33 @@ class BenchmarkCalculator:
         dataset_id: str = "geo-scope-benchmark-2026.1",
         execution_mode: str = "synthetic",
         research_status: str = "demo_only",
+        benchmark_mode: str = "discovery",
     ) -> BenchmarkMetrics:
         total_prompts = len(prompts)
         total_obs = len(observations)
 
-        successful_obs = [o for o in observations if o.get("status") == "success"]
-        failed_obs = [o for o in observations if o.get("status") != "success"]
+        # Categorize observations by execution class
+        native_obs = [
+            o for o in observations
+            if o.get("status") == "success" and o.get("execution_class", "native") == "native" and not o.get("fallback_active", False)
+        ]
+        fallback_obs = [
+            o for o in observations
+            if o.get("status") == "success" and (o.get("execution_class") == "fallback" or o.get("fallback_active", False))
+        ]
+        failed_obs = [
+            o for o in observations
+            if o.get("status") != "success" or o.get("execution_class") == "failed"
+        ]
+
+        if benchmark_mode == "strict":
+            successful_obs = native_obs
+            # In strict mode, fallback observations are classified as failed for official benchmarking
+            effective_failed_obs = failed_obs + fallback_obs
+        else:
+            successful_obs = [o for o in observations if o.get("status") == "success"]
+            effective_failed_obs = failed_obs
+
         n_success = len(successful_obs)
 
         # 1. Target brand detection
@@ -113,69 +134,12 @@ class BenchmarkCalculator:
         if not target_brand_name and brands:
             target_brand_name = brands[0].get("name")
 
-        # 2. Compute Brand Metrics
-        brand_metrics_list = []
-        total_all_mentions = 0
-        brand_mention_counts = {}
+        # 2. Compute Brand Metrics (Primary + Stratified)
+        brand_metrics_list = self._compute_brand_metrics_list(successful_obs, citations, brands)
+        native_metrics_list = self._compute_brand_metrics_list(native_obs, citations, brands)
+        fallback_metrics_list = self._compute_brand_metrics_list(fallback_obs, citations, brands)
+        total_metrics_list = self._compute_brand_metrics_list([o for o in observations if o.get("status") == "success"], citations, brands)
 
-        for b in brands:
-            bname = b.get("name")
-            is_target = b.get("is_target", False)
-
-            if n_success == 0:
-                mention_est = MetricEstimate(value=None, status="insufficient_data")
-                top1_est = MetricEstimate(value=None, status="insufficient_data")
-                citation_est = MetricEstimate(value=None, status="insufficient_data")
-                som_est = MetricEstimate(value=None, status="insufficient_data")
-                avg_r = None
-            else:
-                if is_target:
-                    mentions = [1 if o.get("brand_mentioned") else 0 for o in successful_obs]
-                    top1s = [1 if o.get("is_top1") else 0 for o in successful_obs]
-                    ranks = [o["brand_rank"] for o in successful_obs if o.get("brand_rank") is not None]
-                else:
-                    mentions = [1 if bname in o.get("mentioned_brands", []) else 0 for o in successful_obs]
-                    top1s = [1 if o.get("top1_brand") == bname else 0 for o in successful_obs]
-                    ranks = [o.get("competitor_ranks", {}).get(bname) for o in successful_obs if o.get("competitor_ranks", {}).get(bname) is not None]
-
-                m_count = sum(mentions)
-                brand_mention_counts[bname] = m_count
-                total_all_mentions += m_count
-
-                mention_est = make_metric_estimate(mentions, confidence_level=self.confidence_level, seed=self.random_seed)
-                top1_est = make_metric_estimate(top1s, confidence_level=self.confidence_level, seed=self.random_seed)
-
-                domain_matches = [
-                    1 if any(c.get("cited_for_brand") == bname or bname.lower() in c.get("domain", "").lower() for c in citations if c.get("prompt_id") == o.get("prompt_id")) else 0
-                    for o in successful_obs
-                ]
-                citation_est = make_metric_estimate(domain_matches, confidence_level=self.confidence_level, seed=self.random_seed)
-                avg_r = round(float(np.mean(ranks)), 2) if ranks else None
-
-            brand_metrics_list.append(
-                BrandBenchmarkMetrics(
-                    brand=bname,
-                    is_target=is_target,
-                    mention_rate=mention_est,
-                    top1_rate=top1_est,
-                    citation_rate=citation_est,
-                    share_of_model=MetricEstimate(value=None),
-                    avg_rank=avg_r,
-                )
-            )
-
-        # Update Share of Model
-        for bm in brand_metrics_list:
-            if total_all_mentions > 0:
-                som_val = round((brand_mention_counts.get(bm.brand, 0) / total_all_mentions) * 100.0, 4)
-                bm.share_of_model = MetricEstimate(
-                    value=som_val,
-                    confidence_level=self.confidence_level,
-                    sample_size=total_all_mentions,
-                    status="ok",
-                )
-            else:
-                bm.share_of_model = MetricEstimate(value=None, status="insufficient_data")
 
         # 3. Compute Provider Metrics
         provider_metrics_dict = {}
@@ -262,22 +226,135 @@ class BenchmarkCalculator:
         # 7. Empirical Factor Analysis
         factor_analysis = self._compute_factor_analysis(successful_obs, citations)
 
+        # 8. Stratified Visibility Mappings
+        def format_visibility_dict(metrics_list: List[BrandBenchmarkMetrics], sample_size: int) -> Dict[str, Any]:
+            return {
+                "sample_size": sample_size,
+                "brands": {
+                    bm.brand: {
+                        "is_target": bm.is_target,
+                        "mention_rate": bm.mention_rate.value,
+                        "mention_rate_ci": [bm.mention_rate.ci_lower, bm.mention_rate.ci_upper],
+                        "top1_rate": bm.top1_rate.value,
+                        "top1_rate_ci": [bm.top1_rate.ci_lower, bm.top1_rate.ci_upper],
+                        "citation_rate": bm.citation_rate.value,
+                        "share_of_model": bm.share_of_model.value,
+                        "avg_rank": bm.avg_rank,
+                    }
+                    for bm in metrics_list
+                },
+            }
+
+        native_vis = format_visibility_dict(native_metrics_list, len(native_obs))
+        fallback_vis = format_visibility_dict(fallback_metrics_list, len(fallback_obs))
+        total_vis = format_visibility_dict(total_metrics_list, len(successful_obs))
+        exec_breakdown = {
+            "native": len(native_obs),
+            "fallback": len(fallback_obs),
+            "failed": len(effective_failed_obs),
+        }
+
         return BenchmarkMetrics(
             dataset_id=dataset_id,
             computed_at=datetime.now(timezone.utc).isoformat(),
             execution_mode=execution_mode,
+            benchmark_mode=benchmark_mode,
             research_status=research_status,
             total_prompts=total_prompts,
             total_observations=total_obs,
             successful_observations=n_success,
-            failed_observations=len(failed_obs),
+            failed_observations=len(effective_failed_obs),
             brands=brand_metrics_list,
             providers=provider_metrics_dict,
+            native_visibility=native_vis,
+            fallback_visibility=fallback_vis,
+            total_observed_visibility=total_vis,
+            execution_class_breakdown=exec_breakdown,
             strata=strata_dict,
             top_cited_domains=top_domains,
             category_visibility_matrix=cat_matrix,
             factor_analysis=factor_analysis,
         )
+
+    def _compute_brand_metrics_list(
+        self,
+        subset_obs: List[Dict[str, Any]],
+        citations: List[Dict[str, Any]],
+        brands: List[Dict[str, Any]],
+    ) -> List[BrandBenchmarkMetrics]:
+        n_obs = len(subset_obs)
+        brand_metrics_list = []
+        total_all_mentions = 0
+        brand_mention_counts = {}
+
+        for b in brands:
+            bname = b.get("name")
+            is_target = b.get("is_target", False)
+
+            if n_obs == 0:
+                mention_est = MetricEstimate(value=None, status="insufficient_data")
+                top1_est = MetricEstimate(value=None, status="insufficient_data")
+                citation_est = MetricEstimate(value=None, status="insufficient_data")
+                som_est = MetricEstimate(value=None, status="insufficient_data")
+                avg_r = None
+            else:
+                if is_target:
+                    mentions = [1 if o.get("brand_mentioned") else 0 for o in subset_obs]
+                    top1s = [1 if o.get("is_top1") else 0 for o in subset_obs]
+                    ranks = [o["brand_rank"] for o in subset_obs if o.get("brand_rank") is not None]
+                else:
+                    mentions = [1 if bname in o.get("mentioned_brands", []) else 0 for o in subset_obs]
+                    top1s = [1 if o.get("top1_brand") == bname else 0 for o in subset_obs]
+                    ranks = [
+                        o.get("competitor_ranks", {}).get(bname)
+                        for o in subset_obs
+                        if o.get("competitor_ranks", {}).get(bname) is not None
+                    ]
+
+                m_count = sum(mentions)
+                brand_mention_counts[bname] = m_count
+                total_all_mentions += m_count
+
+                mention_est = make_metric_estimate(mentions, confidence_level=self.confidence_level, seed=self.random_seed)
+                top1_est = make_metric_estimate(top1s, confidence_level=self.confidence_level, seed=self.random_seed)
+
+                domain_matches = [
+                    1 if any(
+                        c.get("cited_for_brand") == bname or bname.lower() in c.get("domain", "").lower()
+                        for c in citations
+                        if c.get("prompt_id") == o.get("prompt_id")
+                    ) else 0
+                    for o in subset_obs
+                ]
+                citation_est = make_metric_estimate(domain_matches, confidence_level=self.confidence_level, seed=self.random_seed)
+                avg_r = round(float(np.mean(ranks)), 2) if ranks else None
+
+            brand_metrics_list.append(
+                BrandBenchmarkMetrics(
+                    brand=bname,
+                    is_target=is_target,
+                    mention_rate=mention_est,
+                    top1_rate=top1_est,
+                    citation_rate=citation_est,
+                    share_of_model=MetricEstimate(value=None),
+                    avg_rank=avg_r,
+                )
+            )
+
+        # Update Share of Model
+        for bm in brand_metrics_list:
+            if total_all_mentions > 0:
+                som_val = round((brand_mention_counts.get(bm.brand, 0) / total_all_mentions) * 100.0, 4)
+                bm.share_of_model = MetricEstimate(
+                    value=som_val,
+                    confidence_level=self.confidence_level,
+                    sample_size=total_all_mentions,
+                    status="ok",
+                )
+            else:
+                bm.share_of_model = MetricEstimate(value=None, status="insufficient_data")
+
+        return brand_metrics_list
 
     def _compute_factor_analysis(
         self,

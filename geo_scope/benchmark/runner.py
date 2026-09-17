@@ -86,6 +86,7 @@ class LiveBenchmarkRunner:
         resume: bool = False,
         dry_run: bool = False,
         validate_providers: bool = True,
+        benchmark_mode: Optional[str] = None,
     ) -> Dict[str, Any]:
         cost_est = estimate_benchmark_cost(self.profile)
         if dry_run or self.profile.cost_limits.dry_run:
@@ -96,27 +97,44 @@ class LiveBenchmarkRunner:
                 "status": "dry_run_completed",
             }
 
+        bmk_mode = (benchmark_mode or getattr(self.profile, "benchmark_mode", "discovery")).lower()
+
         # 1. Generate / Load Stratified Prompts
         prompts = self._load_or_generate_prompts()
         brands = self._build_brands_list()
         providers_info = self._build_providers_list()
 
-        # 2. Pre-Flight Provider Validation & Integrity Check
+        # 2. Pre-Flight Provider Validation & Provenance Check
         provider_validation_manifest = None
         if self.profile.execution_mode == "live" and validate_providers:
-            print("🔍 Performing Pre-Flight Provider Validation & Integrity Check...")
+            print(f"\n===========================================================================")
+            print(f"Benchmark Mode: {bmk_mode.upper()}")
+            print(f"===========================================================================")
             validator = ProviderValidator()
             validation_results = asyncio.run(validator.validate_all(self.profile.providers))
 
-            failed = [p for p, res in validation_results.items() if not res.is_valid()]
-            if failed:
-                report_str = validator.format_report(validation_results)
-                print("\n" + report_str + "\n")
-                raise ValueError(
-                    f"Benchmark integrity violation: Provider(s) {failed} failed validation "
-                    f"(fallback or model mismatch detected). Benchmark execution halted."
-                )
-            print("✓ All requested providers passed integrity validation.")
+            # Display pre-flight status for each provider
+            for p, res in validation_results.items():
+                p_label = p.replace("_", " ").title()
+                if res.is_valid():
+                    print(f"\n{p_label}:\nnative")
+                else:
+                    if res.fallback_detected:
+                        print(f"\n{p_label}:\nfallback -> {res.verified_model or 'surrogate model'}")
+                    else:
+                        print(f"\n{p_label}:\nfailed ({res.error})")
+
+            print(f"===========================================================================\n")
+
+            if bmk_mode == "strict":
+                failed = [p for p, res in validation_results.items() if not res.is_valid()]
+                if failed:
+                    report_str = validator.format_report(validation_results)
+                    print("\n" + report_str + "\n")
+                    raise ValueError(
+                        f"Strict benchmark integrity violation: Provider(s) {failed} failed native validation "
+                        f"(fallback or model mismatch detected). Execution halted in STRICT mode."
+                    )
             provider_validation_manifest = {p: res.to_manifest_dict() for p, res in validation_results.items()}
 
         # 3. Check for Resume State
@@ -142,7 +160,7 @@ class LiveBenchmarkRunner:
         new_cits = []
         cit_idx = len(existing_cits) + 1
 
-        print(f"🚀 Starting Live Benchmark execution across {len(self.profile.providers)} providers...")
+        print(f"🚀 Starting Live Benchmark execution across {len(self.profile.providers)} providers in {bmk_mode.upper()} mode...")
 
         # Open partial state writer
         state_file.parent.mkdir(parents=True, exist_ok=True)
@@ -187,11 +205,45 @@ class LiveBenchmarkRunner:
                     if prov_resp and hasattr(prov_resp, "raw"):
                         raw_data = sanitize_sensitive_data(prov_resp.raw)
 
+                    # Extract Provenance Metadata
+                    raw_meta = {}
+                    if prov_resp:
+                        if hasattr(prov_resp, "metadata") and isinstance(prov_resp.metadata, dict):
+                            raw_meta.update(prov_resp.metadata.get("meta", {}))
+                        if hasattr(prov_resp, "raw") and isinstance(prov_resp.raw, dict):
+                            raw_meta.update(prov_resp.raw.get("meta", {}))
+
+                    actual_model = raw_meta.get("actual_model") or (prov_resp.raw.get("model") if prov_resp and hasattr(prov_resp, "raw") and isinstance(prov_resp.raw, dict) else None) or (prov_resp.model if prov_resp else prov_id)
+                    actual_provider = (prov_resp.raw.get("provider") if prov_resp and hasattr(prov_resp, "raw") and isinstance(prov_resp.raw, dict) else None) or (prov_resp.provider if prov_resp else prov_id)
+                    fallback_active = bool(raw_meta.get("fallback_active", False))
+
+                    from geo_scope.benchmark.validator import models_match
+                    if not models_match(prov_id, actual_model):
+                        fallback_active = True
+
+                    if status != "success":
+                        exec_class = "failed"
+                    elif fallback_active:
+                        exec_class = "fallback"
+                    else:
+                        exec_class = "native"
+
+                    # In strict mode, fallback responses are classified as failed
+                    if bmk_mode == "strict" and exec_class == "fallback":
+                        status = "failed"
+                        exec_class = "failed"
+
                     obs_rec = {
                         "observation_id": f"obs_{len(existing_obs) + len(new_obs) + 1:05d}",
                         "prompt_id": pid,
                         "provider_id": prov_id,
                         "model": prov_id,
+                        "requested_provider": prov_id,
+                        "requested_model": prov_id,
+                        "actual_provider": actual_provider,
+                        "actual_model": actual_model,
+                        "fallback_active": fallback_active,
+                        "execution_class": exec_class,
                         "execution_mode": self.profile.execution_mode,
                         "status": status,
                         "brand_mentioned": parsed.get("target_mentioned", False) if status == "success" else False,
@@ -263,6 +315,19 @@ class LiveBenchmarkRunner:
         all_cits = existing_cits + new_cits
 
         # 4. Build Benchmark Package
+        native_cnt = sum(1 for o in all_obs if o.get("execution_class") == "native")
+        fallback_cnt = sum(1 for o in all_obs if o.get("execution_class") == "fallback")
+        failed_cnt = sum(1 for o in all_obs if o.get("execution_class") == "failed" or o.get("status") != "success")
+
+        provenance_data = {
+            "validated": True,
+            "fallbacks_recorded": True,
+            "benchmark_mode": bmk_mode,
+            "native_count": native_cnt,
+            "fallback_count": fallback_cnt,
+            "failed_count": failed_cnt,
+        }
+
         pkg_path = self.builder.build_package(
             out_dir=self.out_dir,
             prompts=prompts,
@@ -271,9 +336,11 @@ class LiveBenchmarkRunner:
             brands=brands,
             providers=providers_info,
             execution_mode=self.profile.execution_mode,
+            benchmark_mode=bmk_mode,
             research_status=self.profile.research_status,
             description=self.profile.description or f"GEO-Scope Live Benchmark {self.dataset_id}",
             provider_validation=provider_validation_manifest,
+            model_provenance=provenance_data,
         )
 
         # 5. Clean up partial state file
@@ -284,7 +351,7 @@ class LiveBenchmarkRunner:
                 pass
 
         # 6. Generate Markdown Research Report
-        report_path = self._generate_research_report(pkg_path, all_obs, all_cits, prompts, brands)
+        report_path = self._generate_research_report(pkg_path, all_obs, all_cits, prompts, brands, bmk_mode)
 
         return {
             "success": True,
@@ -294,7 +361,9 @@ class LiveBenchmarkRunner:
             "total_prompts": len(prompts),
             "total_observations": len(all_obs),
             "execution_mode": self.profile.execution_mode,
+            "benchmark_mode": bmk_mode,
             "research_status": self.profile.research_status,
+            "model_provenance": provenance_data,
         }
 
     def _load_or_generate_prompts(self) -> List[Dict[str, Any]]:
@@ -362,6 +431,7 @@ class LiveBenchmarkRunner:
         citations: List[Dict[str, Any]],
         prompts: List[Dict[str, Any]],
         brands: List[Dict[str, Any]],
+        benchmark_mode: str = "discovery",
     ) -> Path:
         reports_dir = Path("reports")
         reports_dir.mkdir(parents=True, exist_ok=True)
@@ -370,21 +440,81 @@ class LiveBenchmarkRunner:
         metrics_file = dataset_dir / "metrics.json"
         metrics = json.loads(metrics_file.read_text(encoding="utf-8")) if metrics_file.exists() else {}
 
+        native_obs = [o for o in observations if o.get("execution_class") == "native" and o.get("status") == "success"]
+        fallback_obs = [o for o in observations if o.get("execution_class") == "fallback"]
+        failed_obs = [o for o in observations if o.get("status") != "success" or o.get("execution_class") == "failed"]
+
         lines = [
             f"# GEO-Scope Public Research Report: {self.dataset_id}",
             "",
             "## 1. Executive Summary & Epistemic Positioning",
             f"- **Benchmark Version**: `{self.profile.benchmark_version}`",
+            f"- **Benchmark Mode**: `{benchmark_mode.upper()}` (Official strict evaluation vs operational discovery)",
             f"- **Execution Mode**: `{self.profile.execution_mode}`",
             f"- **Research Status**: `{self.profile.research_status}`",
             f"- **Dataset Size**: {len(prompts)} prompts | {len(observations)} observations across {len(self.profile.providers)} providers",
+            f"- **Execution Provenance**: {len(native_obs)} native observations | {len(fallback_obs)} fallback-routed observations | {len(failed_obs)} failed",
             "- **Core Epistemic Standard**: All reported metrics represent empirical multi-model observations and statistical associations. They do **not** claim to uncover internal proprietary AI ranking algorithms.",
             "",
-            "## 2. Brand Visibility Performance (95% Bootstrap CIs)",
+            "## 2. Execution Provenance & Model Separation",
+            "",
+            "### A. Native Model Results",
+            "Direct model executions verified to match requested upstream architecture:",
+            "",
+            "| Provider | Requested Model | Verified Actual Model | Observations | Avg Latency (ms) | Status |",
+            "|----------|-----------------|-----------------------|--------------|------------------|--------|",
+        ]
+
+        # Group observations by provider/model
+        native_grouped: Dict[str, List[Dict[str, Any]]] = {}
+        for o in native_obs:
+            key = (o.get("requested_provider", o.get("provider_id")), o.get("actual_model", o.get("model")))
+            native_grouped.setdefault(str(key), []).append(o)
+
+        if not native_grouped:
+            lines.append("| None | - | - | 0 | - | No native model executions |")
+        else:
+            for k_str, obs_list in native_grouped.items():
+                first = obs_list[0]
+                req_p = first.get("requested_provider", first.get("provider_id"))
+                req_m = first.get("requested_model", first.get("model"))
+                act_m = first.get("actual_model", first.get("model"))
+                lats = [o["latency_ms"] for o in obs_list if o.get("latency_ms") is not None]
+                avg_lat = f"{sum(lats)/len(lats):.1f}" if lats else "-"
+                lines.append(f"| {req_p} | {req_m} | {act_m} | {len(obs_list)} | {avg_lat} | `PASS (Native)` |")
+
+        lines.extend([
+            "",
+            "### B. Fallback Routed Results",
+            "Requests redirected to fallback or surrogate backends (never merged silently with native metrics):",
+            "",
+            "| Requested Provider/Model | Actual Routed Backend | Trigger Reason | Observations | Avg Latency (ms) | Status |",
+            "|--------------------------|-----------------------|----------------|--------------|------------------|--------|",
+        ])
+
+        fallback_grouped: Dict[str, List[Dict[str, Any]]] = {}
+        for o in fallback_obs:
+            key = (o.get("requested_provider", o.get("provider_id")), o.get("actual_model", o.get("model")))
+            fallback_grouped.setdefault(str(key), []).append(o)
+
+        if not fallback_grouped:
+            lines.append("| None | - | - | 0 | - | Zero fallback routing detected |")
+        else:
+            for k_str, obs_list in fallback_grouped.items():
+                first = obs_list[0]
+                req = f"{first.get('requested_provider', first.get('provider_id'))} ({first.get('requested_model', first.get('model'))})"
+                act = f"{first.get('actual_provider', 'gateway')} ({first.get('actual_model', 'unknown')})"
+                lats = [o["latency_ms"] for o in obs_list if o.get("latency_ms") is not None]
+                avg_lat = f"{sum(lats)/len(lats):.1f}" if lats else "-"
+                lines.append(f"| {req} | {act} | Upstream inactive / surrogate | {len(obs_list)} | {avg_lat} | `FALLBACK_RECORDED` |")
+
+        lines.extend([
+            "",
+            "## 3. Brand Visibility Performance (95% Bootstrap CIs)",
             "",
             "| Brand | Target | Share of Model | Mention Rate (95% CI) | Top-1 Rate (95% CI) | Avg Rank |",
             "|-------|--------|----------------|-----------------------|---------------------|----------|",
-        ]
+        ])
 
         for b in metrics.get("brands", []):
             m = b.get("mention_rate", {})
@@ -399,7 +529,7 @@ class LiveBenchmarkRunner:
 
         lines.extend([
             "",
-            "## 3. Multi-Model Provider Analysis",
+            "## 4. Multi-Model Provider Analysis",
             "",
             "| Provider | Success Obs | Failed Obs | Target Mention Rate | Target Top-1 Rate | Avg Latency (ms) |",
             "|----------|-------------|------------|---------------------|-------------------|------------------|",
@@ -415,7 +545,7 @@ class LiveBenchmarkRunner:
 
         lines.extend([
             "",
-            "## 4. Empirical Factor Associations (Prior vs. Observed)",
+            "## 5. Empirical Factor Associations (Prior vs. Observed)",
             "",
             "| Factor | Prior Weight | Observed Effect | 95% Confidence Interval | Status |",
             "|--------|--------------|-----------------|-------------------------|--------|",
@@ -429,12 +559,12 @@ class LiveBenchmarkRunner:
 
         lines.extend([
             "",
-            "## 5. Methodological Limitations & Research Transparency",
-            "1. **API vs Web Interface Discrepancies**: Model outputs obtained via programmatic APIs with grounding may differ from consumer browser interfaces due to active personalization, real-time browsing policies, and localized cache layers.",
-            "2. **Temporal Volatility**: Search grounding indexes and LLM model checkpoints update continuously; results represent observations strictly at the recorded timestamps.",
-            "3. **Zero Fabricated Zero-Visibility**: Providers that fail or timeout are isolated as `failed_observations` with null percentage derivations to prevent skewing the true zero-visibility denominator.",
+            "## 6. Methodological Limitations & Research Transparency",
+            "1. **Dynamic Routing & Fallbacks**: Programmatic gateways dynamically route models and may activate fallback surrogate models when specific upstream endpoints are offline. GEO-Scope captures explicit execution provenance to distinguish native vs fallback observations.",
+            "2. **Requested vs Observed Identity**: Requested models represent experimental targets; observed models reflect the actual upstream generating backend. Official benchmarks evaluate native executions strictly.",
+            "3. **Temporal Volatility**: Search grounding indexes and LLM model checkpoints update continuously; results represent observations strictly at the recorded timestamps.",
             "",
-            "## 6. Reproduction Protocol",
+            "## 7. Reproduction Protocol",
             "```bash",
             f"geo-scope benchmark verify --dataset benchmark/{self.dataset_id}",
             f"geo-scope benchmark reproduce --dataset benchmark/{self.dataset_id}",

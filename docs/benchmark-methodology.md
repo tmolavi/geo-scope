@@ -78,13 +78,59 @@ When analyzing factors correlating with high generative visibility:
 
 ---
 
-## 6. Verification & Reproduction Protocol
+---
+
+## 6. Dual Benchmark Modes & Model Provenance
+
+When evaluating AI search engines through gateways or multi-provider routes, underlying routing layers may employ fallback models (e.g. proxying an unavailable upstream model to an open-weights fallback). To guarantee scientific integrity and complete transparency without hiding operational realities, GEO-Scope implements **Dual Benchmark Modes**:
+
+### 6.1 Benchmark Execution Modes
+
+| Mode | Target Use Case | Fallback Behavior | Provenance Tagging |
+|------|-----------------|-------------------|--------------------|
+| **`STRICT`** | Official benchmark releases & peer-reviewed benchmarks | **Rejected**: Fallback responses are marked `status: "failed"` and `execution_class: "failed"`. Excluded from official visibility metrics. | Full provenance recorded with failure reason `fallback_detected`. |
+| **`DISCOVERY`** | Operational AI visibility & ecosystem research | **Accepted**: Fallback responses are accepted (`status: "success"`, `execution_class: "fallback"`). | Full provenance recorded (`requested_provider`, `requested_model`, `actual_provider`, `actual_model`, `fallback_active`). |
+
+### 6.2 Model Provenance Schema
+
+Every observation record stores unambiguous provenance fields:
+- `requested_provider`: The target provider identifier specified in the benchmark profile (e.g. `claude-3-5-sonnet`).
+- `requested_model`: The target model requested.
+- `actual_provider`: The provider that physically generated the completion (e.g. `openrouter` / `avalai`).
+- `actual_model`: The exact model string returned by gateway metadata (e.g. `qwen/qwen3.8-27b`).
+- `fallback_active`: Boolean flag indicating whether gateway fallback routing occurred.
+- `execution_class`: One of `"native"`, `"fallback"`, or `"failed"`.
+
+### 6.3 Metric Stratification
+
+Benchmark metrics in GEO-Scope are stratified into distinct tiers:
+1. **`native_visibility`**: Computed exclusively over observations where `execution_class == "native"`. Guarantees zero fallback contamination.
+2. **`fallback_visibility`**: Computed exclusively over observations where `execution_class == "fallback"`. Measures fallback route behavior.
+3. **`total_observed_visibility`**: Blended visibility across all successful responses (`native` + `fallback`).
+4. **`execution_class_breakdown`**: Counts of `native`, `fallback`, and `failed` observations with proportions.
+
+### 6.4 Research Report Structure
+
+Automated benchmark reports explicitly segment findings into:
+- **Native Model Results**: Primary verified benchmark scores.
+- **Fallback Routed Results**: Transparent disclosure of gateway fallback behaviors, explicitly attributing outputs to the `actual_model`.
+
+---
+
+## 7. Verification & Reproduction Protocol
 
 Any published GEO-Scope benchmark can be verified locally:
 ```bash
-# 1. Cryptographic file integrity verification
+# 1. Check live provider routing & fallback integrity
+geo-scope benchmark providers-check --profile benchmark/profiles/geo-scope-live-2026.1.yaml
+
+# 2. Run benchmark in discovery or strict mode
+geo-scope benchmark run --profile benchmark/profiles/geo-scope-live-2026.1.yaml --mode discovery
+geo-scope benchmark run --profile benchmark/profiles/geo-scope-live-2026.1.yaml --mode strict
+
+# 3. Cryptographic file integrity verification
 geo-scope benchmark verify --dataset benchmark/geo-scope-benchmark-2026.1
 
-# 2. Metric reproduction and bootstrap recalculation
+# 4. Metric reproduction and bootstrap recalculation
 geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1
 ```

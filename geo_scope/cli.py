@@ -387,7 +387,12 @@ def benchmark_cmd(args):
         profile_path = args.profile
         profile = BenchmarkProfile.from_file(profile_path)
         runner = LiveBenchmarkRunner(profile=profile, out_dir=getattr(args, "out", "benchmark"))
-        res = runner.run(resume=getattr(args, "resume", False), dry_run=getattr(args, "dry_run", False))
+        benchmark_mode = getattr(args, "mode", None)
+        res = runner.run(
+            resume=getattr(args, "resume", False),
+            dry_run=getattr(args, "dry_run", False),
+            benchmark_mode=benchmark_mode,
+        )
         if res.get("dry_run"):
             print("\n📊 Dry Run Cost Estimation:")
             print(json.dumps(res["cost_estimate"], indent=2))
@@ -632,6 +637,13 @@ def main():
     run_bmk_p.add_argument("--out", type=str, default="benchmark", help="Target output directory")
     run_bmk_p.add_argument("--resume", action="store_true", help="Resume interrupted benchmark execution")
     run_bmk_p.add_argument("--dry-run", action="store_true", help="Estimate cost and validate profile without executing calls")
+    run_bmk_p.add_argument(
+        "--mode",
+        type=str,
+        choices=["strict", "discovery"],
+        default=None,
+        help="Benchmark execution mode: strict (enforces zero-fallback) or discovery (accepts all with full provenance)",
+    )
 
     # benchmark estimate-cost
     est_p = bmk_subparsers.add_parser("estimate-cost", help="Estimate API inference cost and call counts for a benchmark profile")
