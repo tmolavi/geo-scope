@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 
+from urllib.parse import urlparse
+
 from geo_scope.benchmark.profile import BenchmarkProfile
 from geo_scope.benchmark.models import (
     PromptRecord,
@@ -23,7 +25,10 @@ from geo_scope.engine.model_runner import ModelRunner
 from geo_scope.engine.persistence import RawRunStore
 from geo_scope.engine.query_generator import generate_prompt_dataset
 from geo_scope.engine.query_loader import load_custom_prompts
-from geo_scope.engine.feature_extractor import parse_model_response
+from geo_scope.engine.feature_extractor import (
+    parse_model_response,
+    extract_citations_and_domains,
+)
 from geo_scope.providers.models import sanitize_sensitive_data
 from geo_scope.providers.registry import registry
 
@@ -183,24 +188,52 @@ class LiveBenchmarkRunner:
                         "timestamp": datetime.now(timezone.utc).isoformat(),
                     }
 
-                    # Extract citations
-                    extraction_method = "grounding_metadata" if prov_id in ["perplexity_sonar", "gemini_grounding"] else "native_citations"
-                    for c_domain in parsed.get("citations_extracted", []):
+                    # Extract genuine citations from provider response and response text (no fabricated URLs)
+                    extracted_sources = []
+                    # 1. Check provider response citations (e.g. from search grounding)
+                    if prov_resp and getattr(prov_resp, "citations", None):
+                        for c_item in prov_resp.citations:
+                            if isinstance(c_item, str) and c_item.startswith("http"):
+                                domain = urlparse(c_item).netloc.lower()
+                                if domain.startswith("www."):
+                                    domain = domain[4:]
+                                extracted_sources.append({"url": c_item, "domain": domain, "method": "grounding_metadata"})
+                            elif isinstance(c_item, dict) and c_item.get("url"):
+                                url_val = c_item["url"]
+                                domain = c_item.get("domain") or urlparse(url_val).netloc.lower()
+                                if domain.startswith("www."):
+                                    domain = domain[4:]
+                                extracted_sources.append({"url": url_val, "domain": domain, "method": "grounding_metadata"})
+
+                    # 2. Check markdown / raw URLs extracted directly from generated text
+                    _, text_sources = extract_citations_and_domains(resp_text)
+                    for src in text_sources:
+                        extracted_sources.append({"url": src["url"], "domain": src["domain"], "method": "text_extracted"})
+
+                    # Deduplicate citations by URL for this observation
+                    seen_urls = set()
+                    pos = 1
+                    for src in extracted_sources:
+                        u = src["url"]
+                        if u in seen_urls:
+                            continue
+                        seen_urls.add(u)
                         cit_rec = {
                             "citation_id": f"cit_{cit_idx:05d}",
                             "prompt_id": pid,
                             "provider_id": prov_id,
-                            "citation_url": f"https://{c_domain}/source-{cit_idx}",
-                            "url": f"https://{c_domain}/source-{cit_idx}",
-                            "domain": c_domain,
+                            "citation_url": u,
+                            "url": u,
+                            "domain": src["domain"],
                             "brand": self.profile.sampling.target_brand,
                             "cited_for_brand": self.profile.sampling.target_brand,
-                            "position": 1,
-                            "rank_position": 1,
-                            "extraction_method": extraction_method,
+                            "position": pos,
+                            "rank_position": pos,
+                            "extraction_method": src["method"],
                         }
                         new_cits.append(cit_rec)
                         cit_idx += 1
+                        pos += 1
 
                     new_obs.append(obs_rec)
                     state_out.write(json.dumps(obs_rec, ensure_ascii=False) + "\n")

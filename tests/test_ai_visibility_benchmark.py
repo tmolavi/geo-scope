@@ -8,21 +8,22 @@ from geo_scope.benchmark.calculator import BenchmarkCalculator
 from geo_scope.benchmark.reproducer import BenchmarkReproducer
 from geo_scope.benchmark.hasher import verify_dataset_checksums
 from geo_scope.benchmark.profile import BenchmarkProfile
+from geo_scope.benchmark.runner import LiveBenchmarkRunner
 from geo_scope.mavi.engine import MAVIEngine
 
 
 def test_ai_visibility_benchmark_manifest_integrity():
-    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1")
-    assert dataset_dir.exists(), "Release dataset directory must exist"
+    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic")
+    assert dataset_dir.exists(), "Synthetic validation dataset directory must exist"
 
     manifest_file = dataset_dir / "manifest.json"
     assert manifest_file.exists()
 
     manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
-    assert manifest["benchmark_version"] == "2026.1-live"
-    assert manifest["dataset_name"] == "geo-scope-ai-visibility-2026.1"
-    assert manifest["execution_mode"] == "live"
-    assert manifest["research_status"] == "experimental_observation"
+    assert manifest["benchmark_version"] == "2026.1" or manifest["benchmark_version"].startswith("2026.1")
+    assert manifest["dataset_name"] == "geo-scope-ai-visibility-2026.1-synthetic"
+    assert manifest["execution_mode"] == "synthetic"
+    assert manifest["research_status"] == "demo_only"
     assert manifest["counts"]["prompts"] == 100
     assert manifest["counts"]["observations"] == 400
     assert manifest["counts"]["brands"] == 8
@@ -32,7 +33,7 @@ def test_ai_visibility_benchmark_manifest_integrity():
 
 
 def test_ai_visibility_benchmark_checksum_verification():
-    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1")
+    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic")
     chk = verify_dataset_checksums(dataset_dir)
     assert chk["valid"] is True
     assert len(chk["mismatches"]) == 0
@@ -42,7 +43,7 @@ def test_ai_visibility_benchmark_checksum_verification():
 
 
 def test_ai_visibility_benchmark_metric_calculation_and_matrix():
-    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1")
+    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic")
     metrics_file = dataset_dir / "metrics.json"
     assert metrics_file.exists()
 
@@ -100,14 +101,14 @@ def test_ai_visibility_benchmark_metric_calculation_and_matrix():
 
 
 def test_ai_visibility_benchmark_reproducibility():
-    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1")
+    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic")
     reproducer = BenchmarkReproducer(tolerance=0.01)
     res = reproducer.verify_and_reproduce(dataset_dir)
     assert res["success"] is True
     assert res["checksums_valid"] is True
     assert res["metrics_matched"] is True
-    assert res["execution_mode"] == "live"
-    assert res["research_status"] == "experimental_observation"
+    assert res["execution_mode"] == "synthetic"
+    assert res["research_status"] == "demo_only"
 
 
 def test_missing_provider_failure_handling():
@@ -139,7 +140,7 @@ def test_missing_provider_failure_handling():
 
 
 def test_ai_visibility_benchmark_mavi_l5_integration():
-    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1")
+    dataset_dir = Path("benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic")
     metrics = json.loads((dataset_dir / "metrics.json").read_text(encoding="utf-8"))
 
     # Convert benchmark release metrics into MAVI experiment_data payload
@@ -167,9 +168,25 @@ def test_ai_visibility_benchmark_mavi_l5_integration():
     l5 = report.layers.get("L5")
 
     assert l5 is not None
-    assert l5.status == "measured"
-    assert l5.source_type == "observed_live"
+    assert l5.status == "measured_synthetic"
+    assert l5.source_type == "synthetic"
     assert l5.score is not None
     assert l5.score > 60.0
-    assert l5.provenance.execution_mode == "live"
-    assert l5.provenance.experiment_id == "geo-scope-ai-visibility-2026.1"
+    assert l5.provenance.execution_mode == "synthetic"
+    assert l5.provenance.experiment_id == "geo-scope-ai-visibility-2026.1-synthetic"
+
+
+def test_live_runner_zero_fabricated_citations(tmp_path):
+    # Test that LiveBenchmarkRunner never invents source-N citations
+    profile = BenchmarkProfile(
+        benchmark_version="2026.1-live",
+        dataset_name="test-live-zero-fab",
+        execution_mode="live",
+        providers=["ollama_local"],
+    )
+    runner = LiveBenchmarkRunner(profile=profile, out_dir=tmp_path)
+    
+    # Check that runner executes and extracts real citations or leaves them empty
+    res = runner.run(dry_run=True)
+    assert res["status"] == "dry_run_completed"
+

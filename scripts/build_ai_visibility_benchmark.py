@@ -375,11 +375,11 @@ def build_observations_and_citations(prompts, providers, brands):
 
 
 def main():
-    dataset_id = "geo-scope-ai-visibility-2026.1"
+    dataset_id = "geo-scope-ai-visibility-2026.1-synthetic"
     out_dir = Path("benchmark/releases")
     target_dir = out_dir / dataset_id
 
-    print(f"Building GEO-Scope AI Visibility Benchmark: {dataset_id}")
+    print(f"Building GEO-Scope Synthetic Validation Benchmark: {dataset_id}")
 
     brands = [
         {"name": "Semrush", "domain": "semrush.com", "is_target": True, "category": "SEO / AI Visibility"},
@@ -405,23 +405,24 @@ def main():
     observations, citations = build_observations_and_citations(prompts, providers, brands)
     print(f"Generated {len(observations)} observations and {len(citations)} citation records.")
 
-    methodology_md = """# Methodology: GEO-Scope AI Visibility Benchmark 2026.1
+    methodology_md = """# Methodology: GEO-Scope AI Visibility Benchmark 2026.1 (Synthetic Validation)
 
-## 1. Research Scope & Objectives
-This benchmark provides reproducible, observational measurements of brand mention rates, recommendation rankings, share of model, and citation presence across leading AI search engines and conversational assistants.
+## 1. Scope & Purpose
+This dataset serves as a deterministic synthetic validation artifact. It verifies the calculation of metrics, bootstrap confidence intervals, matrix dimensions, and checksum hashing across the GEO-Scope pipeline without incurring live model inference costs.
 
-### Target Research Category
+### Research Category
 - **Domain**: AI SEO / Generative Engine Optimization (GEO) / AI Search Visibility Software
-- **Analyzed Brands**: Semrush, Ahrefs, Moz, Surfer SEO, Clearscope, MarketMuse, Conductor, SAGE.
-- **Participating Engines**: Google Gemini, Perplexity Sonar, OpenAI ChatGPT, Anthropic Claude.
-- **Execution Architecture**: GEO-Scope via Hamzad AI Gateway (Zero-Secret Proxy Layer).
+- **Simulated Brands**: Semrush, Ahrefs, Moz, Surfer SEO, Clearscope, MarketMuse, Conductor, SAGE.
+- **Simulated Engines**: Google Gemini, Perplexity Sonar, OpenAI ChatGPT, Anthropic Claude.
+- **Execution Mode**: `synthetic` (Validation Baseline)
+- **Research Status**: `demo_only`
 
 ---
 
-## 2. Epistemic Constraints & Non-Claims (What is NOT Measured)
+## 2. Epistemic Constraints & Non-Claims (Synthetic Disclaimer)
+- **Synthetic Data**: This dataset contains simulated observations generated with deterministic seeding (seed=20260917) and must NOT be interpreted as real live model telemetry.
 - **No Algorithm Discovery Claim**: This benchmark does NOT claim reverse engineering of internal neural ranking algorithms.
-- **No Causal Guarantee**: High brand visibility or citation co-occurrence reflects observed empirical association within the tested query distribution, not a deterministic ranking factor.
-- **No Probabilistic Citation Promise**: Scores represent historical benchmark observational performance, not a guarantee of being cited on unobserved future queries.
+- **No Causal Guarantee**: Co-occurrence reflects generated baseline distributions for validation purposes only.
 
 ---
 
@@ -442,42 +443,40 @@ The query distribution spans 100 queries stratified across 4 distinct user inten
 ---
 
 ## 5. Reproduction Instructions
-To reproduce and verify this benchmark package bit-for-bit:
+To reproduce and verify this synthetic validation package bit-for-bit:
 ```bash
-geo-scope benchmark reproduce benchmark/releases/geo-scope-ai-visibility-2026.1
+geo-scope benchmark reproduce benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic
 ```
 Or programmatically:
 ```python
 from geo_scope.benchmark.reproducer import BenchmarkReproducer
 reproducer = BenchmarkReproducer(tolerance=0.01)
-result = reproducer.verify_and_reproduce("benchmark/releases/geo-scope-ai-visibility-2026.1")
+result = reproducer.verify_and_reproduce("benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic")
 assert result["success"] is True
 ```
 """
 
-    readme_md = """# GEO-Scope AI Visibility Benchmark 2026.1 (Release Package)
+    readme_md = """# GEO-Scope AI Visibility Benchmark 2026.1 (Synthetic Validation Package)
 
-**Dataset ID**: `geo-scope-ai-visibility-2026.1`  
-**Execution Mode**: `live`  
-**Research Status**: `experimental_observation`  
+**Dataset ID**: `geo-scope-ai-visibility-2026.1-synthetic`  
+**Execution Mode**: `synthetic`  
+**Research Status**: `demo_only`  
 **Methodology Version**: `1.0.0`  
 
----
-
-## Overview
-This public benchmark release evaluates brand visibility, share of model (SoM), top-1 recommendation frequency, and domain citations across 4 major AI search providers (Google Gemini, Perplexity Sonar, OpenAI ChatGPT, Anthropic Claude) in the **AI SEO / GEO Tools** category.
+> [!NOTE]  
+> This package is a deterministic synthetic validation dataset used for pipeline verification, schema validation, and reproducibility testing. For live multi-model execution telemetry, refer to the live execution pipeline (`scripts/run_live_hamzad_benchmark.py`).
 
 ---
 
 ## Package Contents
 ```text
-benchmark/releases/geo-scope-ai-visibility-2026.1/
-├── manifest.json         # Dataset metadata, hashes, provider list, and execution status
+benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic/
+├── manifest.json         # Dataset metadata, hashes, provider list, and execution status (synthetic)
 ├── prompts.jsonl         # 100 stratified queries (Discovery, Comparison, Commercial, Educational)
 ├── brands.json           # 8 audited industry brands (Semrush, Ahrefs, Moz, Surfer SEO, etc.)
 ├── providers.json        # Provider descriptors & model bindings
-├── observations.jsonl    # 400 normalized model execution records
-├── citations.jsonl       # Extracted domain citations and grounding evidence
+├── observations.jsonl    # 400 normalized synthetic observation records
+├── citations.jsonl       # Extracted domain citations and simulated grounding evidence
 ├── metrics.json          # Pre-computed benchmark metrics, bootstrap CIs, and visibility matrix
 ├── methodology.md        # Formal methodology, epistemic constraints, and reproduction steps
 └── checksums.sha256      # SHA-256 cryptographic checksums for all package files
@@ -489,16 +488,13 @@ benchmark/releases/geo-scope-ai-visibility-2026.1/
 
 ### 1. Verification of File Hashes
 ```bash
-geo-scope benchmark verify-checksums benchmark/releases/geo-scope-ai-visibility-2026.1
+geo-scope benchmark verify-checksums benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic
 ```
 
 ### 2. Full Reproducibility Check
 ```bash
-geo-scope benchmark reproduce benchmark/releases/geo-scope-ai-visibility-2026.1
+geo-scope benchmark reproduce benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic
 ```
-
-### 3. Inspect Metrics
-All metrics including the **Category Visibility Matrix (Brand x Provider)** and **95% Bootstrap Confidence Intervals** are stored in `metrics.json`.
 """
 
     builder = BenchmarkBuilder(dataset_id=dataset_id)
@@ -509,9 +505,9 @@ All metrics including the **Category Visibility Matrix (Brand x Provider)** and 
         citations=citations,
         brands=brands,
         providers=providers,
-        execution_mode="live",
-        research_status="experimental_observation",
-        description="GEO-Scope AI Visibility Benchmark 2026.1: Multi-Model AI Search & Recommendation Study across AI SEO & GEO tools.",
+        execution_mode="synthetic",
+        research_status="demo_only",
+        description="GEO-Scope Synthetic Validation Benchmark 2026.1: Deterministic validation dataset across AI SEO & GEO tools.",
         methodology_md=methodology_md,
         readme_md=readme_md,
     )

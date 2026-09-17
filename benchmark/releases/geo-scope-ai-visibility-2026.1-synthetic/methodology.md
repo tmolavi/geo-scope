@@ -1,20 +1,21 @@
-# Methodology: GEO-Scope AI Visibility Benchmark 2026.1
+# Methodology: GEO-Scope AI Visibility Benchmark 2026.1 (Synthetic Validation)
 
-## 1. Research Scope & Objectives
-This benchmark provides reproducible, observational measurements of brand mention rates, recommendation rankings, share of model, and citation presence across leading AI search engines and conversational assistants.
+## 1. Scope & Purpose
+This dataset serves as a deterministic synthetic validation artifact. It verifies the calculation of metrics, bootstrap confidence intervals, matrix dimensions, and checksum hashing across the GEO-Scope pipeline without incurring live model inference costs.
 
-### Target Research Category
+### Research Category
 - **Domain**: AI SEO / Generative Engine Optimization (GEO) / AI Search Visibility Software
-- **Analyzed Brands**: Semrush, Ahrefs, Moz, Surfer SEO, Clearscope, MarketMuse, Conductor, SAGE.
-- **Participating Engines**: Google Gemini, Perplexity Sonar, OpenAI ChatGPT, Anthropic Claude.
-- **Execution Architecture**: GEO-Scope via Hamzad AI Gateway (Zero-Secret Proxy Layer).
+- **Simulated Brands**: Semrush, Ahrefs, Moz, Surfer SEO, Clearscope, MarketMuse, Conductor, SAGE.
+- **Simulated Engines**: Google Gemini, Perplexity Sonar, OpenAI ChatGPT, Anthropic Claude.
+- **Execution Mode**: `synthetic` (Validation Baseline)
+- **Research Status**: `demo_only`
 
 ---
 
-## 2. Epistemic Constraints & Non-Claims (What is NOT Measured)
+## 2. Epistemic Constraints & Non-Claims (Synthetic Disclaimer)
+- **Synthetic Data**: This dataset contains simulated observations generated with deterministic seeding (seed=20260917) and must NOT be interpreted as real live model telemetry.
 - **No Algorithm Discovery Claim**: This benchmark does NOT claim reverse engineering of internal neural ranking algorithms.
-- **No Causal Guarantee**: High brand visibility or citation co-occurrence reflects observed empirical association within the tested query distribution, not a deterministic ranking factor.
-- **No Probabilistic Citation Promise**: Scores represent historical benchmark observational performance, not a guarantee of being cited on unobserved future queries.
+- **No Causal Guarantee**: Co-occurrence reflects generated baseline distributions for validation purposes only.
 
 ---
 
@@ -35,14 +36,14 @@ The query distribution spans 100 queries stratified across 4 distinct user inten
 ---
 
 ## 5. Reproduction Instructions
-To reproduce and verify this benchmark package bit-for-bit:
+To reproduce and verify this synthetic validation package bit-for-bit:
 ```bash
-geo-scope benchmark reproduce benchmark/releases/geo-scope-ai-visibility-2026.1
+geo-scope benchmark reproduce benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic
 ```
 Or programmatically:
 ```python
 from geo_scope.benchmark.reproducer import BenchmarkReproducer
 reproducer = BenchmarkReproducer(tolerance=0.01)
-result = reproducer.verify_and_reproduce("benchmark/releases/geo-scope-ai-visibility-2026.1")
+result = reproducer.verify_and_reproduce("benchmark/releases/geo-scope-ai-visibility-2026.1-synthetic")
 assert result["success"] is True
 ```
