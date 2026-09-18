@@ -172,7 +172,7 @@ class AlgoAnalyzer:
 
     def _reverse_engineer_factor_weights(self) -> Dict[str, Any]:
         """
-        Reverse engineers the estimated weight of each ranking vector per AI model.
+        Calculates research hypothesis factor weight profiles per AI model.
         Research priors for hypothesis design; not fitted from these response records.
         """
         factor_definitions = {

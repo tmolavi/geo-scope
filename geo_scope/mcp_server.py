@@ -43,7 +43,7 @@ MCP_TOOLS = [
     },
     {
         "name": "reverse_engineer_ranking_factors",
-        "description": "Reverse engineers the algorithmic factor weights (Reddit UGC, G2 reviews, PR, Schema, Freshness) for a target niche.",
+        "description": "Returns labeled platform-specific research priors (Reddit UGC, G2 reviews, PR, Schema, Freshness) for a target niche (does not fit proprietary neural weights).",
         "inputSchema": {
             "type": "object",
             "properties": {

@@ -4,9 +4,9 @@
 This benchmark evaluates Generative Engine Optimization (GEO) performance, brand visibility, and citation presence across multi-model AI engines.
 
 ## Execution Mode & Status
-- **Execution Mode**: `live`
-- **Research Status**: `peer_review_ready`
-- **Strict Separation**: Synthetic simulation runs are explicitly marked `demo_only` and must not be cited as real provider behavior.
+- **Execution Mode**: `live` (gateway routing prototype)
+- **Research Status**: `exploratory_prototype` (Format & Verification Dataset)
+- **Strict Separation**: Synthetic simulation runs are explicitly marked `demo_only` and must not be cited as real provider behavior. This exploratory prototype demonstrates pipeline math and confidence intervals, not commercial market rankings.
 
 ## Question & Model Provenance
 - **Observed Prompts**: 0 (Real user demand)

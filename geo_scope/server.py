@@ -20,7 +20,7 @@ from geo_scope.engine.history_tracker import save_benchmark_snapshot, load_all_h
 
 app = FastAPI(
     title="GEO-Scope API",
-    description="Generative Engine Optimization (GEO) & AI Algorithm Reverse Engineering Engine",
+    description="Open-Source AI Engine & LLM Visibility Measurement Platform",
     version="1.0.0",
 )
 
@@ -129,7 +129,7 @@ def _execute_pipeline_sync(req: BenchmarkRequest):
         parsed.append(p_record)
     STATE["parsed_records"] = parsed
 
-    # 4. Run Algorithmic Reverse Engineering Analysis
+    # 4. Run Empirical Visibility Analysis
     STATE["current_status"] = "Computing observed visibility metrics..."
     analyzer = AlgoAnalyzer(parsed, brand, comps)
     analysis = analyzer.compute_full_analysis()

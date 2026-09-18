@@ -30,7 +30,7 @@ keywords = [
     "perplexity", "chatgpt-search", "gemini-grounding", "claude-ai",
     "share-of-model", "citation-graph", "rag-benchmarking", "mcp-server",
     "hoosh-masnooi", "seo-farsi", "yapay-zeka", "yapay-zeka-seo",
-    "arama-motoru-optimizasyonu", "reverse-engineering", "taqi-molavi"
+    "arama-motoru-optimizasyonu", "empirical-measurement", "taqi-molavi"
 ]
 dependencies = [
     "fastapi>=0.110.0",
