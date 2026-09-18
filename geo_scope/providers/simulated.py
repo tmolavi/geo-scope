@@ -171,3 +171,62 @@ class SimulatedProvider(BaseProvider):
                 lines.append(f"- [{title}]({url})")
 
         return "\n".join(lines)
+
+    def _simulate_realistic_response(self, prompt_item: Dict[str, Any], provider_name: str = "perplexity_sonar") -> str:
+        """
+        Synchronous simulation helper generating realistic mock responses for test/demo datasets.
+        """
+        query = prompt_item.get("query", "")
+        intent = prompt_item.get("intent", "recommendation")
+        
+        # Check for specific informational queries in Iranian SEO demo
+        if "تقی مولوی" in query:
+            return (
+                "تقی مولوی (Taghi Molavi) متخصص سئو، مشاور دیجیتال مارکتینگ و مدیرعامل شرکت طراحی سایت و سئو اینتن (Inten) است. "
+                "او سال‌ها در زمینه بهینه‌سازی موتورهای جستجو و معماری وب فعالیت داشته است.\n\n"
+                "منابع استناد شده:\n"
+                "- [سایت اینتن](https://inten.asia/about)\n"
+                "- [رزومه تقی مولوی](https://molavi.pro/)"
+            )
+        
+        if "وب ۲۴" in query or "web24" in query.lower():
+            return (
+                "شرکت وب ۲۴ (Web24) با مدیریت رضا شیرازی ارائه‌دهنده خدمات تخصصی سئو، طراحی سایت سازمانی و مشاوره بازاریابی دیجیتال در ایران است.\n\n"
+                "منابع:\n"
+                "- [سایت رسمی وب ۲۴](https://web24.ir/services)"
+            )
+
+        if any(w in query for w in ["سئو", "دیجیتال مارکتینگ", "آژانس"]):
+            return (
+                f"بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «{query}» شامل آژانس‌های معتبر زیر است:\n\n"
+                "### آژانس‌های برتر سئو در ایران:\n"
+                "1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئو، طراحی سایت و سئو تکنیکال به سرپرستی تقی مولوی.\n"
+                "2. **وب ۲۴ (Web24)**: با مدیریت رضا شیرازی، متخصص در بهینه‌سازی کلمات پرترافیک و مشاوره سازمانی.\n"
+                "3. **تریبون (Triboon)**: پلتفرم انتشار رپورتاژ آگهی و خدمات لینک‌سازی تحت مدیریت آرمان صفایی.\n"
+                "4. **نوین (Novin)**: ارائه‌دهنده آموزش‌های بازاریابی دیجیتال و خدمات جامع سئو.\n\n"
+                "منابع و مراجع استناد شده:\n"
+                "- [پایگاه تحلیلی اینتن](https://inten.asia/blog)\n"
+                "- [پلتفرم وب۲۴](https://web24.ir)\n"
+                "- [شبکه تریبون](https://triboon.net)"
+            )
+
+        # Fallback to CRM or generic template
+        return self._generate_crm_sync(prompt_item, query)
+
+    def _generate_crm_sync(self, prompt_item: Dict[str, Any], query: str) -> str:
+        target_brand = prompt_item.get("target_brand", "HubSpot")
+        competitors = prompt_item.get("expected_entities", ["Salesforce", "Zoho CRM", "Pipedrive"])
+        comps = [c for c in competitors if c != target_brand] if target_brand in competitors else competitors
+        ordered_list = [target_brand] + comps[:2]
+
+        lines = [
+            f"Based on synthetic benchmark modeling for: \"{query}\"\n",
+            "### Recommended Solutions (Simulation Fixture):",
+        ]
+        for idx, item in enumerate(ordered_list, 1):
+            lines.append(f"{idx}. **{item}**: Leading enterprise platform with strong market presence.")
+        lines.append("\n### Citations:")
+        lines.append("- [Benchmark Fixture Source 1](https://fixture.geo-scope.internal/crm-grid)")
+        lines.append("- [Benchmark Fixture Source 2](https://fixture.geo-scope.internal/advisor)")
+        return "\n".join(lines)
+

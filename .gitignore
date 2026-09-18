@@ -54,5 +54,7 @@ results/
 !geo_scope/data/*.json
 !benchmark/**/*.json
 !examples/**/*.json
+!entities/**/*.json
+!examples/prompts/*
 !docs/**/*.json
 !reports/**/*.json

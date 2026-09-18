@@ -48,6 +48,7 @@ class ProviderResponse:
     provider: str
     model: str
     execution_mode: str
+    provider_class: str = "llm"  # "llm" | "answer_engine" | "recorded"
     text: str = ""
     citations: List[str] = field(default_factory=list)
     raw: Dict[str, Any] = field(default_factory=dict)
@@ -74,6 +75,7 @@ class ProviderResponse:
         return {
             "provider": self.provider,
             "model": self.model,
+            "provider_class": self.provider_class,
             "execution_mode": self.execution_mode,
             "text": self.text,
             "citations": self.citations,
@@ -101,17 +103,19 @@ class ProviderResponse:
             "experiment_id": experiment_id,
             "run_id": run_id,
             "prompt_id": prompt_id,
+            "prompt": prompt,
             "provider": self.provider,
             "model": self.model,
+            "provider_class": self.provider_class,
             "execution_mode": self.execution_mode,
-            "timestamp": ts,
-            "prompt": prompt,
-            "raw_response": self.text,
-            "raw_provider_payload": self.raw,
-            "citations_raw": self.citations,
-            "provider_metadata": self.metadata,
+            "timestamp_utc": ts,
             "latency_ms": self.latency_ms,
-            "usage": self.usage,
             "status": self.status,
+            "response_text": self.text,
+            "citations": self.citations,
+            "citations_raw": self.citations,
+            "raw_payload": self.raw,
+            "metadata": self.metadata,
+            "usage": self.usage,
             "error": self.error,
         }

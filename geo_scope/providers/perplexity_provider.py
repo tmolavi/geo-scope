@@ -21,6 +21,7 @@ class PerplexityProvider(BaseProvider):
         self.model = os.getenv("PERPLEXITY_MODEL", model)
         self.response_kind = "search_enabled"
         self.search_grounded = True
+        self.provider_class = "answer_engine"
 
     def is_available(self) -> bool:
         return bool(self.api_key)

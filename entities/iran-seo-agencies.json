@@ -1,0 +1,42 @@
+[
+  {
+    "id": "inten",
+    "names": ["Inten", "اینتن", "InTen"],
+    "people": ["Taghi Molavi", "تقی مولوی"],
+    "domains": ["inten.asia"],
+    "related_domains": ["molavi.pro"],
+    "do_not_confuse": ["بازار مولوی", "فرش مولوی", "خیابان مولوی", "مولوی شاعر"]
+  },
+  {
+    "id": "web24",
+    "names": ["Web24", "وب24", "وب ۲۴"],
+    "people": ["Reza Shirazi", "رضا شیرازی"],
+    "domains": ["web24.ir"],
+    "related_domains": [],
+    "do_not_confuse": ["وب ۲۴ ساعته"]
+  },
+  {
+    "id": "novin",
+    "names": ["Novin", "نوین", "آژانس نوین", "Novin Hub"],
+    "people": [],
+    "domains": ["novin.com"],
+    "related_domains": [],
+    "do_not_confuse": ["دانشگاه نوین", "بیمه نوین", "بانک اقتصاد نوین", "نوین چرم", "پوشاک نوین"]
+  },
+  {
+    "id": "triboon",
+    "names": ["Triboon", "تریبون"],
+    "people": ["Arman Safaei", "آرمان صفایی"],
+    "domains": ["triboon.net"],
+    "related_domains": [],
+    "do_not_confuse": ["تریبون آزاد", "تریبون مجلس", "تریبون سخنرانی"]
+  },
+  {
+    "id": "dimarketing",
+    "names": ["Dimarketing", "دی مارکتینگ", "دی‌مارکتینگ"],
+    "people": [],
+    "domains": ["dimarketing.ir"],
+    "related_domains": [],
+    "do_not_confuse": ["دی جی مارکتینگ"]
+  }
+]

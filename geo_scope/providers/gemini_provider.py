@@ -21,6 +21,7 @@ class GeminiProvider(BaseProvider):
         self.response_kind = "search_enabled"
         self.model = os.getenv("GEMINI_MODEL", model)
         self.search_grounded = True
+        self.provider_class = "answer_engine"
 
     def is_available(self) -> bool:
         return bool(self.api_key)
