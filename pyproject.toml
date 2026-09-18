@@ -57,6 +57,13 @@ dev = [
 [project.scripts]
 geo-scope = "geo_scope.cli:main"
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["geo_scope*"]
+
+[tool.setuptools.package-data]
+geo_scope = ["static/*", "data/*"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
