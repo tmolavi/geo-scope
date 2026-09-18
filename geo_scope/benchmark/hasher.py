@@ -26,9 +26,10 @@ def compute_dataset_checksums(dataset_dir: str | Path) -> Dict[str, str]:
     """
     dataset_path = Path(dataset_dir)
     checksums = {}
-    for item in sorted(dataset_path.iterdir()):
+    for item in sorted(dataset_path.rglob("*")):
         if item.is_file() and item.name != "checksums.sha256" and not item.name.startswith("."):
-            checksums[item.name] = compute_file_sha256(item)
+            rel_name = item.relative_to(dataset_path).as_posix()
+            checksums[rel_name] = compute_file_sha256(item)
     return checksums
 
 
@@ -86,8 +87,8 @@ def verify_dataset_checksums(dataset_dir: str | Path) -> Dict[str, Any]:
             expected_hashes[fname] = expected_hash
 
     actual_files = {
-        item.name: item
-        for item in dataset_path.iterdir()
+        item.relative_to(dataset_path).as_posix(): item
+        for item in dataset_path.rglob("*")
         if item.is_file() and item.name != "checksums.sha256" and not item.name.startswith(".")
     }
 

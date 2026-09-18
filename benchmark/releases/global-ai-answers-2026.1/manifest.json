@@ -1,0 +1,75 @@
+{
+  "benchmark": "Global AI Answers Benchmark 2026",
+  "dataset_id": "global-ai-answers-2026.1",
+  "mode": "live",
+  "execution_mode": "live",
+  "research_status": "peer_review_ready",
+  "created_at": "2026-09-18T19:19:44.503855+00:00",
+  "prompt_count": 34,
+  "execution_count": 136,
+  "n_prompts": 34,
+  "n_completions": 136,
+  "n_observations": 1850,
+  "n_citations": 0,
+  "n_errors": 62,
+  "providers": [
+    "hamzad_gemini",
+    "hamzad_perplexity",
+    "hamzad_openai",
+    "hamzad_claude"
+  ],
+  "provider_classes": {
+    "hamzad_gemini": "answer_engine",
+    "hamzad_perplexity": "answer_engine",
+    "hamzad_openai": "llm",
+    "hamzad_claude": "llm"
+  },
+  "categories": [
+    "business_entrepreneurship",
+    "career_migration",
+    "education",
+    "health_lifestyle",
+    "learning_skills",
+    "personal_finance",
+    "technology_adoption"
+  ],
+  "regions": [
+    "africa",
+    "asia",
+    "europe",
+    "global",
+    "latin_america",
+    "middle_east",
+    "north_america"
+  ],
+  "languages": [
+    "ar",
+    "de",
+    "en",
+    "es",
+    "fa",
+    "fr",
+    "ja",
+    "pt",
+    "zh"
+  ],
+  "lineage": {
+    "question_discovery": "AnswerPath GEO",
+    "measurement_engine": "GEO-Scope",
+    "model_execution_layer": "Hamzad AI Gateway"
+  },
+  "files": [
+    "manifest.json",
+    "prompts.jsonl",
+    "prompts/global.jsonl",
+    "prompts/regional.jsonl",
+    "entities.json",
+    "raw_responses.jsonl",
+    "observations.jsonl",
+    "citations.jsonl",
+    "metrics.json",
+    "errors.jsonl",
+    "methodology.md",
+    "README.md"
+  ]
+}

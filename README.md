@@ -68,6 +68,19 @@ GEO-Scope publishes fully reproducible, peer-review-ready empirical benchmark re
 - **Public Proof & Verification Report**: [`docs/PUBLIC_PROOF_REPORT.md`](docs/PUBLIC_PROOF_REPORT.md)
 - **Standalone Offline Demo Fixture**: [`examples/public_demo/`](examples/public_demo/)
 
+### 🌍 [Global AI Answers Benchmark 2026](docs/global-ai-answers-methodology.md)
+* **Subtitle**: *Measuring How Generative AI Systems Respond to Human Concerns Across Regions*
+* **Dataset Package**: [`benchmark/releases/global-ai-answers-2026.1/`](benchmark/releases/global-ai-answers-2026.1/)
+* **Methodology**: [Scientific Methodology](docs/global-ai-answers-methodology.md) · [Package Documentation](benchmark/releases/global-ai-answers-2026.1/README.md)
+* **Scope**: 34 culturally localized prompts across 7 essential concern categories (`learning_skills`, `career_migration`, `business_entrepreneurship`, `technology_adoption`, `personal_finance`, `health_lifestyle`, `education`), 7 regions, 9 languages, and 4 leading AI providers.
+* **Execution & Provenance**: Live API execution via Hamzad AI Gateway (`https://api.molavi.pro`) across `gemini-2.5-flash`, `sonar-pro`, `gpt-4o-mini`, and `claude-3.5-sonnet`.
+* **Entities Tracked (24 Multi-Type)**: Companies (Google, Microsoft, OpenAI, Anthropic, Apple, Amazon, LinkedIn, Meta, NVIDIA), Destinations (Germany, Canada, UAE, US, Singapore, Australia), Tech & Platforms (Python, Docker, PyTorch, ChatGPT, GitHub, Coursera, edX, Kaggle, WHO, MIT).
+
+```bash
+# Verify bit-for-bit SHA-256 package checksums
+geo-scope benchmark verify --dataset benchmark/releases/global-ai-answers-2026.1
+```
+
 ### 🏆 [GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark](benchmarks/geo-seo-digital-agency-iran-2026.1/)
 * **Subtitle**: *Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms*
 * **Dataset Package**: [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/)

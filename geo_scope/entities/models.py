@@ -14,6 +14,7 @@ class Entity(BaseModel):
     Enforces strict distinction between organization names and associated people.
     """
     id: str = Field(..., description="Unique entity identifier (e.g. 'inten', 'hubspot')")
+    entity_type: str = Field(default="organization", description="Entity category: company, people, country, product, website, organization")
     names: List[str] = Field(default_factory=list, description="Primary brand names and aliases in all languages (e.g. ['Inten', 'اینتن', 'InTen'])")
     people: List[str] = Field(default_factory=list, description="Key individuals / executives (e.g. ['Taghi Molavi', 'تقی مولوی']). Person mentions are tracked separately.")
     domains: List[str] = Field(default_factory=list, description="Primary official domains (e.g. ['inten.asia'])")

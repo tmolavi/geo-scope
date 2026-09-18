@@ -57,16 +57,23 @@ class ObservationParsedResult(BaseModel):
     Standard observation record independently exposing all entity detection flags.
     """
     entity_id: str
+    entity: str = ""
+    entity_type: str = "organization"
     mentioned: bool = False
     person_mentioned: bool = False
     recommended: bool = False
     top1: bool = False
     rank: Optional[int] = None
+    rank_position: Optional[int] = None
     cited: bool = False
+    citation_found: bool = False
+    source_domain: Optional[str] = None
     attributed: bool = False
+    context: Optional[str] = None
     confused_with: List[str] = Field(default_factory=list)
     wrong_entity: bool = False
     parser_confidence: float = 1.0
+    confidence: float = 1.0
     scoring_status: str = "scored"  # "scored" | "unscored"
     intent_type: str = "recommendation"  # "recommendation" | "informational" | "navigational" | "general"
     evidence_snippets: List[str] = Field(default_factory=list)
@@ -250,18 +257,29 @@ class ObservationParser:
         if confused_terms:
             evidence.append(f"Matched negative homonyms: {confused_terms}")
 
+        e_display = entity.names[0] if entity.names else entity.id
+        e_type = getattr(entity, "entity_type", "organization")
+        matched_domain = entity.domains[0] if entity.domains else ""
+
         return ObservationParsedResult(
             entity_id=entity.id,
+            entity=e_display,
+            entity_type=e_type,
             mentioned=mentioned,
             person_mentioned=person_matched,
             recommended=recommended,
             top1=top1,
             rank=rank,
+            rank_position=rank,
             cited=cited,
+            citation_found=cited,
+            source_domain=matched_domain if cited else None,
             attributed=attributed,
+            context=query if query else intent,
             confused_with=confused_terms,
             wrong_entity=wrong_entity,
             parser_confidence=round(parser_conf, 3),
+            confidence=round(parser_conf, 3),
             scoring_status=scoring_status,
             intent_type=intent,
             evidence_snippets=evidence,

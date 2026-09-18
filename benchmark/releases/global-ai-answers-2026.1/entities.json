@@ -1,0 +1,354 @@
+[
+  {
+    "id": "germany",
+    "entity_type": "country",
+    "names": [
+      "Germany",
+      "آلمان",
+      "Deutschland",
+      "Allemagne",
+      "Alemania"
+    ],
+    "domains": [
+      "deutschland.de",
+      "make-it-in-germany.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "canada",
+    "entity_type": "country",
+    "names": [
+      "Canada",
+      "کانادا",
+      "Canadá"
+    ],
+    "domains": [
+      "canada.ca"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "usa",
+    "entity_type": "country",
+    "names": [
+      "United States",
+      "USA",
+      "آمریکا",
+      "ایالات متحده",
+      "US"
+    ],
+    "domains": [
+      "usa.gov"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "uae",
+    "entity_type": "country",
+    "names": [
+      "United Arab Emirates",
+      "UAE",
+      "امارات",
+      "الإمارات",
+      "دبی",
+      "Dubai"
+    ],
+    "domains": [
+      "u.ae"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "singapore",
+    "entity_type": "country",
+    "names": [
+      "Singapore",
+      "سنگاپور",
+      "سنغافورة"
+    ],
+    "domains": [
+      "gov.sg"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "netherlands",
+    "entity_type": "country",
+    "names": [
+      "Netherlands",
+      "هلند",
+      "Nederland",
+      "Holland"
+    ],
+    "domains": [
+      "government.nl"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "openai",
+    "entity_type": "company",
+    "names": [
+      "OpenAI",
+      "اوپن ای آی",
+      "اوپن‌ای‌آی"
+    ],
+    "people": [
+      "Sam Altman",
+      "سام آلتمن"
+    ],
+    "domains": [
+      "openai.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "google",
+    "entity_type": "company",
+    "names": [
+      "Google",
+      "گوگل",
+      "Alphabet"
+    ],
+    "people": [
+      "Sundar Pichai",
+      "ساندر پیچای"
+    ],
+    "domains": [
+      "google.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "microsoft",
+    "entity_type": "company",
+    "names": [
+      "Microsoft",
+      "مایکروسافت"
+    ],
+    "people": [
+      "Satya Nadella",
+      "ساتیا نادلا"
+    ],
+    "domains": [
+      "microsoft.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "anthropic",
+    "entity_type": "company",
+    "names": [
+      "Anthropic",
+      "آنتروپیک"
+    ],
+    "people": [
+      "Dario Amodei"
+    ],
+    "domains": [
+      "anthropic.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "nvidia",
+    "entity_type": "company",
+    "names": [
+      "NVIDIA",
+      "ان‌ویدیا",
+      "ان ویدیا"
+    ],
+    "people": [
+      "Jensen Huang",
+      "جنسن هوانگ"
+    ],
+    "domains": [
+      "nvidia.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "python",
+    "entity_type": "product",
+    "names": [
+      "Python",
+      "پایتون"
+    ],
+    "domains": [
+      "python.org"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "chatgpt",
+    "entity_type": "product",
+    "names": [
+      "ChatGPT",
+      "چت جی پی تی",
+      "چت‌جی‌پی‌تی"
+    ],
+    "domains": [
+      "chatgpt.com",
+      "chat.openai.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "cursor",
+    "entity_type": "product",
+    "names": [
+      "Cursor",
+      "کرسر"
+    ],
+    "domains": [
+      "cursor.com",
+      "cursor.sh"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "docker",
+    "entity_type": "product",
+    "names": [
+      "Docker",
+      "داکر"
+    ],
+    "domains": [
+      "docker.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "pytorch",
+    "entity_type": "product",
+    "names": [
+      "PyTorch",
+      "پای‌تورچ",
+      "پایتورچ"
+    ],
+    "domains": [
+      "pytorch.org"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "coursera",
+    "entity_type": "website",
+    "names": [
+      "Coursera",
+      "کورسرا"
+    ],
+    "people": [
+      "Andrew Ng",
+      "اندرو ان جی"
+    ],
+    "domains": [
+      "coursera.org"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "edx",
+    "entity_type": "website",
+    "names": [
+      "edX",
+      "ادکس"
+    ],
+    "domains": [
+      "edx.org"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "github",
+    "entity_type": "website",
+    "names": [
+      "GitHub",
+      "گیت‌هاب",
+      "گیت هاب"
+    ],
+    "domains": [
+      "github.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "kaggle",
+    "entity_type": "website",
+    "names": [
+      "Kaggle",
+      "کگل"
+    ],
+    "domains": [
+      "kaggle.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "youtube",
+    "entity_type": "website",
+    "names": [
+      "YouTube",
+      "یوتیوب"
+    ],
+    "domains": [
+      "youtube.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "linkedin",
+    "entity_type": "website",
+    "names": [
+      "LinkedIn",
+      "لینکدین"
+    ],
+    "domains": [
+      "linkedin.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "mit",
+    "entity_type": "organization",
+    "names": [
+      "MIT",
+      "Massachusetts Institute of Technology",
+      "ام آی تی",
+      "دانشگاه ام آی تی"
+    ],
+    "domains": [
+      "mit.edu"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "stanford",
+    "entity_type": "organization",
+    "names": [
+      "Stanford",
+      "Stanford University",
+      "استنفورد",
+      "دانشگاه استنفورد"
+    ],
+    "domains": [
+      "stanford.edu"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "who",
+    "entity_type": "organization",
+    "names": [
+      "World Health Organization",
+      "WHO",
+      "سازمان بهداشت جهانی",
+      "منظمة الصحة العالمية"
+    ],
+    "domains": [
+      "who.int"
+    ],
+    "do_not_confuse": []
+  }
+]

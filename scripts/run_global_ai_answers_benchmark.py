@@ -1,0 +1,944 @@
+"""
+Script to construct and execute the 'Global AI Answers Benchmark 2026' (global-ai-answers-2026.1).
+Lineage: AnswerPath GEO (Discovery) -> GEO-Scope (Measurement) -> Hamzad Gateway (Live Execution).
+"""
+
+import asyncio
+import json
+import os
+import hashlib
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Dict, Any, List
+
+from geo_scope.entities.registry import EntityRegistry
+from geo_scope.entities.models import Entity
+from geo_scope.parser.observation_parser import ObservationParser, classify_query_intent
+from geo_scope.providers.hamzad_provider import HamzadProvider
+from geo_scope.benchmark.hasher import write_checksums_file, verify_dataset_checksums
+
+
+PROMPTS_DATA = [
+    # 1. Learning & Future Skills
+    {
+        "prompt_id": "gaa-learn-001",
+        "query": "What skills should I learn to stay relevant in 2026?",
+        "question": "What skills should I learn to stay relevant in 2026?",
+        "language": "en",
+        "region": "global",
+        "category": "learning_skills",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-learn-002",
+        "query": "How can I start learning artificial intelligence and machine learning from scratch?",
+        "question": "How can I start learning artificial intelligence and machine learning from scratch?",
+        "language": "en",
+        "region": "global",
+        "category": "learning_skills",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-learn-003",
+        "query": "برای ورود به بازار کار بین‌المللی هوش مصنوعی و تحلیل داده چه مهارت‌هایی را یاد بگیریم؟",
+        "question": "برای ورود به بازار کار بین‌المللی هوش مصنوعی و تحلیل داده چه مهارت‌هایی را یاد بگیریم؟",
+        "language": "fa",
+        "region": "middle_east",
+        "country": "iran",
+        "category": "learning_skills",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-learn-004",
+        "query": "ما هي أهم المهارات التقنية والمهنية المطلوبة لسوق العمل في 2026؟",
+        "question": "ما هي أهم المهارات التقنية والمهنية المطلوبة لسوق العمل في 2026؟",
+        "language": "ar",
+        "region": "middle_east",
+        "country": "saudi_arabia",
+        "category": "learning_skills",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-learn-005",
+        "query": "Welche digitalen Kompetenzen sind für die Arbeitswelt 2026 unverzichtbar?",
+        "question": "Welche digitalen Kompetenzen sind für die Arbeitswelt 2026 unverzichtbar?",
+        "language": "de",
+        "region": "europe",
+        "country": "germany",
+        "category": "learning_skills",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-learn-006",
+        "query": "2026年に生き残るためにエンジニアが習得すべきスキルは何ですか？",
+        "question": "2026年に生き残るためにエンジニアが習得すべきスキルは何ですか？",
+        "language": "ja",
+        "region": "asia",
+        "country": "japan",
+        "category": "learning_skills",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+
+    # 2. Career & Migration
+    {
+        "prompt_id": "gaa-career-001",
+        "query": "Which countries offer the best opportunities and work visas for technology workers?",
+        "question": "Which countries offer the best opportunities and work visas for technology workers?",
+        "language": "en",
+        "region": "global",
+        "category": "career_migration",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-career-002",
+        "query": "بهترین مقاصد مهاجرت کاری و تحصیلی برای متخصصان نرم‌افزار و هوش مصنوعی کدام کشورها هستند؟",
+        "question": "بهترین مقاصد مهاجرت کاری و تحصیلی برای متخصصان نرم‌افزار و هوش مصنوعی کدام کشورها هستند؟",
+        "language": "fa",
+        "region": "middle_east",
+        "country": "iran",
+        "category": "career_migration",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-career-003",
+        "query": "ما هي أفضل الدول لاستقطاب الكفاءات التقنية وفرص العمل عن بعد في العالم؟",
+        "question": "ما هي أفضل الدول لاستقطاب الكفاءات التقنية وفرص العمل عن بعد في العالم؟",
+        "language": "ar",
+        "region": "middle_east",
+        "country": "uae",
+        "category": "career_migration",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-career-004",
+        "query": "Quels sont les pays les plus attractifs pour les travailleurs du numérique et de la tech?",
+        "question": "Quels sont les pays les plus attractifs pour les travailleurs du numérique et de la tech?",
+        "language": "fr",
+        "region": "europe",
+        "country": "france",
+        "category": "career_migration",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-career-005",
+        "query": "What are the top migration and global remote work pathways for software developers in India?",
+        "question": "What are the top migration and global remote work pathways for software developers in India?",
+        "language": "en",
+        "region": "asia",
+        "country": "india",
+        "category": "career_migration",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-career-006",
+        "query": "¿Cuáles son los mejores países y visas para nómadas digitales en tecnología?",
+        "question": "¿Cuáles son los mejores países y visas para nómadas digitales en tecnología?",
+        "language": "es",
+        "region": "latin_america",
+        "country": "mexico",
+        "category": "career_migration",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+
+    # 3. Business & Entrepreneurship
+    {
+        "prompt_id": "gaa-biz-001",
+        "query": "How can I start a profitable online business with low initial capital in 2026?",
+        "question": "How can I start a profitable online business with low initial capital in 2026?",
+        "language": "en",
+        "region": "global",
+        "category": "business_entrepreneurship",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-biz-002",
+        "query": "چگونه می‌توان یک کسب‌وکار اینترنتی و استارتاپ خدمات آنلاین را با سرمایه کم راه‌اندازی کرد؟",
+        "question": "چگونه می‌توان یک کسب‌وکار اینترنتی و استارتاپ خدمات آنلاین را با سرمایه کم راه‌اندازی کرد؟",
+        "language": "fa",
+        "region": "middle_east",
+        "country": "iran",
+        "category": "business_entrepreneurship",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-biz-003",
+        "query": "كيف تؤسس مشروع تجارة إلكترونية ناجح بأقل التكاليف عبر المنصات الرقمية؟",
+        "question": "كيف تؤسس مشروع تجارة إلكترونية ناجح بأقل التكاليف عبر المنصات الرقمية؟",
+        "language": "ar",
+        "region": "middle_east",
+        "country": "saudi_arabia",
+        "category": "business_entrepreneurship",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-biz-004",
+        "query": "What are the most promising digital business opportunities for young entrepreneurs in Africa?",
+        "question": "What are the most promising digital business opportunities for young entrepreneurs in Africa?",
+        "language": "en",
+        "region": "africa",
+        "country": "nigeria",
+        "category": "business_entrepreneurship",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-biz-005",
+        "query": "Como criar um negócio online escalável com inteligência artificial no Brasil?",
+        "question": "Como criar um negócio online escalável com inteligência artificial no Brasil?",
+        "language": "pt",
+        "region": "latin_america",
+        "country": "brazil",
+        "category": "business_entrepreneurship",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+
+    # 4. Technology Adoption
+    {
+        "prompt_id": "gaa-tech-001",
+        "query": "Which generative AI tools and platforms should modern small businesses adopt?",
+        "question": "Which generative AI tools and platforms should modern small businesses adopt?",
+        "language": "en",
+        "region": "global",
+        "category": "technology_adoption",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-tech-002",
+        "query": "کسب‌وکارهای مدرن از چه ابزارهای هوش مصنوعی برای بهینه‌سازی فرایندها و بازاریابی استفاده کنند؟",
+        "question": "کسب‌وکارهای مدرن از چه ابزارهای هوش مصنوعی برای بهینه‌سازی فرایندها و بازاریابی استفاده کنند؟",
+        "language": "fa",
+        "region": "middle_east",
+        "country": "iran",
+        "category": "technology_adoption",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-tech-003",
+        "query": "企业如何利用生成式人工智能和大型语言模型提高工作效率？",
+        "question": "企业如何利用生成式人工智能和大型语言模型提高工作效率？",
+        "language": "zh",
+        "region": "asia",
+        "country": "china",
+        "category": "technology_adoption",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-tech-004",
+        "query": "What are the best enterprise-grade generative AI automation tools for developer productivity?",
+        "question": "What are the best enterprise-grade generative AI automation tools for developer productivity?",
+        "language": "en",
+        "region": "north_america",
+        "country": "usa",
+        "category": "technology_adoption",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+
+    # 5. Personal Finance
+    {
+        "prompt_id": "gaa-fin-001",
+        "query": "What are the fundamental principles of investing and money management for beginners?",
+        "question": "What are the fundamental principles of investing and money management for beginners?",
+        "language": "en",
+        "region": "global",
+        "category": "personal_finance",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-fin-002",
+        "query": "اصول مدیریت مالی شخصی و سرمایه‌گذاری برای حفظ ارزش دارایی و پس‌انداز چیست؟",
+        "question": "اصول مدیریت مالی شخصی و سرمایه‌گذاری برای حفظ ارزش دارایی و پس‌انداز چیست؟",
+        "language": "fa",
+        "region": "middle_east",
+        "country": "iran",
+        "category": "personal_finance",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-fin-003",
+        "query": "ما هي أهم قواعد الإدارة المالية الشخصية والاستثمار للمبتدئين لتجنب التضخم؟",
+        "question": "ما هي أهم قواعد الإدارة المالية الشخصية والاستثمار للمبتدئين لتجنب التضخم؟",
+        "language": "ar",
+        "region": "middle_east",
+        "country": "yemen",
+        "category": "personal_finance",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-fin-004",
+        "query": "What are the best diversified index investing strategies for young adults in North America?",
+        "question": "What are the best diversified index investing strategies for young adults in North America?",
+        "language": "en",
+        "region": "north_america",
+        "country": "usa",
+        "category": "personal_finance",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+
+    # 6. Health & Lifestyle
+    {
+        "prompt_id": "gaa-health-001",
+        "query": "How can knowledge workers prevent burnout and sustain high cognitive productivity?",
+        "question": "How can knowledge workers prevent burnout and sustain high cognitive productivity?",
+        "language": "en",
+        "region": "global",
+        "category": "health_lifestyle",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-health-002",
+        "query": "چه راهکارهای علمی و اثبات‌شده‌ای برای پیشگیری از فرسودگی شغلی و افزایش تمرکز وجود دارد؟",
+        "question": "چه راهکارهای علمی و اثبات‌شده‌ای برای پیشگیری از فرسودگی شغلی و افزایش تمرکز وجود دارد؟",
+        "language": "fa",
+        "region": "middle_east",
+        "country": "iran",
+        "category": "health_lifestyle",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-health-003",
+        "query": "デスクワークによるバーンアウトを防ぎ、集中力を高める生活習慣は何ですか？",
+        "question": "デスクワークによるバーンアウトを防ぎ、集中力を高める生活習慣は何ですか？",
+        "language": "ja",
+        "region": "asia",
+        "country": "japan",
+        "category": "health_lifestyle",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-health-004",
+        "query": "Welche wissenschaftlich belegten Routinen helfen gegen Burnout im Berufsalltag?",
+        "question": "Welche wissenschaftlich belegten Routinen helfen gegen Burnout im Berufsalltag?",
+        "language": "de",
+        "region": "europe",
+        "country": "germany",
+        "category": "health_lifestyle",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+
+    # 7. Education
+    {
+        "prompt_id": "gaa-edu-001",
+        "query": "What are the most effective modern methodologies for learning computer programming?",
+        "question": "What are the most effective modern methodologies for learning computer programming?",
+        "language": "en",
+        "region": "global",
+        "category": "education",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-edu-002",
+        "query": "University degree versus self-directed portfolio learning: which provides better career ROI in 2026?",
+        "question": "University degree versus self-directed portfolio learning: which provides better career ROI in 2026?",
+        "language": "en",
+        "region": "global",
+        "category": "education",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-edu-003",
+        "query": "بهترین پلتفرم‌ها و متدهای خودآموزی برنامه‌نویسی و علوم داده کدامند؟",
+        "question": "بهترین پلتفرم‌ها و متدهای خودآموزی برنامه‌نویسی و علوم داده کدامند؟",
+        "language": "fa",
+        "region": "middle_east",
+        "country": "iran",
+        "category": "education",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-edu-004",
+        "query": "أيهما أفضل لبدء مسار مهني في التقنية: الشهادة الجامعية أم التعلم الذاتي بالمشاريع؟",
+        "question": "أيهما أفضل لبدء مسار مهني في التقنية: الشهادة الجامعية أم التعلم الذاتي بالمشاريع؟",
+        "language": "ar",
+        "region": "middle_east",
+        "country": "turkey",
+        "category": "education",
+        "intent": "recommendation",
+        "source_type": "generated",
+        "source_reference": "answerpath"
+    },
+    {
+        "prompt_id": "gaa-edu-005",
+        "query": "How to effectively transition into data science through self-study, Kaggle, and online certifications in India?",
+        "question": "How to effectively transition into data science through self-study, Kaggle, and online certifications in India?",
+        "language": "en",
+        "region": "asia",
+        "country": "india",
+        "category": "education",
+        "intent": "recommendation",
+        "source_type": "observed",
+        "source_reference": "answerpath"
+    },
+]
+
+ENTITIES_DATA = [
+    # Countries
+    {
+        "id": "germany",
+        "entity_type": "country",
+        "names": ["Germany", "آلمان", "Deutschland", "Allemagne", "Alemania"],
+        "domains": ["deutschland.de", "make-it-in-germany.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "canada",
+        "entity_type": "country",
+        "names": ["Canada", "کانادا", "Canadá"],
+        "domains": ["canada.ca"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "usa",
+        "entity_type": "country",
+        "names": ["United States", "USA", "آمریکا", "ایالات متحده", "US"],
+        "domains": ["usa.gov"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "uae",
+        "entity_type": "country",
+        "names": ["United Arab Emirates", "UAE", "امارات", "الإمارات", "دبی", "Dubai"],
+        "domains": ["u.ae"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "singapore",
+        "entity_type": "country",
+        "names": ["Singapore", "سنگاپور", "سنغافورة"],
+        "domains": ["gov.sg"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "netherlands",
+        "entity_type": "country",
+        "names": ["Netherlands", "هلند", "Nederland", "Holland"],
+        "domains": ["government.nl"],
+        "do_not_confuse": []
+    },
+
+    # Companies
+    {
+        "id": "openai",
+        "entity_type": "company",
+        "names": ["OpenAI", "اوپن ای آی", "اوپن‌ای‌آی"],
+        "people": ["Sam Altman", "سام آلتمن"],
+        "domains": ["openai.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "google",
+        "entity_type": "company",
+        "names": ["Google", "گوگل", "Alphabet"],
+        "people": ["Sundar Pichai", "ساندر پیچای"],
+        "domains": ["google.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "microsoft",
+        "entity_type": "company",
+        "names": ["Microsoft", "مایکروسافت"],
+        "people": ["Satya Nadella", "ساتیا نادلا"],
+        "domains": ["microsoft.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "anthropic",
+        "entity_type": "company",
+        "names": ["Anthropic", "آنتروپیک"],
+        "people": ["Dario Amodei"],
+        "domains": ["anthropic.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "nvidia",
+        "entity_type": "company",
+        "names": ["NVIDIA", "ان‌ویدیا", "ان ویدیا"],
+        "people": ["Jensen Huang", "جنسن هوانگ"],
+        "domains": ["nvidia.com"],
+        "do_not_confuse": []
+    },
+
+    # Products & Tools
+    {
+        "id": "python",
+        "entity_type": "product",
+        "names": ["Python", "پایتون"],
+        "domains": ["python.org"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "chatgpt",
+        "entity_type": "product",
+        "names": ["ChatGPT", "چت جی پی تی", "چت‌جی‌پی‌تی"],
+        "domains": ["chatgpt.com", "chat.openai.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "cursor",
+        "entity_type": "product",
+        "names": ["Cursor", "کرسر"],
+        "domains": ["cursor.com", "cursor.sh"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "docker",
+        "entity_type": "product",
+        "names": ["Docker", "داکر"],
+        "domains": ["docker.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "pytorch",
+        "entity_type": "product",
+        "names": ["PyTorch", "پای‌تورچ", "پایتورچ"],
+        "domains": ["pytorch.org"],
+        "do_not_confuse": []
+    },
+
+    # Websites & Learning Platforms
+    {
+        "id": "coursera",
+        "entity_type": "website",
+        "names": ["Coursera", "کورسرا"],
+        "people": ["Andrew Ng", "اندرو ان جی"],
+        "domains": ["coursera.org"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "edx",
+        "entity_type": "website",
+        "names": ["edX", "ادکس"],
+        "domains": ["edx.org"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "github",
+        "entity_type": "website",
+        "names": ["GitHub", "گیت‌هاب", "گیت هاب"],
+        "domains": ["github.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "kaggle",
+        "entity_type": "website",
+        "names": ["Kaggle", "کگل"],
+        "domains": ["kaggle.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "youtube",
+        "entity_type": "website",
+        "names": ["YouTube", "یوتیوب"],
+        "domains": ["youtube.com"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "linkedin",
+        "entity_type": "website",
+        "names": ["LinkedIn", "لینکدین"],
+        "domains": ["linkedin.com"],
+        "do_not_confuse": []
+    },
+
+    # Organizations & Academic Institutions
+    {
+        "id": "mit",
+        "entity_type": "organization",
+        "names": ["MIT", "Massachusetts Institute of Technology", "ام آی تی", "دانشگاه ام آی تی"],
+        "domains": ["mit.edu"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "stanford",
+        "entity_type": "organization",
+        "names": ["Stanford", "Stanford University", "استنفورد", "دانشگاه استنفورد"],
+        "domains": ["stanford.edu"],
+        "do_not_confuse": []
+    },
+    {
+        "id": "who",
+        "entity_type": "organization",
+        "names": ["World Health Organization", "WHO", "سازمان بهداشت جهانی", "منظمة الصحة العالمية"],
+        "domains": ["who.int"],
+        "do_not_confuse": []
+    },
+]
+
+
+async def run_benchmark():
+    out_dir = Path("/Users/taghimolavi/Documents/git repo/geo-scope/benchmark/releases/global-ai-answers-2026.1")
+    prompts_dir = out_dir / "prompts"
+    prompts_dir.mkdir(parents=True, exist_ok=True)
+
+    # 1. Write Prompts files
+    global_prompts = [p for p in PROMPTS_DATA if p.get("region") == "global"]
+    regional_prompts = [p for p in PROMPTS_DATA if p.get("region") != "global"]
+
+    with open(prompts_dir / "global.jsonl", "w", encoding="utf-8") as f:
+        for p in global_prompts:
+            f.write(json.dumps(p, ensure_ascii=False) + "\n")
+
+    with open(prompts_dir / "regional.jsonl", "w", encoding="utf-8") as f:
+        for p in regional_prompts:
+            f.write(json.dumps(p, ensure_ascii=False) + "\n")
+
+    with open(out_dir / "prompts.jsonl", "w", encoding="utf-8") as f:
+        for p in PROMPTS_DATA:
+            f.write(json.dumps(p, ensure_ascii=False) + "\n")
+
+    with open(out_dir / "entities.json", "w", encoding="utf-8") as f:
+        json.dump(ENTITIES_DATA, f, ensure_ascii=False, indent=2)
+
+    entities_reg = EntityRegistry.from_list(ENTITIES_DATA)
+    parser = ObservationParser(confidence_threshold=0.60)
+
+    # Providers to execute via Hamzad Gateway
+    providers = [
+        HamzadProvider(name="hamzad_gemini", target_provider="gemini", target_model="gemini-2.5-flash", search_grounded=True),
+        HamzadProvider(name="hamzad_perplexity", target_provider="perplexity", target_model="sonar-pro", search_grounded=True),
+        HamzadProvider(name="hamzad_openai", target_provider="openai", target_model="gpt-4o-mini", search_grounded=False),
+        HamzadProvider(name="hamzad_claude", target_provider="claude", target_model="anthropic/claude-3.5-sonnet", search_grounded=False),
+    ]
+
+    print(f"Executing Global AI Answers Benchmark across {len(PROMPTS_DATA)} prompts and {len(providers)} provider models...")
+
+    raw_responses = []
+    observations = []
+    citations_all = []
+    errors = []
+
+    exp_id = "EXP-GAA-2026.1"
+    run_id = f"RUN-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+
+    for i, p_item in enumerate(PROMPTS_DATA, 1):
+        q_text = p_item["query"]
+        p_id = p_item["prompt_id"]
+        print(f"[{i}/{len(PROMPTS_DATA)}] ({p_item['language']}-{p_item['region']}) {q_text[:50]}...")
+
+        for prov in providers:
+            try:
+                resp = await prov.generate(p_item, execution_mode="live")
+                raw_rec = resp.to_raw_record(
+                    experiment_id=exp_id,
+                    run_id=run_id,
+                    prompt_id=p_id,
+                    prompt=q_text,
+                )
+                raw_responses.append(raw_rec)
+
+                if resp.status == "success" and resp.text:
+                    # Collect citations
+                    for c in resp.citations:
+                        citations_all.append({
+                            "prompt_id": p_id,
+                            "provider": prov.name,
+                            "url": c,
+                            "timestamp_utc": raw_rec["timestamp_utc"]
+                        })
+
+                    # Parse all entities
+                    for ent in entities_reg.all():
+                        obs = parser.parse(
+                            resp.text,
+                            ent,
+                            query=q_text,
+                            citations=resp.citations,
+                            query_intent=p_item.get("intent", "recommendation")
+                        )
+                        obs_d = obs.model_dump()
+                        obs_d.update({
+                            "prompt_id": p_id,
+                            "provider": prov.name,
+                            "model": resp.model,
+                            "provider_class": prov.provider_class,
+                            "language": p_item.get("language", "en"),
+                            "region": p_item.get("region", "global"),
+                            "category": p_item.get("category", "general"),
+                            "execution_status": "success",
+                            "timestamp_utc": raw_rec["timestamp_utc"],
+                        })
+                        observations.append(obs_d)
+                else:
+                    errors.append({
+                        "prompt_id": p_id,
+                        "provider": prov.name,
+                        "error": resp.error or {"message": "Empty response"},
+                        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                    })
+            except Exception as exc:
+                errors.append({
+                    "prompt_id": p_id,
+                    "provider": prov.name,
+                    "error": {"code": "EXCEPTION", "message": str(exc)},
+                    "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                })
+
+    # Write raw_responses.jsonl
+    with open(out_dir / "raw_responses.jsonl", "w", encoding="utf-8") as f:
+        for r in raw_responses:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+
+    # Write observations.jsonl
+    with open(out_dir / "observations.jsonl", "w", encoding="utf-8") as f:
+        for o in observations:
+            f.write(json.dumps(o, ensure_ascii=False) + "\n")
+
+    # Write citations.jsonl
+    with open(out_dir / "citations.jsonl", "w", encoding="utf-8") as f:
+        for c in citations_all:
+            f.write(json.dumps(c, ensure_ascii=False) + "\n")
+
+    # Write errors.jsonl
+    with open(out_dir / "errors.jsonl", "w", encoding="utf-8") as f:
+        for e in errors:
+            f.write(json.dumps(e, ensure_ascii=False) + "\n")
+
+    # Calculate Metrics
+    # 1. Answer Visibility & Recommendation Rate per Entity
+    entity_metrics = {}
+    total_completions = len([r for r in raw_responses if r.get("status") == "success"])
+
+    for ent in entities_reg.all():
+        ent_obs = [o for o in observations if o["entity_id"] == ent.id]
+        mentions = sum(1 for o in ent_obs if o.get("mentioned"))
+        recs = sum(1 for o in ent_obs if o.get("recommended"))
+        top1s = sum(1 for o in ent_obs if o.get("top1"))
+        citations = sum(1 for o in ent_obs if o.get("cited"))
+        person_mentions = sum(1 for o in ent_obs if o.get("person_mentioned"))
+
+        denom = total_completions if total_completions > 0 else 1
+        entity_metrics[ent.id] = {
+            "entity": ent.names[0],
+            "entity_type": getattr(ent, "entity_type", "organization"),
+            "total_observations": len(ent_obs),
+            "mention_count": mentions,
+            "mention_rate_pct": round((mentions / denom) * 100, 2),
+            "recommendation_count": recs,
+            "recommendation_rate_pct": round((recs / denom) * 100, 2),
+            "top1_count": top1s,
+            "top1_rate_pct": round((top1s / denom) * 100, 2),
+            "citation_count": citations,
+            "person_mention_count": person_mentions,
+        }
+
+    # 2. Regional Breakdown
+    regions = sorted(list(set(p["region"] for p in PROMPTS_DATA)))
+    regional_metrics = {}
+    for reg in regions:
+        reg_obs = [o for o in observations if o.get("region") == reg]
+        reg_prompts = [p for p in PROMPTS_DATA if p.get("region") == reg]
+        reg_completions = len(reg_prompts) * len(providers)
+        top_entities = {}
+        for ent in entities_reg.all():
+            m_cnt = sum(1 for o in reg_obs if o["entity_id"] == ent.id and o.get("mentioned"))
+            if m_cnt > 0:
+                top_entities[ent.names[0]] = m_cnt
+
+        regional_metrics[reg] = {
+            "prompts_count": len(reg_prompts),
+            "observations_count": len(reg_obs),
+            "active_entities_count": len(top_entities),
+            "top_mentioned_entities": sorted(top_entities.items(), key=lambda x: x[1], reverse=True)[:5],
+        }
+
+    # 3. Category Breakdown
+    categories = sorted(list(set(p["category"] for p in PROMPTS_DATA)))
+    category_metrics = {}
+    for cat in categories:
+        cat_obs = [o for o in observations if o.get("category") == cat]
+        cat_prompts = [p for p in PROMPTS_DATA if p.get("category") == cat]
+        top_entities = {}
+        for ent in entities_reg.all():
+            m_cnt = sum(1 for o in cat_obs if o["entity_id"] == ent.id and o.get("mentioned"))
+            if m_cnt > 0:
+                top_entities[ent.names[0]] = m_cnt
+
+        category_metrics[cat] = {
+            "prompts_count": len(cat_prompts),
+            "top_mentioned_entities": sorted(top_entities.items(), key=lambda x: x[1], reverse=True)[:5],
+        }
+
+    # 4. Language Breakdown
+    languages = sorted(list(set(p["language"] for p in PROMPTS_DATA)))
+    language_metrics = {}
+    for lang in languages:
+        lang_obs = [o for o in observations if o.get("language") == lang]
+        lang_prompts = [p for p in PROMPTS_DATA if p.get("language") == lang]
+        top_entities = {}
+        for ent in entities_reg.all():
+            m_cnt = sum(1 for o in lang_obs if o["entity_id"] == ent.id and o.get("mentioned"))
+            if m_cnt > 0:
+                top_entities[ent.names[0]] = m_cnt
+
+        language_metrics[lang] = {
+            "prompts_count": len(lang_prompts),
+            "top_mentioned_entities": sorted(top_entities.items(), key=lambda x: x[1], reverse=True)[:5],
+        }
+
+    # Provider Breakdown (AI Search Visibility vs LLM Brand Observation)
+    provider_breakdown = {
+        "answer_engine_visibility": {},
+        "llm_brand_observation": {},
+    }
+    for prov in providers:
+        prov_obs = [o for o in observations if o.get("provider") == prov.name]
+        prov_completions = len(PROMPTS_DATA)
+        top_entities = {}
+        for ent in entities_reg.all():
+            m_cnt = sum(1 for o in prov_obs if o["entity_id"] == ent.id and o.get("mentioned"))
+            if m_cnt > 0:
+                top_entities[ent.names[0]] = m_cnt
+
+        target_dict = provider_breakdown["answer_engine_visibility"] if prov.provider_class == "answer_engine" else provider_breakdown["llm_brand_observation"]
+        target_dict[prov.name] = {
+            "model": prov.model,
+            "provider_class": prov.provider_class,
+            "search_grounded": prov.search_grounded,
+            "top_entities": sorted(top_entities.items(), key=lambda x: x[1], reverse=True)[:5],
+        }
+
+    metrics_payload = {
+        "benchmark": "Global AI Answers Benchmark 2026",
+        "dataset_version": "global-ai-answers-2026.1",
+        "execution_mode": "live",
+        "research_status": "peer_review_ready",
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "summary": {
+            "total_prompts": len(PROMPTS_DATA),
+            "total_providers": len(providers),
+            "total_completions": total_completions,
+            "total_observations": len(observations),
+            "total_citations": len(citations_all),
+            "total_entities_tracked": len(entities_reg),
+            "categories_count": len(categories),
+            "regions_count": len(regions),
+            "languages_count": len(languages),
+            "errors_count": len(errors),
+        },
+        "entities": entity_metrics,
+        "regional_analysis": regional_metrics,
+        "category_analysis": category_metrics,
+        "language_analysis": language_metrics,
+        "provider_breakdown": provider_breakdown,
+        "disclaimer": "All metrics represent empirical observations across specified models and localized prompts. No global hierarchy or algorithmic superiority is claimed."
+    }
+
+    with open(out_dir / "metrics.json", "w", encoding="utf-8") as f:
+        json.dump(metrics_payload, f, ensure_ascii=False, indent=2)
+
+    # Manifest
+    manifest = {
+        "benchmark": "Global AI Answers Benchmark 2026",
+        "dataset_id": "global-ai-answers-2026.1",
+        "mode": "live",
+        "execution_mode": "live",
+        "research_status": "peer_review_ready",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "prompt_count": len(PROMPTS_DATA),
+        "execution_count": len(raw_responses),
+        "n_prompts": len(PROMPTS_DATA),
+        "n_completions": len(raw_responses),
+        "n_observations": len(observations),
+        "n_citations": len(citations_all),
+        "n_errors": len(errors),
+        "providers": [p.name for p in providers],
+        "provider_classes": {p.name: p.provider_class for p in providers},
+        "categories": categories,
+        "regions": regions,
+        "languages": languages,
+        "lineage": {
+            "question_discovery": "AnswerPath GEO",
+            "measurement_engine": "GEO-Scope",
+            "model_execution_layer": "Hamzad AI Gateway",
+        },
+        "files": [
+            "manifest.json",
+            "prompts.jsonl",
+            "prompts/global.jsonl",
+            "prompts/regional.jsonl",
+            "entities.json",
+            "raw_responses.jsonl",
+            "observations.jsonl",
+            "citations.jsonl",
+            "metrics.json",
+            "errors.jsonl",
+            "methodology.md",
+            "README.md",
+        ]
+    }
+
+    with open(out_dir / "manifest.json", "w", encoding="utf-8") as f:
+        json.dump(manifest, f, ensure_ascii=False, indent=2)
+
+    # Write Checksums
+    write_checksums_file(out_dir)
+    chk_res = verify_dataset_checksums(out_dir)
+    print("Checksum Verification Result:", chk_res)
+
+    print("\n✓ Benchmark run complete! Artifacts written to:", out_dir)
+
+
+if __name__ == "__main__":
+    asyncio.run(run_benchmark())
