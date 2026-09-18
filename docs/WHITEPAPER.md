@@ -73,11 +73,11 @@ Where illustrative prior parameters are $\alpha = 0.40, \beta = 0.30, \gamma = 0
 
 ---
 
-## 3. Empirical Ranking Factor Weights Across Major Engines
+## 3. Empirical Feature Attribution Signals Across Major Engines
 
-Through rigorous regression on $N = 1,000$ stratified prompt responses, we isolated the underlying factor weight vector $\mathbf{w}_m$:
+*(Note: Feature weights represent observed statistical associations across empirical prompt samples, not causal search ranking algorithms).*
 
-| Ranking Factor Signal | Perplexity Sonar | ChatGPT Search (GPT-4o) | Google Gemini Grounding | Claude 3.7 Sonnet | Cross-Model Mean |
+| Observed Feature Signal | Perplexity Sonar | ChatGPT Search (GPT-4o) | Google Gemini Grounding | Claude 3.7 Sonnet | Cross-Model Mean |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Reddit & Forum Discussions (UGC)** | **38%** | 16% | 14% | 18% | **21.5%** |
 | **Review Aggregators (G2/Capterra)** | **24%** | **26%** | 20% | **22%** | **23.0%** |

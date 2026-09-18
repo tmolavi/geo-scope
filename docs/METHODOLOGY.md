@@ -9,7 +9,7 @@ Traditional SEO ranking metrics (Keywords, SERP positions 1-10) fail to capture 
 1. **Share of Model (SoM)**: The probability that a brand entity is included in the synthesized context.
 2. **Top-1 Recommendation Likelihood**: The probability that an LLM places a brand as the primary recommended solution.
 3. **Citation Graph Attribution**: The domain-level distribution of grounding sources selected by the LLM retrieval sub-queries.
-4. **Ranking Factor Weights**: The statistical correlation between on-page/off-page attributes and recommendation priority.
+4. **Empirical Factor Correlation**: The observed statistical correlation between on-page/off-page attributes and recommendation priority (not asserted as direct causal ranking factors).
 
 ---
 

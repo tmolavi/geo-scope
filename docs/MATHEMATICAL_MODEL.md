@@ -34,9 +34,11 @@ $$H(m) = -\sum_{c=1}^{C} p_c \log_2(p_c) \quad \text{where} \quad p_c = \frac{\t
 
 ---
 
-## 4. Ranking Factor Reverse-Engineering (SHAP & Regression)
+## 4. Empirical Feature Attribution & Factor Analysis (SHAP & Regression)
 
-To deduce the underlying factor weights vector $\mathbf{w}_m = [w_{\text{ugc}}, w_{\text{review}}, w_{\text{pr}}, w_{\text{wiki}}, w_{\text{struct}}, w_{\text{fresh}}]^T$ for each engine $m$, we formulate a logistic attribution model:
+*(Note: Factor weights represent observed statistical associations in empirical prompt samples, not causal search ranking factors).*
+
+To estimate the observed factor weights vector $\mathbf{w}_m = [w_{\text{ugc}}, w_{\text{review}}, w_{\text{pr}}, w_{\text{wiki}}, w_{\text{struct}}, w_{\text{fresh}}]^T$ for each engine $m$, we formulate a logistic attribution model:
 
 $$\log \left( \frac{\mathbb{P}(\text{Rank}_1)}{1 - \mathbb{P}(\text{Rank}_1)} \right) = \beta_0 + \sum_{j=1}^{F} w_j \cdot X_{ij} + \epsilon_i$$
 
