@@ -60,13 +60,18 @@ geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1
 
 ---
 
-## 📊 Published Benchmarks
+## 📊 Evidence & Published Benchmarks
 
 GEO-Scope publishes fully reproducible, peer-review-ready empirical benchmark releases under [`benchmarks/`](benchmarks/) and [`benchmark/releases/`](benchmark/releases/) with SHA-256 cryptographic verification, full model routing provenance, and 95% bootstrap confidence intervals:
 
+- **Ecosystem Evidence Map**: [`docs/EVIDENCE_MAP.md`](docs/EVIDENCE_MAP.md)
+- **Public Evidence Artifact Audit**: [`docs/PUBLIC_EVIDENCE_AUDIT.md`](docs/PUBLIC_EVIDENCE_AUDIT.md)
+- **Public Proof & Verification Report**: [`docs/PUBLIC_PROOF_REPORT.md`](docs/PUBLIC_PROOF_REPORT.md)
+- **Standalone Offline Demo Fixture**: [`examples/public_demo/`](examples/public_demo/)
+
 ### 🏆 [GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark](benchmarks/geo-seo-digital-agency-iran-2026.1/)
 * **Subtitle**: *Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms*
-* **Dataset Version**: [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/)
+* **Dataset Package**: [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/)
 * **Methodology**: [Methodology v1](benchmarks/geo-seo-digital-agency-iran-2026.1/methodology.md) · [Full Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) · [Dataset Reference](benchmarks/geo-seo-digital-agency-iran-2026.1/dataset-reference.md) · [Case Study](docs/case-studies/geo-seo-digital-agency-iran-2026.md)
 * **Ecosystem Stack**: [Molavi AI Visibility Stack & Evidence Map](docs/BENCHMARK_ECOSYSTEM.md)
 * **Question Layer**: [AnswerPath GEO](https://github.com/tmolavi/answerpath-geo) (15 observed real queries + 15 exploratory hypothesis templates across 5 search intent strata)
