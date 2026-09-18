@@ -1,0 +1,6 @@
+{"id": "q-obs-001", "query": "بهترین شرکت سئو در ایران برای طراحی سایت فروشگاهی کدام است؟", "category": "agency_selection", "source_type": "observed", "intent": "recommendation", "language": "fa"}
+{"id": "q-obs-002", "query": "تقی مولوی کیست و چه سوابقی در زمینه سئو دارد؟", "category": "entity_bio", "source_type": "observed", "intent": "informational", "language": "fa"}
+{"id": "q-obs-003", "query": "خدمات و تعرفه های سئو در سایت وب ۲۴ چیست؟", "category": "agency_services", "source_type": "observed", "intent": "informational", "language": "fa"}
+{"id": "q-obs-004", "query": "آژانس های برتر دیجیتال مارکتینگ و سئو در تهران", "category": "agency_selection", "source_type": "observed", "intent": "recommendation", "language": "fa"}
+{"id": "q-hyp-005", "query": "مقایسه خدمات سئو آژانس های اینتن، وب ۲۴ و نوین هاب", "category": "comparative", "source_type": "hypothesis", "intent": "recommendation", "language": "fa"}
+{"id": "q-hyp-006", "query": "پلتفرم های انتشار رپورتاژ آگهی مانند تریبون و تسمینو چه تفاوت هایی دارند؟", "category": "comparative", "source_type": "hypothesis", "intent": "recommendation", "language": "fa"}

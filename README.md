@@ -300,32 +300,40 @@ cd geo-scope
 pip install -e .
 ```
 
-### 2. Run Instant 5-Minute Demo
+### 2. Run Instant 5-Minute Simulation Demo
 
 ```bash
 geo-scope demo
 ```
 
-### 3. Bring Your Own Prompts (Custom File)
+### 3. Execute Live AI Visibility Measurement (Zero Silent Fallback)
 
 ```bash
-# Run custom benchmark with CSV, JSON, or TXT queries
-geo-scope run --brand "My Brand" --competitors "Competitor A, Competitor B" --mode simulate --count 10 --out results/my_brand/
+# Measure live across configured search-grounded and completion providers
+geo-scope measure \
+  --entities entities/iran-seo-agencies.json \
+  --prompts examples/research_run/prompts.jsonl \
+  --mode live \
+  --providers perplexity_sonar,gemini_grounding \
+  --out-dir output/research_run_01
 ```
 
-### 4. Launch Interactive Web Dashboard
+### 4. Deterministic Offline Replay (Zero Network Calls)
+
+```bash
+# Re-evaluate previous responses against new or updated entity definitions offline
+geo-scope replay \
+  --bundle output/research_run_01 \
+  --entities entities/iran-seo-agencies.json \
+  --out-dir output/replay_01
+```
+
+### 5. Launch Interactive Web Dashboard
 
 ```bash
 geo-scope serve --host 0.0.0.0 --port 8000
 ```
 Open **`http://localhost:8000`** to view the live dashboard, interactive charts, prompt comparator, and custom benchmark runner.
-
-### 5. Run Synthetic 1,000-Prompt Benchmark from CLI
-
-```bash
-# Run a 1,000 prompt benchmark for CRM SaaS
-geo-scope run --niche crm_sales --brand HubSpot --count 1000 --out results/
-```
 
 ### 6. Run with Docker Compose
 
@@ -399,7 +407,7 @@ Part of the **[Molavi GEO Pyramid](https://molavi.pro/research/geo-pyramid)** re
 ```bibtex
 @software{molavi2026geoscope,
   author = {Molavi, Taqi},
-  title = {GEO-Scope: Generative Engine Optimization & AI Search Reverse-Engineering Framework},
+  title = {GEO-Scope: Open-Source AI Engine & LLM Visibility Measurement Platform},
   year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},
@@ -418,4 +426,4 @@ This project is licensed under the [MIT License](LICENSE) — Copyright (c) 2026
 
 ## 🏷️ Multilingual Keywords & Topics (فارسی / Türkçe / English)
 
-`GEO` • `Generative Engine Optimization` • `AI SEO` • `LLM Search Optimization` • `Perplexity AI` • `ChatGPT Search` • `Google Gemini Grounding` • `Claude 3.7` • `Share of Model` • `Citation Graph` • `RAG Benchmarking` • `MCP Server` • `سئو در هوش مصنوعی` • `مهندسی معکوس الگوریتم` • `بهینه‌سازی موتورهای مولد` • `سئو چت‌جی‌پی‌تی` • `هوش مصنوعی و سئو` • `تقی مولوی` • `Yapay Zeka SEO` • `Üretken Motor Optimizasyonu` • `Yapay Zeka Arama Motoru` • `LLM Görünürlük Kıyaslaması` • `Taqi Molavi`
+`GEO` • `Generative Engine Optimization` • `AI SEO` • `LLM Search Optimization` • `Perplexity AI` • `ChatGPT Search` • `Google Gemini Grounding` • `Claude 3.7` • `Share of Model` • `Citation Graph` • `RAG Benchmarking` • `MCP Server` • `سئو در هوش مصنوعی` • `سنجش تجربی دیده‌شدن هوش مصنوعی` • `بهینه‌سازی موتورهای مولد` • `سئو چت‌جی‌پی‌تی` • `هوش مصنوعی و سئو` • `تقی مولوی` • `Yapay Zeka SEO` • `Üretken Motor Optimizasyonu` • `Yapay Zeka Arama Motoru` • `LLM Görünürlük Kıyaslaması` • `Taqi Molavi`

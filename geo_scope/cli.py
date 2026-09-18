@@ -851,6 +851,7 @@ def main():
     replay_parser.add_argument(
         "--input",
         "--run-dir",
+        "--bundle",
         type=str,
         required=True,
         help="Path to previous run directory or raw_responses.jsonl file",

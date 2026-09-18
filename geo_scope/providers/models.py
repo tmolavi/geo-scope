@@ -99,14 +99,20 @@ class ProviderResponse:
         Builds the canonical raw persistence record for auditability.
         """
         ts = timestamp or datetime.now(timezone.utc).isoformat()
+        requested = self.metadata.get("requested_provider", self.provider)
+        actual = self.metadata.get("actual_provider", self.provider)
+        search_grounded = self.metadata.get("search_grounded", self.provider_class == "answer_engine")
         return {
             "experiment_id": experiment_id,
             "run_id": run_id,
             "prompt_id": prompt_id,
             "prompt": prompt,
             "provider": self.provider,
+            "requested_provider": requested,
+            "actual_provider": actual,
             "model": self.model,
             "provider_class": self.provider_class,
+            "search_grounded": search_grounded,
             "execution_mode": self.execution_mode,
             "timestamp_utc": ts,
             "latency_ms": self.latency_ms,

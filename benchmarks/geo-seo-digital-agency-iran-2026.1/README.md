@@ -2,9 +2,17 @@
 
 **Subtitle**: Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms  
 **Dataset Version**: `geo-seo-digital-agency-iran-2026.1`  
+**Research Classification**: Exploratory Prototype & Format Verification Dataset (Not a Commercial Market Ranking)  
 **Status**: Peer Review & Reproduction Ready  
 **Release Date**: September 2026  
 **License**: MIT (Open Research Dataset)
+
+> [!NOTE]
+> **Dataset Nature & Limitations**:
+> This dataset demonstrates the benchmark schema, entity matching, bootstrap confidence interval calculations, and reproducible verification pipeline ($N=120$ completions across 30 prompts).
+> - **Prompt Basis**: 30 researcher-generated hypothesis templates (0 observed real-time user query logs).
+> - **Provider Routing**: Endpoints utilized gateway routing with fallback behavior.
+> - **Scope**: **This dataset does NOT represent a definitive market ranking, agency ranking, or live production search index.** Real-world market claims require live measurements on observed real-time query logs.
 
 ---
 
