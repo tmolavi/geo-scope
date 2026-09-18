@@ -16,6 +16,7 @@ from geo_scope.mavi import (
     SAGEEvaluator,
     GEOScopeEvaluator,
 )
+from geo_scope.mavi.sage_evaluator import SAGE_AVAILABLE
 from geo_scope.mcp_server import handle_tool_call
 
 
@@ -127,6 +128,7 @@ SAMPLE_EXPERIMENT_DATA = {
 # 1. SAGE Evaluator Tests (L1, L2, L3, L4)
 # =============================================================================
 
+@pytest.mark.skipif(not SAGE_AVAILABLE, reason="sage-audit package is not installed")
 def test_sage_l1_technical_accessibility():
     sage = SAGEEvaluator(html_content=SAMPLE_RICH_HTML, url="https://www.hubspot.com/products/crm", http_status=200)
     l1 = sage.evaluate_l1_technical_accessibility(weight=0.15)
@@ -140,6 +142,7 @@ def test_sage_l1_technical_accessibility():
     assert "word_count" in l1.details
 
 
+@pytest.mark.skipif(not SAGE_AVAILABLE, reason="sage-audit package is not installed")
 def test_sage_l1_blocked_noindex():
     sage = SAGEEvaluator(html_content=SAMPLE_BLOCKED_HTML, url="http://internal.site/admin", http_status=403)
     l1 = sage.evaluate_l1_technical_accessibility(weight=0.15)
@@ -147,6 +150,7 @@ def test_sage_l1_blocked_noindex():
     assert l1.score is not None
 
 
+@pytest.mark.skipif(not SAGE_AVAILABLE, reason="sage-audit package is not installed")
 def test_sage_l2_semantic_extractability():
     sage = SAGEEvaluator(html_content=SAMPLE_RICH_HTML, url="https://www.hubspot.com/products/crm")
     l2 = sage.evaluate_l2_semantic_extractability(weight=0.20)
@@ -158,6 +162,7 @@ def test_sage_l2_semantic_extractability():
     assert "entity_types" in l2.details
 
 
+@pytest.mark.skipif(not SAGE_AVAILABLE, reason="sage-audit package is not installed")
 def test_sage_l3_entity_clarity():
     sage = SAGEEvaluator(html_content=SAMPLE_RICH_HTML, target_brand="HubSpot")
     l3 = sage.evaluate_l3_entity_clarity(weight=0.20)
@@ -169,6 +174,7 @@ def test_sage_l3_entity_clarity():
     assert l3.details["target_brand"] == "HubSpot"
 
 
+@pytest.mark.skipif(not SAGE_AVAILABLE, reason="sage-audit package is not installed")
 def test_sage_l4_citation_readiness():
     sage = SAGEEvaluator(html_content=SAMPLE_RICH_HTML)
     l4 = sage.evaluate_l4_citation_readiness(weight=0.20)
@@ -219,6 +225,7 @@ def test_geoscope_l5_zero_successful_observations():
 # 3. MAVI Engine Core: Full 5-Layer Measurement
 # =============================================================================
 
+@pytest.mark.skipif(not SAGE_AVAILABLE, reason="sage-audit package is not installed")
 def test_mavi_engine_full_5_layers():
     engine = MAVIEngine()
     report = engine.measure(
@@ -250,6 +257,7 @@ def test_mavi_engine_full_5_layers():
 # 4. Partial Scoring & Normalization (Missing L5)
 # =============================================================================
 
+@pytest.mark.skipif(not SAGE_AVAILABLE, reason="sage-audit package is not installed")
 def test_mavi_engine_partial_scoring_without_l5():
     engine = MAVIEngine()
     report = engine.measure(
@@ -367,6 +375,7 @@ def test_cli_mavi_json_format(tmp_path):
 
 
 @pytest.mark.asyncio
+@pytest.mark.skipif(not SAGE_AVAILABLE, reason="sage-audit package is not installed")
 async def test_mcp_measure_mavi_tool():
     args = {
         "html_content": SAMPLE_RICH_HTML,
