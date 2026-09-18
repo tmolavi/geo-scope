@@ -5,10 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "geo-scope"
 version = "1.0.0"
-description = "1,000-Prompt AI Visibility Benchmark & Algorithm Reverse-Engineering Platform for Generative Engine Optimization (GEO) — by Taqi Molavi"
+description = "Open-Source AI Visibility Measurement Engine & Provenance-Backed Benchmark Platform for Generative Engine Optimization (GEO)"
 readme = "README.md"
+requires-python = ">=3.10"
 authors = [
-    { name = "Taqi Molavi", email = "tmolavi@users.noreply.github.com" }
+    { name = "Taqi Molavi", email = "taqimolavi@gmail.com" }
 ]
 license = { text = "MIT" }
 classifiers = [
