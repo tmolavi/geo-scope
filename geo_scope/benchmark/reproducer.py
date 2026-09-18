@@ -81,7 +81,8 @@ class BenchmarkReproducer:
 
         brands_file = (path / "entities.json") if (path / "entities.json").exists() else (path / "brands.json")
         brands = json.loads(brands_file.read_text(encoding="utf-8"))
-        providers = json.loads((path / "providers.json").read_text(encoding="utf-8"))
+        providers_raw = json.loads((path / "providers.json").read_text(encoding="utf-8"))
+        providers = providers_raw.get("providers", providers_raw) if isinstance(providers_raw, dict) else providers_raw
         expected_metrics_raw = json.loads((path / "metrics.json").read_text(encoding="utf-8"))
 
         # 4. Recompute Metrics from Raw Records
@@ -135,7 +136,7 @@ class BenchmarkReproducer:
             f"• SHA-256 Checksums : {chk_str}",
             f"• Metric Math Check : {math_str}",
             f"• Prompts / Obs     : {len(prompts)} prompts / {len(observations)} observations",
-            f"• Brands Evaluated  : {', '.join([b.get('name', '') for b in brands])}",
+            f"• Brands Evaluated  : {', '.join([(b.get('name', '') if isinstance(b, dict) else str(b)) for b in brands])}",
             "-" * 70,
         ]
 

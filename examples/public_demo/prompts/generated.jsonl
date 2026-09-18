@@ -1,0 +1,3 @@
+{"id": "DEMO-003", "prompt": "Which agency is recommended for enterprise SEO?", "intent": "trust", "source_type": "generated", "source_reference": "answerpath", "cluster": "enterprise"}
+{"id": "DEMO-004", "prompt": "Affordable digital marketing agency Iran", "intent": "buy", "source_type": "generated", "source_reference": "answerpath", "cluster": "pricing"}
+{"id": "DEMO-005", "prompt": "How to fix Google penalty with SEO agency Iran?", "intent": "solve", "source_type": "generated", "source_reference": "answerpath", "cluster": "penalty"}

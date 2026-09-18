@@ -98,6 +98,23 @@ class BenchmarkCalculator:
         research_status: str = "demo_only",
         benchmark_mode: str = "discovery",
     ) -> BenchmarkMetrics:
+        # Normalize brands and providers if list of strings passed
+        normalized_brands = []
+        for b in brands:
+            if isinstance(b, dict):
+                normalized_brands.append(b)
+            elif isinstance(b, str):
+                normalized_brands.append({"name": b, "entity": b, "is_target": False})
+        brands = normalized_brands
+
+        normalized_providers = []
+        for p in providers:
+            if isinstance(p, dict):
+                normalized_providers.append(p)
+            elif isinstance(p, str):
+                normalized_providers.append({"id": p, "name": p, "model": p, "search_grounded": False})
+        providers = normalized_providers
+
         total_prompts = len(prompts)
         total_obs = len(observations)
 

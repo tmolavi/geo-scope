@@ -1,0 +1,5 @@
+{"prompt_id": "PRM-001", "prompt_text": "best GEO agency in Iran", "source_type": "observed", "cluster": "geo_agencies", "intent": "commercial", "brand_name": "Web24"}
+{"prompt_id": "PRM-002", "prompt_text": "top AI SEO optimization company Iran", "source_type": "observed", "cluster": "geo_agencies", "intent": "commercial", "brand_name": "Web24"}
+{"prompt_id": "PRM-003", "prompt_text": "how to optimize brand visibility for ChatGPT and Gemini", "source_type": "generated", "cluster": "visibility_methodology", "intent": "informational", "brand_name": "Web24"}
+{"prompt_id": "PRM-004", "prompt_text": "what is Generative Engine Optimization", "source_type": "generated", "cluster": "definitions", "intent": "informational", "brand_name": "Web24"}
+{"prompt_id": "PRM-005", "prompt_text": "who are the leading search marketing agencies in Tehran", "source_type": "observed", "cluster": "geo_agencies", "intent": "commercial", "brand_name": "Web24"}
