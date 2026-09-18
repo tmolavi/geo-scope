@@ -94,6 +94,16 @@ geo-scope benchmark verify --dataset benchmark/releases/geo-seo-digital-agency-i
 geo-scope benchmark reproduce --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1
 ```
 
+## 🏛️ Ecosystem
+
+GEO-Scope operates as the empirical execution and multi-model benchmark component of the **Molavi AI Visibility Stack**:
+
+- **Discovery**: [AnswerPath GEO](https://github.com/tmolavi/answerpath-geo)
+- **Measurement**: [GEO-Scope](https://github.com/tmolavi/geo-scope)
+- **Diagnostics**: [SAGE Audit](https://github.com/tmolavi/sage-audit)
+- **Action**: [SiteProbe](https://github.com/tmolavi/siteprobe)
+- **Protocol**: [MCP GEO Server](https://github.com/tmolavi/mcp-geo-server)
+
 ---
 
 ## 🖥️ Illustrative Terminal & MCP Workflow Demo
