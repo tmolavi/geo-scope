@@ -378,6 +378,16 @@ pytest tests/ -v
 - ⚡ [**mcp-geo-server**](https://github.com/tmolavi/mcp-geo-server): Model Context Protocol (MCP) Server for Generative Engine Optimization & RAG Readiness Audits by Taqi Molavi.
 - 🤖 [**mcp-agent-skills-hub**](https://github.com/tmolavi/mcp-agent-skills-hub): Curated AI Agent Skills & MCP Hub by Taghi Molavi.
 
+## 💬 Community & External Collaboration
+
+We welcome researchers, developers, and practitioners to participate in the empirical AI visibility ecosystem:
+
+- **Participate in Discussions**: [GitHub Discussions](https://github.com/tmolavi/geo-scope/discussions) across **General**, **Research**, **Ideas**, **Help**, and **Show and Tell**.
+- **Research Collaboration**: Read our [Research Collaboration Framework](docs/RESEARCH_COLLABORATION.md) for contributing new prompt banks, benchmark runs, or evaluation metrics.
+- **First-Time Contributors**: Follow our [First Contribution Guide](docs/FIRST_CONTRIBUTION.md) to set up your local environment and submit pull requests.
+- **Report Issues**: Use our structured [Issue Templates](https://github.com/tmolavi/geo-scope/issues/new/choose) to report bugs, submit replication findings, or propose new AI providers.
+- **Contribution Standards**: See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+
 ---
 
 ## Citation & Author
