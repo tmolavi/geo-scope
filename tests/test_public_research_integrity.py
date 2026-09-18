@@ -215,3 +215,54 @@ def test_6_replay_produces_deterministic_matching_checksums(tmp_path):
     met_1 = json.loads((replay_dir_1 / "metrics.json").read_text(encoding="utf-8"))
     met_2 = json.loads((replay_dir_2 / "metrics.json").read_text(encoding="utf-8"))
     assert met_1["entities"] == met_2["entities"]
+
+
+def test_7_manifest_field_completeness(tmp_path):
+    """Guarantee 7: Manifest contains all required release gate fields."""
+    entities = EntityRegistry.from_list([
+        {"id": "brand_a", "names": ["BrandA"], "domains": ["branda.com"]},
+    ])
+    engine = MeasurementEngine(entities=entities)
+    prompts = [
+        {"id": "q1", "query": "Test query", "source_type": "observed", "intent": "recommendation"}
+    ]
+    out_dir = tmp_path / "manifest_test"
+    asyncio.run(engine.execute_measurement(
+        prompts=prompts,
+        providers=["perplexity_sonar"],
+        out_dir=out_dir,
+        mode="simulation",
+    ))
+
+    manifest = json.loads((out_dir / "manifest.json").read_text(encoding="utf-8"))
+    assert "mode" in manifest
+    assert "created_at" in manifest
+    assert "providers" in manifest
+    assert "provider_classes" in manifest
+    assert "prompt_count" in manifest
+    assert "execution_count" in manifest
+    assert manifest["prompt_count"] == 1
+    assert manifest["execution_count"] == 1
+
+
+def test_8_whitepaper_truth_guardrails():
+    """Guarantee 8: Whitepaper contains no forbidden algorithm reverse-engineering claims."""
+    wp_path = Path(__file__).resolve().parent.parent / "docs" / "WHITEPAPER.md"
+    assert wp_path.exists()
+    content = wp_path.read_text(encoding="utf-8").lower()
+
+    # Forbidden hype claims
+    forbidden_terms = [
+        "reverse-engineering retrieval-augmented",
+        "reverse-engineering llm recommendation",
+        "hidden ranking algorithm",
+        "guaranteed ranking",
+    ]
+    for term in forbidden_terms:
+        assert term not in content, f"Found forbidden term '{term}' in WHITEPAPER.md"
+
+    # Required methodology headers
+    assert "evidence levels & methodology guardrails" in content
+    assert "level 1: simulation fixture" in content
+    assert "level 2: recorded response replay" in content
+    assert "level 3: live provider measurement" in content

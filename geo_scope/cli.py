@@ -40,9 +40,9 @@ def run_demo_cmd():
     """
     print("\n" + "=" * 75)
     print("GEO-Scope Quickstart Demo (SIMULATION FIXTURE)")
-    print("Execution mode: SIMULATION")
+    print("Execution mode: SIMULATION FIXTURE — NO LIVE MODEL WAS QUERIED")
     print("Disclaimer: Outputs and metrics are deterministic simulation fixtures for")
-    print("testing and onboarding. They do not reflect live engine visibility.")
+    print("testing, onboarding, and parser verification. NOT A LIVE MARKET BENCHMARK.")
     print("=" * 75)
 
     entities_file = "entities/iran-seo-agencies.json"

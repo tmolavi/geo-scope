@@ -1,11 +1,11 @@
-# 🔬 Scientific Methodology: Reverse-Engineering AI Visibility
+# 🔬 Scientific Methodology: Empirical AI Visibility Measurement
 
 > Implementation note: This document describes a research model. Fixed factor weights and composite-score coefficients are hypothesis priors, not fitted engine weights or validated causal effects. Current executable metrics and provider capabilities are documented in [API integration](API_INTEGRATION.md). Seeded simulation is repeatable; live generation is variable even at a fixed temperature.
 ## 1. Abstract & Problem Statement
 
 Generative AI Search Engines (Perplexity, ChatGPT Search, Google Gemini Grounding, Anthropic Claude) construct direct answers using **Retrieval-Augmented Generation (RAG)** instead of traditional PageRank search result links.
 
-Traditional SEO ranking metrics (Keywords, SERP positions 1-10) fail to capture LLM visibility. **GEO-Scope** introduces an empirical, multi-sample benchmarking methodology designed to reverse-engineer:
+Traditional SEO ranking metrics (Keywords, SERP positions 1-10) fail to capture LLM visibility. **GEO-Scope** introduces an empirical, multi-sample benchmarking methodology designed to measure:
 1. **Share of Model (SoM)**: The probability that a brand entity is included in the synthesized context.
 2. **Top-1 Recommendation Likelihood**: The probability that an LLM places a brand as the primary recommended solution.
 3. **Citation Graph Attribution**: The domain-level distribution of grounding sources selected by the LLM retrieval sub-queries.

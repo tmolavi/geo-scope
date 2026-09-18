@@ -378,6 +378,8 @@ class MeasurementEngine:
         manifest = {
             "mode": mode,
             "created_at": created_at,
+            "prompt_count": len(prompts),
+            "execution_count": len(raw_records),
             "n_prompts": len(prompts),
             "n_completions": len(raw_records),
             "n_observations": len(observations),
