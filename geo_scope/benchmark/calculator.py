@@ -145,11 +145,16 @@ class BenchmarkCalculator:
         # 1. Target brand detection
         target_brand_name = None
         for b in brands:
-            if b.get("is_target"):
-                target_brand_name = b.get("name")
-                break
+            if isinstance(b, dict):
+                bname = b.get("name") or (b.get("names")[0] if b.get("names") else b.get("id"))
+                if b.get("is_target"):
+                    target_brand_name = bname
+                    break
+            else:
+                bname = str(b)
         if not target_brand_name and brands:
-            target_brand_name = brands[0].get("name")
+            b0 = brands[0]
+            target_brand_name = b0.get("name") or (b0.get("names")[0] if b0.get("names") else b0.get("id")) if isinstance(b0, dict) else str(b0)
 
         # 2. Compute Brand Metrics (Primary + Stratified)
         brand_metrics_list = self._compute_brand_metrics_list(successful_obs, citations, brands)
@@ -161,8 +166,8 @@ class BenchmarkCalculator:
         # 3. Compute Provider Metrics
         provider_metrics_dict = {}
         for p in providers:
-            pid = p.get("id") or p.get("provider_id")
-            p_obs = [o for o in observations if o.get("provider_id") == pid or o.get("model") == pid]
+            pid = (p.get("id") or p.get("provider_id") or p.get("name")) if isinstance(p, dict) else str(p)
+            p_obs = [o for o in observations if o.get("provider_id") == pid or o.get("model") == pid or o.get("provider") == pid]
             p_success = [o for o in p_obs if o.get("status") == "success"]
             p_failed = [o for o in p_obs if o.get("status") != "success"]
 
@@ -225,12 +230,16 @@ class BenchmarkCalculator:
         # 6. Category Visibility Matrix (Brand x Provider)
         cat_matrix: Dict[str, Dict[str, Optional[float]]] = {}
         for b in brands:
-            bname = b.get("name")
-            is_target = b.get("is_target", False)
+            if isinstance(b, dict):
+                bname = b.get("name") or (b.get("names")[0] if b.get("names") else b.get("id"))
+                is_target = b.get("is_target", False)
+            else:
+                bname = str(b)
+                is_target = False
             cat_matrix[bname] = {}
             for p in providers:
-                pid = p.get("id") or p.get("provider_id")
-                p_obs = [o for o in successful_obs if o.get("provider_id") == pid or o.get("model") == pid]
+                pid = (p.get("id") or p.get("provider_id") or p.get("name")) if isinstance(p, dict) else str(p)
+                p_obs = [o for o in successful_obs if o.get("provider_id") == pid or o.get("model") == pid or o.get("provider") == pid]
                 if not p_obs:
                     cat_matrix[bname][pid] = None
                 else:
@@ -336,8 +345,12 @@ class BenchmarkCalculator:
         brand_mention_counts = {}
 
         for b in brands:
-            bname = b.get("name")
-            is_target = b.get("is_target", False)
+            if isinstance(b, dict):
+                bname = b.get("name") or (b.get("names")[0] if b.get("names") else b.get("id"))
+                is_target = b.get("is_target", False)
+            else:
+                bname = str(b)
+                is_target = False
 
             if n_obs == 0:
                 mention_est = MetricEstimate(value=None, status="insufficient_data")

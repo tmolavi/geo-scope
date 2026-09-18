@@ -591,7 +591,7 @@ def benchmark_cmd(args):
                 print(f"  - Extra unverified file: {ef}")
             sys.exit(1)
 
-    elif sub == "reproduce":
+    elif sub in ["reproduce", "replay"]:
         dataset_path = args.dataset
         reproducer = BenchmarkReproducer(tolerance=getattr(args, "tolerance", 0.05))
         res = reproducer.verify_and_reproduce(dataset_path)
@@ -604,6 +604,14 @@ def benchmark_cmd(args):
                 json.dump(res, f, ensure_ascii=False, indent=2)
             print(f"Reproduction result saved to {args.out}")
         if not res["success"]:
+            sys.exit(1)
+
+    elif sub == "validate":
+        from geo_scope.benchmark.dataset_validator import validate_benchmark_dataset, format_validation_report
+        dataset_path = args.dataset
+        res = validate_benchmark_dataset(dataset_path)
+        print(format_validation_report(res))
+        if not res["passed"]:
             sys.exit(1)
 
     elif sub == "prepare":
@@ -967,11 +975,20 @@ def main():
     verify_p = bmk_subparsers.add_parser("verify", help="Verify SHA-256 checksums of a benchmark dataset")
     verify_p.add_argument("--dataset", type=str, required=True, help="Path to benchmark dataset directory")
 
-    # benchmark reproduce
+    # benchmark reproduce / replay
     reproduce_p = bmk_subparsers.add_parser("reproduce", help="Verify checksums and recompute all metrics from raw observations")
     reproduce_p.add_argument("--dataset", type=str, required=True, help="Path to benchmark dataset directory")
     reproduce_p.add_argument("--tolerance", type=float, default=0.05, help="Numerical tolerance for float comparison")
     reproduce_p.add_argument("--out", type=str, default=None, help="Optional output JSON file for reproduction report")
+
+    replay_p = bmk_subparsers.add_parser("replay", help="Replay benchmark dataset observations and verify metric calculations")
+    replay_p.add_argument("--dataset", type=str, required=True, help="Path to benchmark dataset directory")
+    replay_p.add_argument("--tolerance", type=float, default=0.05, help="Numerical tolerance for float comparison")
+    replay_p.add_argument("--out", type=str, default=None, help="Optional output JSON file for reproduction report")
+
+    # benchmark validate
+    validate_p = bmk_subparsers.add_parser("validate", help="Validate benchmark dataset release quality, checksums, and secret hygiene")
+    validate_p.add_argument("--dataset", type=str, required=True, help="Path to benchmark dataset directory")
 
     # benchmark export
     export_p = bmk_subparsers.add_parser("export", help="Export an experiment run to a benchmark dataset package")

@@ -11,41 +11,55 @@
 
 ## 1. Executive Summary & Research Question
 
-As generative AI answer engines and foundation models become the default interfaces for human knowledge discovery, they increasingly mediate answers to life-defining decisions: acquiring technical skills, navigating international career migration, founding digital enterprises, adopting emerging technologies, preserving personal wealth, maintaining physical/mental health, and selecting educational paths.
+As generative AI answer engines and foundation models become primary interfaces for human inquiry, they mediate responses to critical life decisions: acquiring technical skills, international career migration, launching digital businesses, adopting AI software, managing personal finances, avoiding workplace burnout, and choosing between formal degrees or self-directed learning.
 
 ### Primary Research Question
 > **When people around the world query leading AI answer engines and foundation models with essential life, career, technology, and business questions, what entities, organizations, platforms, countries, and recommendations are surfaced?**
 
 ### Scientific & Epistemic Boundaries
-To uphold empirical integrity and prevent marketing hype, this benchmark operates under strict constraints:
-1. **No "Global Winner" or "Humanity Ranking"**: The benchmark does not rank the "best country", "smartest person", or "most superior provider".
-2. **Empirical Observation, Not Algorithm Deconstruction**: We record observed model outputs as emitted across specified API checkpoints; we make no ungrounded claims about reverse-engineering proprietary model weights or internal indexing mechanics.
-3. **Value-Neutral Entity Extraction**: Multi-type entities (destinations, companies, tools, academic institutions) are extracted with deterministic boundary parsing and homonym disambiguation without normative scoring.
-4. **Separation of Search Grounding from Parametric Retrieval**: Answer engines with live web browsing (`hamzad_gemini`, `hamzad_perplexity`) are explicitly analyzed separately from parametric language models (`hamzad_openai`, `hamzad_claude`).
+To uphold scientific transparency and eliminate marketing bias:
+- **No "Global Winner" or "Humanity Ranking"**: The benchmark does not rank "best country", "smartest human", or "best provider".
+- **Empirical Observation, Not Algorithm Deconstruction**: Records model responses as emitted; makes no claims of reverse-engineering internal model weights or hidden indexing formulas.
+- **Value-Neutral Multi-Type Extraction**: Extracts entities across organizations, destinations, software, and institutions without normative scoring.
+- **Separation of Search Grounding from Parametric Retrieval**: Answer engines with live web grounding (`hamzad_gemini`, `hamzad_perplexity`) are explicitly analyzed separately from parametric completion models (`hamzad_openai`, `hamzad_claude`).
 
 ---
 
-## 2. Benchmark Architecture & Lineage
+## 2. End-to-End Dataset Pipeline
 
-The benchmark workflow integrates three distinct, loosely coupled layers:
+The benchmark methodology follows a 7-stage verifiable pipeline:
 
-```mermaid
-flowchart TD
-    A["AnswerPath GEO<br/><i>(Question Discovery & Intent Mining)</i>"] -->|Localized Prompts & Taxonomies| B["GEO-Scope 0.2.0<br/><i>(Measurement Engine & Entity Parser)</i>"]
-    B -->|API Execution Requests| C["Hamzad AI Gateway<br/><i>(Secure Model Routing & Execution)</i>"]
-    C -->|Raw Streaming / JSON Responses| B
-    B -->|SHA-256 Verified Dataset Bundle| D["Release: global-ai-answers-2026.1<br/><i>(Manifest, Raw Logs, Observations, Metrics)</i>"]
+```
+AnswerPath GEO
+      ↓
+Question Discovery (Cultural & intent-mined query clusters)
+      ↓
+GEO-Scope
+      ↓
+Measurement Engine (Prompt orchestration & model routing)
+      ↓
+Hamzad Gateway (Audited, isolated API execution)
+      ↓
+Raw Response Storage (Unedited response logs with HTTP latency & timestamps)
+      ↓
+Entity Extraction (Unicode normalization & homonym disambiguation)
+      ↓
+Metrics & Cryptographic Bundling (SHA-256 integrity manifest & distributions)
 ```
 
-1. **Question Discovery (AnswerPath GEO)**: Mines and localizes authentic, intent-driven query clusters reflecting genuine regional dilemmas rather than robotic literal translations.
-2. **Measurement Engine (GEO-Scope)**: Manages test orchestration, unicode-aware entity token matching, alias resolution, `do_not_confuse` homonym filtering, and deterministic metric calculations.
-3. **Execution Layer (Hamzad AI Gateway)**: Standardized proxy interface providing audited, reproducible inference across frontier models with latency logging and strict zero-credential public isolation.
+1. **AnswerPath GEO**: Discovers authentic user query clusters and formulates localized inquiries reflecting cultural dilemmas rather than robotic translations.
+2. **GEO-Scope Core**: Manages prompt matrix dispatching, concurrency control, and zero-fallback integrity rules.
+3. **Hamzad AI Gateway**: Serves as the audited execution layer with private key isolation, latency tracking, and model identity verification.
+4. **Raw Response Storage**: Captures byte-for-byte unparsed response bodies, headers, and token timings to `raw_responses.jsonl`.
+5. **Entity Parser & Normalizer**: Applies Persian/Arabic letter unification, boundary matching, and `do_not_confuse` token exclusions.
+6. **Metrics Engine**: Computes empirical mention rates, recommendation rates, citation presence, and regional cross-tabulations.
+7. **Integrity & Checksum Layer**: Writes canonical `manifest.json` and computes SHA-256 digests across all release files.
 
 ---
 
 ## 3. Sampling Dimensions & Matrix Design
 
-The `global-ai-answers-2026.1` benchmark dataset encompasses **34 localized prompts** across **7 categories**, **7 regions**, **9 languages**, and **4 provider models**, generating **136 model completions** and over **1,800 evaluated entity observation states**.
+The `global-ai-answers-2026.1` benchmark evaluates **34 localized prompts** across **7 categories**, **7 regions**, **9 languages**, and **4 provider models**, generating **136 model completions** and over **1,850 evaluated entity observation states**.
 
 ### 3.1 Human Concern Categories (7)
 | Category | Focus Area | Example Intent |
@@ -71,7 +85,6 @@ The `global-ai-answers-2026.1` benchmark dataset encompasses **34 localized prom
   - `hamzad_claude` (`anthropic/claude-3.5-sonnet`)
 
 ### 3.4 Multi-Type Entity Catalog (24 Entities)
-The entity catalog spans 5 distinct entity classifications:
 - **Companies & Cloud Providers**: Google, Microsoft, OpenAI, Anthropic, Apple, Amazon, Meta, NVIDIA, LinkedIn.
 - **Countries & Destinations**: Germany, Canada, United Arab Emirates, United States, Singapore, Australia.
 - **Technologies & Languages**: Python, Docker, PyTorch, ChatGPT.
@@ -80,59 +93,40 @@ The entity catalog spans 5 distinct entity classifications:
 
 ---
 
-## 4. Entity Extraction & Normalization Protocol
+## 4. Empirical Metrics Definitions & Formulations
 
-To eliminate false positives from common words and homonyms, the `ObservationParser` implements:
-1. **Unicode & Persian Character Normalization**: Unifies Arabic/Persian letter variations (`ی` vs `ي`, `ک` vs `ك`, half-spaces `\u200c`).
-2. **Boundary-Strict Token Scanning**: Prevents partial substring matching (e.g. distinguishing `Go` from `Google`).
-3. **Homonym Disambiguation (`do_not_confuse`)**: Filters out non-target contextual usages (e.g., distinguishing general "python snake" or common nouns from the programming ecosystem).
-4. **Context & Sentiment Extraction**: Retains 150-character surrounding context snippets for qualitative verification and sentiment classification.
+All metrics are strictly observational and descriptive. Normative terms such as *"winner"*, *"best"*, or *"most influential"* are banned.
 
----
-
-## 5. Metric Formulations
-
-### Mention Rate (MR)
-The percentage of queries in which an entity $e$ is observed at least once:
+### 4.1 Mention Rate (`mention_rate`)
+*Definition*: **Percentage of measured responses where an entity appeared.**
 $$\text{Mention Rate}(e) = \frac{\sum_{i=1}^N \mathbb{I}(e \in R_i)}{N}$$
+*Terminology*: "Highest observed mention rate", "Most frequently mentioned in sample".
 
-### First-Position Recommendation Rate (Top-1 Rate)
-The frequency with which an entity $e$ appears as the first mentioned entity in the response:
-$$\text{Top-1 Rate}(e) = \frac{\sum_{i=1}^N \mathbb{I}(\text{first\_entity}(R_i) = e)}{N}$$
+### 4.2 Recommendation Rate (`recommendation_rate`)
+*Definition*: **Percentage of responses where an entity was explicitly recommended.**
+$$\text{Recommendation Rate}(e) = \frac{\sum_{i=1}^N \mathbb{I}(e \text{ recommended in } R_i)}{N}$$
 
-### Share of Model Visibility (SOV)
-The proportion of total observed entity mentions attributed to entity $e$:
-$$\text{SOV}(e) = \frac{\text{Mentions}(e)}{\sum_{k \in \mathcal{E}} \text{Mentions}(k)}$$
+### 4.3 Citation Rate (`citation_rate`)
+*Definition*: **Percentage of answers containing identifiable source references.**
+$$\text{Citation Rate}(e) = \frac{\sum_{i=1}^N \mathbb{I}(\text{citations}(R_i) \cap \text{domains}(e) \neq \emptyset)}{N}$$
+
+### 4.4 Top-1 Recommendation Rate (`top1_rate`)
+*Definition*: **Percentage of responses where an entity appeared as the first recommended choice.**
+$$\text{Top-1 Rate}(e) = \frac{\sum_{i=1}^N \mathbb{I}(\text{first\_recommended}(R_i) = e)}{N}$$
 
 ---
 
-## 6. Cryptographic Integrity & Reproducibility
-
-Every dataset release bundle contains a `checksums.sha256` manifest guaranteeing bit-level reproducibility:
+## 5. Cryptographic Integrity & Verification
 
 ```bash
-# 1. Cryptographic Verification
+# Verify bit-for-bit SHA-256 package checksums
 geo-scope benchmark verify --dataset benchmark/releases/global-ai-answers-2026.1
 
-# 2. Complete Metric Reproduction
+# Recompute all metrics deterministically from raw observations
 geo-scope benchmark reproduce --dataset benchmark/releases/global-ai-answers-2026.1
 ```
 
-### Bundle Inventory
-- `manifest.json`: Full benchmark metadata, prompt/execution counts, and provider profiles.
-- `prompts.jsonl` / `prompts/`: Standardized prompt definitions with regional tagging.
-- `entities.json`: Entity catalog with aliases and disambiguation tokens.
-- `raw_responses.jsonl`: Raw unedited completions with HTTP latency and timestamps.
-- `observations.jsonl`: Extracted entity occurrences, token spans, and confidence scores.
-- `citations.jsonl`: Extracted web URLs and grounding domains.
-- `metrics.json`: Precomputed global, regional, category, and provider metrics.
-- `errors.jsonl`: Transparent audit log of transient errors or provider timeouts.
-- `checksums.sha256`: SHA-256 cryptographic signatures.
-
 ---
 
-## 7. Ethical Constraints & Transparency
-
-1. **Zero Secret Leakage**: No private keys or internal infrastructure URLs are stored in public artifacts.
-2. **Temporal Validity**: Observations reflect model behavior as of September 2026.
-3. **Open Collaboration**: Researchers are invited to propose localized prompt sets and additional entity registries via standard Pull Requests.
+## 6. Limitations Summary
+For the full limitations disclosure, see [Research Limitations](global-ai-answers-limitations.md).

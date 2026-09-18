@@ -90,40 +90,67 @@ class BenchmarkReproducer:
         expected_metrics_raw = json.loads((path / "metrics.json").read_text(encoding="utf-8"))
 
         # 4. Recompute Metrics from Raw Records
-        recomputed = self.calculator.compute(
-            prompts=prompts,
-            observations=observations,
-            citations=citations,
-            brands=brands,
-            providers=providers,
-            dataset_id=dataset_id,
-            execution_mode=exec_mode,
-            research_status=research_status,
-        )
-
-        recomp_dict = recomputed.model_dump()
-
-        # 5. Compare with stored metrics.json
         differences = []
+        is_global_schema = "entities" in expected_metrics_raw and "summary" in expected_metrics_raw
+        recomp_dict = {}
 
-        for cfield in ["total_prompts", "total_observations", "successful_observations", "failed_observations"]:
-            if recomp_dict.get(cfield) != expected_metrics_raw.get(cfield):
-                differences.append(f"{cfield} mismatch: expected {expected_metrics_raw.get(cfield)}, got {recomp_dict.get(cfield)}")
+        if is_global_schema:
+            # Recompute global multi-type entity benchmark metrics
+            exp_summary = expected_metrics_raw.get("summary", {})
+            total_completions = len(set((o.get("prompt_id"), o.get("provider")) for o in observations if o.get("prompt_id") and o.get("provider")))
+            if total_completions == 0:
+                total_completions = len(prompts) * max(len(providers), 1)
 
-        exp_brands = {b["brand"]: b for b in expected_metrics_raw.get("brands", [])}
-        for act_b in recomp_dict.get("brands", []):
-            bname = act_b["brand"]
-            if bname not in exp_brands:
-                differences.append(f"Unexpected brand {bname} in recomputed metrics")
-                continue
-            exp_b = exp_brands[bname]
-            for mkey in ["mention_rate", "top1_rate", "share_of_model"]:
-                exp_v = exp_b.get(mkey, {}).get("value")
-                act_v = act_b.get(mkey, {}).get("value")
-                if exp_v is None and act_v is None:
+            exp_entities = expected_metrics_raw.get("entities", {})
+            for e in brands:
+                if isinstance(e, dict):
+                    eid = e.get("id") or e.get("name")
+                    ename = e.get("name") or (e.get("names")[0] if e.get("names") else eid)
+                else:
+                    eid = str(e)
+                    ename = str(e)
+
+                e_obs = [o for o in observations if o.get("entity_id") == eid or o.get("entity") == ename or o.get("brand") == ename]
+                m_count = sum(1 for o in e_obs if o.get("mentioned") or o.get("brand_mentioned"))
+                r_count = sum(1 for o in e_obs if o.get("recommended") or o.get("is_top1"))
+
+                if eid in exp_entities:
+                    exp_e = exp_entities[eid]
+                    exp_m = exp_e.get("mention_count", exp_e.get("mentions_count", 0))
+                    if m_count != exp_m:
+                        differences.append(f"Entity {eid} mentions mismatch: expected {exp_m}, recomputed {m_count}")
+                recomp_dict[eid] = {"mention_count": m_count, "recommendation_count": r_count}
+        else:
+            recomputed = self.calculator.compute(
+                prompts=prompts,
+                observations=observations,
+                citations=citations,
+                brands=brands,
+                providers=providers,
+                dataset_id=dataset_id,
+                execution_mode=exec_mode,
+                research_status=research_status,
+            )
+            recomp_dict = recomputed.model_dump()
+
+            for cfield in ["total_prompts", "total_observations", "successful_observations", "failed_observations"]:
+                if recomp_dict.get(cfield) != expected_metrics_raw.get(cfield):
+                    differences.append(f"{cfield} mismatch: expected {expected_metrics_raw.get(cfield)}, got {recomp_dict.get(cfield)}")
+
+            exp_brands = {b["brand"]: b for b in expected_metrics_raw.get("brands", [])}
+            for act_b in recomp_dict.get("brands", []):
+                bname = act_b["brand"]
+                if bname not in exp_brands:
+                    differences.append(f"Unexpected brand {bname} in recomputed metrics")
                     continue
-                if exp_v is None or act_v is None or abs(exp_v - act_v) > self.tolerance:
-                    differences.append(f"{bname} {mkey} difference: expected {exp_v}, recomputed {act_v}")
+                exp_b = exp_brands[bname]
+                for mkey in ["mention_rate", "top1_rate", "share_of_model"]:
+                    exp_v = exp_b.get(mkey, {}).get("value")
+                    act_v = act_b.get(mkey, {}).get("value")
+                    if exp_v is None and act_v is None:
+                        continue
+                    if exp_v is None or act_v is None or abs(exp_v - act_v) > self.tolerance:
+                        differences.append(f"{bname} {mkey} difference: expected {exp_v}, recomputed {act_v}")
 
         metrics_matched = len(differences) == 0
         success = chk_res["valid"] and metrics_matched
@@ -140,7 +167,7 @@ class BenchmarkReproducer:
             f"• SHA-256 Checksums : {chk_str}",
             f"• Metric Math Check : {math_str}",
             f"• Prompts / Obs     : {len(prompts)} prompts / {len(observations)} observations",
-            f"• Brands Evaluated  : {', '.join([(b.get('name', '') if isinstance(b, dict) else str(b)) for b in brands])}",
+            f"• Entities Evaluated: {', '.join([((b.get('name') or (b.get('names')[0] if b.get('names') else b.get('id'))) if isinstance(b, dict) else str(b)) for b in brands])}",
             "-" * 70,
         ]
 
