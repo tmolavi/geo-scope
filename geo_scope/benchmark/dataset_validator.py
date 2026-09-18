@@ -63,7 +63,7 @@ def validate_benchmark_dataset(dataset_dir: str | Path) -> Dict[str, Any]:
                 for idx, line in enumerate(f, 1):
                     if line.strip():
                         p = json.loads(line)
-                        if not any(p.get(k) for k in ["prompt", "query", "question", "text"]):
+                        if not any(p.get(k) for k in ["prompt", "query", "question", "text", "prompt_text"]):
                             prompts_valid = False
                             prompt_err = f"Line {idx} missing prompt text"
                             break

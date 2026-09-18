@@ -1,0 +1,469 @@
+[
+  {
+    "id": "germany",
+    "type": "country",
+    "names": [
+      "Germany",
+      "آلمان",
+      "Deutschland",
+      "Almanya"
+    ],
+    "aliases": [
+      "Federal Republic of Germany"
+    ],
+    "domains": [
+      "make-it-in-germany.com",
+      "deutschland.de"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "united_kingdom",
+    "type": "country",
+    "names": [
+      "United Kingdom",
+      "UK",
+      "انگلستان",
+      "بریتانیا",
+      "İngiltere"
+    ],
+    "aliases": [
+      "Britain",
+      "Great Britain"
+    ],
+    "domains": [
+      "gov.uk"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "united_states",
+    "type": "country",
+    "names": [
+      "United States",
+      "USA",
+      "ایالات متحده",
+      "آمریکا",
+      "ABD"
+    ],
+    "aliases": [
+      "America",
+      "US"
+    ],
+    "domains": [
+      "usa.gov"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "canada",
+    "type": "country",
+    "names": [
+      "Canada",
+      "کانادا",
+      "Kanada"
+    ],
+    "aliases": [],
+    "domains": [
+      "canada.ca"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "united_arab_emirates",
+    "type": "country",
+    "names": [
+      "United Arab Emirates",
+      "UAE",
+      "امارات",
+      "الإمارات",
+      "Birleşik Arap Emirlikleri"
+    ],
+    "aliases": [
+      "Dubai",
+      "Abu Dhabi"
+    ],
+    "domains": [
+      "u.ae"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "saudi_arabia",
+    "type": "country",
+    "names": [
+      "Saudi Arabia",
+      "عربستان",
+      "السعودية",
+      "Suudi Arabistan"
+    ],
+    "aliases": [
+      "KSA"
+    ],
+    "domains": [
+      "my.gov.sa"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "japan",
+    "type": "country",
+    "names": [
+      "Japan",
+      "ژاپن",
+      "日本",
+      "Japonya"
+    ],
+    "aliases": [],
+    "domains": [
+      "japan.go.jp"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "singapore",
+    "type": "country",
+    "names": [
+      "Singapore",
+      "سنگاپور",
+      "Singapur"
+    ],
+    "aliases": [],
+    "domains": [
+      "gov.sg"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "india",
+    "type": "country",
+    "names": [
+      "India",
+      "هند",
+      "भारत",
+      "Hindistan"
+    ],
+    "aliases": [],
+    "domains": [
+      "india.gov.in"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "brazil",
+    "type": "country",
+    "names": [
+      "Brazil",
+      "برزیل",
+      "Brasil"
+    ],
+    "aliases": [],
+    "domains": [
+      "gov.br"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "google",
+    "type": "company",
+    "names": [
+      "Google",
+      "گوگل"
+    ],
+    "aliases": [
+      "Alphabet"
+    ],
+    "domains": [
+      "google.com",
+      "deepmind.google"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "microsoft",
+    "type": "company",
+    "names": [
+      "Microsoft",
+      "مایکروسافت"
+    ],
+    "aliases": [
+      "MSFT"
+    ],
+    "domains": [
+      "microsoft.com",
+      "azure.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "openai",
+    "type": "company",
+    "names": [
+      "OpenAI",
+      "اوپن‌ای‌آی"
+    ],
+    "aliases": [],
+    "domains": [
+      "openai.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "anthropic",
+    "type": "company",
+    "names": [
+      "Anthropic",
+      "انتروپیک"
+    ],
+    "aliases": [],
+    "domains": [
+      "anthropic.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "nvidia",
+    "type": "company",
+    "names": [
+      "NVIDIA",
+      "ان‌ویدیا"
+    ],
+    "aliases": [],
+    "domains": [
+      "nvidia.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "stripe",
+    "type": "company",
+    "names": [
+      "Stripe",
+      "استرایپ"
+    ],
+    "aliases": [
+      "Stripe Atlas"
+    ],
+    "domains": [
+      "stripe.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "amazon",
+    "type": "company",
+    "names": [
+      "Amazon",
+      "آمازون",
+      "AWS"
+    ],
+    "aliases": [
+      "Amazon Web Services"
+    ],
+    "domains": [
+      "aws.amazon.com",
+      "amazon.com"
+    ],
+    "do_not_confuse": [
+      "Amazon rainforest",
+      "Amazon river"
+    ]
+  },
+  {
+    "id": "python",
+    "type": "technology",
+    "names": [
+      "Python",
+      "پایتون"
+    ],
+    "aliases": [
+      "py"
+    ],
+    "domains": [
+      "python.org"
+    ],
+    "do_not_confuse": [
+      "python snake",
+      "ball python"
+    ]
+  },
+  {
+    "id": "docker",
+    "type": "technology",
+    "names": [
+      "Docker",
+      "داکر"
+    ],
+    "aliases": [],
+    "domains": [
+      "docker.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "pytorch",
+    "type": "technology",
+    "names": [
+      "PyTorch",
+      "پای‌تورچ"
+    ],
+    "aliases": [
+      "torch"
+    ],
+    "domains": [
+      "pytorch.org"
+    ],
+    "do_not_confuse": [
+      "flashlight torch"
+    ]
+  },
+  {
+    "id": "chatgpt",
+    "type": "technology",
+    "names": [
+      "ChatGPT",
+      "چت‌جی‌پی‌تی"
+    ],
+    "aliases": [
+      "GPT-4",
+      "GPT-4o"
+    ],
+    "domains": [
+      "chatgpt.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "langchain",
+    "type": "technology",
+    "names": [
+      "LangChain",
+      "LangGraph"
+    ],
+    "aliases": [],
+    "domains": [
+      "langchain.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "crewai",
+    "type": "technology",
+    "names": [
+      "CrewAI",
+      "Crew AI"
+    ],
+    "aliases": [],
+    "domains": [
+      "crewai.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "github",
+    "type": "community",
+    "names": [
+      "GitHub",
+      "گیت‌هاب"
+    ],
+    "aliases": [],
+    "domains": [
+      "github.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "coursera",
+    "type": "community",
+    "names": [
+      "Coursera",
+      "کورسرا"
+    ],
+    "aliases": [],
+    "domains": [
+      "coursera.org"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "edx",
+    "type": "community",
+    "names": [
+      "edX",
+      "اداکس"
+    ],
+    "aliases": [],
+    "domains": [
+      "edx.org"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "kaggle",
+    "type": "community",
+    "names": [
+      "Kaggle",
+      "کگل"
+    ],
+    "aliases": [],
+    "domains": [
+      "kaggle.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "linkedin",
+    "type": "community",
+    "names": [
+      "LinkedIn",
+      "لینکدین"
+    ],
+    "aliases": [],
+    "domains": [
+      "linkedin.com"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "mit",
+    "type": "university",
+    "names": [
+      "MIT",
+      "Massachusetts Institute of Technology",
+      "ام‌آی‌تی"
+    ],
+    "aliases": [],
+    "domains": [
+      "mit.edu"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "stanford",
+    "type": "university",
+    "names": [
+      "Stanford",
+      "Stanford University",
+      "استنفورد"
+    ],
+    "aliases": [],
+    "domains": [
+      "stanford.edu"
+    ],
+    "do_not_confuse": []
+  },
+  {
+    "id": "oxford",
+    "type": "university",
+    "names": [
+      "Oxford",
+      "University of Oxford",
+      "آکسفورد"
+    ],
+    "aliases": [],
+    "domains": [
+      "ox.ac.uk"
+    ],
+    "do_not_confuse": []
+  }
+]

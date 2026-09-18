@@ -1,0 +1,1075 @@
+{
+  "benchmark": "Global AI Answers Benchmark 2026.2 Pilot",
+  "dataset_version": "global-ai-answers-2026.2-pilot",
+  "execution_mode": "live",
+  "research_status": "peer_review_ready",
+  "timestamp_utc": "2026-09-18T23:51:52.564540+00:00",
+  "summary": {
+    "total_prompts": 100,
+    "observed_prompts": 55,
+    "research_prompts": 45,
+    "total_providers": 4,
+    "total_completions": 202,
+    "total_observations": 6262,
+    "total_citations": 0,
+    "total_entities_tracked": 31,
+    "countries_count": 10,
+    "categories_count": 5,
+    "languages_count": 8,
+    "errors_count": 198
+  },
+  "entities": {
+    "germany": {
+      "entity": "Germany",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 25,
+      "mention_rate_pct": 12.38,
+      "recommendation_count": 25,
+      "recommendation_rate_pct": 12.38,
+      "top1_count": 25,
+      "top1_rate_pct": 12.38,
+      "citation_count": 0,
+      "observed_questions_mentions": 13,
+      "observed_mention_rate_pct": 11.71,
+      "research_questions_mentions": 12,
+      "research_mention_rate_pct": 13.19,
+      "answer_engine_mentions": 8,
+      "llm_mentions": 17
+    },
+    "united_kingdom": {
+      "entity": "United Kingdom",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 24,
+      "mention_rate_pct": 11.88,
+      "recommendation_count": 24,
+      "recommendation_rate_pct": 11.88,
+      "top1_count": 24,
+      "top1_rate_pct": 11.88,
+      "citation_count": 0,
+      "observed_questions_mentions": 18,
+      "observed_mention_rate_pct": 16.22,
+      "research_questions_mentions": 6,
+      "research_mention_rate_pct": 6.59,
+      "answer_engine_mentions": 9,
+      "llm_mentions": 15
+    },
+    "united_states": {
+      "entity": "United States",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 15,
+      "mention_rate_pct": 7.43,
+      "recommendation_count": 15,
+      "recommendation_rate_pct": 7.43,
+      "top1_count": 15,
+      "top1_rate_pct": 7.43,
+      "citation_count": 0,
+      "observed_questions_mentions": 6,
+      "observed_mention_rate_pct": 5.41,
+      "research_questions_mentions": 9,
+      "research_mention_rate_pct": 9.89,
+      "answer_engine_mentions": 5,
+      "llm_mentions": 10
+    },
+    "canada": {
+      "entity": "Canada",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 14,
+      "mention_rate_pct": 6.93,
+      "recommendation_count": 14,
+      "recommendation_rate_pct": 6.93,
+      "top1_count": 14,
+      "top1_rate_pct": 6.93,
+      "citation_count": 0,
+      "observed_questions_mentions": 8,
+      "observed_mention_rate_pct": 7.21,
+      "research_questions_mentions": 6,
+      "research_mention_rate_pct": 6.59,
+      "answer_engine_mentions": 4,
+      "llm_mentions": 10
+    },
+    "united_arab_emirates": {
+      "entity": "United Arab Emirates",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 6,
+      "mention_rate_pct": 2.97,
+      "recommendation_count": 6,
+      "recommendation_rate_pct": 2.97,
+      "top1_count": 6,
+      "top1_rate_pct": 2.97,
+      "citation_count": 0,
+      "observed_questions_mentions": 0,
+      "observed_mention_rate_pct": 0.0,
+      "research_questions_mentions": 6,
+      "research_mention_rate_pct": 6.59,
+      "answer_engine_mentions": 2,
+      "llm_mentions": 4
+    },
+    "saudi_arabia": {
+      "entity": "Saudi Arabia",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 12,
+      "mention_rate_pct": 5.94,
+      "recommendation_count": 12,
+      "recommendation_rate_pct": 5.94,
+      "top1_count": 12,
+      "top1_rate_pct": 5.94,
+      "citation_count": 0,
+      "observed_questions_mentions": 6,
+      "observed_mention_rate_pct": 5.41,
+      "research_questions_mentions": 6,
+      "research_mention_rate_pct": 6.59,
+      "answer_engine_mentions": 3,
+      "llm_mentions": 9
+    },
+    "japan": {
+      "entity": "Japan",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 2,
+      "mention_rate_pct": 0.99,
+      "recommendation_count": 2,
+      "recommendation_rate_pct": 0.99,
+      "top1_count": 2,
+      "top1_rate_pct": 0.99,
+      "citation_count": 0,
+      "observed_questions_mentions": 1,
+      "observed_mention_rate_pct": 0.9,
+      "research_questions_mentions": 1,
+      "research_mention_rate_pct": 1.1,
+      "answer_engine_mentions": 2,
+      "llm_mentions": 0
+    },
+    "singapore": {
+      "entity": "Singapore",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 3,
+      "mention_rate_pct": 1.49,
+      "recommendation_count": 3,
+      "recommendation_rate_pct": 1.49,
+      "top1_count": 3,
+      "top1_rate_pct": 1.49,
+      "citation_count": 0,
+      "observed_questions_mentions": 2,
+      "observed_mention_rate_pct": 1.8,
+      "research_questions_mentions": 1,
+      "research_mention_rate_pct": 1.1,
+      "answer_engine_mentions": 0,
+      "llm_mentions": 3
+    },
+    "india": {
+      "entity": "India",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 10,
+      "mention_rate_pct": 4.95,
+      "recommendation_count": 10,
+      "recommendation_rate_pct": 4.95,
+      "top1_count": 10,
+      "top1_rate_pct": 4.95,
+      "citation_count": 0,
+      "observed_questions_mentions": 9,
+      "observed_mention_rate_pct": 8.11,
+      "research_questions_mentions": 1,
+      "research_mention_rate_pct": 1.1,
+      "answer_engine_mentions": 1,
+      "llm_mentions": 9
+    },
+    "brazil": {
+      "entity": "Brazil",
+      "entity_type": "country",
+      "total_observations": 202,
+      "mention_count": 8,
+      "mention_rate_pct": 3.96,
+      "recommendation_count": 8,
+      "recommendation_rate_pct": 3.96,
+      "top1_count": 8,
+      "top1_rate_pct": 3.96,
+      "citation_count": 0,
+      "observed_questions_mentions": 6,
+      "observed_mention_rate_pct": 5.41,
+      "research_questions_mentions": 2,
+      "research_mention_rate_pct": 2.2,
+      "answer_engine_mentions": 2,
+      "llm_mentions": 6
+    },
+    "google": {
+      "entity": "Google",
+      "entity_type": "company",
+      "total_observations": 202,
+      "mention_count": 49,
+      "mention_rate_pct": 24.26,
+      "recommendation_count": 49,
+      "recommendation_rate_pct": 24.26,
+      "top1_count": 49,
+      "top1_rate_pct": 24.26,
+      "citation_count": 0,
+      "observed_questions_mentions": 35,
+      "observed_mention_rate_pct": 31.53,
+      "research_questions_mentions": 14,
+      "research_mention_rate_pct": 15.38,
+      "answer_engine_mentions": 12,
+      "llm_mentions": 37
+    },
+    "microsoft": {
+      "entity": "Microsoft",
+      "entity_type": "company",
+      "total_observations": 202,
+      "mention_count": 29,
+      "mention_rate_pct": 14.36,
+      "recommendation_count": 29,
+      "recommendation_rate_pct": 14.36,
+      "top1_count": 29,
+      "top1_rate_pct": 14.36,
+      "citation_count": 0,
+      "observed_questions_mentions": 20,
+      "observed_mention_rate_pct": 18.02,
+      "research_questions_mentions": 9,
+      "research_mention_rate_pct": 9.89,
+      "answer_engine_mentions": 11,
+      "llm_mentions": 18
+    },
+    "openai": {
+      "entity": "OpenAI",
+      "entity_type": "company",
+      "total_observations": 202,
+      "mention_count": 14,
+      "mention_rate_pct": 6.93,
+      "recommendation_count": 14,
+      "recommendation_rate_pct": 6.93,
+      "top1_count": 14,
+      "top1_rate_pct": 6.93,
+      "citation_count": 0,
+      "observed_questions_mentions": 12,
+      "observed_mention_rate_pct": 10.81,
+      "research_questions_mentions": 2,
+      "research_mention_rate_pct": 2.2,
+      "answer_engine_mentions": 5,
+      "llm_mentions": 9
+    },
+    "anthropic": {
+      "entity": "Anthropic",
+      "entity_type": "company",
+      "total_observations": 202,
+      "mention_count": 7,
+      "mention_rate_pct": 3.47,
+      "recommendation_count": 7,
+      "recommendation_rate_pct": 3.47,
+      "top1_count": 7,
+      "top1_rate_pct": 3.47,
+      "citation_count": 0,
+      "observed_questions_mentions": 7,
+      "observed_mention_rate_pct": 6.31,
+      "research_questions_mentions": 0,
+      "research_mention_rate_pct": 0.0,
+      "answer_engine_mentions": 3,
+      "llm_mentions": 4
+    },
+    "nvidia": {
+      "entity": "NVIDIA",
+      "entity_type": "company",
+      "total_observations": 202,
+      "mention_count": 3,
+      "mention_rate_pct": 1.49,
+      "recommendation_count": 3,
+      "recommendation_rate_pct": 1.49,
+      "top1_count": 3,
+      "top1_rate_pct": 1.49,
+      "citation_count": 0,
+      "observed_questions_mentions": 1,
+      "observed_mention_rate_pct": 0.9,
+      "research_questions_mentions": 2,
+      "research_mention_rate_pct": 2.2,
+      "answer_engine_mentions": 1,
+      "llm_mentions": 2
+    },
+    "stripe": {
+      "entity": "Stripe",
+      "entity_type": "company",
+      "total_observations": 202,
+      "mention_count": 14,
+      "mention_rate_pct": 6.93,
+      "recommendation_count": 14,
+      "recommendation_rate_pct": 6.93,
+      "top1_count": 14,
+      "top1_rate_pct": 6.93,
+      "citation_count": 0,
+      "observed_questions_mentions": 6,
+      "observed_mention_rate_pct": 5.41,
+      "research_questions_mentions": 8,
+      "research_mention_rate_pct": 8.79,
+      "answer_engine_mentions": 5,
+      "llm_mentions": 9
+    },
+    "amazon": {
+      "entity": "Amazon",
+      "entity_type": "company",
+      "total_observations": 202,
+      "mention_count": 47,
+      "mention_rate_pct": 23.27,
+      "recommendation_count": 47,
+      "recommendation_rate_pct": 23.27,
+      "top1_count": 47,
+      "top1_rate_pct": 23.27,
+      "citation_count": 0,
+      "observed_questions_mentions": 35,
+      "observed_mention_rate_pct": 31.53,
+      "research_questions_mentions": 12,
+      "research_mention_rate_pct": 13.19,
+      "answer_engine_mentions": 16,
+      "llm_mentions": 31
+    },
+    "python": {
+      "entity": "Python",
+      "entity_type": "technology",
+      "total_observations": 202,
+      "mention_count": 39,
+      "mention_rate_pct": 19.31,
+      "recommendation_count": 39,
+      "recommendation_rate_pct": 19.31,
+      "top1_count": 39,
+      "top1_rate_pct": 19.31,
+      "citation_count": 0,
+      "observed_questions_mentions": 24,
+      "observed_mention_rate_pct": 21.62,
+      "research_questions_mentions": 15,
+      "research_mention_rate_pct": 16.48,
+      "answer_engine_mentions": 11,
+      "llm_mentions": 28
+    },
+    "docker": {
+      "entity": "Docker",
+      "entity_type": "technology",
+      "total_observations": 202,
+      "mention_count": 12,
+      "mention_rate_pct": 5.94,
+      "recommendation_count": 12,
+      "recommendation_rate_pct": 5.94,
+      "top1_count": 12,
+      "top1_rate_pct": 5.94,
+      "citation_count": 0,
+      "observed_questions_mentions": 7,
+      "observed_mention_rate_pct": 6.31,
+      "research_questions_mentions": 5,
+      "research_mention_rate_pct": 5.49,
+      "answer_engine_mentions": 3,
+      "llm_mentions": 9
+    },
+    "pytorch": {
+      "entity": "PyTorch",
+      "entity_type": "technology",
+      "total_observations": 202,
+      "mention_count": 13,
+      "mention_rate_pct": 6.44,
+      "recommendation_count": 13,
+      "recommendation_rate_pct": 6.44,
+      "top1_count": 13,
+      "top1_rate_pct": 6.44,
+      "citation_count": 0,
+      "observed_questions_mentions": 9,
+      "observed_mention_rate_pct": 8.11,
+      "research_questions_mentions": 4,
+      "research_mention_rate_pct": 4.4,
+      "answer_engine_mentions": 5,
+      "llm_mentions": 8
+    },
+    "chatgpt": {
+      "entity": "ChatGPT",
+      "entity_type": "technology",
+      "total_observations": 202,
+      "mention_count": 3,
+      "mention_rate_pct": 1.49,
+      "recommendation_count": 3,
+      "recommendation_rate_pct": 1.49,
+      "top1_count": 3,
+      "top1_rate_pct": 1.49,
+      "citation_count": 0,
+      "observed_questions_mentions": 3,
+      "observed_mention_rate_pct": 2.7,
+      "research_questions_mentions": 0,
+      "research_mention_rate_pct": 0.0,
+      "answer_engine_mentions": 0,
+      "llm_mentions": 3
+    },
+    "langchain": {
+      "entity": "LangChain",
+      "entity_type": "technology",
+      "total_observations": 202,
+      "mention_count": 15,
+      "mention_rate_pct": 7.43,
+      "recommendation_count": 15,
+      "recommendation_rate_pct": 7.43,
+      "top1_count": 15,
+      "top1_rate_pct": 7.43,
+      "citation_count": 0,
+      "observed_questions_mentions": 13,
+      "observed_mention_rate_pct": 11.71,
+      "research_questions_mentions": 2,
+      "research_mention_rate_pct": 2.2,
+      "answer_engine_mentions": 10,
+      "llm_mentions": 5
+    },
+    "crewai": {
+      "entity": "CrewAI",
+      "entity_type": "technology",
+      "total_observations": 202,
+      "mention_count": 3,
+      "mention_rate_pct": 1.49,
+      "recommendation_count": 3,
+      "recommendation_rate_pct": 1.49,
+      "top1_count": 3,
+      "top1_rate_pct": 1.49,
+      "citation_count": 0,
+      "observed_questions_mentions": 3,
+      "observed_mention_rate_pct": 2.7,
+      "research_questions_mentions": 0,
+      "research_mention_rate_pct": 0.0,
+      "answer_engine_mentions": 1,
+      "llm_mentions": 2
+    },
+    "github": {
+      "entity": "GitHub",
+      "entity_type": "community",
+      "total_observations": 202,
+      "mention_count": 26,
+      "mention_rate_pct": 12.87,
+      "recommendation_count": 26,
+      "recommendation_rate_pct": 12.87,
+      "top1_count": 26,
+      "top1_rate_pct": 12.87,
+      "citation_count": 0,
+      "observed_questions_mentions": 17,
+      "observed_mention_rate_pct": 15.32,
+      "research_questions_mentions": 9,
+      "research_mention_rate_pct": 9.89,
+      "answer_engine_mentions": 9,
+      "llm_mentions": 17
+    },
+    "coursera": {
+      "entity": "Coursera",
+      "entity_type": "community",
+      "total_observations": 202,
+      "mention_count": 15,
+      "mention_rate_pct": 7.43,
+      "recommendation_count": 15,
+      "recommendation_rate_pct": 7.43,
+      "top1_count": 15,
+      "top1_rate_pct": 7.43,
+      "citation_count": 0,
+      "observed_questions_mentions": 3,
+      "observed_mention_rate_pct": 2.7,
+      "research_questions_mentions": 12,
+      "research_mention_rate_pct": 13.19,
+      "answer_engine_mentions": 3,
+      "llm_mentions": 12
+    },
+    "edx": {
+      "entity": "edX",
+      "entity_type": "community",
+      "total_observations": 202,
+      "mention_count": 10,
+      "mention_rate_pct": 4.95,
+      "recommendation_count": 10,
+      "recommendation_rate_pct": 4.95,
+      "top1_count": 10,
+      "top1_rate_pct": 4.95,
+      "citation_count": 0,
+      "observed_questions_mentions": 2,
+      "observed_mention_rate_pct": 1.8,
+      "research_questions_mentions": 8,
+      "research_mention_rate_pct": 8.79,
+      "answer_engine_mentions": 2,
+      "llm_mentions": 8
+    },
+    "kaggle": {
+      "entity": "Kaggle",
+      "entity_type": "community",
+      "total_observations": 202,
+      "mention_count": 5,
+      "mention_rate_pct": 2.48,
+      "recommendation_count": 5,
+      "recommendation_rate_pct": 2.48,
+      "top1_count": 5,
+      "top1_rate_pct": 2.48,
+      "citation_count": 0,
+      "observed_questions_mentions": 0,
+      "observed_mention_rate_pct": 0.0,
+      "research_questions_mentions": 5,
+      "research_mention_rate_pct": 5.49,
+      "answer_engine_mentions": 2,
+      "llm_mentions": 3
+    },
+    "linkedin": {
+      "entity": "LinkedIn",
+      "entity_type": "community",
+      "total_observations": 202,
+      "mention_count": 26,
+      "mention_rate_pct": 12.87,
+      "recommendation_count": 26,
+      "recommendation_rate_pct": 12.87,
+      "top1_count": 26,
+      "top1_rate_pct": 12.87,
+      "citation_count": 0,
+      "observed_questions_mentions": 13,
+      "observed_mention_rate_pct": 11.71,
+      "research_questions_mentions": 13,
+      "research_mention_rate_pct": 14.29,
+      "answer_engine_mentions": 9,
+      "llm_mentions": 17
+    },
+    "mit": {
+      "entity": "MIT",
+      "entity_type": "university",
+      "total_observations": 202,
+      "mention_count": 25,
+      "mention_rate_pct": 12.38,
+      "recommendation_count": 25,
+      "recommendation_rate_pct": 12.38,
+      "top1_count": 25,
+      "top1_rate_pct": 12.38,
+      "citation_count": 0,
+      "observed_questions_mentions": 10,
+      "observed_mention_rate_pct": 9.01,
+      "research_questions_mentions": 15,
+      "research_mention_rate_pct": 16.48,
+      "answer_engine_mentions": 7,
+      "llm_mentions": 18
+    },
+    "stanford": {
+      "entity": "Stanford",
+      "entity_type": "university",
+      "total_observations": 202,
+      "mention_count": 6,
+      "mention_rate_pct": 2.97,
+      "recommendation_count": 6,
+      "recommendation_rate_pct": 2.97,
+      "top1_count": 6,
+      "top1_rate_pct": 2.97,
+      "citation_count": 0,
+      "observed_questions_mentions": 0,
+      "observed_mention_rate_pct": 0.0,
+      "research_questions_mentions": 6,
+      "research_mention_rate_pct": 6.59,
+      "answer_engine_mentions": 2,
+      "llm_mentions": 4
+    },
+    "oxford": {
+      "entity": "Oxford",
+      "entity_type": "university",
+      "total_observations": 202,
+      "mention_count": 0,
+      "mention_rate_pct": 0.0,
+      "recommendation_count": 0,
+      "recommendation_rate_pct": 0.0,
+      "top1_count": 0,
+      "top1_rate_pct": 0.0,
+      "citation_count": 0,
+      "observed_questions_mentions": 0,
+      "observed_mention_rate_pct": 0.0,
+      "research_questions_mentions": 0,
+      "research_mention_rate_pct": 0.0,
+      "answer_engine_mentions": 0,
+      "llm_mentions": 0
+    }
+  },
+  "country_analysis": {
+    "Brazil": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "Brazil",
+          8
+        ],
+        [
+          "Google",
+          7
+        ],
+        [
+          "Amazon",
+          5
+        ],
+        [
+          "Python",
+          4
+        ],
+        [
+          "GitHub",
+          3
+        ]
+      ]
+    },
+    "Germany": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "MIT",
+          17
+        ],
+        [
+          "Germany",
+          11
+        ],
+        [
+          "Microsoft",
+          7
+        ],
+        [
+          "Amazon",
+          5
+        ],
+        [
+          "Python",
+          4
+        ]
+      ]
+    },
+    "India": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "LinkedIn",
+          9
+        ],
+        [
+          "India",
+          9
+        ],
+        [
+          "Amazon",
+          7
+        ],
+        [
+          "Google",
+          6
+        ],
+        [
+          "Python",
+          6
+        ]
+      ]
+    },
+    "Iran": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "Python",
+          7
+        ],
+        [
+          "LinkedIn",
+          7
+        ],
+        [
+          "PyTorch",
+          5
+        ],
+        [
+          "Amazon",
+          5
+        ],
+        [
+          "Germany",
+          5
+        ]
+      ]
+    },
+    "Japan": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "Google",
+          5
+        ],
+        [
+          "Microsoft",
+          5
+        ],
+        [
+          "Amazon",
+          5
+        ],
+        [
+          "LangChain",
+          4
+        ],
+        [
+          "Japan",
+          2
+        ]
+      ]
+    },
+    "Nigeria": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "United Kingdom",
+          6
+        ],
+        [
+          "Google",
+          5
+        ],
+        [
+          "Stripe",
+          5
+        ],
+        [
+          "Python",
+          4
+        ],
+        [
+          "Germany",
+          4
+        ]
+      ]
+    },
+    "Saudi Arabia": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "Saudi Arabia",
+          12
+        ],
+        [
+          "United Arab Emirates",
+          6
+        ],
+        [
+          "Google",
+          6
+        ],
+        [
+          "Amazon",
+          4
+        ],
+        [
+          "LinkedIn",
+          3
+        ]
+      ]
+    },
+    "Turkey": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "GitHub",
+          6
+        ],
+        [
+          "Python",
+          5
+        ],
+        [
+          "Amazon",
+          3
+        ],
+        [
+          "United States",
+          3
+        ],
+        [
+          "Coursera",
+          3
+        ]
+      ]
+    },
+    "United Kingdom": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "United Kingdom",
+          13
+        ],
+        [
+          "Google",
+          8
+        ],
+        [
+          "Amazon",
+          8
+        ],
+        [
+          "LinkedIn",
+          5
+        ],
+        [
+          "Python",
+          4
+        ]
+      ]
+    },
+    "United States": {
+      "prompts_count": 10,
+      "top_mentioned_entities": [
+        [
+          "LangChain",
+          5
+        ],
+        [
+          "OpenAI",
+          4
+        ],
+        [
+          "Amazon",
+          3
+        ],
+        [
+          "CrewAI",
+          3
+        ],
+        [
+          "Canada",
+          3
+        ]
+      ]
+    }
+  },
+  "category_analysis": {
+    "ai_adoption": {
+      "prompts_count": 20,
+      "top_mentioned_entities": [
+        [
+          "Microsoft",
+          10
+        ],
+        [
+          "Google",
+          10
+        ],
+        [
+          "OpenAI",
+          8
+        ],
+        [
+          "Amazon",
+          6
+        ],
+        [
+          "LangChain",
+          6
+        ]
+      ]
+    },
+    "career_migration": {
+      "prompts_count": 20,
+      "top_mentioned_entities": [
+        [
+          "Germany",
+          15
+        ],
+        [
+          "Canada",
+          13
+        ],
+        [
+          "United Kingdom",
+          11
+        ],
+        [
+          "United States",
+          8
+        ],
+        [
+          "Singapore",
+          3
+        ]
+      ]
+    },
+    "education_choices": {
+      "prompts_count": 20,
+      "top_mentioned_entities": [
+        [
+          "Google",
+          14
+        ],
+        [
+          "GitHub",
+          11
+        ],
+        [
+          "Coursera",
+          11
+        ],
+        [
+          "MIT",
+          11
+        ],
+        [
+          "Amazon",
+          9
+        ]
+      ]
+    },
+    "entrepreneurship_business": {
+      "prompts_count": 20,
+      "top_mentioned_entities": [
+        [
+          "LinkedIn",
+          14
+        ],
+        [
+          "Stripe",
+          10
+        ],
+        [
+          "Google",
+          8
+        ],
+        [
+          "United Kingdom",
+          5
+        ],
+        [
+          "India",
+          5
+        ]
+      ]
+    },
+    "future_skills_learning": {
+      "prompts_count": 20,
+      "top_mentioned_entities": [
+        [
+          "Python",
+          30
+        ],
+        [
+          "Amazon",
+          28
+        ],
+        [
+          "Google",
+          17
+        ],
+        [
+          "PyTorch",
+          13
+        ],
+        [
+          "GitHub",
+          12
+        ]
+      ]
+    }
+  },
+  "provider_breakdown": {
+    "answer_engine_visibility": {
+      "hamzad_gemini": {
+        "model": "gemini-2.5-flash",
+        "provider_class": "answer_engine",
+        "search_grounded": true,
+        "top_entities": [
+          [
+            "Amazon",
+            9
+          ],
+          [
+            "Microsoft",
+            9
+          ],
+          [
+            "Google",
+            9
+          ],
+          [
+            "Python",
+            6
+          ],
+          [
+            "LangChain",
+            6
+          ]
+        ]
+      },
+      "hamzad_perplexity": {
+        "model": "sonar-pro",
+        "provider_class": "answer_engine",
+        "search_grounded": true,
+        "top_entities": [
+          [
+            "Amazon",
+            7
+          ],
+          [
+            "Python",
+            5
+          ],
+          [
+            "LangChain",
+            4
+          ],
+          [
+            "GitHub",
+            4
+          ],
+          [
+            "LinkedIn",
+            4
+          ]
+        ]
+      }
+    },
+    "llm_brand_observation": {
+      "hamzad_openai": {
+        "model": "gpt-4o-mini",
+        "provider_class": "llm",
+        "search_grounded": false,
+        "top_entities": [
+          [
+            "Google",
+            23
+          ],
+          [
+            "Python",
+            18
+          ],
+          [
+            "Amazon",
+            15
+          ],
+          [
+            "MIT",
+            11
+          ],
+          [
+            "Microsoft",
+            9
+          ]
+        ]
+      },
+      "hamzad_claude": {
+        "model": "anthropic/claude-3.5-sonnet",
+        "provider_class": "llm",
+        "search_grounded": false,
+        "top_entities": [
+          [
+            "Amazon",
+            16
+          ],
+          [
+            "Google",
+            14
+          ],
+          [
+            "Python",
+            10
+          ],
+          [
+            "GitHub",
+            9
+          ],
+          [
+            "Microsoft",
+            9
+          ]
+        ]
+      }
+    }
+  },
+  "disclaimer": "This pilot validates methodology and pipeline behavior. It is not a global ranking or assertion of superiority."
+}
