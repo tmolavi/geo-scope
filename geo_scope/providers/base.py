@@ -59,6 +59,7 @@ class BaseProvider(ABC):
         self.bias_description = bias_description
         self.cost_per_1k = cost_per_1k
         self.search_grounded = False
+        self.provider_class = "llm"  # "llm" | "answer_engine" | "recorded"
 
     @abstractmethod
     async def generate_response(self, prompt_item: Dict[str, Any]) -> str:
@@ -86,6 +87,7 @@ class BaseProvider(ABC):
                 provider=self.name,
                 model=model_id,
                 execution_mode=execution_mode,
+                provider_class=self.provider_class,
                 text="",
                 citations=[],
                 raw={},
@@ -114,6 +116,7 @@ class BaseProvider(ABC):
                     provider=self.name,
                     model=evidence.get("model") or model_id,
                     execution_mode=execution_mode,
+                    provider_class=self.provider_class,
                     text=text if isinstance(text, str) else "",
                     citations=list(citations),
                     raw=sanitize_sensitive_data(raw_payload),
@@ -139,14 +142,15 @@ class BaseProvider(ABC):
             provider=self.name,
             model=model_id,
             execution_mode=execution_mode,
+            provider_class=self.provider_class,
             text="",
             citations=[],
             raw={},
-            metadata={"search_grounded": self.is_search_grounded(), "retries_attempted": attempts - 1, "fallback_disabled": True},
+            metadata={"search_grounded": self.is_search_grounded(), "fallback_disabled": True, "retries_attempted": attempts},
             latency_ms=latency_ms,
             usage={},
             status="failed",
-            error=last_error or {"type": "unknown_error", "message": "Provider failed", "retryable": False},
+            error=last_error or {"type": "unknown_error", "message": "Provider failed without specific exception", "retryable": False},
         )
 
     def is_available(self) -> bool:

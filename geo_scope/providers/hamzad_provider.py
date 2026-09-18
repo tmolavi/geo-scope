@@ -75,6 +75,8 @@ class HamzadProvider(BaseProvider):
         else:
             self.search_grounded = target_provider in ("gemini", "perplexity")
 
+        self.provider_class = "answer_engine" if self.search_grounded else "llm"
+
     def is_available(self) -> bool:
         """
         Hamzad Gateway is available if a gateway URL is defined.

@@ -17,6 +17,9 @@ import sys
 import json
 from datetime import datetime, timezone
 
+from geo_scope.entities.registry import EntityRegistry
+from geo_scope.measurement.engine import MeasurementEngine
+from geo_scope.measurement.replay import ReplayEngine
 from geo_scope.engine.execution_mode import ExecutionMode
 from geo_scope.engine.persistence import RawRunStore
 from geo_scope.engine.query_generator import generate_prompt_dataset
@@ -32,76 +35,233 @@ from geo_scope.providers.registry import registry
 
 def run_demo_cmd():
     """
-    The 5-Minute WOW Demo experience.
-    Runs a fast 10-prompt benchmark on HubSpot vs Salesforce using the simulated benchmark engine.
+    5-Minute Demo experience using the entity measurement architecture in simulation mode.
+    Explicitly labeled as SIMULATION FIXTURE with disclaimer and simulated_* metrics.
     """
     print("\n" + "=" * 75)
-    print("GEO-Scope Synthetic Benchmark")
+    print("GEO-Scope Quickstart Demo (SIMULATION FIXTURE)")
     print("Execution mode: SIMULATION")
-    print("Results are synthetic and must not be interpreted as real provider behavior.")
-    print("🎯 Target Brand   : HubSpot   |   📂 Niche: CRM SaaS   |   🔢 Sample Prompts: 10")
+    print("Disclaimer: Outputs and metrics are deterministic simulation fixtures for")
+    print("testing and onboarding. They do not reflect live engine visibility.")
     print("=" * 75)
 
-    prompts = generate_prompt_dataset(
-        niche_key="crm_sales",
-        target_brand="HubSpot",
-        competitors=["Salesforce", "Zoho CRM", "Pipedrive"],
-        language="both",
-        total_count=10,
-    )
+    entities_file = "entities/iran-seo-agencies.json"
+    if not os.path.exists(entities_file):
+        entities_reg = EntityRegistry.from_list([
+            {"id": "inten", "names": ["Inten", "اینتن"], "people": ["Taghi Molavi", "تقی مولوی"], "domains": ["inten.asia"]},
+            {"id": "web24", "names": ["Web24", "وب24"], "people": ["Reza Shirazi", "رضا شیرازی"], "domains": ["web24.ir"]},
+            {"id": "novin", "names": ["Novin", "نوین"], "people": [], "domains": ["novin.com"], "do_not_confuse": ["بانک اقتصاد نوین", "نوین چرم"]},
+        ])
+    else:
+        entities_reg = EntityRegistry.from_file(entities_file)
 
-    runner = ModelRunner(mode=ExecutionMode.SIMULATION)
-    models = ["perplexity_sonar", "chatgpt_search", "gemini_grounding", "claude_3_7"]
-    print(
-        f"\n[1/3] Running multi-model inference across {len(models)} AI engines ({len(prompts) * len(models)} calls)..."
-    )
+    prompts_file = "examples/prompts/observed-sample.jsonl"
+    prompts = []
+    if os.path.exists(prompts_file):
+        with open(prompts_file, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip():
+                    prompts.append(json.loads(line))
+    else:
+        prompts = [
+            {"id": "p-001", "query": "بهترین شرکت سئو در ایران کدام است؟", "source_type": "observed", "intent": "recommendation"},
+            {"id": "p-002", "query": "تقی مولوی کیست؟", "source_type": "observed", "intent": "informational"},
+            {"id": "p-003", "query": "شرکت های برتر دیجیتال مارکتینگ و سئو در تهران", "source_type": "hypothesis", "intent": "recommendation"},
+            {"id": "p-004", "query": "سایت وب ۲۴ چه خدماتی ارائه می دهد؟", "source_type": "observed", "intent": "informational"},
+            {"id": "p-005", "query": "مقایسه خدمات سئو اینتن و وب ۲۴", "source_type": "hypothesis", "intent": "recommendation"},
+        ]
 
-    responses = asyncio.run(runner.execute_batch(prompts, models=models))
-    print("✓ Inference completed.")
+    providers = ["perplexity_sonar", "chatgpt_search", "gemini_grounding", "claude_3_7"]
+    out_dir = "output/demo_latest"
+    os.makedirs(out_dir, exist_ok=True)
 
-    print("\n[2/3] Extracting brand mentions, ranks, and citation graph...")
-    parsed = []
-    for r in responses:
-        item = parse_model_response(r["query_item"], r["model"], r["response_text"], r.get("provenance"))
-        item["full_response_text"] = r["response_text"]
-        item["query_text"] = r["query_item"]["query"]
-        parsed.append(item)
+    print(f"\n[1/3] Running simulation across {len(providers)} engines for {len(prompts)} prompts...")
+    engine = MeasurementEngine(entities=entities_reg)
+    res = asyncio.run(engine.execute_measurement(
+        prompts=prompts,
+        providers=providers,
+        out_dir=out_dir,
+        mode="simulation",
+        seed=42,
+    ))
 
-    print("\n[3/3] Computing visibility metrics & generating report...")
-    analyzer = AlgoAnalyzer(parsed, "HubSpot", ["Salesforce", "Zoho CRM", "Pipedrive"])
-    analysis = analyzer.compute_full_analysis()
+    print("✓ Simulation completed.")
+    print("\n[2/3] Parsed entity observations & calculated simulated metrics.")
+    print(f"\n[3/3] Standard output bundle generated in '{out_dir}/'")
 
-    # Save artifacts
-    out_dir = "results"
-    artifacts = generate_experiment_artifacts(analysis, parsed, prompts, out_dir=out_dir)
+    metrics = res["metrics"]
+    print("\n" + "=" * 75)
+    print("📊 DEMO SIMULATION METRICS SUMMARY (Fixture Data)")
+    print("=" * 75)
+    for eid, e_met in metrics.get("entities", {}).items():
+        print(f"• Entity [{eid}]:")
+        print(f"    - Simulated Mention Rate        : {e_met.get('simulated_mention_rate', 0.0) * 100:.1f}%")
+        print(f"    - Simulated Recommendation Rate : {e_met.get('simulated_recommendation_rate', 0.0) * 100:.1f}%")
+        print(f"    - Simulated Top-1 Rate          : {e_met.get('simulated_top1_rate', 0.0) * 100:.1f}%")
+        print(f"    - Confused Observations         : {e_met.get('confused_observations', 0)}")
+    print("=" * 75)
+    print(f"\n📁 Artifacts saved in '{out_dir}/':")
+    print(f"  • manifest.json")
+    print(f"  • prompts.jsonl")
+    print(f"  • raw_responses.jsonl")
+    print(f"  • observations.jsonl")
+    print(f"  • metrics.json")
+    print(f"  • checksums.sha256")
+    print("\n✨ Ready to test live measurements? Run:")
+    print('   geo-scope measure --entities entities/iran-seo-agencies.json --prompts examples/prompts/observed-sample.jsonl\n')
+
+
+def measure_cmd(args):
+    """
+    Executes live or simulated measurement of entities across AI engines with zero fallback.
+    """
+    entities_path = args.entities
+    if not os.path.exists(entities_path):
+        print(f"Error: Entities definition file not found at: {entities_path}", file=sys.stderr)
+        sys.exit(1)
+    entities_reg = EntityRegistry.from_file(entities_path)
+
+    prompts_path = args.prompts
+    if not os.path.exists(prompts_path):
+        print(f"Error: Prompts file not found at: {prompts_path}", file=sys.stderr)
+        sys.exit(1)
+
+    prompts = []
+    with open(prompts_path, "r", encoding="utf-8") as f:
+        for line in f:
+            if line.strip():
+                if line.strip().startswith("{"):
+                    prompts.append(json.loads(line))
+                else:
+                    prompts.append({"query": line.strip(), "source_type": "observed", "intent": "recommendation"})
+
+    provider_list = [p.strip() for p in args.providers.split(",") if p.strip()]
+    mode = args.mode
+    out_dir = args.out_dir or args.out or "output/measure_latest"
 
     print("\n" + "=" * 75)
-    print("📊 DEMO EXPERIMENTAL BENCHMARK SUMMARY")
+    if mode == "live":
+        print("GEO-Scope Live Measurement")
+        print("Execution mode: LIVE")
+        print("Synthetic fallback: STRICTLY DISABLED (Failures will be recorded in errors.jsonl)")
+    else:
+        print("GEO-Scope Synthetic Measurement")
+        print("Execution mode: SIMULATION")
+        print("Results are deterministic fixtures for testing.")
+    print(f"Entities Registered : {len(entities_reg.all())} ({', '.join(entities_reg.ids())})")
+    print(f"Prompts to Query    : {len(prompts)}")
+    print(f"Target Providers    : {', '.join(provider_list)}")
+    print(f"Output Directory    : {out_dir}")
     print("=" * 75)
-    print(f"• Target Brand Mention Rate (Share of Model) : {analysis['summary']['overall_sov']}%")
-    print(f"• Top-1 Primary Recommendation Rate : {analysis['summary']['overall_top1_rate']}%")
-    print(f"• Top Performing AI Engine          : {analysis['summary']['best_performing_model']}")
-    print(f"• Lowest Performing AI Engine       : {analysis['summary']['weakest_performing_model']}")
-    print("-" * 75)
-    print("🤖 Model Breakdown:")
-    for m, st in analysis["share_of_model"]["by_model"].items():
-        print(
-            f"  - {m:<20}: Mention Rate: {st['mention_rate_pct']}% | Top-1: {st['top1_rate_pct']}% | Avg Rank: #{st['avg_rank']}"
-        )
-    print("-" * 75)
-    print("🏆 Competitor Matrix:")
-    for c in analysis["competitor_matrix"]:
-        is_t = "(Target Brand)" if c["is_target"] else "(Competitor)"
-        print(f"  - {c['brand']:<15} : Mention Rate: {c['mention_rate_pct']}% | Top-1: {c['top1_rate_pct']}% {is_t}")
+
+    engine = MeasurementEngine(
+        entities=entities_reg,
+        confidence_threshold=getattr(args, "confidence_threshold", 0.70),
+    )
+
+    def progress(done, total):
+        pct = int((done / total) * 100) if total > 0 else 100
+        print(f"\rProgress: [{done}/{total}] {pct}% completed...", end="", flush=True)
+
+    res = asyncio.run(engine.execute_measurement(
+        prompts=prompts,
+        providers=provider_list,
+        out_dir=out_dir,
+        mode=mode,
+        seed=getattr(args, "seed", 42),
+        progress_callback=progress,
+    ))
+    print("\n✓ Measurement completed.")
+
+    if res.get("n_errors", 0) > 0:
+        print(f"\n⚠️ Encountered {res['n_errors']} provider execution errors (recorded in errors.jsonl).")
+
+    print("\n" + "=" * 75)
+    print("📊 MEASUREMENT METRICS SUMMARY")
     print("=" * 75)
-    print(f"\n📁 Portable Reports Generated in '{out_dir}/':")
-    print(f"  📄 Human-Readable Summary : {artifacts['summary_md']}")
-    print(f"  🌐 Standalone HTML Report : {artifacts['report_html']}")
-    print(f"  📦 Experiment Metadata    : {artifacts['experiment_json']}")
-    print(f"  📊 Queries CSV Breakdown  : {artifacts['queries_csv']}")
-    print(f"  🔗 Citations Graph CSV    : {artifacts['citations_csv']}")
-    print("\n✨ Ready to test your own brand? Run:")
-    print('   geo-scope run --brand "Your Brand" --prompts my_prompts.csv\n')
+    metrics = res.get("metrics", {})
+    for eid, e_met in metrics.get("entities", {}).items():
+        print(f"\n• Entity: [{eid}]")
+        if mode == "simulation":
+            print(f"    - Simulated Mention Rate        : {e_met.get('simulated_mention_rate', 0.0) * 100:.1f}%")
+            print(f"    - Simulated Recommendation Rate : {e_met.get('simulated_recommendation_rate', 0.0) * 100:.1f}%")
+            print(f"    - Simulated Top-1 Rate          : {e_met.get('simulated_top1_rate', 0.0) * 100:.1f}%")
+        else:
+            if e_met.get("ai_search_visibility"):
+                sv = e_met["ai_search_visibility"]
+                print(f"    [AI Search Visibility]")
+                print(f"      - Visibility Score       : {sv.get('search_visibility_score')}/100")
+                print(f"      - Mention Rate           : {sv.get('search_mention_rate', 0.0) * 100:.1f}%")
+                print(f"      - Citation Rate          : {sv.get('search_citation_rate', 0.0) * 100:.1f}%")
+                print(f"      - Top-1 Rate             : {sv.get('search_top1_rate', 0.0) * 100:.1f}%")
+            if e_met.get("llm_brand_observation"):
+                lb = e_met["llm_brand_observation"]
+                print(f"    [LLM Brand Observation]")
+                print(f"      - Mention Rate           : {lb.get('llm_mention_rate', 0.0) * 100:.1f}%")
+                print(f"      - Top-1 Rate             : {lb.get('llm_top1_rate', 0.0) * 100:.1f}%")
+            print(f"    - Observed Source Mention Rate : {e_met.get('observed_source_mention_rate', 0.0) * 100:.1f}%")
+            print(f"    - Scored Prompts               : {e_met.get('scored_observations', 0)}/{e_met.get('total_observations', 0)}")
+            print(f"    - Confused Mentions Filtered   : {e_met.get('confused_observations', 0)}")
+    print("=" * 75)
+    print(f"\n📁 Standard Output Bundle created in '{out_dir}/'")
+
+
+def replay_cmd(args):
+    """
+    Offline deterministic replay of recorded AI responses. Zero network calls.
+    """
+    input_path = args.input or getattr(args, "run_dir", None)
+    if not input_path or not os.path.exists(input_path):
+        print(f"Error: Input run directory or raw_responses.jsonl not found at: {input_path}", file=sys.stderr)
+        sys.exit(1)
+
+    entities_path = args.entities
+    if not os.path.exists(entities_path):
+        print(f"Error: Entities definition file not found at: {entities_path}", file=sys.stderr)
+        sys.exit(1)
+
+    entities_reg = EntityRegistry.from_file(entities_path)
+    out_dir = args.out_dir or args.out or "output/replay_latest"
+
+    print("\n" + "=" * 75)
+    print("GEO-Scope Deterministic Offline Replay")
+    print(f"Input Source        : {input_path}")
+    print(f"Entities Registered : {len(entities_reg.all())} ({', '.join(entities_reg.ids())})")
+    print(f"Output Directory    : {out_dir}")
+    print("Network Access      : STRICTLY OFFLINE (0 API Calls)")
+    print("=" * 75)
+
+    replayer = ReplayEngine(
+        entities=entities_reg,
+        confidence_threshold=getattr(args, "confidence_threshold", 0.70),
+    )
+
+    res = replayer.replay(input_path=input_path, out_dir=out_dir)
+    print(f"\n✓ Replay completed: processed {res['n_completions']} raw responses across {res['n_prompts']} prompts.")
+
+    metrics = res.get("metrics", {})
+    print("\n" + "=" * 75)
+    print("📊 REPLAY METRICS SUMMARY")
+    print("=" * 75)
+    for eid, e_met in metrics.get("entities", {}).items():
+        print(f"\n• Entity: [{eid}]")
+        print(f"    - Overall Mention Rate     : {e_met.get('overall_mention_rate', 0.0) * 100:.1f}%")
+        if e_met.get("ai_search_visibility"):
+            sv = e_met["ai_search_visibility"]
+            print(f"    [AI Search Visibility]")
+            print(f"      - Visibility Score       : {sv.get('search_visibility_score')}/100")
+            print(f"      - Mention Rate           : {sv.get('search_mention_rate', 0.0) * 100:.1f}%")
+            print(f"      - Citation Rate          : {sv.get('search_citation_rate', 0.0) * 100:.1f}%")
+            print(f"      - Top-1 Rate             : {sv.get('search_top1_rate', 0.0) * 100:.1f}%")
+        if e_met.get("llm_brand_observation"):
+            lb = e_met["llm_brand_observation"]
+            print(f"    [LLM Brand Observation]")
+            print(f"      - Mention Rate           : {lb.get('llm_mention_rate', 0.0) * 100:.1f}%")
+            print(f"      - Top-1 Rate             : {lb.get('llm_top1_rate', 0.0) * 100:.1f}%")
+        print(f"    - Scored Prompts           : {e_met.get('scored_observations', 0)}/{e_met.get('total_observations', 0)}")
+        print(f"    - Confused Mentions Filtered: {e_met.get('confused_observations', 0)}")
+    print("=" * 75)
+    print(f"\n📁 Replay bundle written to '{out_dir}/'")
 
 
 def run_benchmark_cmd(args):
@@ -631,15 +791,95 @@ def main():
             stream.reconfigure(errors="backslashreplace")
     parser = argparse.ArgumentParser(
         prog="geo-scope",
-        description="GEO-Scope: Generative Engine Optimization (GEO) & AI Algorithm Reverse-Engineering CLI",
+        description="GEO-Scope: Open-Source AI Engine & LLM Visibility Measurement Platform",
     )
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # Command: demo
-    subparsers.add_parser("demo", help="Run 5-minute quickstart demo experiment")
+    subparsers.add_parser("demo", help="Run 5-minute quickstart demo experiment (Simulation Fixture)")
 
-    # Command: run
-    run_parser = subparsers.add_parser("run", help="Run an AI visibility benchmark experiment")
+    # Command: measure
+    measure_parser = subparsers.add_parser(
+        "measure",
+        help="Execute live or simulated AI visibility measurement across answer engines and LLMs",
+    )
+    measure_parser.add_argument(
+        "--entities",
+        type=str,
+        default="entities/iran-seo-agencies.json",
+        help="Path to JSON entity definitions file (default: entities/iran-seo-agencies.json)",
+    )
+    measure_parser.add_argument(
+        "--prompts",
+        type=str,
+        default="examples/prompts/observed-sample.jsonl",
+        help="Path to prompts file (.jsonl, .json, .csv, .txt)",
+    )
+    measure_parser.add_argument(
+        "--providers",
+        type=str,
+        default="perplexity_sonar,gemini_grounding",
+        help="Comma-separated provider names (e.g. perplexity_sonar,gemini_grounding,hamzad-fast)",
+    )
+    measure_parser.add_argument(
+        "--mode",
+        type=str,
+        choices=["live", "simulation"],
+        default="live",
+        help="Execution mode: live (real APIs with zero fallback) or simulation (default: live)",
+    )
+    measure_parser.add_argument(
+        "--out-dir",
+        "--out",
+        type=str,
+        default="output/measure_latest",
+        help="Output directory for standard measurement bundle (default: output/measure_latest)",
+    )
+    measure_parser.add_argument("--seed", type=int, default=42, help="Deterministic seed for simulation mode")
+    measure_parser.add_argument(
+        "--confidence-threshold",
+        type=float,
+        default=0.70,
+        help="Parser confidence threshold for scoring status (default: 0.70)",
+    )
+
+    # Command: replay
+    replay_parser = subparsers.add_parser(
+        "replay",
+        help="Deterministic offline re-evaluation of recorded responses with zero network calls",
+    )
+    replay_parser.add_argument(
+        "--input",
+        "--run-dir",
+        type=str,
+        required=True,
+        help="Path to previous run directory or raw_responses.jsonl file",
+    )
+    replay_parser.add_argument(
+        "--entities",
+        type=str,
+        default="entities/iran-seo-agencies.json",
+        help="Path to JSON entity definitions file",
+    )
+    replay_parser.add_argument(
+        "--out-dir",
+        "--out",
+        type=str,
+        default="output/replay_latest",
+        help="Output directory for replayed bundle",
+    )
+    replay_parser.add_argument(
+        "--confidence-threshold",
+        type=float,
+        default=0.70,
+        help="Parser confidence threshold for scoring status (default: 0.70)",
+    )
+
+    # Command: run (Legacy/Deprecated)
+    run_parser = subparsers.add_parser(
+        "run",
+        help="[DEPRECATED] Legacy benchmark runner. Use 'geo-scope measure' for live observations or 'geo-scope demo' for simulation",
+    )
     run_parser.add_argument("--demo", action="store_true", help="Run quick demo benchmark")
     run_parser.add_argument("--brand", type=str, default="HubSpot", help="Target Brand Name")
     run_parser.add_argument(
@@ -817,6 +1057,16 @@ def main():
             print(registry.format_availability_table())
     elif args.command == "demo":
         run_demo_cmd()
+    elif args.command == "measure":
+        try:
+            measure_cmd(args)
+        except (ValueError, RuntimeError, OSError, FileNotFoundError) as exc:
+            parser.exit(2, f"Error: {exc}\n")
+    elif args.command == "replay":
+        try:
+            replay_cmd(args)
+        except (ValueError, RuntimeError, OSError, FileNotFoundError) as exc:
+            parser.exit(2, f"Error: {exc}\n")
     elif args.command == "run":
         try:
             run_benchmark_cmd(args)

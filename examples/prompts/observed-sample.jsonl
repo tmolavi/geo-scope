@@ -1,0 +1,5 @@
+{"id": "p-001", "query": "بهترین شرکت سئو در ایران کدام است؟", "category": "seo_agency", "source_type": "observed", "expected_intent": "recommendation"}
+{"id": "p-002", "query": "تقی مولوی کیست؟", "category": "seo_personality", "source_type": "observed", "expected_intent": "informational"}
+{"id": "p-003", "query": "شرکت های برتر دیجیتال مارکتینگ و سئو در تهران", "category": "seo_agency", "source_type": "hypothesis", "expected_intent": "recommendation"}
+{"id": "p-004", "query": "سایت وب ۲۴ چه خدماتی ارائه می دهد؟", "category": "agency_services", "source_type": "observed", "expected_intent": "informational"}
+{"id": "p-005", "query": "مقایسه خدمات سئو اینتن و وب ۲۴", "category": "seo_comparison", "source_type": "hypothesis", "expected_intent": "recommendation"}

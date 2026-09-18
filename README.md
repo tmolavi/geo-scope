@@ -2,11 +2,11 @@
 
 # ⟠ GEO-Scope
 
-### Open Framework for Measuring AI Visibility through Reproducible Multi-Provider Experiments
+### Open-Source AI Engine & LLM Visibility Measurement Platform
 
-**An open-source research platform for empirical AI visibility benchmarks, traceable multi-model provider responses, and reproducible GEO experiments.**
+**An open-source measurement lab for observing how brands appear in answer engines and language models through reproducible experiments, verifiable raw evidence, and entity-aware parsing.**
 
-*توسعه‌داده‌شده توسط [تقی مولوی (Taqi Molavi)](https://molavi.pro/) — بخشی از اکوسیستم پژوهشی GEO در کنار [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
+*توسعه‌داده‌شده توسط [تقی مولوی (Taghi Molavi)](https://molavi.pro/) — بخشی از اکوسیستم پژوهشی AI Visibility در کنار [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
 
 [![Website](https://img.shields.io/badge/Website-molavi.pro-blue?logo=googlechrome&logoColor=white)](https://molavi.pro/)
 [![Research Transparency](https://img.shields.io/badge/Research-Transparency%20%26%20Limitations-blueviolet?logo=readme&logoColor=white)](docs/research-transparency.md)
@@ -21,42 +21,41 @@
 
 ---
 
-> ### 🎯 **"Don't trust GEO claims. Test them."**
-> **WHAT**: An Open Experimental Framework for Generative Engine Optimization (GEO) & AI Search Visibility Research.  
-> **WHY**: AI visibility claims are everywhere, but many are speculative or difficult to test. GEO-Scope makes GEO hypotheses empirically verifiable.  
-> **HOW**: **Bring your prompts** ➔ **Run experiments** ➔ **Measure visibility & citations** ➔ **Compare & Re-test**.
+> ### 🎯 **"Don't trust GEO claims. Observe and measure them."**
+> **WHAT**: An Open Measurement Framework for Generative Engine Optimization (GEO) & AI Search Visibility Research.  
+> **WHY**: AI visibility claims are often speculative. GEO-Scope provides empirical, entity-aware measurement of observed brand presence, citation graphs, and recommendation positioning.  
+> **HOW**: **Define Entities & Prompts** ➔ **Execute Inferences (Live or Replay)** ➔ **Parse Observations & Disambiguate Homonyms** ➔ **Generate Verifiable Evidence Bundles**.
 
-### Execution you can inspect
+### Core Product Architecture: 3 Operational Modes
 
-GEO-Scope supports seeded offline demos, actual provider inference, and recorded-response analysis. Every exported run identifies its mode and retains the full response evidence. Live inference never falls back to simulation. Ranking-factor profiles are clearly labeled research priors; visibility measurements come from the recorded responses.
+GEO-Scope separates execution into 3 distinct, verifiable workflows:
 
-```bash
-geo-scope providers
-geo-scope run --mode live --models ollama_local --count 3 --brand HubSpot
-geo-scope run --mode live --models perplexity_sonar --count 3 --brand HubSpot
-geo-scope run --responses results/raw_responses.json --brand HubSpot --out replay
-```
-
-See [live and Codex/MCP setup](docs/API_INTEGRATION.md) and [free/local access with operator conditions](docs/FREE_ACCESS.md). Install a local model for Ollama; cloud providers require your own credentials. Optional public noncommercial research access is documented separately.
-
-**New here?** Start with the [installation and usage guide](docs/CLIENT_INTEGRATIONS.md), or see the [provider/API setup](docs/API_INTEGRATION.md) for live runs.
-
-### ⚡ 5-Minute Quickstart (Run Your First Benchmark)
+1. **`geo-scope demo`**: Fast 5-minute onboarding experience using deterministic simulation fixtures. Prominently labeled with disclaimers and `simulated_*` metrics.
+2. **`geo-scope measure`**: Production measurement across live answer engines and LLMs. Strictly enforces **zero silent fallback** (provider failures are saved directly to `errors.jsonl` rather than masked with synthetic responses). Separates metrics into **AI Search Visibility** (answer engines with grounding citations) vs **LLM Brand Observation** (pure text completions).
+3. **`geo-scope replay`**: Deterministic offline re-evaluation of previously recorded raw AI responses against entity registries with **zero network calls**.
 
 ```bash
-# 1. Install GEO-Scope
-pip install -e .
-
-# 2. Run instant 5-minute terminal demo
+# 1. Quickstart Simulation Demo
 geo-scope demo
 
-# 3. Bring your own prompts & benchmark your brand
-geo-scope run --brand "My Brand" --competitors "Comp A, Comp B" --mode simulate --count 10
+# 2. Live Measurement (Zero Fallback)
+geo-scope measure --entities entities/iran-seo-agencies.json --prompts examples/prompts/observed-sample.jsonl --mode live --providers perplexity_sonar,gemini_grounding
 
-# 4. Verify & reproduce public benchmark datasets
-geo-scope benchmark verify --dataset benchmark/geo-scope-benchmark-2026.1
-geo-scope benchmark reproduce --dataset benchmark/geo-scope-benchmark-2026.1
+# 3. Deterministic Offline Replay
+geo-scope replay --input output/measure_latest --entities entities/iran-seo-agencies.json --out output/replay_latest
 ```
+
+### Standard Output Contract & Evidence Bundles
+
+Every measurement and replay run writes a self-contained, reproducible bundle with SHA-256 cryptographic verification:
+
+- `manifest.json`: Run metadata, provider classes, prompt source breakdown, and execution timestamps.
+- `prompts.jsonl`: Normalized input prompts categorized by source type (`observed` real queries vs `hypothesis` templates) and query intent.
+- `raw_responses.jsonl`: Raw, unparsed model payloads and metadata for full auditability.
+- `observations.jsonl`: Independent entity observations (`mentioned`, `person_mentioned`, `recommended`, `top1`, `rank`, `cited`, `attributed`, `confused_with`, `scoring_status`, `parser_confidence`).
+- `metrics.json`: Aggregated metrics strictly partitioned into `ai_search_visibility` and `llm_brand_observation`.
+- `errors.jsonl`: Explicit failure logs for any provider timeouts or API errors.
+- `checksums.sha256`: SHA-256 hashes of all bundle files.
 
 ---
 
@@ -144,17 +143,17 @@ Evaluate up to **1,000 categorized queries** across 5 intent groups, or bring yo
 
 ## 🇮🇷 راهنمای فارسی
 
-**GEO-Scope** یک فریم‌ورک استاندارد و پژوهشی متن‌باز طراحی شده توسط **[تقی مولوی](https://molavi.pro/)** برای مهندسی معکوس الگوریتم‌های دیده‌شدن در هوش مصنوعی (**GEO / AI SEO**) است.
+**GEO-Scope** یک فریم‌ورک استاندارد و پلتفرم متن‌باز طراحی شده توسط **[تقی مولوی](https://molavi.pro/)** برای سنجش، مشاهده‌پذیری و ارزیابی تجربی نحوه نمایش برندها در موتورهای پاسخ و مدل‌های زبانی هوش مصنوعی (**AI Search Visibility & Brand Observation**) است.
 
-این ابزار برای آزمایش دیده‌شدن برند، ترتیب پیشنهادهای صریح و منابع پاسخ‌های هوش مصنوعی طراحی شده است. اجرای واقعی، شبیه‌سازی و تحلیل پاسخ‌های ذخیره‌شده از هم مشخص‌اند و پاسخ‌های خام برای بررسی مستقل نگهداری می‌شوند.
+این ابزار برای سنجش میزان دیده‌شدن برند، استخراج صریح پیشنهادها و تفکیک منابع استناد طراحی شده است. اجرای واقعی، بازپخش آفلاین و شبیه‌سازی کاملاً از هم تفکیک شده‌اند و شواهد خام مدل‌ها به همراه هش‌های رمزنگاری شده برای بازتولیدپذیری نگهداری می‌شوند.
 
-### درباره نتایج آزمایش‌ها
+### درباره ساختار سنجش و بازتولیدپذیری
 
-وزن‌های ثابت پروژه فرض‌های اولیه پژوهش هستند و از اجرای جدید تخمین زده نمی‌شوند. معیارهای دیده‌شدن از پاسخ‌های ثبت‌شده محاسبه می‌شوند؛ منشأ هر پاسخ و نوع اجرا همراه نتیجه ثبت می‌شود.
+۱. **حالت آزمایشی (Demo)**: اجرای شبیه‌سازی ۵ دقیقه‌ای با برچسب مشخص داده‌های ساختگی جهت آشنایی سریع.
+۲. **حالت سنجش زنده (Measure)**: اجرای سنجش واقعی بدون هیچ‌گونه جایگزینی خودکار شبیه‌سازی (Zero Silent Fallback) با تفکیک موتورهای جستجوی متصل به وب (Answer Engine) از مدل‌های مستقیم (LLM).
+۳. **حالت بازپخش قطعی (Replay)**: بازخوانی و تحلیل آفلاین پاسخ‌های ثبت‌شده با هزینه و دسترسی شبکه صفر.
 
-هدف پروژه این است که هر پژوهشگر، متخصص یا کسب‌وکار بتواند پرامپت‌ها، برندها، رقبا، مدل‌ها، زبان و بازار خودش را وارد کند، آزمایش‌های خودش را اجرا کند و نتایج اولیه را تأیید، رد، مقایسه یا تکمیل کند.
-
-GEO-Scope قرار نیست از کاربران بخواهد نتایج اولیه این پروژه را به‌عنوان حقیقت قطعی بپذیرند؛ هدف، فراهم‌کردن بستری برای آزمایش‌پذیر کردن فرضیه‌های GEO است.
+هدف پروژه این است که پژوهشگران و کسب‌وکارها بتوانند به صورت مستقل و بدون اتکا به ادعاهای اثبات‌نشده، نحوه دیده شدن برندها را به صورت تجربی و آزمون‌پذیر رصد نمایند.
 
 ---
 
