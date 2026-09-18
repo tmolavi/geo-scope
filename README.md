@@ -89,6 +89,27 @@ geo-scope benchmark validate --dataset benchmark/releases/global-ai-answers-2026
 geo-scope benchmark replay --dataset benchmark/releases/global-ai-answers-2026.1
 ```
 
+### 🌍 [Global AI Answers Benchmark 2026.2 Pilot](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md)
+* **Subtitle**: *Controlled Pilot Release: 100 Prompts Across 10 Countries & 8 Languages*
+* **Dataset Package**: [`benchmark/releases/global-ai-answers-2026.2-pilot/`](benchmark/releases/global-ai-answers-2026.2-pilot/)
+* **Purpose**: Validate the complete 7-stage measurement pipeline (AnswerPath GEO → GEO-Scope → Hamzad Gateway → Multi-Type Entity Extraction → Metrics) prior to the 500-prompt 2026.2 benchmark.
+* **Core Principle**: *"This pilot validates methodology and pipeline behavior. It is not a global ranking or assertion of superiority."*
+* **Documentation**: [Pilot Report](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md) · [2026.2 Roadmap](docs/ROADMAP_GLOBAL_AI_ANSWERS_2026_2.md)
+* **Scope**: 100 culturally localized prompts (55 observed user questions, 45 research templates) across 10 countries (Iran, Turkey, Germany, UK, US, India, Japan, Saudi Arabia, Brazil, Nigeria) in 8 languages (`fa`, `tr`, `de`, `en`, `hi`, `ja`, `ar`, `pt`).
+* **Execution & Provenance**: Live API execution via Hamzad AI Gateway across `gemini-2.5-flash`, `sonar-pro`, `gpt-4o-mini`, and `claude-3.5-sonnet`.
+* **Entities Tracked**: 30 Multi-Type entities (People, Companies, Countries, Universities, Technologies, Communities).
+
+```bash
+# 1. Verify bit-for-bit SHA-256 package checksums
+geo-scope benchmark verify --dataset benchmark/releases/global-ai-answers-2026.2-pilot
+
+# 2. Run dataset quality, schema & secret hygiene validation
+geo-scope benchmark validate --dataset benchmark/releases/global-ai-answers-2026.2-pilot
+
+# 3. Deterministically replay and recompute metrics from raw evidence
+geo-scope benchmark replay --dataset benchmark/releases/global-ai-answers-2026.2-pilot
+```
+
 ### 🏆 [GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark](benchmarks/geo-seo-digital-agency-iran-2026.1/)
 * **Subtitle**: *Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms*
 * **Dataset Package**: [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/)

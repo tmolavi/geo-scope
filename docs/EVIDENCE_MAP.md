@@ -61,9 +61,11 @@ flowchart TD
 ### 2. GEO-Scope (`geo-scope`)
 * **Role**: Owns empirical multi-model benchmark execution, response capture, entity mention extraction, citation parsing, and bootstrap statistical estimation.
 * **Evidence Artifacts**:
-  * [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](https://github.com/tmolavi/geo-scope/tree/codex/verified-benchmark-execution/benchmark/releases/geo-seo-digital-agency-iran-2026.1): Official release containing 120 raw model observations (`observations.jsonl`), 30 prompts (`prompts.jsonl`), calculated metrics (`metrics.json`), and cryptographic hashes (`checksums.sha256`).
-  * [`benchmarks/geo-seo-digital-agency-iran-2026.1/`](https://github.com/tmolavi/geo-scope/tree/codex/verified-benchmark-execution/benchmarks/geo-seo-digital-agency-iran-2026.1): First-class benchmark documentation hub with full research report, methodology, and reproduction instructions.
-  * [`examples/public_demo/`](https://github.com/tmolavi/geo-scope/tree/codex/verified-benchmark-execution/examples/public_demo): Offline reproduction package runnable via `geo-scope benchmark reproduce`.
+  * [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](https://github.com/tmolavi/geo-scope/tree/main/benchmark/releases/geo-seo-digital-agency-iran-2026.1): Official agency release containing 120 raw model observations (`observations.jsonl`), 30 prompts (`prompts.jsonl`), calculated metrics (`metrics.json`), and cryptographic hashes (`checksums.sha256`).
+  * [`benchmark/releases/global-ai-answers-2026.1/`](https://github.com/tmolavi/geo-scope/tree/main/benchmark/releases/global-ai-answers-2026.1): Global human concerns benchmark v1 covering 34 prompts across 7 regions and 9 languages.
+  * [`benchmark/releases/global-ai-answers-2026.2-pilot/`](https://github.com/tmolavi/geo-scope/tree/main/benchmark/releases/global-ai-answers-2026.2-pilot): Global AI Answers 2026.2 Pilot release covering 100 prompts across 10 countries and 8 languages with 30 multi-type entities.
+  * [`benchmarks/geo-seo-digital-agency-iran-2026.1/`](https://github.com/tmolavi/geo-scope/tree/main/benchmarks/geo-seo-digital-agency-iran-2026.1): Benchmark documentation hub with full research report and methodology.
+  * [`examples/public_demo/`](https://github.com/tmolavi/geo-scope/tree/main/examples/public_demo): Offline reproduction package runnable via `geo-scope benchmark reproduce`.
 * **Output to Next Layer**: Empirical visibility gaps, brand mention rates, and citation deficits fed into diagnostic auditing.
 
 ---
