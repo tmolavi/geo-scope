@@ -435,7 +435,10 @@ def benchmark_cmd(args):
         dataset_path = args.dataset
         reproducer = BenchmarkReproducer(tolerance=getattr(args, "tolerance", 0.05))
         res = reproducer.verify_and_reproduce(dataset_path)
-        print(res["report"])
+        if "report" in res:
+            print(res["report"])
+        else:
+            print(f"✗ Benchmark Reproduction FAILED in '{dataset_path}':\n  - {res.get('error', 'Unknown error')}")
         if getattr(args, "out", None):
             with open(args.out, "w", encoding="utf-8") as f:
                 json.dump(res, f, ensure_ascii=False, indent=2)

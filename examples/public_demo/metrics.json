@@ -1,0 +1,743 @@
+{
+  "dataset_id": "geo-scope-public-demo",
+  "computed_at": "2026-09-18T01:17:44.782157+00:00",
+  "execution_mode": "demonstration",
+  "benchmark_mode": "discovery",
+  "research_status": "demo_only",
+  "total_prompts": 5,
+  "total_observations": 10,
+  "successful_observations": 10,
+  "failed_observations": 0,
+  "brands": [
+    {
+      "brand": "Web24",
+      "is_target": true,
+      "mention_rate": {
+        "value": 40.0,
+        "ci_lower": 10.0,
+        "ci_upper": 70.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 20.0,
+        "ci_lower": 0.0,
+        "ci_upper": 50.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 33.3333,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 12,
+        "status": "ok"
+      },
+      "avg_rank": null
+    },
+    {
+      "brand": "Novin",
+      "is_target": false,
+      "mention_rate": {
+        "value": 40.0,
+        "ci_lower": 10.0,
+        "ci_upper": 70.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 33.3333,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 12,
+        "status": "ok"
+      },
+      "avg_rank": null
+    },
+    {
+      "brand": "Dimarketing",
+      "is_target": false,
+      "mention_rate": {
+        "value": 20.0,
+        "ci_lower": 0.0,
+        "ci_upper": 50.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 16.6667,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 12,
+        "status": "ok"
+      },
+      "avg_rank": null
+    },
+    {
+      "brand": "Triboon",
+      "is_target": false,
+      "mention_rate": {
+        "value": 20.0,
+        "ci_lower": 0.0,
+        "ci_upper": 40.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 10,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 16.6667,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 12,
+        "status": "ok"
+      },
+      "avg_rank": null
+    }
+  ],
+  "providers": {
+    "gemini-2.5-flash": {
+      "provider_id": "gemini-2.5-flash",
+      "successful_observations": 5,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 60.0,
+        "ci_lower": 20.0,
+        "ci_upper": 100.0,
+        "confidence_level": 0.95,
+        "sample_size": 5,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 40.0,
+        "ci_lower": 0.0,
+        "ci_upper": 80.0,
+        "confidence_level": 0.95,
+        "sample_size": 5,
+        "status": "ok"
+      },
+      "mean_latency_ms": 1114.0
+    },
+    "gpt-4o": {
+      "provider_id": "gpt-4o",
+      "successful_observations": 5,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 20.0,
+        "ci_lower": 0.0,
+        "ci_upper": 60.0,
+        "confidence_level": 0.95,
+        "sample_size": 5,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 5,
+        "status": "ok"
+      },
+      "mean_latency_ms": 1258.0
+    }
+  },
+  "native_visibility": {
+    "sample_size": 10,
+    "brands": {
+      "Web24": {
+        "is_target": true,
+        "mention_rate": 40.0,
+        "mention_rate_ci": [
+          10.0,
+          70.0
+        ],
+        "top1_rate": 20.0,
+        "top1_rate_ci": [
+          0.0,
+          50.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 33.3333,
+        "avg_rank": null
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 40.0,
+        "mention_rate_ci": [
+          10.0,
+          70.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 33.3333,
+        "avg_rank": null
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 20.0,
+        "mention_rate_ci": [
+          0.0,
+          50.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 16.6667,
+        "avg_rank": null
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 20.0,
+        "mention_rate_ci": [
+          0.0,
+          40.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 16.6667,
+        "avg_rank": null
+      }
+    }
+  },
+  "fallback_visibility": {
+    "sample_size": 0,
+    "brands": {
+      "Web24": {
+        "is_target": true,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      }
+    }
+  },
+  "total_observed_visibility": {
+    "sample_size": 10,
+    "brands": {
+      "Web24": {
+        "is_target": true,
+        "mention_rate": 40.0,
+        "mention_rate_ci": [
+          10.0,
+          70.0
+        ],
+        "top1_rate": 20.0,
+        "top1_rate_ci": [
+          0.0,
+          50.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 33.3333,
+        "avg_rank": null
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 40.0,
+        "mention_rate_ci": [
+          10.0,
+          70.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 33.3333,
+        "avg_rank": null
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 20.0,
+        "mention_rate_ci": [
+          0.0,
+          50.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 16.6667,
+        "avg_rank": null
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 20.0,
+        "mention_rate_ci": [
+          0.0,
+          40.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 16.6667,
+        "avg_rank": null
+      }
+    }
+  },
+  "observed_visibility": {
+    "sample_size": 6,
+    "brands": {
+      "Web24": {
+        "is_target": true,
+        "mention_rate": 66.6667,
+        "mention_rate_ci": [
+          33.33,
+          100.0
+        ],
+        "top1_rate": 33.3333,
+        "top1_rate_ci": [
+          0.0,
+          66.67
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 33.3333,
+        "avg_rank": null
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 66.6667,
+        "mention_rate_ci": [
+          33.33,
+          100.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 33.3333,
+        "avg_rank": null
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 33.3333,
+        "mention_rate_ci": [
+          0.0,
+          66.67
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 16.6667,
+        "avg_rank": null
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 33.3333,
+        "mention_rate_ci": [
+          0.0,
+          66.67
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 16.6667,
+        "avg_rank": null
+      }
+    }
+  },
+  "generated_visibility": {
+    "sample_size": 4,
+    "brands": {
+      "Web24": {
+        "is_target": true,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": null,
+        "avg_rank": null
+      }
+    }
+  },
+  "combined_operational_visibility": {
+    "sample_size": 10,
+    "brands": {
+      "Web24": {
+        "is_target": true,
+        "mention_rate": 40.0,
+        "mention_rate_ci": [
+          10.0,
+          70.0
+        ],
+        "top1_rate": 20.0,
+        "top1_rate_ci": [
+          0.0,
+          50.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 33.3333,
+        "avg_rank": null
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 40.0,
+        "mention_rate_ci": [
+          10.0,
+          70.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 33.3333,
+        "avg_rank": null
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 20.0,
+        "mention_rate_ci": [
+          0.0,
+          50.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 16.6667,
+        "avg_rank": null
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 20.0,
+        "mention_rate_ci": [
+          0.0,
+          40.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 16.6667,
+        "avg_rank": null
+      }
+    }
+  },
+  "question_provenance": {
+    "observed_count": 3,
+    "generated_count": 2,
+    "source_reference": "answerpath",
+    "observed_observations": 6,
+    "generated_observations": 4
+  },
+  "execution_class_breakdown": {
+    "native": 10,
+    "fallback": 0,
+    "failed": 0
+  },
+  "strata": {
+    "general": {
+      "total_observations": 10,
+      "target_mentions": 4,
+      "target_top1s": 2,
+      "target_mention_rate_pct": 40.0,
+      "target_top1_rate_pct": 20.0
+    }
+  },
+  "top_cited_domains": [
+    {
+      "domain": "web24.com",
+      "count": 2,
+      "share_pct": 40.0
+    },
+    {
+      "domain": "novin.com",
+      "count": 2,
+      "share_pct": 40.0
+    },
+    {
+      "domain": "dimarketing.com",
+      "count": 1,
+      "share_pct": 20.0
+    }
+  ],
+  "category_visibility_matrix": {
+    "Web24": {
+      "gemini-2.5-flash": 60.0,
+      "gpt-4o": 20.0
+    },
+    "Novin": {
+      "gemini-2.5-flash": 20.0,
+      "gpt-4o": 60.0
+    },
+    "Dimarketing": {
+      "gemini-2.5-flash": 40.0,
+      "gpt-4o": 0.0
+    },
+    "Triboon": {
+      "gemini-2.5-flash": 0.0,
+      "gpt-4o": 40.0
+    }
+  },
+  "factor_analysis": {
+    "status": "observed_association_only",
+    "disclaimer": "Prior weights represent initial research hypotheses. Observed effects reflect empirical multi-model correlations and effect sizes. They do NOT establish causal AI ranking algorithms.",
+    "factors": [
+      {
+        "factor": "ugc_presence",
+        "factor_name": "third_party_ugc_citation_co_occurrence",
+        "prior_weight": 0.38,
+        "observed_effect": 0.21,
+        "confidence_interval": [
+          0.1,
+          0.31
+        ],
+        "confidence_interval_95": [
+          0.1,
+          0.31
+        ],
+        "observed_correlation_spearman": 0.38,
+        "effect_size_cohens_d": 0.49,
+        "sample_size": 10,
+        "status": "observed_association",
+        "hypothesis": "Target brand visibility co-occurs with authoritative forum/community citations.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      },
+      {
+        "factor": "review_aggregators",
+        "factor_name": "structured_comparison_density",
+        "prior_weight": 0.24,
+        "observed_effect": 0.26,
+        "confidence_interval": [
+          0.15,
+          0.37
+        ],
+        "confidence_interval_95": [
+          0.15,
+          0.37
+        ],
+        "observed_correlation_spearman": 0.42,
+        "effect_size_cohens_d": 0.58,
+        "sample_size": 10,
+        "status": "observed_association",
+        "hypothesis": "Prompts with comparison intent exhibit higher third-party review domain citations.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      },
+      {
+        "factor": "knowledge_graph_schema",
+        "factor_name": "schema_entity_disambiguation",
+        "prior_weight": 0.16,
+        "observed_effect": 0.18,
+        "confidence_interval": [
+          0.08,
+          0.28
+        ],
+        "confidence_interval_95": [
+          0.08,
+          0.28
+        ],
+        "observed_correlation_spearman": 0.35,
+        "effect_size_cohens_d": 0.44,
+        "sample_size": 10,
+        "status": "observed_association",
+        "hypothesis": "Pages with explicit SameAs entity markup correlate with higher entity consistency in LLM responses.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      }
+    ]
+  }
+}

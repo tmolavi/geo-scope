@@ -1,0 +1,46 @@
+{
+  "version": "2026.1",
+  "benchmark_version": "2026.1-live",
+  "dataset_id": "geo-scope-benchmark-2026.1-live",
+  "dataset_name": "geo-scope-benchmark-2026.1-live",
+  "created_at": "2026-09-17T08:44:38.478835+00:00",
+  "execution_mode": "live",
+  "research_status": "experimental_observation",
+  "description": "GEO-Scope Live Public Benchmark 2026.1 containing 30 stratified prompts and 120 live multi-model observations across Perplexity, Gemini, OpenAI, and Claude.",
+  "git_commit": "9181986ad9e5a5acf6ce5cdfca55632066fc0a86",
+  "parser_version": "1.0.0",
+  "providers": [
+    "perplexity_sonar",
+    "gemini_grounding",
+    "openai_completion",
+    "claude_completion"
+  ],
+  "models": [
+    "sonar-medium",
+    "gemini-1.5-pro",
+    "gpt-4o-mini",
+    "claude-3-7-sonnet"
+  ],
+  "experiment_ids": [
+    "geo-scope-benchmark-2026.1-live"
+  ],
+  "dataset_hash": "700d266de4360ce8974cae229ba91fe8442329d4ed2c30644352bb00c3c6a13a",
+  "counts": {
+    "prompts": 30,
+    "observations": 120,
+    "citations": 87,
+    "brands": 4,
+    "providers": 4
+  },
+  "file_hashes": {
+    "README.md": "32926e8ceda41a320e2693502bc07e545fdb8b66afff2f7e3777cd3f31399430",
+    "brands.json": "0dba5fb91b1d92a50f9b903de085fd73a7ced3dd93a505fcdf587e46ac9fc9cb",
+    "citations.jsonl": "f877b9d6a5b0be938f50d4ac39307809fba93531b0339299c7c193454ae7c503",
+    "methodology.md": "14edf9002f7a852b4e1efa7c27931389802fe4c003f6cd5cc85a446396b52fa0",
+    "metrics.json": "a95dd153b1a6d0da355dfa386735a75c4ab8a7bed33c94dd31ab0c2b9af9e9cd",
+    "observations.jsonl": "87492ca116b936dfef6fa4300e4e7a9dbb5af207a970e86ab9e1bf1d1d783396",
+    "prompts.jsonl": "f440120b978fca6654b643a458092ed327d5c392f39b0712214e7c7c4e51f722",
+    "providers.json": "89426e140a476f6a685e663f3499222bab66d9055826baccd55557c094bcd5d4"
+  },
+  "composite_dataset_hash": "700d266de4360ce8974cae229ba91fe8442329d4ed2c30644352bb00c3c6a13a"
+}

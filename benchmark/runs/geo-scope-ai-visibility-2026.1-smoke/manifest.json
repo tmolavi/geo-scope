@@ -1,0 +1,46 @@
+{
+  "version": "2026.1",
+  "benchmark_version": "2026.1-live",
+  "dataset_id": "geo-scope-ai-visibility-2026.1-smoke",
+  "dataset_name": "geo-scope-ai-visibility-2026.1-smoke",
+  "created_at": "2026-09-17T10:41:32.277681+00:00",
+  "execution_mode": "live",
+  "research_status": "experimental_observation",
+  "description": "GEO-Scope AI Visibility Benchmark 2026.1 Smoke Test: Real operational multi-model study across SEO / GEO / AI Visibility Tools.",
+  "git_commit": "0b53a28b904267ca2b5df8bc53320dc6c50442ca",
+  "parser_version": "1.0.0",
+  "providers": [
+    "hamzad_gemini",
+    "hamzad_perplexity",
+    "hamzad_openai",
+    "hamzad_claude"
+  ],
+  "models": [
+    "gemini-2.5-flash",
+    "sonar-pro",
+    "gpt-4o-mini",
+    "anthropic/claude-3.5-sonnet"
+  ],
+  "experiment_ids": [
+    "geo-scope-ai-visibility-2026.1-smoke"
+  ],
+  "dataset_hash": "fb8172dc5be1b1ec7115a966112b5b3c945eacf8a63590392a13d51bc1eb5f3f",
+  "counts": {
+    "prompts": 25,
+    "observations": 100,
+    "citations": 0,
+    "brands": 6,
+    "providers": 4
+  },
+  "file_hashes": {
+    "README.md": "8ca6c4392399b83d99489d2b1a28a542526e1cb911615dcea5bbd50e3950d9ba",
+    "brands.json": "b98a9c553e923f11be42d106b996dc009fb7b5b96561bd724822714966d78c08",
+    "citations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "methodology.md": "6b62abf5dc1255bdf500978c728f93decc3856cab71b4802bc311bd6137a904f",
+    "metrics.json": "7ef82be02788f29a6319ba68bdabd9dbdbd1ff97804228f31b75b8157d6f72f3",
+    "observations.jsonl": "5552668ad853ab86da1f3316703cfe1e9a31d03f1ab9ac34ecd9f6cf777399f5",
+    "prompts.jsonl": "feb7ce8405876c11f06016e9d319403e6a0b60da25f5f3e92aa7b8a7976634c6",
+    "providers.json": "0726402efd91ca7e2c93b543debf5b6a348d6e8bcde2ec3f6c67bb6d360f624e"
+  },
+  "composite_dataset_hash": "fb8172dc5be1b1ec7115a966112b5b3c945eacf8a63590392a13d51bc1eb5f3f"
+}

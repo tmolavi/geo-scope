@@ -1,0 +1,26 @@
+[
+  {
+    "id": "perplexity_sonar",
+    "name": "Perplexity Sonar",
+    "search_grounded": true,
+    "model": "sonar-medium"
+  },
+  {
+    "id": "gemini_grounding",
+    "name": "Google Gemini (Grounded)",
+    "search_grounded": true,
+    "model": "gemini-1.5-pro"
+  },
+  {
+    "id": "openai_completion",
+    "name": "ChatGPT Search / OpenAI",
+    "search_grounded": false,
+    "model": "gpt-4o-mini"
+  },
+  {
+    "id": "claude_completion",
+    "name": "Claude 3.7 Sonnet",
+    "search_grounded": false,
+    "model": "claude-3-7-sonnet"
+  }
+]

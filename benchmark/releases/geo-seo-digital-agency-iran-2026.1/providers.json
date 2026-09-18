@@ -1,0 +1,26 @@
+[
+  {
+    "id": "gemini-2.5-flash",
+    "name": "Gemini-2.5-Flash",
+    "search_grounded": false,
+    "model": "gemini-2.5-flash"
+  },
+  {
+    "id": "gpt-4o",
+    "name": "Gpt-4O",
+    "search_grounded": false,
+    "model": "gpt-4o"
+  },
+  {
+    "id": "claude-3-5-sonnet",
+    "name": "Claude-3-5-Sonnet",
+    "search_grounded": false,
+    "model": "claude-3-5-sonnet"
+  },
+  {
+    "id": "sonar-pro",
+    "name": "Sonar-Pro",
+    "search_grounded": false,
+    "model": "sonar-pro"
+  }
+]

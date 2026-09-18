@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Web24",
+    "entity": "Web24",
+    "is_target": false,
+    "domain": "web24.com"
+  },
+  {
+    "name": "Novin",
+    "entity": "Novin",
+    "is_target": false,
+    "domain": "novin.com"
+  },
+  {
+    "name": "Dimarketing",
+    "entity": "Dimarketing",
+    "is_target": false,
+    "domain": "dimarketing.com"
+  },
+  {
+    "name": "Triboon",
+    "entity": "Triboon",
+    "is_target": false,
+    "domain": "triboon.com"
+  },
+  {
+    "name": "DMN Agency",
+    "entity": "DMN Agency",
+    "is_target": false,
+    "domain": "dmnagency.com"
+  },
+  {
+    "name": "Rayan",
+    "entity": "Rayan",
+    "is_target": false,
+    "domain": "rayan.com"
+  },
+  {
+    "name": "Hamrah Marketing",
+    "entity": "Hamrah Marketing",
+    "is_target": false,
+    "domain": "hamrahmarketing.com"
+  },
+  {
+    "name": "Inten",
+    "entity": "Inten",
+    "is_target": false,
+    "domain": "inten.com"
+  }
+]

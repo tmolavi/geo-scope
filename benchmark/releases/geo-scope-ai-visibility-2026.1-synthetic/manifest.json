@@ -1,0 +1,46 @@
+{
+  "version": "2026.1",
+  "benchmark_version": "2026.1-synthetic",
+  "dataset_id": "geo-scope-ai-visibility-2026.1-synthetic",
+  "dataset_name": "geo-scope-ai-visibility-2026.1-synthetic",
+  "created_at": "2026-09-17T10:30:16.580537+00:00",
+  "execution_mode": "synthetic",
+  "research_status": "demo_only",
+  "description": "GEO-Scope Synthetic Validation Benchmark 2026.1: Deterministic validation dataset across AI SEO & GEO tools.",
+  "git_commit": "3d5ec6c5abe3a94daba5340347c7a7be9fb0b7ab",
+  "parser_version": "1.0.0",
+  "providers": [
+    "hamzad_gemini",
+    "hamzad_perplexity",
+    "hamzad_openai",
+    "hamzad_claude"
+  ],
+  "models": [
+    "hamzad_gemini",
+    "hamzad_perplexity",
+    "hamzad_openai",
+    "hamzad_claude"
+  ],
+  "experiment_ids": [
+    "geo-scope-ai-visibility-2026.1-synthetic"
+  ],
+  "dataset_hash": "92c2a88ed4a14cb3468f5a5c3ee2c168eba5eaae139d76da490a541de546284b",
+  "counts": {
+    "prompts": 100,
+    "observations": 400,
+    "citations": 1389,
+    "brands": 8,
+    "providers": 4
+  },
+  "file_hashes": {
+    "README.md": "4bbc160af734ffbb24f900721b42cc121db8dc02ff178569e1c2fd170f047ba2",
+    "brands.json": "3040a8dde64910a47d31aaa9b7f9753e2e0dd8b82f87bf04dcdb504f587b0e33",
+    "citations.jsonl": "ff293a0b05f3a5f0e8c5bd6426bdf62ad6134d294f445977b454114ebc8a8f55",
+    "methodology.md": "f88ce168bb8da68c811c3a93c14f7558499239d26b89b9c99c0e84392d2dda52",
+    "metrics.json": "d1ddfc52a354f864ee889365343ae053e97431d08581f611af0cebea20a230c2",
+    "observations.jsonl": "991de059c011d326edd3e3bab774870c13f69d91a1a297be34913cc524f28a87",
+    "prompts.jsonl": "084da8ce9a74b616ec7a2f163dff9bef7e2c86781f411e2701d77fe1918939e3",
+    "providers.json": "063bb549f8e69772c1974630724005b7cdc136de53b1fb5ca3858b845d73b9f8"
+  },
+  "composite_dataset_hash": "92c2a88ed4a14cb3468f5a5c3ee2c168eba5eaae139d76da490a541de546284b"
+}

@@ -1,0 +1,596 @@
+{
+  "dataset_id": "geo-scope-ai-visibility-2026.1-synthetic",
+  "computed_at": "2026-09-17T10:30:16.578028+00:00",
+  "execution_mode": "synthetic",
+  "research_status": "demo_only",
+  "total_prompts": 100,
+  "total_observations": 400,
+  "successful_observations": 400,
+  "failed_observations": 0,
+  "brands": [
+    {
+      "brand": "Semrush",
+      "is_target": true,
+      "mention_rate": {
+        "value": 84.5,
+        "ci_lower": 80.75,
+        "ci_upper": 88.0,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 23.0,
+        "ci_lower": 18.75,
+        "ci_upper": 27.25,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 94.0,
+        "ci_lower": 91.49,
+        "ci_upper": 96.25,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 20.6349,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 1638,
+        "status": "ok"
+      },
+      "avg_rank": 2.55
+    },
+    {
+      "brand": "Ahrefs",
+      "is_target": false,
+      "mention_rate": {
+        "value": 78.0,
+        "ci_lower": 74.0,
+        "ci_upper": 82.25,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 19.25,
+        "ci_lower": 15.74,
+        "ci_upper": 23.25,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 92.0,
+        "ci_lower": 89.5,
+        "ci_upper": 94.75,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 19.0476,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 1638,
+        "status": "ok"
+      },
+      "avg_rank": 2.63
+    },
+    {
+      "brand": "Moz",
+      "is_target": false,
+      "mention_rate": {
+        "value": 57.0,
+        "ci_lower": 52.0,
+        "ci_upper": 61.75,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 14.25,
+        "ci_lower": 11.24,
+        "ci_upper": 17.5,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 82.0,
+        "ci_lower": 78.25,
+        "ci_upper": 85.75,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 13.9194,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 1638,
+        "status": "ok"
+      },
+      "avg_rank": 2.81
+    },
+    {
+      "brand": "Surfer SEO",
+      "is_target": false,
+      "mention_rate": {
+        "value": 38.5,
+        "ci_lower": 34.0,
+        "ci_upper": 43.25,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 10.0,
+        "ci_lower": 7.25,
+        "ci_upper": 13.25,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 52.0,
+        "ci_lower": 47.25,
+        "ci_upper": 57.0,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 9.4017,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 1638,
+        "status": "ok"
+      },
+      "avg_rank": 2.64
+    },
+    {
+      "brand": "Clearscope",
+      "is_target": false,
+      "mention_rate": {
+        "value": 50.75,
+        "ci_lower": 46.25,
+        "ci_upper": 55.5,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 11.0,
+        "ci_lower": 8.0,
+        "ci_upper": 14.01,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 64.0,
+        "ci_lower": 59.25,
+        "ci_upper": 68.26,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 12.3932,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 1638,
+        "status": "ok"
+      },
+      "avg_rank": 2.87
+    },
+    {
+      "brand": "MarketMuse",
+      "is_target": false,
+      "mention_rate": {
+        "value": 47.25,
+        "ci_lower": 42.25,
+        "ci_upper": 52.26,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 9.5,
+        "ci_lower": 6.75,
+        "ci_upper": 12.5,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 68.0,
+        "ci_lower": 63.25,
+        "ci_upper": 72.75,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 11.5385,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 1638,
+        "status": "ok"
+      },
+      "avg_rank": 2.87
+    },
+    {
+      "brand": "Conductor",
+      "is_target": false,
+      "mention_rate": {
+        "value": 17.5,
+        "ci_lower": 14.0,
+        "ci_upper": 21.5,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 4.25,
+        "ci_lower": 2.25,
+        "ci_upper": 6.25,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 27.0,
+        "ci_lower": 22.75,
+        "ci_upper": 31.25,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 4.2735,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 1638,
+        "status": "ok"
+      },
+      "avg_rank": 2.74
+    },
+    {
+      "brand": "SAGE",
+      "is_target": false,
+      "mention_rate": {
+        "value": 36.0,
+        "ci_lower": 31.49,
+        "ci_upper": 40.75,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 8.75,
+        "ci_lower": 6.0,
+        "ci_upper": 11.75,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 54.0,
+        "ci_lower": 49.0,
+        "ci_upper": 58.76,
+        "confidence_level": 0.95,
+        "sample_size": 400,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 8.7912,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 1638,
+        "status": "ok"
+      },
+      "avg_rank": 2.75
+    }
+  ],
+  "providers": {
+    "hamzad_gemini": {
+      "provider_id": "hamzad_gemini",
+      "successful_observations": 100,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 87.0,
+        "ci_lower": 80.0,
+        "ci_upper": 93.0,
+        "confidence_level": 0.95,
+        "sample_size": 100,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 26.0,
+        "ci_lower": 18.0,
+        "ci_upper": 35.0,
+        "confidence_level": 0.95,
+        "sample_size": 100,
+        "status": "ok"
+      },
+      "mean_latency_ms": 450.87
+    },
+    "hamzad_perplexity": {
+      "provider_id": "hamzad_perplexity",
+      "successful_observations": 100,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 83.0,
+        "ci_lower": 75.0,
+        "ci_upper": 90.0,
+        "confidence_level": 0.95,
+        "sample_size": 100,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 23.0,
+        "ci_lower": 15.0,
+        "ci_upper": 31.0,
+        "confidence_level": 0.95,
+        "sample_size": 100,
+        "status": "ok"
+      },
+      "mean_latency_ms": 774.79
+    },
+    "hamzad_openai": {
+      "provider_id": "hamzad_openai",
+      "successful_observations": 100,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 84.0,
+        "ci_lower": 76.0,
+        "ci_upper": 91.0,
+        "confidence_level": 0.95,
+        "sample_size": 100,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 16.0,
+        "ci_lower": 9.0,
+        "ci_upper": 23.0,
+        "confidence_level": 0.95,
+        "sample_size": 100,
+        "status": "ok"
+      },
+      "mean_latency_ms": 555.03
+    },
+    "hamzad_claude": {
+      "provider_id": "hamzad_claude",
+      "successful_observations": 100,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 84.0,
+        "ci_lower": 76.0,
+        "ci_upper": 91.0,
+        "confidence_level": 0.95,
+        "sample_size": 100,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 27.0,
+        "ci_lower": 19.0,
+        "ci_upper": 35.02,
+        "confidence_level": 0.95,
+        "sample_size": 100,
+        "status": "ok"
+      },
+      "mean_latency_ms": 857.5
+    }
+  },
+  "strata": {
+    "discovery": {
+      "total_observations": 120,
+      "target_mentions": 108,
+      "target_top1s": 23,
+      "target_mention_rate_pct": 90.0,
+      "target_top1_rate_pct": 19.17
+    },
+    "comparison": {
+      "total_observations": 120,
+      "target_mentions": 94,
+      "target_top1s": 26,
+      "target_mention_rate_pct": 78.33,
+      "target_top1_rate_pct": 21.67
+    },
+    "commercial": {
+      "total_observations": 100,
+      "target_mentions": 88,
+      "target_top1s": 23,
+      "target_mention_rate_pct": 88.0,
+      "target_top1_rate_pct": 23.0
+    },
+    "educational": {
+      "total_observations": 60,
+      "target_mentions": 48,
+      "target_top1s": 20,
+      "target_mention_rate_pct": 80.0,
+      "target_top1_rate_pct": 33.33
+    }
+  },
+  "top_cited_domains": [
+    {
+      "domain": "semrush.com",
+      "count": 221,
+      "share_pct": 15.91
+    },
+    {
+      "domain": "ahrefs.com",
+      "count": 196,
+      "share_pct": 14.11
+    },
+    {
+      "domain": "moz.com",
+      "count": 134,
+      "share_pct": 9.65
+    },
+    {
+      "domain": "clearscope.io",
+      "count": 111,
+      "share_pct": 7.99
+    },
+    {
+      "domain": "searchengineland.com",
+      "count": 106,
+      "share_pct": 7.63
+    },
+    {
+      "domain": "marketmuse.com",
+      "count": 104,
+      "share_pct": 7.49
+    },
+    {
+      "domain": "g2.com",
+      "count": 102,
+      "share_pct": 7.34
+    },
+    {
+      "domain": "techcrunch.com",
+      "count": 100,
+      "share_pct": 7.2
+    },
+    {
+      "domain": "surferseo.com",
+      "count": 95,
+      "share_pct": 6.84
+    },
+    {
+      "domain": "searchenginejournal.com",
+      "count": 92,
+      "share_pct": 6.62
+    }
+  ],
+  "category_visibility_matrix": {
+    "Semrush": {
+      "hamzad_gemini": 87.0,
+      "hamzad_perplexity": 83.0,
+      "hamzad_openai": 84.0,
+      "hamzad_claude": 84.0
+    },
+    "Ahrefs": {
+      "hamzad_gemini": 82.0,
+      "hamzad_perplexity": 78.0,
+      "hamzad_openai": 79.0,
+      "hamzad_claude": 73.0
+    },
+    "Moz": {
+      "hamzad_gemini": 59.0,
+      "hamzad_perplexity": 56.0,
+      "hamzad_openai": 55.0,
+      "hamzad_claude": 58.0
+    },
+    "Surfer SEO": {
+      "hamzad_gemini": 41.0,
+      "hamzad_perplexity": 36.0,
+      "hamzad_openai": 40.0,
+      "hamzad_claude": 37.0
+    },
+    "Clearscope": {
+      "hamzad_gemini": 45.0,
+      "hamzad_perplexity": 51.0,
+      "hamzad_openai": 53.0,
+      "hamzad_claude": 54.0
+    },
+    "MarketMuse": {
+      "hamzad_gemini": 50.0,
+      "hamzad_perplexity": 41.0,
+      "hamzad_openai": 49.0,
+      "hamzad_claude": 49.0
+    },
+    "Conductor": {
+      "hamzad_gemini": 20.0,
+      "hamzad_perplexity": 15.0,
+      "hamzad_openai": 19.0,
+      "hamzad_claude": 16.0
+    },
+    "SAGE": {
+      "hamzad_gemini": 36.0,
+      "hamzad_perplexity": 41.0,
+      "hamzad_openai": 31.0,
+      "hamzad_claude": 36.0
+    }
+  },
+  "factor_analysis": {
+    "status": "observed_association_only",
+    "disclaimer": "Prior weights represent initial research hypotheses. Observed effects reflect empirical multi-model correlations and effect sizes. They do NOT establish causal AI ranking algorithms.",
+    "factors": [
+      {
+        "factor": "ugc_presence",
+        "factor_name": "third_party_ugc_citation_co_occurrence",
+        "prior_weight": 0.38,
+        "observed_effect": 0.21,
+        "confidence_interval": [
+          0.1,
+          0.31
+        ],
+        "confidence_interval_95": [
+          0.1,
+          0.31
+        ],
+        "observed_correlation_spearman": 0.38,
+        "effect_size_cohens_d": 0.49,
+        "sample_size": 400,
+        "status": "observed_association",
+        "hypothesis": "Target brand visibility co-occurs with authoritative forum/community citations.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      },
+      {
+        "factor": "review_aggregators",
+        "factor_name": "structured_comparison_density",
+        "prior_weight": 0.24,
+        "observed_effect": 0.26,
+        "confidence_interval": [
+          0.15,
+          0.37
+        ],
+        "confidence_interval_95": [
+          0.15,
+          0.37
+        ],
+        "observed_correlation_spearman": 0.42,
+        "effect_size_cohens_d": 0.58,
+        "sample_size": 400,
+        "status": "observed_association",
+        "hypothesis": "Prompts with comparison intent exhibit higher third-party review domain citations.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      },
+      {
+        "factor": "knowledge_graph_schema",
+        "factor_name": "schema_entity_disambiguation",
+        "prior_weight": 0.16,
+        "observed_effect": 0.18,
+        "confidence_interval": [
+          0.08,
+          0.28
+        ],
+        "confidence_interval_95": [
+          0.08,
+          0.28
+        ],
+        "observed_correlation_spearman": 0.35,
+        "effect_size_cohens_d": 0.44,
+        "sample_size": 400,
+        "status": "observed_association",
+        "hypothesis": "Pages with explicit SameAs entity markup correlate with higher entity consistency in LLM responses.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      }
+    ]
+  }
+}

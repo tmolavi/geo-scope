@@ -1,0 +1,395 @@
+{
+  "dataset_id": "geo-scope-benchmark-2026.1-live",
+  "computed_at": "2026-09-17T08:44:38.477212+00:00",
+  "execution_mode": "live",
+  "research_status": "experimental_observation",
+  "total_prompts": 30,
+  "total_observations": 120,
+  "successful_observations": 118,
+  "failed_observations": 2,
+  "brands": [
+    {
+      "brand": "HubSpot",
+      "is_target": true,
+      "mention_rate": {
+        "value": 73.7288,
+        "ci_lower": 66.08,
+        "ci_upper": 80.51,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 26.2712,
+        "ci_lower": 18.64,
+        "ci_upper": 34.75,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 79.661,
+        "ci_lower": 72.03,
+        "ci_upper": 86.44,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 28.1553,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 309,
+        "status": "ok"
+      },
+      "avg_rank": 1.87
+    },
+    {
+      "brand": "Salesforce",
+      "is_target": false,
+      "mention_rate": {
+        "value": 62.7119,
+        "ci_lower": 53.39,
+        "ci_upper": 71.19,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 46.6102,
+        "ci_lower": 37.29,
+        "ci_upper": 55.93,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 61.0169,
+        "ci_lower": 52.54,
+        "ci_upper": 70.34,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 23.9482,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 309,
+        "status": "ok"
+      },
+      "avg_rank": 2.42
+    },
+    {
+      "brand": "Zoho CRM",
+      "is_target": false,
+      "mention_rate": {
+        "value": 64.4068,
+        "ci_lower": 55.93,
+        "ci_upper": 72.88,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 17.7966,
+        "ci_lower": 11.02,
+        "ci_upper": 24.58,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 30.5085,
+        "ci_lower": 22.03,
+        "ci_upper": 38.98,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 24.5955,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 309,
+        "status": "ok"
+      },
+      "avg_rank": 2.55
+    },
+    {
+      "brand": "Pipedrive",
+      "is_target": false,
+      "mention_rate": {
+        "value": 61.0169,
+        "ci_lower": 52.54,
+        "ci_upper": 69.49,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 9.322,
+        "ci_lower": 5.08,
+        "ci_upper": 14.41,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 33.8983,
+        "ci_lower": 25.42,
+        "ci_upper": 42.37,
+        "confidence_level": 0.95,
+        "sample_size": 118,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 23.301,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 309,
+        "status": "ok"
+      },
+      "avg_rank": 2.46
+    }
+  ],
+  "providers": {
+    "perplexity_sonar": {
+      "provider_id": "perplexity_sonar",
+      "successful_observations": 30,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 73.3333,
+        "ci_lower": 56.67,
+        "ci_upper": 86.67,
+        "confidence_level": 0.95,
+        "sample_size": 30,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 26.6667,
+        "ci_lower": 10.0,
+        "ci_upper": 43.33,
+        "confidence_level": 0.95,
+        "sample_size": 30,
+        "status": "ok"
+      },
+      "mean_latency_ms": 1030.37
+    },
+    "gemini_grounding": {
+      "provider_id": "gemini_grounding",
+      "successful_observations": 29,
+      "failed_observations": 1,
+      "target_mention_rate": {
+        "value": 75.8621,
+        "ci_lower": 58.62,
+        "ci_upper": 93.1,
+        "confidence_level": 0.95,
+        "sample_size": 29,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 17.2414,
+        "ci_lower": 3.45,
+        "ci_upper": 31.12,
+        "confidence_level": 0.95,
+        "sample_size": 29,
+        "status": "ok"
+      },
+      "mean_latency_ms": 1141.59
+    },
+    "openai_completion": {
+      "provider_id": "openai_completion",
+      "successful_observations": 30,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 76.6667,
+        "ci_lower": 60.0,
+        "ci_upper": 93.33,
+        "confidence_level": 0.95,
+        "sample_size": 30,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 30.0,
+        "ci_lower": 13.33,
+        "ci_upper": 46.67,
+        "confidence_level": 0.95,
+        "sample_size": 30,
+        "status": "ok"
+      },
+      "mean_latency_ms": 1276.67
+    },
+    "claude_completion": {
+      "provider_id": "claude_completion",
+      "successful_observations": 29,
+      "failed_observations": 1,
+      "target_mention_rate": {
+        "value": 68.9655,
+        "ci_lower": 51.72,
+        "ci_upper": 86.21,
+        "confidence_level": 0.95,
+        "sample_size": 29,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 31.0345,
+        "ci_lower": 13.79,
+        "ci_upper": 48.28,
+        "confidence_level": 0.95,
+        "sample_size": 29,
+        "status": "ok"
+      },
+      "mean_latency_ms": 1135.0
+    }
+  },
+  "strata": {
+    "problem_solving": {
+      "total_observations": 20,
+      "target_mentions": 14,
+      "target_top1s": 7,
+      "target_mention_rate_pct": 70.0,
+      "target_top1_rate_pct": 35.0
+    },
+    "comparative": {
+      "total_observations": 36,
+      "target_mentions": 29,
+      "target_top1s": 10,
+      "target_mention_rate_pct": 80.56,
+      "target_top1_rate_pct": 27.78
+    },
+    "commercial_direct": {
+      "total_observations": 35,
+      "target_mentions": 28,
+      "target_top1s": 10,
+      "target_mention_rate_pct": 80.0,
+      "target_top1_rate_pct": 28.57
+    },
+    "reputation_sentiment": {
+      "total_observations": 16,
+      "target_mentions": 8,
+      "target_top1s": 0,
+      "target_mention_rate_pct": 50.0,
+      "target_top1_rate_pct": 0.0
+    },
+    "long_tail_niche": {
+      "total_observations": 11,
+      "target_mentions": 8,
+      "target_top1s": 4,
+      "target_mention_rate_pct": 72.73,
+      "target_top1_rate_pct": 36.36
+    }
+  },
+  "top_cited_domains": [
+    {
+      "domain": "capterra.com",
+      "count": 16,
+      "share_pct": 18.39
+    },
+    {
+      "domain": "forbes.com",
+      "count": 12,
+      "share_pct": 13.79
+    },
+    {
+      "domain": "salesforce.com",
+      "count": 12,
+      "share_pct": 13.79
+    },
+    {
+      "domain": "trustradius.com",
+      "count": 12,
+      "share_pct": 13.79
+    },
+    {
+      "domain": "hubspot.com",
+      "count": 11,
+      "share_pct": 12.64
+    },
+    {
+      "domain": "reddit.com",
+      "count": 10,
+      "share_pct": 11.49
+    },
+    {
+      "domain": "techradar.com",
+      "count": 10,
+      "share_pct": 11.49
+    },
+    {
+      "domain": "g2.com",
+      "count": 4,
+      "share_pct": 4.6
+    }
+  ],
+  "factor_analysis": {
+    "status": "observed_association_only",
+    "disclaimer": "Prior weights represent initial research hypotheses. Observed effects reflect empirical multi-model correlations and effect sizes. They do NOT establish causal AI ranking algorithms.",
+    "factors": [
+      {
+        "factor": "ugc_presence",
+        "factor_name": "third_party_ugc_citation_co_occurrence",
+        "prior_weight": 0.38,
+        "observed_effect": 0.21,
+        "confidence_interval": [
+          0.1,
+          0.31
+        ],
+        "confidence_interval_95": [
+          0.1,
+          0.31
+        ],
+        "observed_correlation_spearman": 0.38,
+        "effect_size_cohens_d": 0.49,
+        "sample_size": 118,
+        "status": "observed_association",
+        "hypothesis": "Target brand visibility co-occurs with authoritative forum/community citations.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      },
+      {
+        "factor": "review_aggregators",
+        "factor_name": "structured_comparison_density",
+        "prior_weight": 0.24,
+        "observed_effect": 0.26,
+        "confidence_interval": [
+          0.15,
+          0.37
+        ],
+        "confidence_interval_95": [
+          0.15,
+          0.37
+        ],
+        "observed_correlation_spearman": 0.42,
+        "effect_size_cohens_d": 0.58,
+        "sample_size": 118,
+        "status": "observed_association",
+        "hypothesis": "Prompts with comparison intent exhibit higher third-party review domain citations.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      },
+      {
+        "factor": "knowledge_graph_schema",
+        "factor_name": "schema_entity_disambiguation",
+        "prior_weight": 0.16,
+        "observed_effect": 0.18,
+        "confidence_interval": [
+          0.08,
+          0.28
+        ],
+        "confidence_interval_95": [
+          0.08,
+          0.28
+        ],
+        "observed_correlation_spearman": 0.35,
+        "effect_size_cohens_d": 0.44,
+        "sample_size": 118,
+        "status": "observed_association",
+        "hypothesis": "Pages with explicit SameAs entity markup correlate with higher entity consistency in LLM responses.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      }
+    ]
+  }
+}

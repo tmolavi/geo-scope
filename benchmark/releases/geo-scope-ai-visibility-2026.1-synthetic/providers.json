@@ -1,0 +1,30 @@
+[
+  {
+    "id": "hamzad_gemini",
+    "provider_id": "hamzad_gemini",
+    "name": "Google Gemini (Search Grounded)",
+    "model_name": "gemini-2.5-flash",
+    "grounding": "search-grounded"
+  },
+  {
+    "id": "hamzad_perplexity",
+    "provider_id": "hamzad_perplexity",
+    "name": "Perplexity Sonar (Live Search)",
+    "model_name": "sonar-pro",
+    "grounding": "search-grounded"
+  },
+  {
+    "id": "hamzad_openai",
+    "provider_id": "hamzad_openai",
+    "name": "OpenAI ChatGPT (Search Completion)",
+    "model_name": "gpt-4o-mini",
+    "grounding": "parametric / web"
+  },
+  {
+    "id": "hamzad_claude",
+    "provider_id": "hamzad_claude",
+    "name": "Anthropic Claude (Web Search)",
+    "model_name": "anthropic/claude-3.5-sonnet",
+    "grounding": "parametric / web"
+  }
+]

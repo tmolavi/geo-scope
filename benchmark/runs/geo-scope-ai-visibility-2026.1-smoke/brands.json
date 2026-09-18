@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Semrush",
+    "is_target": true,
+    "domain": "semrush.com"
+  },
+  {
+    "name": "Ahrefs",
+    "is_target": false,
+    "domain": "ahrefs.com"
+  },
+  {
+    "name": "Moz",
+    "is_target": false,
+    "domain": "moz.com"
+  },
+  {
+    "name": "Surfer SEO",
+    "is_target": false,
+    "domain": "surferseo.com"
+  },
+  {
+    "name": "Clearscope",
+    "is_target": false,
+    "domain": "clearscope.com"
+  },
+  {
+    "name": "MarketMuse",
+    "is_target": false,
+    "domain": "marketmuse.com"
+  }
+]

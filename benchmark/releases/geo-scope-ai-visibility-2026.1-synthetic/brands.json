@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Semrush",
+    "domain": "semrush.com",
+    "is_target": true,
+    "category": "SEO / AI Visibility"
+  },
+  {
+    "name": "Ahrefs",
+    "domain": "ahrefs.com",
+    "is_target": false,
+    "category": "SEO / Backlink Intelligence"
+  },
+  {
+    "name": "Moz",
+    "domain": "moz.com",
+    "is_target": false,
+    "category": "SEO Software"
+  },
+  {
+    "name": "Surfer SEO",
+    "domain": "surferseo.com",
+    "is_target": false,
+    "category": "Content Optimization / GEO"
+  },
+  {
+    "name": "Clearscope",
+    "domain": "clearscope.io",
+    "is_target": false,
+    "category": "Semantic Content Optimization"
+  },
+  {
+    "name": "MarketMuse",
+    "domain": "marketmuse.com",
+    "is_target": false,
+    "category": "Topical Authority & Content Strategy"
+  },
+  {
+    "name": "Conductor",
+    "domain": "conductor.com",
+    "is_target": false,
+    "category": "Enterprise SEO & AI Search"
+  },
+  {
+    "name": "SAGE",
+    "domain": "molavi.pro",
+    "is_target": false,
+    "category": "AI Visibility Audit & Extractability"
+  }
+]

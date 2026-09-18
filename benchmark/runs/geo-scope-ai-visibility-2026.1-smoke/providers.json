@@ -1,0 +1,26 @@
+[
+  {
+    "id": "hamzad_gemini",
+    "name": "Hamzad Gemini",
+    "search_grounded": false,
+    "model": "gemini-2.5-flash"
+  },
+  {
+    "id": "hamzad_perplexity",
+    "name": "Hamzad Perplexity",
+    "search_grounded": false,
+    "model": "sonar-pro"
+  },
+  {
+    "id": "hamzad_openai",
+    "name": "Hamzad Openai",
+    "search_grounded": false,
+    "model": "gpt-4o-mini"
+  },
+  {
+    "id": "hamzad_claude",
+    "name": "Hamzad Claude",
+    "search_grounded": false,
+    "model": "anthropic/claude-3.5-sonnet"
+  }
+]

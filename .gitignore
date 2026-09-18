@@ -48,5 +48,11 @@ htmlcov/
 output/
 results/
 *.csv
+!benchmark/**/*.csv
+!examples/**/*.csv
 *.json
 !geo_scope/data/*.json
+!benchmark/**/*.json
+!examples/**/*.json
+!docs/**/*.json
+!reports/**/*.json

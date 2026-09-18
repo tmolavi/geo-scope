@@ -1,0 +1,28 @@
+{
+  "version": "2026.1",
+  "dataset_id": "geo-scope-benchmark-2026.1",
+  "created_at": "2026-09-17T08:32:57.049508+00:00",
+  "execution_mode": "synthetic",
+  "research_status": "demo_only",
+  "description": "GEO-Scope Reference Benchmark 2026.1 containing 30 prompts across CRM/Sales SaaS and 120 multi-model observations.",
+  "git_commit": "06796aabbe90b45900814609eb34231ca4f60142",
+  "parser_version": "1.0.0",
+  "counts": {
+    "prompts": 30,
+    "observations": 120,
+    "citations": 88,
+    "brands": 4,
+    "providers": 4
+  },
+  "file_hashes": {
+    "README.md": "5a47f8c30a607bd8c6b978c9cba7b60341d38c3ff53efe4a6db8ea22c43c8ec0",
+    "brands.json": "0dba5fb91b1d92a50f9b903de085fd73a7ced3dd93a505fcdf587e46ac9fc9cb",
+    "citations.jsonl": "9707f1cd307e1b8fb4388a319fc2c8d368f90866353f699f295eab5263d82f3d",
+    "methodology.md": "9f7de2d6de92713eaf64519db6026653cff563ff2d87dc828dd84f9475474d9d",
+    "metrics.json": "6ce198802994a4280f7d8110a4895c99e1db916ca6f272a95b2e7c5391d95765",
+    "observations.jsonl": "2ee225c2a9607558724d18f51f099f6f63ae9afd2d7792cee7c39cfd9878db4c",
+    "prompts.jsonl": "2ffc2ce2df727ab20a9e3c8d3ed677390a2f658ca16833e10ec9543c929797dd",
+    "providers.json": "77e3063c3a933e39b4f820ef08296ab870872c1bea6851173278eca29692b6f7"
+  },
+  "composite_dataset_hash": "96169a99fcbb992ef7f8c8e51bd54a74d52514a732bc425adc667a3425cc3347"
+}

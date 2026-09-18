@@ -1,0 +1,22 @@
+[
+  {
+    "name": "HubSpot",
+    "is_target": true,
+    "domain": "hubspot.com"
+  },
+  {
+    "name": "Salesforce",
+    "is_target": false,
+    "domain": "salesforce.com"
+  },
+  {
+    "name": "Zoho CRM",
+    "is_target": false,
+    "domain": "zoho.com"
+  },
+  {
+    "name": "Pipedrive",
+    "is_target": false,
+    "domain": "pipedrive.com"
+  }
+]

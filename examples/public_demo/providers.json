@@ -1,0 +1,14 @@
+[
+  {
+    "id": "gemini-2.5-flash",
+    "name": "Gemini 2.5 Flash",
+    "model": "gemini-2.5-flash",
+    "search_grounded": false
+  },
+  {
+    "id": "gpt-4o",
+    "name": "OpenAI GPT-4o",
+    "model": "gpt-4o",
+    "search_grounded": false
+  }
+]

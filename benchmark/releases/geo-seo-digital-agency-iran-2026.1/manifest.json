@@ -1,0 +1,107 @@
+{
+  "version": "2026.1",
+  "benchmark_version": "2026.1-live",
+  "dataset_id": "geo-seo-digital-agency-iran-2026.1",
+  "dataset_name": "geo-seo-digital-agency-iran-2026.1",
+  "created_at": "2026-09-17T22:35:32.945639+00:00",
+  "execution_mode": "live",
+  "benchmark_mode": "discovery",
+  "research_status": "peer_review_ready",
+  "description": "GEO, SEO & Digital Marketing Agency Iran 2026 Benchmark — Measuring AI Visibility, Recommendations, and Citation Presence Across Generative AI Platforms",
+  "git_commit": "d60c191fcaf5139f87817b59955c22633a7a9083",
+  "parser_version": "1.0.0",
+  "providers": [
+    "gemini-2.5-flash",
+    "gpt-4o",
+    "claude-3-5-sonnet",
+    "sonar-pro"
+  ],
+  "models": [
+    "gemini-2.5-flash",
+    "gpt-4o",
+    "claude-3-5-sonnet",
+    "sonar-pro"
+  ],
+  "experiment_ids": [
+    "geo-seo-digital-agency-iran-2026.1"
+  ],
+  "dataset_hash": "13238aebafb378a96f2ae3cf69a867c8a0bef8ed205df312f3b5ca8ee6f537ff",
+  "counts": {
+    "prompts": 30,
+    "observed_prompts": 0,
+    "generated_prompts": 30,
+    "observations": 120,
+    "citations": 0,
+    "brands": 8,
+    "providers": 4
+  },
+  "file_hashes": {
+    "README.md": "2abbf7acec3327d2a5ef88c7f2c375e55ac49193b3322fd2f8042c56e06aa518",
+    "brands.json": "dfb2d7b2bcfb90dbec1a5ecd6c6c01e12b06c9e4ce7f86f225a4565d72e5954a",
+    "citations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "entities.json": "dfb2d7b2bcfb90dbec1a5ecd6c6c01e12b06c9e4ce7f86f225a4565d72e5954a",
+    "manifest.json": "f9e7fe174578cc1e31f7a9d6de2554966b0c6c4d76f0b6b0ebdc0713bce730a5",
+    "methodology.md": "c4e14ab8d39ccc8291bf00500b95431ac8deab78749aeda7d9dac4e7e81bb2e5",
+    "metrics.json": "400cc1d342cda77e2bba14bfc6f83ec578a73faee3d2f7f692e8071bbf9b2e1d",
+    "observations.jsonl": "b8da42cb2ed0423c8c17eb67a7d7ebf6ecca4e7669bc902ded9b67bf3f11f133",
+    "prompts.jsonl": "8a2459f58d9a5d2bc564747f2cfcecc2c593754d5ad8ed731dd508ddc036843f",
+    "provenance.json": "3727153959119928d1b828c59a289754a2e1cd0e2a3b59eb069371dac5169b0f",
+    "providers.json": "a429d57a2e92d92dcdb5c6d4e4ae1d72d8bb69b9b3587527b2949330a1b7665d"
+  },
+  "composite_dataset_hash": "13238aebafb378a96f2ae3cf69a867c8a0bef8ed205df312f3b5ca8ee6f537ff",
+  "provider_validation": {
+    "gemini-2.5-flash": {
+      "requested": "gemini-2.5-flash",
+      "verified_model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "fallback_detected": false,
+      "status": "PASS",
+      "latency_ms": 1683.22,
+      "error": null,
+      "validated_at": "2026-09-17T21:30:34.850095+00:00"
+    },
+    "gpt-4o": {
+      "requested": "gpt-4o",
+      "verified_model": "gpt-4o",
+      "provider": "avalai",
+      "fallback_detected": false,
+      "status": "PASS",
+      "latency_ms": 2341.8,
+      "error": null,
+      "validated_at": "2026-09-17T21:30:37.293462+00:00"
+    },
+    "claude-3-5-sonnet": {
+      "requested": "claude-3-5-sonnet",
+      "verified_model": "qwen/qwen3.8-27b",
+      "provider": "groq",
+      "fallback_detected": true,
+      "status": "FAIL",
+      "latency_ms": 1218.68,
+      "error": "fallback detected (routed to qwen/qwen3.8-27b via groq)",
+      "validated_at": "2026-09-17T21:30:38.613395+00:00"
+    },
+    "sonar-pro": {
+      "requested": "sonar-pro",
+      "verified_model": "qwen/qwen3.8-27b",
+      "provider": "groq",
+      "fallback_detected": true,
+      "status": "FAIL",
+      "latency_ms": 1296.38,
+      "error": "fallback detected (routed to qwen/qwen3.8-27b via groq)",
+      "validated_at": "2026-09-17T21:30:40.011109+00:00"
+    }
+  },
+  "model_provenance": {
+    "validated": true,
+    "fallbacks_recorded": true,
+    "benchmark_mode": "discovery",
+    "native_count": 0,
+    "fallback_count": 51,
+    "failed_count": 69
+  },
+  "question_provenance": {
+    "observed_count": 0,
+    "generated_count": 30,
+    "source_reference": "answerpath"
+  }
+}

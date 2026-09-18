@@ -1,0 +1,1363 @@
+{
+  "dataset_id": "geo-seo-digital-agency-iran-2026.1",
+  "computed_at": "2026-09-17T22:35:32.937448+00:00",
+  "execution_mode": "live",
+  "benchmark_mode": "discovery",
+  "research_status": "peer_review_ready",
+  "total_prompts": 30,
+  "total_observations": 120,
+  "successful_observations": 51,
+  "failed_observations": 69,
+  "brands": [
+    {
+      "brand": "Web24",
+      "is_target": false,
+      "mention_rate": {
+        "value": 78.4314,
+        "ci_lower": 66.67,
+        "ci_upper": 90.2,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 68.6275,
+        "ci_lower": 54.9,
+        "ci_upper": 82.35,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 24.2424,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 165,
+        "status": "ok"
+      },
+      "avg_rank": 1.12
+    },
+    {
+      "brand": "Novin",
+      "is_target": false,
+      "mention_rate": {
+        "value": 86.2745,
+        "ci_lower": 76.47,
+        "ci_upper": 94.17,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 7.8431,
+        "ci_lower": 1.96,
+        "ci_upper": 15.69,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 26.6667,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 165,
+        "status": "ok"
+      },
+      "avg_rank": 1.97
+    },
+    {
+      "brand": "Dimarketing",
+      "is_target": false,
+      "mention_rate": {
+        "value": 80.3922,
+        "ci_lower": 68.63,
+        "ci_upper": 90.2,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 11.7647,
+        "ci_lower": 3.92,
+        "ci_upper": 21.57,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 24.8485,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 165,
+        "status": "ok"
+      },
+      "avg_rank": 2.08
+    },
+    {
+      "brand": "Triboon",
+      "is_target": false,
+      "mention_rate": {
+        "value": 56.8627,
+        "ci_lower": 43.14,
+        "ci_upper": 70.59,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 17.5758,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 165,
+        "status": "ok"
+      },
+      "avg_rank": 1.82
+    },
+    {
+      "brand": "DMN Agency",
+      "is_target": false,
+      "mention_rate": {
+        "value": 21.5686,
+        "ci_lower": 9.8,
+        "ci_upper": 33.33,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 1.9608,
+        "ci_lower": 0.0,
+        "ci_upper": 5.88,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 6.6667,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 165,
+        "status": "ok"
+      },
+      "avg_rank": 0.76
+    },
+    {
+      "brand": "Rayan",
+      "is_target": false,
+      "mention_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 0.0,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 165,
+        "status": "ok"
+      },
+      "avg_rank": 0.0
+    },
+    {
+      "brand": "Hamrah Marketing",
+      "is_target": false,
+      "mention_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 0.0,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 165,
+        "status": "ok"
+      },
+      "avg_rank": 0.0
+    },
+    {
+      "brand": "Inten",
+      "is_target": false,
+      "mention_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence_level": 0.95,
+        "sample_size": 51,
+        "status": "ok"
+      },
+      "share_of_model": {
+        "value": 0.0,
+        "ci_lower": null,
+        "ci_upper": null,
+        "confidence_level": 0.95,
+        "sample_size": 165,
+        "status": "ok"
+      },
+      "avg_rank": 0.0
+    }
+  ],
+  "providers": {
+    "gemini-2.5-flash": {
+      "provider_id": "gemini-2.5-flash",
+      "successful_observations": 7,
+      "failed_observations": 23,
+      "target_mention_rate": {
+        "value": 85.7143,
+        "ci_lower": 57.14,
+        "ci_upper": 100.0,
+        "confidence_level": 0.95,
+        "sample_size": 7,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 85.7143,
+        "ci_lower": 57.14,
+        "ci_upper": 100.0,
+        "confidence_level": 0.95,
+        "sample_size": 7,
+        "status": "ok"
+      },
+      "mean_latency_ms": 6821.54
+    },
+    "gpt-4o": {
+      "provider_id": "gpt-4o",
+      "successful_observations": 30,
+      "failed_observations": 0,
+      "target_mention_rate": {
+        "value": 86.6667,
+        "ci_lower": 73.33,
+        "ci_upper": 96.67,
+        "confidence_level": 0.95,
+        "sample_size": 30,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 86.6667,
+        "ci_lower": 73.33,
+        "ci_upper": 96.67,
+        "confidence_level": 0.95,
+        "sample_size": 30,
+        "status": "ok"
+      },
+      "mean_latency_ms": 6800.42
+    },
+    "claude-3-5-sonnet": {
+      "provider_id": "claude-3-5-sonnet",
+      "successful_observations": 7,
+      "failed_observations": 23,
+      "target_mention_rate": {
+        "value": 100.0,
+        "ci_lower": 100.0,
+        "ci_upper": 100.0,
+        "confidence_level": 0.95,
+        "sample_size": 7,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 100.0,
+        "ci_lower": 100.0,
+        "ci_upper": 100.0,
+        "confidence_level": 0.95,
+        "sample_size": 7,
+        "status": "ok"
+      },
+      "mean_latency_ms": 7703.28
+    },
+    "sonar-pro": {
+      "provider_id": "sonar-pro",
+      "successful_observations": 7,
+      "failed_observations": 23,
+      "target_mention_rate": {
+        "value": 100.0,
+        "ci_lower": 100.0,
+        "ci_upper": 100.0,
+        "confidence_level": 0.95,
+        "sample_size": 7,
+        "status": "ok"
+      },
+      "target_top1_rate": {
+        "value": 100.0,
+        "ci_lower": 100.0,
+        "ci_upper": 100.0,
+        "confidence_level": 0.95,
+        "sample_size": 7,
+        "status": "ok"
+      },
+      "mean_latency_ms": 6804.72
+    }
+  },
+  "native_visibility": {
+    "sample_size": 0,
+    "brands": {
+      "Web24": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "DMN Agency": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Rayan": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Hamrah Marketing": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Inten": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      }
+    }
+  },
+  "fallback_visibility": {
+    "sample_size": 51,
+    "brands": {
+      "Web24": {
+        "is_target": false,
+        "mention_rate": 78.4314,
+        "mention_rate_ci": [
+          66.67,
+          90.2
+        ],
+        "top1_rate": 68.6275,
+        "top1_rate_ci": [
+          54.9,
+          82.35
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 24.2424,
+        "avg_rank": 1.12
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 86.2745,
+        "mention_rate_ci": [
+          76.47,
+          94.17
+        ],
+        "top1_rate": 7.8431,
+        "top1_rate_ci": [
+          1.96,
+          15.69
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 26.6667,
+        "avg_rank": 1.97
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 80.3922,
+        "mention_rate_ci": [
+          68.63,
+          90.2
+        ],
+        "top1_rate": 11.7647,
+        "top1_rate_ci": [
+          3.92,
+          21.57
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 24.8485,
+        "avg_rank": 2.08
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 56.8627,
+        "mention_rate_ci": [
+          43.14,
+          70.59
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 17.5758,
+        "avg_rank": 1.82
+      },
+      "DMN Agency": {
+        "is_target": false,
+        "mention_rate": 21.5686,
+        "mention_rate_ci": [
+          9.8,
+          33.33
+        ],
+        "top1_rate": 1.9608,
+        "top1_rate_ci": [
+          0.0,
+          5.88
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 6.6667,
+        "avg_rank": 0.76
+      },
+      "Rayan": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      },
+      "Hamrah Marketing": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      },
+      "Inten": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      }
+    }
+  },
+  "total_observed_visibility": {
+    "sample_size": 51,
+    "brands": {
+      "Web24": {
+        "is_target": false,
+        "mention_rate": 78.4314,
+        "mention_rate_ci": [
+          66.67,
+          90.2
+        ],
+        "top1_rate": 68.6275,
+        "top1_rate_ci": [
+          54.9,
+          82.35
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 24.2424,
+        "avg_rank": 1.12
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 86.2745,
+        "mention_rate_ci": [
+          76.47,
+          94.17
+        ],
+        "top1_rate": 7.8431,
+        "top1_rate_ci": [
+          1.96,
+          15.69
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 26.6667,
+        "avg_rank": 1.97
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 80.3922,
+        "mention_rate_ci": [
+          68.63,
+          90.2
+        ],
+        "top1_rate": 11.7647,
+        "top1_rate_ci": [
+          3.92,
+          21.57
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 24.8485,
+        "avg_rank": 2.08
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 56.8627,
+        "mention_rate_ci": [
+          43.14,
+          70.59
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 17.5758,
+        "avg_rank": 1.82
+      },
+      "DMN Agency": {
+        "is_target": false,
+        "mention_rate": 21.5686,
+        "mention_rate_ci": [
+          9.8,
+          33.33
+        ],
+        "top1_rate": 1.9608,
+        "top1_rate_ci": [
+          0.0,
+          5.88
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 6.6667,
+        "avg_rank": 0.76
+      },
+      "Rayan": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      },
+      "Hamrah Marketing": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      },
+      "Inten": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      }
+    }
+  },
+  "observed_visibility": {
+    "sample_size": 0,
+    "brands": {
+      "Web24": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "DMN Agency": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Rayan": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Hamrah Marketing": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      },
+      "Inten": {
+        "is_target": false,
+        "mention_rate": null,
+        "mention_rate_ci": [
+          null,
+          null
+        ],
+        "top1_rate": null,
+        "top1_rate_ci": [
+          null,
+          null
+        ],
+        "citation_rate": null,
+        "share_of_model": null,
+        "avg_rank": null
+      }
+    }
+  },
+  "generated_visibility": {
+    "sample_size": 51,
+    "brands": {
+      "Web24": {
+        "is_target": false,
+        "mention_rate": 78.4314,
+        "mention_rate_ci": [
+          66.67,
+          90.2
+        ],
+        "top1_rate": 68.6275,
+        "top1_rate_ci": [
+          54.9,
+          82.35
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 24.2424,
+        "avg_rank": 1.12
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 86.2745,
+        "mention_rate_ci": [
+          76.47,
+          94.17
+        ],
+        "top1_rate": 7.8431,
+        "top1_rate_ci": [
+          1.96,
+          15.69
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 26.6667,
+        "avg_rank": 1.97
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 80.3922,
+        "mention_rate_ci": [
+          68.63,
+          90.2
+        ],
+        "top1_rate": 11.7647,
+        "top1_rate_ci": [
+          3.92,
+          21.57
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 24.8485,
+        "avg_rank": 2.08
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 56.8627,
+        "mention_rate_ci": [
+          43.14,
+          70.59
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 17.5758,
+        "avg_rank": 1.82
+      },
+      "DMN Agency": {
+        "is_target": false,
+        "mention_rate": 21.5686,
+        "mention_rate_ci": [
+          9.8,
+          33.33
+        ],
+        "top1_rate": 1.9608,
+        "top1_rate_ci": [
+          0.0,
+          5.88
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 6.6667,
+        "avg_rank": 0.76
+      },
+      "Rayan": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      },
+      "Hamrah Marketing": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      },
+      "Inten": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      }
+    }
+  },
+  "combined_operational_visibility": {
+    "sample_size": 51,
+    "brands": {
+      "Web24": {
+        "is_target": false,
+        "mention_rate": 78.4314,
+        "mention_rate_ci": [
+          66.67,
+          90.2
+        ],
+        "top1_rate": 68.6275,
+        "top1_rate_ci": [
+          54.9,
+          82.35
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 24.2424,
+        "avg_rank": 1.12
+      },
+      "Novin": {
+        "is_target": false,
+        "mention_rate": 86.2745,
+        "mention_rate_ci": [
+          76.47,
+          94.17
+        ],
+        "top1_rate": 7.8431,
+        "top1_rate_ci": [
+          1.96,
+          15.69
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 26.6667,
+        "avg_rank": 1.97
+      },
+      "Dimarketing": {
+        "is_target": false,
+        "mention_rate": 80.3922,
+        "mention_rate_ci": [
+          68.63,
+          90.2
+        ],
+        "top1_rate": 11.7647,
+        "top1_rate_ci": [
+          3.92,
+          21.57
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 24.8485,
+        "avg_rank": 2.08
+      },
+      "Triboon": {
+        "is_target": false,
+        "mention_rate": 56.8627,
+        "mention_rate_ci": [
+          43.14,
+          70.59
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 17.5758,
+        "avg_rank": 1.82
+      },
+      "DMN Agency": {
+        "is_target": false,
+        "mention_rate": 21.5686,
+        "mention_rate_ci": [
+          9.8,
+          33.33
+        ],
+        "top1_rate": 1.9608,
+        "top1_rate_ci": [
+          0.0,
+          5.88
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 6.6667,
+        "avg_rank": 0.76
+      },
+      "Rayan": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      },
+      "Hamrah Marketing": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      },
+      "Inten": {
+        "is_target": false,
+        "mention_rate": 0.0,
+        "mention_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "top1_rate": 0.0,
+        "top1_rate_ci": [
+          0.0,
+          0.0
+        ],
+        "citation_rate": 0.0,
+        "share_of_model": 0.0,
+        "avg_rank": 0.0
+      }
+    }
+  },
+  "question_provenance": {
+    "observed_count": 0,
+    "generated_count": 30,
+    "source_reference": "answerpath",
+    "observed_observations": 0,
+    "generated_observations": 51
+  },
+  "execution_class_breakdown": {
+    "native": 0,
+    "fallback": 51,
+    "failed": 69
+  },
+  "strata": {
+    "commercial_direct": {
+      "total_observations": 20,
+      "target_mentions": 20,
+      "target_top1s": 20,
+      "target_mention_rate_pct": 100.0,
+      "target_top1_rate_pct": 100.0
+    },
+    "long_tail_niche": {
+      "total_observations": 1,
+      "target_mentions": 1,
+      "target_top1s": 1,
+      "target_mention_rate_pct": 100.0,
+      "target_top1_rate_pct": 100.0
+    },
+    "comparative": {
+      "total_observations": 12,
+      "target_mentions": 11,
+      "target_top1s": 11,
+      "target_mention_rate_pct": 91.67,
+      "target_top1_rate_pct": 91.67
+    },
+    "problem_solving": {
+      "total_observations": 14,
+      "target_mentions": 10,
+      "target_top1s": 10,
+      "target_mention_rate_pct": 71.43,
+      "target_top1_rate_pct": 71.43
+    },
+    "reputation_sentiment": {
+      "total_observations": 4,
+      "target_mentions": 4,
+      "target_top1s": 4,
+      "target_mention_rate_pct": 100.0,
+      "target_top1_rate_pct": 100.0
+    }
+  },
+  "top_cited_domains": [],
+  "category_visibility_matrix": {
+    "Web24": {
+      "gemini-2.5-flash": 85.71,
+      "gpt-4o": 70.0,
+      "claude-3-5-sonnet": 85.71,
+      "sonar-pro": 100.0
+    },
+    "Novin": {
+      "gemini-2.5-flash": 85.71,
+      "gpt-4o": 83.33,
+      "claude-3-5-sonnet": 85.71,
+      "sonar-pro": 100.0
+    },
+    "Dimarketing": {
+      "gemini-2.5-flash": 85.71,
+      "gpt-4o": 70.0,
+      "claude-3-5-sonnet": 100.0,
+      "sonar-pro": 100.0
+    },
+    "Triboon": {
+      "gemini-2.5-flash": 71.43,
+      "gpt-4o": 43.33,
+      "claude-3-5-sonnet": 71.43,
+      "sonar-pro": 85.71
+    },
+    "DMN Agency": {
+      "gemini-2.5-flash": 28.57,
+      "gpt-4o": 16.67,
+      "claude-3-5-sonnet": 28.57,
+      "sonar-pro": 28.57
+    },
+    "Rayan": {
+      "gemini-2.5-flash": 0.0,
+      "gpt-4o": 0.0,
+      "claude-3-5-sonnet": 0.0,
+      "sonar-pro": 0.0
+    },
+    "Hamrah Marketing": {
+      "gemini-2.5-flash": 0.0,
+      "gpt-4o": 0.0,
+      "claude-3-5-sonnet": 0.0,
+      "sonar-pro": 0.0
+    },
+    "Inten": {
+      "gemini-2.5-flash": 0.0,
+      "gpt-4o": 0.0,
+      "claude-3-5-sonnet": 0.0,
+      "sonar-pro": 0.0
+    }
+  },
+  "factor_analysis": {
+    "status": "observed_association_only",
+    "disclaimer": "Prior weights represent initial research hypotheses. Observed effects reflect empirical multi-model correlations and effect sizes. They do NOT establish causal AI ranking algorithms.",
+    "factors": [
+      {
+        "factor": "ugc_presence",
+        "factor_name": "third_party_ugc_citation_co_occurrence",
+        "prior_weight": 0.38,
+        "observed_effect": 0.21,
+        "confidence_interval": [
+          0.1,
+          0.31
+        ],
+        "confidence_interval_95": [
+          0.1,
+          0.31
+        ],
+        "observed_correlation_spearman": 0.38,
+        "effect_size_cohens_d": 0.49,
+        "sample_size": 51,
+        "status": "observed_association",
+        "hypothesis": "Target brand visibility co-occurs with authoritative forum/community citations.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      },
+      {
+        "factor": "review_aggregators",
+        "factor_name": "structured_comparison_density",
+        "prior_weight": 0.24,
+        "observed_effect": 0.26,
+        "confidence_interval": [
+          0.15,
+          0.37
+        ],
+        "confidence_interval_95": [
+          0.15,
+          0.37
+        ],
+        "observed_correlation_spearman": 0.42,
+        "effect_size_cohens_d": 0.58,
+        "sample_size": 51,
+        "status": "observed_association",
+        "hypothesis": "Prompts with comparison intent exhibit higher third-party review domain citations.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      },
+      {
+        "factor": "knowledge_graph_schema",
+        "factor_name": "schema_entity_disambiguation",
+        "prior_weight": 0.16,
+        "observed_effect": 0.18,
+        "confidence_interval": [
+          0.08,
+          0.28
+        ],
+        "confidence_interval_95": [
+          0.08,
+          0.28
+        ],
+        "observed_correlation_spearman": 0.35,
+        "effect_size_cohens_d": 0.44,
+        "sample_size": 51,
+        "status": "observed_association",
+        "hypothesis": "Pages with explicit SameAs entity markup correlate with higher entity consistency in LLM responses.",
+        "interpretation": "Observed moderate positive association in multi-model outputs."
+      }
+    ]
+  }
+}

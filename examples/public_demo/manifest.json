@@ -1,0 +1,18 @@
+{
+  "version": "2026.1",
+  "dataset_id": "geo-scope-public-demo",
+  "dataset_name": "geo-scope-public-demo",
+  "title": "GEO-Scope Public Proof Demonstration Dataset",
+  "created_at": "2026-09-18T00:00:00Z",
+  "execution_mode": "demonstration",
+  "research_status": "demo_only",
+  "benchmark_mode": "discovery",
+  "description": "Offline reproducible demonstration benchmark dataset for independent verification.",
+  "counts": {
+    "prompts": 5,
+    "observations": 10,
+    "citations": 5,
+    "brands": 4,
+    "providers": 2
+  }
+}

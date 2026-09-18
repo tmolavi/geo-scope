@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Web24",
+    "entity": "Web24",
+    "is_target": true,
+    "domain": "web24.com"
+  },
+  {
+    "name": "Novin",
+    "entity": "Novin",
+    "is_target": false,
+    "domain": "novin.com"
+  },
+  {
+    "name": "Dimarketing",
+    "entity": "Dimarketing",
+    "is_target": false,
+    "domain": "dimarketing.com"
+  },
+  {
+    "name": "Triboon",
+    "entity": "Triboon",
+    "is_target": false,
+    "domain": "triboon.com"
+  }
+]
