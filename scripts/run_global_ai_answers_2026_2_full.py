@@ -1,0 +1,165 @@
+import asyncio
+import json
+import os
+import re
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Dict, Any, List
+
+import httpx
+
+from geo_scope.providers.hamzad_provider import HamzadProvider
+from geo_scope.parser.observation_parser import ObservationParser
+from geo_scope.entities.models import Entity
+from geo_scope.benchmark.hasher import write_checksums_file, verify_dataset_checksums
+
+# 1. 50 Countries Matrix
+COUNTRIES = [
+    # MENA (10)
+    ("Iran", "IRN", "middle_east_north_africa", "fa"),
+    ("Turkey", "TUR", "middle_east_north_africa", "tr"),
+    ("Saudi Arabia", "SAU", "middle_east_north_africa", "ar"),
+    ("United Arab Emirates", "ARE", "middle_east_north_africa", "ar"),
+    ("Yemen", "YEM", "middle_east_north_africa", "ar"),
+    ("Egypt", "EGY", "middle_east_north_africa", "ar"),
+    ("Morocco", "MAR", "middle_east_north_africa", "ar"),
+    ("Iraq", "IRQ", "middle_east_north_africa", "ar"),
+    ("Jordan", "JOR", "middle_east_north_africa", "ar"),
+    ("Qatar", "QAT", "middle_east_north_africa", "ar"),
+    # North America (3)
+    ("United States", "USA", "north_america", "en"),
+    ("Canada", "CAN", "north_america", "en"),
+    ("Mexico", "MEX", "north_america", "es"),
+    # Europe (15)
+    ("Germany", "DEU", "europe", "de"),
+    ("United Kingdom", "GBR", "europe", "en"),
+    ("France", "FRA", "europe", "fr"),
+    ("Italy", "ITA", "europe", "it"),
+    ("Spain", "ESP", "europe", "es"),
+    ("Netherlands", "NLD", "europe", "nl"),
+    ("Sweden", "SWE", "europe", "sv"),
+    ("Poland", "POL", "europe", "pl"),
+    ("Switzerland", "CHE", "europe", "de"),
+    ("Austria", "AUT", "europe", "de"),
+    ("Belgium", "BEL", "europe", "nl"),
+    ("Ireland", "IRL", "europe", "en"),
+    ("Norway", "NOR", "europe", "no"),
+    ("Denmark", "DNK", "europe", "da"),
+    ("Finland", "FIN", "europe", "fi"),
+    # Asia Pacific (12)
+    ("India", "IND", "asia_pacific", "hi"),
+    ("China", "CHN", "asia_pacific", "zh"),
+    ("Japan", "JPN", "asia_pacific", "ja"),
+    ("South Korea", "KOR", "asia_pacific", "ko"),
+    ("Indonesia", "IDN", "asia_pacific", "id"),
+    ("Pakistan", "PAK", "asia_pacific", "ur"),
+    ("Vietnam", "VNM", "asia_pacific", "vi"),
+    ("Philippines", "PHL", "asia_pacific", "tl"),
+    ("Australia", "AUS", "asia_pacific", "en"),
+    ("Singapore", "SGP", "asia_pacific", "en"),
+    ("New Zealand", "NZL", "asia_pacific", "en"),
+    ("Malaysia", "MYS", "asia_pacific", "ms"),
+    # Latin America (5)
+    ("Brazil", "BRA", "latin_america", "pt"),
+    ("Argentina", "ARG", "latin_america", "es"),
+    ("Colombia", "COL", "latin_america", "es"),
+    ("Chile", "CHL", "latin_america", "es"),
+    ("Peru", "PER", "latin_america", "es"),
+    # Sub-Saharan Africa (5)
+    ("Nigeria", "NGA", "sub_saharan_africa", "en"),
+    ("South Africa", "ZAF", "sub_saharan_africa", "en"),
+    ("Kenya", "KEN", "sub_saharan_africa", "sw"),
+    ("Ghana", "GHA", "sub_saharan_africa", "en"),
+    ("Ethiopia", "ETH", "sub_saharan_africa", "am"),
+]
+
+# 2. Comprehensive 50+ Multi-Type Entity Registry
+ENTITIES_DATA = [
+    # People (Key AI Figures & Leaders)
+    {"id": "sam_altman", "type": "person", "names": ["Sam Altman", "سام آلتمن", "سام التمان", "山姆·奥特曼"], "aliases": [], "domains": ["openai.com"], "do_not_confuse": ["Altman Z-score", "Robert Altman"]},
+    {"id": "yann_lecun", "type": "person", "names": ["Yann LeCun", "یان لکان", "یان لوکان", "杨立昆"], "aliases": [], "domains": ["meta.com", "nyu.edu"], "do_not_confuse": []},
+    {"id": "demis_hassabis", "type": "person", "names": ["Demis Hassabis", "دمیس حسابیس", "ديميس هاسابيس"], "aliases": [], "domains": ["deepmind.google"], "do_not_confuse": []},
+    {"id": "jensen_huang", "type": "person", "names": ["Jensen Huang", "جن سن هوانگ", "黄仁勋"], "aliases": ["Jen-Hsun Huang"], "domains": ["nvidia.com"], "do_not_confuse": []},
+    {"id": "geoffrey_hinton", "type": "person", "names": ["Geoffrey Hinton", "جفری هینتون", "杰弗里·辛顿"], "aliases": [], "domains": ["utoronto.ca"], "do_not_confuse": []},
+    {"id": "elon_musk", "type": "person", "names": ["Elon Musk", "ایلان ماسک", "إيلون ماسك", "马斯克"], "aliases": [], "domains": ["x.ai", "tesla.com"], "do_not_confuse": ["Musk perfume", "musk deer"]},
+    {"id": "andrew_ng", "type": "person", "names": ["Andrew Ng", "اندرو ان جی", "吴恩达"], "aliases": [], "domains": ["deeplearning.ai", "coursera.org"], "do_not_confuse": []},
+    {"id": "ilya_sutskever", "type": "person", "names": ["Ilya Sutskever", "ایلیا سوتسکور"], "aliases": [], "domains": ["ssi.inc"], "do_not_confuse": []},
+
+    # Companies (Tech & AI Providers)
+    {"id": "google", "type": "company", "names": ["Google", "گوگل", "جوجل", "谷歌"], "aliases": ["Alphabet", "Google DeepMind"], "domains": ["google.com", "deepmind.google"], "do_not_confuse": ["Googol number"]},
+    {"id": "microsoft", "type": "company", "names": ["Microsoft", "مایکروسافت", "مايكروسوفت", "微软"], "aliases": ["MSFT"], "domains": ["microsoft.com"], "do_not_confuse": []},
+    {"id": "openai", "type": "company", "names": ["OpenAI", "اوپن ای آی", "أوبن إيه آي"], "aliases": [], "domains": ["openai.com"], "do_not_confuse": ["Open source AI"]},
+    {"id": "anthropic", "type": "company", "names": ["Anthropic", "آنتروپیک", "أنثروبيك"], "aliases": [], "domains": ["anthropic.com"], "do_not_confuse": ["Anthropic principle"]},
+    {"id": "nvidia", "type": "company", "names": ["NVIDIA", "ان‌ویدیا", "إنفيديا", "英伟达"], "aliases": [], "domains": ["nvidia.com"], "do_not_confuse": []},
+    {"id": "amazon", "type": "company", "names": ["Amazon", "آمازون", "أمازون", "亚马逊", "AWS"], "aliases": ["Amazon Web Services"], "domains": ["aws.amazon.com", "amazon.com"], "do_not_confuse": ["Amazon rainforest", "Amazon river"]},
+    {"id": "apple", "type": "company", "names": ["Apple", "اپل", "أبل", "苹果"], "aliases": ["Apple Inc"], "domains": ["apple.com"], "do_not_confuse": ["Apple fruit", "apple cider"]},
+    {"id": "meta", "type": "company", "names": ["Meta", "متا"], "aliases": ["Facebook", "Meta Platforms"], "domains": ["meta.com"], "do_not_confuse": ["Meta prefix", "metadata", "meta-analysis"]},
+    {"id": "mistral", "type": "company", "names": ["Mistral", "Mistral AI", "میسترال"], "aliases": [], "domains": ["mistral.ai"], "do_not_confuse": ["Mistral wind"]},
+    {"id": "cohere", "type": "company", "names": ["Cohere", "کوهر"], "aliases": [], "domains": ["cohere.com"], "do_not_confuse": ["coherence"]},
+    {"id": "bytedance", "type": "company", "names": ["ByteDance", "بایت دنس", "字节跳动"], "aliases": [], "domains": ["bytedance.com"], "do_not_confuse": []},
+    {"id": "alibaba", "type": "company", "names": ["Alibaba", "علی‌بابا", "阿里巴巴", "Alibaba Cloud"], "aliases": [], "domains": ["alibabacloud.com", "alibaba.com"], "do_not_confuse": ["Ali Baba Arabian Nights story", "Alibaba travel agency"]},
+    {"id": "tencent", "type": "company", "names": ["Tencent", "تنسنت", "腾讯"], "aliases": [], "domains": ["tencent.com"], "do_not_confuse": []},
+    {"id": "baidu", "type": "company", "names": ["Baidu", "بایدو", "百度"], "aliases": [], "domains": ["baidu.com"], "do_not_confuse": []},
+    {"id": "stripe", "type": "company", "names": ["Stripe", "استرایپ"], "aliases": ["Stripe Atlas"], "domains": ["stripe.com"], "do_not_confuse": ["zebra stripe", "stripe pattern"]},
+    {"id": "deepseek", "type": "company", "names": ["DeepSeek", "دیپ‌سیک", "深度求索"], "aliases": [], "domains": ["deepseek.com"], "do_not_confuse": []},
+
+    # Countries / Migration & Study Destinations
+    {"id": "germany", "type": "country", "names": ["Germany", "Deutschland", "آلمان", "ألمانيا", "德国"], "aliases": ["Federal Republic of Germany"], "domains": ["make-it-in-germany.com"], "do_not_confuse": []},
+    {"id": "united_kingdom", "type": "country", "names": ["United Kingdom", "UK", "بریتانیا", "انگلستان", "المملكة المتحدة", "英国"], "aliases": ["Britain", "Great Britain"], "domains": ["gov.uk"], "do_not_confuse": []},
+    {"id": "united_states", "type": "country", "names": ["United States", "USA", "US", "آمریکا", "ایالات متحده", "الولايات المتحدة", "美国"], "aliases": ["America"], "domains": ["usa.gov"], "do_not_confuse": ["United States of Mexico"]},
+    {"id": "canada", "type": "country", "names": ["Canada", "کانادا", "كندا", "加拿大"], "aliases": [], "domains": ["canada.ca"], "do_not_confuse": []},
+    {"id": "uae", "type": "country", "names": ["United Arab Emirates", "UAE", "امارات", "الإمارات", "دبی", "Dubai", "Abu Dhabi"], "aliases": ["Emirates"], "domains": ["u.ae"], "do_not_confuse": ["Emirates airline"]},
+    {"id": "saudi_arabia", "type": "country", "names": ["Saudi Arabia", "KSA", "عربستان", "السعودية", "المملكة العربية السعودية", "沙特"], "aliases": ["Saudi"], "domains": ["my.gov.sa"], "do_not_confuse": []},
+    {"id": "japan", "type": "country", "names": ["Japan", "Nippon", "ژاپن", "اليابان", "日本"], "aliases": [], "domains": ["japan.go.jp"], "do_not_confuse": []},
+    {"id": "singapore", "type": "country", "names": ["Singapore", "سنگاپور", "سنغافورة", "新加坡"], "aliases": [], "domains": ["gov.sg"], "do_not_confuse": []},
+    {"id": "australia", "type": "country", "names": ["Australia", "استرالیا", "أستراليا", "澳大利亚"], "aliases": [], "domains": ["australia.gov.au"], "do_not_confuse": []},
+    {"id": "switzerland", "type": "country", "names": ["Switzerland", "Schweiz", "Suisse", "سوئیس", "سويسرا", "瑞士"], "aliases": ["Swiss"], "domains": ["admin.ch"], "do_not_confuse": ["Swiss cheese", "Swiss army knife"]},
+    {"id": "netherlands", "type": "country", "names": ["Netherlands", "Nederland", "هلند", "هولندا", "荷兰"], "aliases": ["Holland"], "domains": ["government.nl"], "do_not_confuse": []},
+    {"id": "france", "type": "country", "names": ["France", "فرانسه", "فرنسا", "法国"], "aliases": [], "domains": ["gouvernement.fr"], "do_not_confuse": ["French fries", "French toast"]},
+    {"id": "india", "type": "country", "names": ["India", "Bharat", "هند", "الهند", "印度"], "aliases": [], "domains": ["india.gov.in"], "do_not_confuse": ["Indian ocean"]},
+    {"id": "brazil", "type": "country", "names": ["Brazil", "Brasil", "برزیل", "البرازيل", "巴西"], "aliases": [], "domains": ["gov.br"], "do_not_confuse": ["Brazil nuts"]},
+    {"id": "turkey", "type": "country", "names": ["Turkey", "Türkiye", "ترکیه", "تركيا", "土耳其"], "aliases": [], "domains": ["turkiye.gov.tr"], "do_not_confuse": ["turkey bird"]},
+
+    # Universities & Academic Hubs
+    {"id": "mit", "type": "university", "names": ["MIT", "Massachusetts Institute of Technology", "ام‌آی‌تی", "معهد ماساتشوستس للتقنية", "麻省理工学院"], "aliases": [], "domains": ["mit.edu"], "do_not_confuse": []},
+    {"id": "stanford", "type": "university", "names": ["Stanford", "Stanford University", "استنفورد", "جامعة ستانفورد", "斯坦福大学"], "aliases": [], "domains": ["stanford.edu"], "do_not_confuse": []},
+    {"id": "oxford", "type": "university", "names": ["Oxford", "University of Oxford", "آکسفورد", "جامعة أكسفورد", "牛津大学"], "aliases": [], "domains": ["ox.ac.uk"], "do_not_confuse": ["Oxford shoes", "Oxford comma"]},
+    {"id": "cambridge", "type": "university", "names": ["Cambridge", "University of Cambridge", "کمبریج", "جامعة كامبريدج", "剑桥大学"], "aliases": [], "domains": ["cam.ac.uk"], "do_not_confuse": []},
+    {"id": "harvard", "type": "university", "names": ["Harvard", "Harvard University", "هاروارد", "جامعة هارفارد", "哈佛大学"], "aliases": [], "domains": ["harvard.edu"], "do_not_confuse": []},
+    {"id": "eth_zurich", "type": "university", "names": ["ETH Zurich", "ETH Zürich", "ای‌تی‌اچ زوریخ", "苏黎世联邦理工学院"], "aliases": [], "domains": ["ethz.ch"], "do_not_confuse": []},
+    {"id": "tu_munich", "type": "university", "names": ["Technical University of Munich", "TUM", "TU München", "دانشگاه فنی مونیخ"], "aliases": [], "domains": ["tum.de"], "do_not_confuse": []},
+    {"id": "utoronto", "type": "university", "names": ["University of Toronto", "U of T", "دانشگاه تورنتو", "多伦多大学"], "aliases": [], "domains": ["utoronto.ca"], "do_not_confuse": []},
+    {"id": "tsinghua", "type": "university", "names": ["Tsinghua University", "دانشگاه چینهوا", "清华大学"], "aliases": ["Tsinghua"], "domains": ["tsinghua.edu.cn"], "do_not_confuse": []},
+    {"id": "nus", "type": "university", "names": ["National University of Singapore", "NUS", "دانشگاه ملی سنگاپور", "新加坡国立大学"], "aliases": [], "domains": ["nus.edu.sg"], "do_not_confuse": []},
+
+    # Technologies & Frameworks
+    {"id": "python", "type": "technology", "names": ["Python", "پایتون", "بايثون", "Python编程"], "aliases": ["py"], "domains": ["python.org"], "do_not_confuse": ["python snake", "ball python", "Monty Python"]},
+    {"id": "docker", "type": "technology", "names": ["Docker", "داکر", "دوكر", "Docker容器"], "aliases": [], "domains": ["docker.com"], "do_not_confuse": ["dock worker"]},
+    {"id": "pytorch", "type": "technology", "names": ["PyTorch", "پای‌تورچ", "باي تورش"], "aliases": ["torch"], "domains": ["pytorch.org"], "do_not_confuse": ["flashlight torch", "flaming torch"]},
+    {"id": "tensorflow", "type": "technology", "names": ["TensorFlow", "تنسورفلو", "تنسرفلو"], "aliases": [], "domains": ["tensorflow.org"], "do_not_confuse": []},
+    {"id": "chatgpt", "type": "technology", "names": ["ChatGPT", "چت‌جی‌پی‌تی", "شات جي بي تي"], "aliases": ["GPT-4", "GPT-4o"], "domains": ["chatgpt.com"], "do_not_confuse": []},
+    {"id": "claude", "type": "technology", "names": ["Claude", "کلود", "كلود"], "aliases": ["Claude 3.5 Sonnet", "Claude 3"], "domains": ["claude.ai"], "do_not_confuse": ["Claude Monet", "Claude Debussy"]},
+    {"id": "gemini", "type": "technology", "names": ["Gemini", "جمینای", "جيميني", "جمینی"], "aliases": ["Google Gemini", "Gemini Pro", "Gemini Flash"], "domains": ["gemini.google.com"], "do_not_confuse": ["Gemini constellation", "Gemini zodiac sign", "Project Gemini NASA"]},
+    {"id": "langchain", "type": "technology", "names": ["LangChain", "لانگ‌چین", "LangGraph"], "aliases": [], "domains": ["langchain.com"], "do_not_confuse": []},
+    {"id": "crewai", "type": "technology", "names": ["CrewAI", "Crew AI", "کرو ای آی"], "aliases": [], "domains": ["crewai.com"], "do_not_confuse": ["flight crew", "film crew"]},
+    {"id": "llama", "type": "technology", "names": ["Llama", "Llama 3", "Llama-3", "لاما"], "aliases": ["Meta Llama"], "domains": ["llama.meta.com"], "do_not_confuse": ["llama animal", "alpaca llama"]},
+    {"id": "kubernetes", "type": "technology", "names": ["Kubernetes", "کوببرنتیز", "K8s"], "aliases": [], "domains": ["kubernetes.io"], "do_not_confuse": []},
+    {"id": "linux", "type": "technology", "names": ["Linux", "لینوکس", "لينكس"], "aliases": [], "domains": ["kernel.org"], "do_not_confuse": []},
+    {"id": "react", "type": "technology", "names": ["React", "React.js", "ری‌اکت"], "aliases": [], "domains": ["react.dev"], "do_not_confuse": ["chemical reaction", "react to news"]},
+    {"id": "nextjs", "type": "technology", "names": ["Next.js", "Nextjs", "نکست جی اس"], "aliases": [], "domains": ["nextjs.org"], "do_not_confuse": []},
+
+    # Communities & Learning Platforms
+    {"id": "github", "type": "community", "names": ["GitHub", "گیت‌هاب", "جيت هاب", "GitHub代码库"], "aliases": [], "domains": ["github.com"], "do_not_confuse": []},
+    {"id": "stackoverflow", "type": "community", "names": ["Stack Overflow", "استک اورفلو", "ستاك أو فلو"], "aliases": [], "domains": ["stackoverflow.com"], "do_not_confuse": ["buffer stack overflow error"]},
+    {"id": "huggingface", "type": "community", "names": ["Hugging Face", "هاگینگ فیس", "HuggingFace"], "aliases": [], "domains": ["huggingface.co"], "do_not_confuse": ["hugging emoji"]},
+    {"id": "reddit", "type": "community", "names": ["Reddit", "ردیت", "ريديت"], "aliases": [], "domains": ["reddit.com"], "do_not_confuse": []},
+    {"id": "coursera", "type": "community", "names": ["Coursera", "کورسرا", "كورسيرا"], "aliases": [], "domains": ["coursera.org"], "do_not_confuse": []},
+    {"id": "edx", "type": "community", "names": ["edX", "اداکس", "إدكس"], "aliases": [], "domains": ["edx.org"], "do_not_confuse": []},
+    {"id": "kaggle", "type": "community", "names": ["Kaggle", "کگل", "كاجل"], "aliases": [], "domains": ["kaggle.com"], "do_not_confuse": []},
+    {"id": "linkedin", "type": "community", "names": ["LinkedIn", "لینکدین", "لينكد إن", "领英"], "aliases": [], "domains": ["linkedin.com"], "do_not_confuse": []},
+    {"id": "discord", "type": "community", "names": ["Discord", "دیسکورد", "ديسكورد"], "aliases": [], "domains": ["discord.com"], "do_not_confuse": ["social discord disagreement"]},
+    {"id": "medium", "type": "community", "names": ["Medium", "مدیوم"], "aliases": [], "domains": ["medium.com"], "do_not_confuse": ["medium size", "psychic medium"]},
+]
+
+print(f"Loaded {len(ENTITIES_DATA)} multi-type entity definitions.")

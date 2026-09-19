@@ -89,6 +89,30 @@ geo-scope benchmark validate --dataset benchmark/releases/global-ai-answers-2026
 geo-scope benchmark replay --dataset benchmark/releases/global-ai-answers-2026.1
 ```
 
+### 🌍 [Global AI Answers Benchmark 2026.2](benchmark/releases/global-ai-answers-2026.2/) (Full Global Research Release)
+* **Subtitle**: *Measuring How Generative AI Systems Answer Human Concerns Across 50 Countries & 22+ Languages*
+* **Dataset Package**: [`benchmark/releases/global-ai-answers-2026.2/`](benchmark/releases/global-ai-answers-2026.2/)
+* **Purpose**: Full-scale empirical benchmark dataset observing generative engine visibility and recommendation patterns across 500 culturally localized prompts in 50 countries, 22+ languages, and 9 core human concern categories.
+* **Core Principle**: *"The benchmark measures observed AI answer patterns only. It does not rank humans, countries, or companies."*
+* **Research Publications**:
+  * [Academic Research Paper Draft](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md)
+  * [Executive Research Report](docs/research/global-ai-answers-2026.2/global-ai-answers-report.md)
+  * [Data Story & Article Angles](docs/research/global-ai-answers-2026.2/article-ideas.md)
+* **Scope**: 500 culturally localized prompts (300 observed user questions [60%], 200 research templates [40%]) across 50 countries (MENA, North America, Europe, Asia Pacific, Latin America, Sub-Saharan Africa).
+* **Execution & Provenance**: Live API execution via Hamzad AI Gateway across `gemini-2.5-flash`, `sonar-pro`, `gpt-4o-mini`, and `claude-3.5-sonnet`.
+* **Entities Tracked**: 73 Multi-Type entities (People, Companies, Countries, Universities, Technologies, Communities).
+
+```bash
+# 1. Verify bit-for-bit SHA-256 package checksums
+geo-scope benchmark verify --dataset benchmark/releases/global-ai-answers-2026.2
+
+# 2. Run dataset quality, schema & secret hygiene validation
+geo-scope benchmark validate --dataset benchmark/releases/global-ai-answers-2026.2
+
+# 3. Deterministically replay and recompute metrics from raw evidence
+geo-scope benchmark replay --dataset benchmark/releases/global-ai-answers-2026.2
+```
+
 ### 🌍 [Global AI Answers Benchmark 2026.2 Pilot](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md)
 * **Subtitle**: *Controlled Pilot Release: 100 Prompts Across 10 Countries & 8 Languages*
 * **Dataset Package**: [`benchmark/releases/global-ai-answers-2026.2-pilot/`](benchmark/releases/global-ai-answers-2026.2-pilot/)
