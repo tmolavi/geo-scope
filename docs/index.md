@@ -98,6 +98,7 @@ GEO-Scope maintains immutable, versioned benchmark releases with full raw eviden
 
 ## 📚 Core Documentation & Guides
 
+- [AI Visibility Methodology Crosswalk](METHODOLOGY_CROSSWALK.md)
 - [Cross-Repository Evidence Map](EVIDENCE_MAP.md)
 - [Empirical Benchmark Methodology](benchmark-methodology.md)
 - [Research Transparency & Limitations](research-transparency.md)

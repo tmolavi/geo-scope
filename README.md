@@ -328,6 +328,7 @@ pytest tests/ -v
 ## 📚 Documentation & Research Guides
 
 - 📖 [Documentation Index](docs/index.md)
+- 📊 [Methodology Crosswalk (Public Practice Comparison)](docs/METHODOLOGY_CROSSWALK.md)
 - 🗺️ [Cross-Repository Evidence Map](docs/EVIDENCE_MAP.md)
 - 🔬 [Scientific Methodology](docs/benchmark-methodology.md)
 - 📄 [Research Whitepaper](docs/WHITEPAPER.md)
