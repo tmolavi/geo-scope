@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geo-scope.org/schemas/v0.3/response.schema.json",
+  "title": "GEOScopeRawResponseRecord_v0.3",
+  "type": "object",
+  "required": [
+    "experiment_id",
+    "prompt_id",
+    "prompt",
+    "prompt_policy",
+    "provider",
+    "requested_provider",
+    "actual_provider",
+    "model",
+    "requested_model",
+    "actual_model",
+    "provider_class",
+    "search_grounded",
+    "fallback_used",
+    "execution_mode",
+    "repeat_index",
+    "timestamp_utc",
+    "status",
+    "response_text",
+    "citations"
+  ],
+  "properties": {
+    "experiment_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "prompt_id": { "type": "string" },
+    "prompt": { "type": "string" },
+    "prompt_policy": {
+      "type": "string",
+      "enum": ["neutral", "forced_list"]
+    },
+    "provider": { "type": "string" },
+    "requested_provider": { "type": "string" },
+    "actual_provider": { "type": "string" },
+    "model": { "type": "string" },
+    "requested_model": { "type": "string" },
+    "actual_model": { "type": "string" },
+    "provider_class": {
+      "type": "string",
+      "enum": ["answer_engine", "llm", "recorded"]
+    },
+    "search_grounded": { "type": "boolean" },
+    "fallback_used": { "type": "boolean" },
+    "execution_mode": {
+      "type": "string",
+      "enum": ["live", "empirical", "simulation"]
+    },
+    "repeat_index": { "type": "integer", "minimum": 0 },
+    "comparison_batch_id": { "type": ["string", "null"] },
+    "comparison_window_started_at": { "type": ["string", "null"] },
+    "comparison_window_completed_at": { "type": ["string", "null"] },
+    "prompt_language": { "type": "string" },
+    "country_iso": { "type": "string" },
+    "locale": { "type": "string" },
+    "region": { "type": "string" },
+    "timestamp_utc": { "type": "string" },
+    "latency_ms": { "type": "number" },
+    "status": {
+      "type": "string",
+      "enum": ["success", "failed", "rate_limit", "timeout", "error", "fallback_or_mismatch"]
+    },
+    "response_text": { "type": "string" },
+    "citations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "citations_raw": {
+      "type": "array"
+    },
+    "raw_payload": { "type": "object" },
+    "metadata": { "type": "object" },
+    "usage": { "type": "object" },
+    "input_tokens": { "type": ["integer", "null"] },
+    "output_tokens": { "type": ["integer", "null"] },
+    "total_tokens": { "type": ["integer", "null"] },
+    "provider_reported_cost": { "type": ["number", "null"] },
+    "currency": { "type": "string" },
+    "cost_status": {
+      "type": "string",
+      "enum": ["reported", "unreported", "estimated"]
+    },
+    "cost_assumptions": { "type": ["object", "null"] },
+    "error": { "type": ["object", "null"] }
+  }
+}

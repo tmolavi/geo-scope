@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geo-scope.org/schemas/v0.3/prompt.schema.json",
+  "title": "GEOScopePromptRecord_v0.3",
+  "type": "object",
+  "required": [
+    "id",
+    "query",
+    "source_type",
+    "intent",
+    "language",
+    "prompt_policy"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "query": { "type": "string" },
+    "prompt": { "type": "string" },
+    "source_type": {
+      "type": "string",
+      "enum": ["observed_user_questions", "observed", "research_questions", "research_template", "hypothesis"]
+    },
+    "source_category": { "type": "string" },
+    "intent": {
+      "type": "string",
+      "enum": ["commercial", "comparative", "problem_solving", "long_tail", "reputation", "recommendation", "informational", "navigational", "general"]
+    },
+    "language": { "type": "string" },
+    "country_iso": { "type": "string" },
+    "locale": { "type": "string" },
+    "region": { "type": "string" },
+    "category": { "type": "string" },
+    "prompt_policy": {
+      "type": "string",
+      "enum": ["neutral", "forced_list"]
+    }
+  }
+}

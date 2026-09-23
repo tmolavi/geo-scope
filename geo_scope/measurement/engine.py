@@ -237,19 +237,30 @@ class MeasurementEngine:
                         "evidence_snippets": [],
                     }
 
+                fallback_used = raw.get("fallback_used", False)
+                req_p = raw.get("requested_provider", raw["provider"])
+                act_p = raw.get("actual_provider", raw["provider"])
+                req_m = raw.get("requested_model", raw["model"])
+                act_m = raw.get("actual_model", raw["model"])
+
+                obs_status = status
+                if mode == "live" and (req_p != act_p or req_m != act_m or fallback_used):
+                    obs_status = "fallback_or_mismatch"
+
                 obs_dict.update({
                     "prompt_id": prompt_id,
                     "prompt": p_item["query"],
                     "prompt_policy": raw.get("prompt_policy", prompt_policy),
                     "source_type": p_item["source_type"],
                     "provider": raw["provider"],
-                    "requested_provider": raw.get("requested_provider", raw["provider"]),
-                    "actual_provider": raw.get("actual_provider", raw["provider"]),
+                    "requested_provider": req_p,
+                    "actual_provider": act_p,
                     "model": raw["model"],
-                    "requested_model": raw.get("requested_model", raw["model"]),
-                    "actual_model": raw.get("actual_model", raw["model"]),
+                    "requested_model": req_m,
+                    "actual_model": act_m,
                     "provider_class": raw.get("provider_class", "llm"),
                     "search_grounded": raw.get("search_grounded", False),
+                    "fallback_used": fallback_used,
                     "execution_mode": raw["execution_mode"],
                     "repeat_index": raw.get("repeat_index", 0),
                     "comparison_batch_id": comparison_batch_id,
@@ -257,7 +268,7 @@ class MeasurementEngine:
                     "country_iso": raw.get("country_iso", "unknown"),
                     "locale": raw.get("locale", "unknown"),
                     "region": raw.get("region", "unknown"),
-                    "status": status,
+                    "status": obs_status,
                     "latency_ms": raw.get("latency_ms", 0.0),
                 })
                 observations.append(obs_dict)

@@ -171,9 +171,16 @@ def evaluate_golden_set(
             for f in fields
         }
 
+    evaluated_entities = sorted(list(set(r.get("entity_id") for r in records if r.get("entity_id"))))
+    evaluated_languages = sorted(list(by_lang.keys()))
+
     report = {
         "dataset": str(dataset_path),
+        "dataset_size": len(records),
         "total_records": len(records),
+        "languages": evaluated_languages,
+        "entities": evaluated_entities,
+        "fields_evaluated": fields,
         "total_mismatches": len(mismatches),
         "overall_accuracy": round((len(records) - len(mismatches)) / len(records), 4) if records else 1.0,
         "metrics_by_field": field_metrics,
@@ -188,6 +195,17 @@ def evaluate_golden_set(
             "intent_accuracy": intent_accuracy,
         },
         "metrics_by_language": lang_metrics,
+        "confidence_notes": [
+            "Entity resolution employs Unicode NFKC normalization, Persian/Arabic letter normalization, ZWNJ stripping, and continuous unspaced matching.",
+            "Attribution is strictly separated from citation: attribution requires explicit sourcing prose while citation requires domain/URL presence.",
+            "Homonym collisions (e.g., poet vs founder, market vs company) are filtered via negative constraints.",
+        ],
+        "limitations": [
+            "Evaluation scores reflect the specific composition and balance of this versioned golden set.",
+            "Open-ended natural language variation outside tested patterns may exhibit different precision/recall characteristics.",
+            "Heuristic intent classification serves exploratory categorization rather than definitive user intent parsing.",
+        ],
+        "warning": "Evaluation results depend on the composition of the golden dataset.",
         "mismatches": mismatches,
     }
 

@@ -606,11 +606,22 @@ def benchmark_cmd(args):
         if not res["success"]:
             sys.exit(1)
 
-    elif sub == "validate":
+    elif sub in ["validate", "validate-dataset"]:
         from geo_scope.benchmark.dataset_validator import validate_benchmark_dataset, format_validation_report
         dataset_path = args.dataset
         res = validate_benchmark_dataset(dataset_path)
         print(format_validation_report(res))
+        if not res["passed"]:
+            sys.exit(1)
+
+    elif sub in ["release-gate", "gate"]:
+        from geo_scope.release_gate import evaluate_release_gate, format_release_gate_report
+        dataset_path = args.dataset
+        out_report = getattr(args, "output", None) or getattr(args, "out", None)
+        res = evaluate_release_gate(dataset_path, output_report=out_report)
+        print(format_release_gate_report(res))
+        if getattr(args, "json", False):
+            print(json.dumps(res, ensure_ascii=False, indent=2))
         if not res["passed"]:
             sys.exit(1)
 
@@ -990,6 +1001,12 @@ def main():
     validate_p = bmk_subparsers.add_parser("validate", help="Validate benchmark dataset release quality, checksums, and secret hygiene")
     validate_p.add_argument("--dataset", type=str, required=True, help="Path to benchmark dataset directory")
 
+    # benchmark release-gate
+    gate_p = bmk_subparsers.add_parser("release-gate", help="Evaluate benchmark release quality gate prior to publication")
+    gate_p.add_argument("--dataset", type=str, required=True, help="Path to benchmark dataset directory")
+    gate_p.add_argument("--output", "--out", type=str, default=None, help="Output JSON path for release gate report")
+    gate_p.add_argument("--json", action="store_true", help="Output JSON report to stdout")
+
     # benchmark export
     export_p = bmk_subparsers.add_parser("export", help="Export an experiment run to a benchmark dataset package")
     export_p.add_argument("--experiment", type=str, required=True, help="Path to experiment JSON file")
@@ -1147,8 +1164,10 @@ def parser_cmd(args):
         if getattr(args, "json", False):
             print(json.dumps(report, ensure_ascii=False, indent=2))
         else:
-            print(f"Total Evaluated Records: {report['total_records']}")
-            print(f"Overall Match Accuracy : {report['overall_accuracy'] * 100:.2f}%\n")
+            print(f"• Dataset Size         : {report.get('dataset_size', report.get('total_records', 0))} records")
+            print(f"• Languages ({len(report.get('languages', []))})       : {', '.join(report.get('languages', []))}")
+            print(f"• Entities ({len(report.get('entities', []))})        : {', '.join(report.get('entities', []))}")
+            print(f"• Overall Match Acc    : {report['overall_accuracy'] * 100:.2f}%\n")
             print("Field Metrics Breakdown (Precision / Recall / F1 / Support):")
             print("-" * 75)
             print(f"{'Field':<15} | {'Precision':<10} | {'Recall':<10} | {'F1-Score':<10} | {'Support':<8}")
@@ -1158,6 +1177,12 @@ def parser_cmd(args):
             print("-" * 75)
             print(f"Rank Accuracy          : {report['rank_evaluation']['rank_accuracy'] * 100:.2f}% (Matches: {report['rank_evaluation']['exact_matches']}/{report['rank_evaluation']['evaluated_count']})")
             print(f"Intent Classification  : {report['intent_evaluation']['intent_accuracy'] * 100:.2f}% (Matches: {report['intent_evaluation']['exact_matches']}/{report['intent_evaluation']['evaluated_count']})")
+            print("\n⚠️  WARNING: " + report.get("warning", "Evaluation results depend on the composition of the golden dataset."))
+            print("\nMethodology Notes & Limitations:")
+            for note in report.get("confidence_notes", []):
+                print(f"  • {note}")
+            for lim in report.get("limitations", []):
+                print(f"  • {lim}")
             print(f"\n✓ Granular evaluation results saved to '{out_file}'")
     else:
         print("Usage: geo-scope parser evaluate --golden-set benchmark/golden_sets/v1")

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geo-scope.org/schemas/v0.3/manifest.schema.json",
+  "title": "GEOScopeBenchmarkManifest_v0.3",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "benchmark_version",
+    "execution_mode",
+    "provider_matrix",
+    "prompt_policy",
+    "repeat_count",
+    "comparison_batch_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["0.3", "v0.3", "0.3.0"]
+    },
+    "benchmark_version": {
+      "type": "string"
+    },
+    "dataset_name": {
+      "type": "string"
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": ["live", "empirical", "simulation"]
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["live", "empirical", "simulation"]
+    },
+    "is_empirical": {
+      "type": "boolean"
+    },
+    "prompt_policy": {
+      "type": "string",
+      "enum": ["neutral", "forced_list"]
+    },
+    "provider_matrix": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "providers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "repeat_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "repeats_per_prompt": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "comparison_batch_id": {
+      "type": "string"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "comparison_window_started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "comparison_window_completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "total_prompts": {
+      "type": "integer"
+    },
+    "total_raw_responses": {
+      "type": "integer"
+    },
+    "total_observations": {
+      "type": "integer"
+    },
+    "total_errors": {
+      "type": "integer"
+    },
+    "checksums": {
+      "type": "object"
+    }
+  }
+}

@@ -95,6 +95,21 @@ GEO-Scope operates through a sequential, auditable evidence pipeline:
 
 ---
 
+## 🔒 Benchmark Trust Model
+
+To maintain scientific integrity without ungrounded claims, GEO-Scope benchmark releases follow a 6-layer trust model:
+
+| Trust Layer | Verification Contract | Implementation & Evidence Artifact |
+|:---|:---|:---|
+| **1. Prompt Provenance** | Clear provenance tracking | `prompts.jsonl` explicitly marks `observed_user_questions` vs `research_questions` with language and intent metadata. |
+| **2. Provider Execution** | Strict model identity & zero fallback | Preserves `requested_provider`, `requested_model`, `actual_provider`, `actual_model`, and `provider_class` (`answer_engine` vs `llm`). |
+| **3. Raw Response Preservation** | Unmodified completion payloads | `raw_responses.jsonl` stores verbatim API responses, token latency, and error logs for independent verification. |
+| **4. Observation Extraction** | Context-aware entity resolution | Separates `mentioned`, `recommended`, `cited` (domain link presence), and `attributed` (explicit sourcing grammar) with negative homonym filtering. |
+| **5. Metrics Generation** | Failure denominator separation | Metrics account for total attempted queries and separate provider errors from negative entity visibility. |
+| **6. Checksum Verification** | Cryptographic immutability | SHA-256 manifest (`checksums.sha256`) guarantees that datasets remain identical across reproduction runs. |
+
+---
+
 ## ⚡ Key Capabilities
 
 ### 1. Provenance-Aware Questions

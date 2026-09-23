@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geo-scope.org/schemas/v0.3/observation.schema.json",
+  "title": "GEOScopeObservationRecord_v0.3",
+  "type": "object",
+  "required": [
+    "prompt_id",
+    "entity_id",
+    "provider",
+    "requested_provider",
+    "actual_provider",
+    "model",
+    "requested_model",
+    "actual_model",
+    "provider_class",
+    "search_grounded",
+    "fallback_used",
+    "execution_mode",
+    "repeat_index",
+    "mentioned",
+    "recommended",
+    "cited",
+    "attributed",
+    "wrong_entity",
+    "status"
+  ],
+  "properties": {
+    "prompt_id": { "type": "string" },
+    "prompt": { "type": "string" },
+    "prompt_policy": { "type": "string" },
+    "source_type": { "type": "string" },
+    "entity_id": { "type": "string" },
+    "entity": { "type": "string" },
+    "entity_type": { "type": "string" },
+    "provider": { "type": "string" },
+    "requested_provider": { "type": "string" },
+    "actual_provider": { "type": "string" },
+    "model": { "type": "string" },
+    "requested_model": { "type": "string" },
+    "actual_model": { "type": "string" },
+    "provider_class": {
+      "type": "string",
+      "enum": ["answer_engine", "llm", "recorded"]
+    },
+    "search_grounded": { "type": "boolean" },
+    "fallback_used": { "type": "boolean" },
+    "execution_mode": {
+      "type": "string",
+      "enum": ["live", "empirical", "simulation"]
+    },
+    "repeat_index": { "type": "integer", "minimum": 0 },
+    "comparison_batch_id": { "type": ["string", "null"] },
+    "prompt_language": { "type": "string" },
+    "country_iso": { "type": "string" },
+    "locale": { "type": "string" },
+    "region": { "type": "string" },
+    "mentioned": { "type": "boolean" },
+    "person_mentioned": { "type": "boolean" },
+    "recommended": { "type": "boolean" },
+    "top1": { "type": "boolean" },
+    "rank": { "type": ["integer", "null"] },
+    "rank_position": { "type": ["integer", "null"] },
+    "cited": { "type": "boolean" },
+    "citation_found": { "type": "boolean" },
+    "source_domain": { "type": ["string", "null"] },
+    "attributed": { "type": "boolean" },
+    "context": { "type": ["string", "null"] },
+    "confused_with": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "wrong_entity": { "type": "boolean" },
+    "is_ambiguous": { "type": "boolean" },
+    "status": {
+      "type": "string",
+      "enum": ["scored", "unscored", "ambiguous", "success", "failed", "fallback_or_mismatch"]
+    },
+    "scoring_status": { "type": "string" },
+    "intent_type": { "type": "string" },
+    "evidence_snippets": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

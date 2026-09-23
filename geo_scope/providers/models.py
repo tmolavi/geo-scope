@@ -65,7 +65,9 @@ class ProviderResponse:
     requested_model: Optional[str] = None
     actual_provider: Optional[str] = None
     actual_model: Optional[str] = None
+    provider_class: str = "llm"  # "llm" | "answer_engine" | "recorded"
     search_grounded: Optional[bool] = None
+    fallback_used: bool = False
     prompt_language: str = "unknown"
     country_iso: str = "unknown"
     locale: str = "unknown"
@@ -80,7 +82,9 @@ class ProviderResponse:
     output_tokens: Optional[int] = None
     total_tokens: Optional[int] = None
     provider_reported_cost: Optional[float] = None
-    cost_status: str = "unreported"  # "reported" | "unreported" | "estimated_external"
+    currency: str = "USD"
+    cost_status: str = "unreported"  # "reported" | "unreported" | "estimated"
+    cost_assumptions: Optional[Dict[str, Any]] = None
 
     def __post_init__(self):
         # Guarantee no secrets ever leak into raw payload or metadata
@@ -98,6 +102,8 @@ class ProviderResponse:
             self.actual_model = self.metadata.get("actual_model", self.model)
         if self.search_grounded is None:
             self.search_grounded = self.metadata.get("search_grounded", self.provider_class == "answer_engine")
+        if not self.fallback_used:
+            self.fallback_used = bool(self.metadata.get("fallback_used", self.metadata.get("fallback_active", False)))
 
         # Extract tokens from usage if available
         if self.usage:
@@ -131,6 +137,7 @@ class ProviderResponse:
             "requested_model": self.requested_model,
             "actual_model": self.actual_model,
             "search_grounded": self.search_grounded,
+            "fallback_used": self.fallback_used,
             "text": self.text,
             "citations": self.citations,
             "raw": self.raw,
@@ -141,7 +148,9 @@ class ProviderResponse:
             "output_tokens": self.output_tokens,
             "total_tokens": self.total_tokens,
             "provider_reported_cost": self.provider_reported_cost,
+            "currency": self.currency,
             "cost_status": self.cost_status,
+            "cost_assumptions": self.cost_assumptions,
             "prompt_language": self.prompt_language,
             "country_iso": self.country_iso,
             "locale": self.locale,
@@ -195,6 +204,7 @@ class ProviderResponse:
             "actual_model": self.actual_model or self.model,
             "provider_class": self.provider_class,
             "search_grounded": self.search_grounded if self.search_grounded is not None else (self.provider_class == "answer_engine"),
+            "fallback_used": self.fallback_used,
             "execution_mode": self.execution_mode,
             "repeat_index": repeat_index,
             "comparison_batch_id": comparison_batch_id,
@@ -217,6 +227,8 @@ class ProviderResponse:
             "output_tokens": self.output_tokens,
             "total_tokens": self.total_tokens,
             "provider_reported_cost": self.provider_reported_cost,
+            "currency": self.currency,
             "cost_status": self.cost_status,
+            "cost_assumptions": self.cost_assumptions,
             "error": self.error,
         }

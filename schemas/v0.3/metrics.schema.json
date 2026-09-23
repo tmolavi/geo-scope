@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geo-scope.org/schemas/v0.3/metrics.schema.json",
+  "title": "GEOScopeMetricsPackage_v0.3",
+  "type": "object",
+  "required": [
+    "mode",
+    "sample_interpretation",
+    "entities",
+    "provider_breakdown"
+  ],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["live", "empirical", "simulation"]
+    },
+    "sample_interpretation": { "type": "string" },
+    "entities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "attempted_n": { "type": "integer" },
+          "successful_n": { "type": "integer" },
+          "failed_n": { "type": "integer" },
+          "metric_denominator_n": { "type": "integer" },
+          "valid_observation_n": { "type": "integer" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "provider_breakdown": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "attempted_n",
+          "successful_n",
+          "failed_n",
+          "metric_denominator_n"
+        ],
+        "properties": {
+          "attempted_n": { "type": "integer" },
+          "successful_n": { "type": "integer" },
+          "failed_n": { "type": "integer" },
+          "metric_denominator_n": { "type": "integer" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "source_type_breakdown": { "type": "object" }
+  }
+}

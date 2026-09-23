@@ -58,3 +58,5 @@ results/
 !examples/prompts/*
 !docs/**/*.json
 !reports/**/*.json
+!schemas/**/*.json
+

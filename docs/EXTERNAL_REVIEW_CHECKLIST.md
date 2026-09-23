@@ -1,13 +1,25 @@
-# External Reviewer Retest & Verification Checklist
+# Independent Reviewer Audit & Verification Checklist
 
-This document provides a concise, step-by-step reproduction sequence for independent external reviewers evaluating GEO-Scope.
+This checklist provides an independent external auditor with the exact criteria and reproduction sequence to verify the scientific and empirical integrity of GEO-Scope.
 
 ---
 
-## 1. Clean Environment Installation
+## 1. Six Core Reviewer Questions
 
-In an empty directory:
+| # | Audit Question | Verification Command / Evidence Path | Expected Reviewer Confirmation |
+|:---|:---|:---|:---|
+| **1** | **Can a stranger reproduce a benchmark?** | `geo-scope benchmark replay --dataset benchmark/releases/global-ai-answers-2026.2` | Recomputes all entity observations deterministically offline without API keys or external network calls. |
+| **2** | **Can they identify exact provider/model?** | Inspect `providers.yml`, `manifest.json`, and `raw_responses.jsonl` | Explicit `requested_provider`, `requested_model`, `actual_provider`, `actual_model`, and `provider_class` preserved on every completion. |
+| **3** | **Can they distinguish live vs simulation?** | Check `execution_mode` in `manifest.json` & `raw_responses.jsonl` | Simulation runs are explicitly marked (`execution_mode="simulation"`, metric prefix `simulated_*`); live runs reject all synthetic fixtures and fallbacks. |
+| **4** | **Can they inspect raw evidence?** | Inspect `raw_responses.jsonl`, `observations.jsonl`, `citations.jsonl`, `errors.jsonl` | Full unparsed model completion strings, token latencies, citation URLs, and provider error traces are preserved verbatim. |
+| **5** | **Can they understand limitations?** | Read `docs/research-transparency.md`, `limitations.md`, `docs/GOLDEN_SET_METHODOLOGY.md` | Explicit epistemic boundaries: no claim of search algorithm reverse engineering, causal ranking predictors, or guaranteed visibility improvements. |
+| **6** | **Can they verify checksums?** | `geo-scope benchmark verify --dataset benchmark/releases/global-ai-answers-2026.2` | Cryptographic bit-for-bit SHA-256 verification confirms zero file tampering or bitrot. |
 
+---
+
+## 2. Step-by-Step Review Sequence
+
+### Step 1: Clean Installation
 ```bash
 git clone https://github.com/tmolavi/geo-scope.git
 cd geo-scope
@@ -18,103 +30,31 @@ pip install --upgrade pip
 pip install -e ".[dev]"
 ```
 
----
-
-## 2. Automated Test Suite Execution
-
-Run the complete test suite:
-
+### Step 2: Run Full Test Suite
 ```bash
 pytest -v
 ```
+*Expected: 155+ unit and integration tests passing.*
 
-**Expected Result**: All tests pass (`140+ passed`, 0 failed).
-
----
-
-## 3. Quickstart Demo (Simulation Fixture)
-
-Run the simulation onboarding demo:
-
+### Step 3: Run Golden Parser Evaluation
 ```bash
-geo-scope demo
+geo-scope parser evaluate \
+  --golden-set benchmark/golden_sets/v1 \
+  --output output/parser_metrics.json
 ```
+*Expected: Evaluates precision/recall across 220 multilingual records covering Persian, English, Arabic, Turkish, and Chinese.*
 
-**What to Check**:
-- Confirms banner: `Execution mode: SIMULATION FIXTURE — NO LIVE MODEL WAS QUERIED`
-- Confirms `output/demo_latest/metrics.json` uses `simulated_*` metric prefixes.
-- Confirms bundle includes `manifest.json`, `raw_responses.jsonl`, `observations.jsonl`, `metrics.json`, and `checksums.sha256`.
-
----
-
-## 4. Run a Custom Research Run (Offline Simulation Mode)
-
-Execute measurement using the research template in simulation mode:
-
+### Step 4: Audit Benchmark Release Quality Gate
 ```bash
-geo-scope measure \
-  --entities examples/research_run/entities.json \
-  --prompts examples/research_run/prompts.jsonl \
-  --providers perplexity_sonar,gemini_grounding \
-  --mode simulation \
-  --out-dir output/review_run
+geo-scope benchmark release-gate \
+  --dataset benchmark/releases/global-ai-answers-2026.2
 ```
+*Expected: Passes all checks (evidence completeness, zero simulation contamination, provider identity integrity, repeat protocol, checksum verification).*
 
-**What to Check**:
-- Generates standard 7-file bundle in `output/review_run/`.
-- `manifest.json` indicates `"mode": "simulation"`.
-
----
-
-## 5. Offline Replay Verification (Zero Network Calls)
-
-Re-evaluate the recorded responses against entity definitions:
-
+### Step 5: Verify Offline Replay
 ```bash
-geo-scope replay \
-  --bundle output/review_run \
-  --entities examples/research_run/entities.json \
-  --out-dir output/review_replay
+geo-scope benchmark replay \
+  --dataset benchmark/releases/global-ai-answers-2026.2-pilot \
+  --out-dir output/audit_replay
 ```
-
-**What to Check**:
-- Operates strictly offline with 0 API calls.
-- Recomputes entity observations deterministically.
-- `output/review_replay/checksums.sha256` verifies cleanly.
-
----
-
-## 6. Live Measurement (Requires Provider API Keys)
-
-If API keys are configured in `.env` (e.g. `PERPLEXITY_API_KEY`, `GEMINI_API_KEY`):
-
-```bash
-geo-scope measure \
-  --entities examples/research_run/entities.json \
-  --prompts examples/research_run/prompts.jsonl \
-  --providers perplexity_sonar \
-  --mode live \
-  --out-dir output/live_run
-```
-
-**What to Check**:
-- If an API key is missing, failure is logged in `output/live_run/errors.jsonl`.
-- **Zero Fallback**: The engine does NOT silently fall back to simulation when live provider calls fail.
-
----
-
-## 7. Public Dataset Integrity Verification
-
-Verify cryptographic checksums and reproduce bootstrap metrics for the prototype release:
-
-```bash
-# Verify bit-for-bit SHA-256 hashes
-geo-scope benchmark verify --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1
-
-# Reproduce metrics and bootstrap confidence intervals
-geo-scope benchmark reproduce --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1
-```
-
-**What to Check**:
-- `Checksum verification PASSED` (11/11 files intact).
-- Bootstrap confidence intervals recomputed directly from raw observations.
+*Expected: Deterministically re-extracts entity observations with zero network calls.*
