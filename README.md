@@ -21,6 +21,10 @@
 
 ---
 
+> [!IMPORTANT]
+> **GEO-Scope Scientific Measurement Contract**
+> GEO-Scope measures and preserves evidence of observed generative AI responses across explicit prompt sets and execution dates. It does not measure true global search engine market share, reverse-engineer proprietary algorithms, or claim causal ranking factors.
+
 ## 🎯 Product Overview
 
 **GEO-Scope** is an evidence-oriented empirical measurement framework designed for researchers, analysts, and practitioners to measure and evaluate how generative AI systems answer questions.

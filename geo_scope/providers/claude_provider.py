@@ -31,6 +31,14 @@ class ClaudeProvider(BaseProvider):
 
         url = "https://api.anthropic.com/v1/messages"
         headers = {"x-api-key": self.api_key, "anthropic-version": "2023-06-01", "Content-Type": "application/json"}
+        prompt_policy = prompt_item.get("prompt_policy", "neutral")
+        query = prompt_item.get("query") or prompt_item.get("prompt", "")
+
+        if prompt_policy == "forced_list":
+            user_content = f"Answer concisely with rankings, comparison tables, and citations:\n\n{query}"
+        else:
+            user_content = query
+
         payload = {
             "model": self.model,
             "max_tokens": 1024,
@@ -38,7 +46,7 @@ class ClaudeProvider(BaseProvider):
             "messages": [
                 {
                     "role": "user",
-                    "content": f"Answer concisely with rankings, comparison tables, and citations:\n\n{prompt_item.get('query', '')}",
+                    "content": user_content,
                 }
             ],
         }

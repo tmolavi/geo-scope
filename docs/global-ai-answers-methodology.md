@@ -9,6 +9,10 @@
 
 ---
 
+> [!IMPORTANT]
+> **GEO-Scope Scientific Measurement Contract**
+> GEO-Scope measures and preserves evidence of observed generative AI responses across explicit prompt sets and execution dates. It does not measure true global search engine market share, reverse-engineer proprietary algorithms, or claim causal ranking factors.
+
 ## 1. Executive Summary & Research Question
 
 As generative AI answer engines and foundation models become primary interfaces for human inquiry, they mediate responses to critical life decisions: acquiring technical skills, international career migration, launching digital businesses, adopting AI software, managing personal finances, avoiding workplace burnout, and choosing between formal degrees or self-directed learning.

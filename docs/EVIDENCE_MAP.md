@@ -1,5 +1,9 @@
 # Cross-Repository Evidence Map: Molavi AI Visibility & Agent Stack
 
+> [!IMPORTANT]
+> **GEO-Scope Scientific Measurement Contract**
+> GEO-Scope measures and preserves evidence of observed generative AI responses across explicit prompt sets and execution dates. It does not measure true global search engine market share, reverse-engineer proprietary algorithms, or claim causal ranking factors.
+
 This document charts the end-to-end evidence chain across the repositories in the **Molavi AI Visibility Stack**, showing how verified artifacts flow from question discovery through empirical measurement to diagnostic auditing and agent remediation without simulated fallback or epistemic blurring.
 
 ```mermaid

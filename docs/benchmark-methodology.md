@@ -1,5 +1,9 @@
 # GEO-Scope Public Benchmark & Evidence Dataset Methodology v1
 
+> [!IMPORTANT]
+> **GEO-Scope Scientific Measurement Contract**
+> GEO-Scope measures and preserves evidence of observed generative AI responses across explicit prompt sets and execution dates. It does not measure true global search engine market share, reverse-engineer proprietary algorithms, or claim causal ranking factors.
+
 ## 1. Executive Summary & Epistemic Positioning
 GEO-Scope provides a standardized, reproducible public benchmark framework for measuring generative AI search visibility, Share of Model (SoM), top-recommendation positioning, and citation provenance.
 

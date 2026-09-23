@@ -1,6 +1,8 @@
 # AI Visibility Measurement Methodology Crosswalk
 
-This document provides a factual, evidence-led crosswalk comparing the measurement architecture of **GEO-Scope** with publicly documented industry practices in AI search and answer visibility measurement.
+> [!IMPORTANT]
+> **GEO-Scope Scientific Measurement Contract**
+> GEO-Scope measures and preserves evidence of observed generative AI responses across explicit prompt sets and execution dates. It does not measure true global search engine market share, reverse-engineer proprietary algorithms, or claim causal ranking factors.
 
 ---
 

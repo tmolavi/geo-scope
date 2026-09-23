@@ -1,7 +1,8 @@
 """
 Observation Parser for GEO-Scope.
 Evaluates AI/LLM responses against entity definitions with strict intent recognition,
-person-vs-organization disambiguation, negative phrase filtering, and confidence gating.
+person-vs-organization disambiguation, negative phrase filtering, explicit recommendation
+evidence verification, and confidence gating.
 """
 
 import re
@@ -49,6 +50,48 @@ RECOMMENDATION_PATTERNS = [
     r"\bشرکت های برتر\b",
     r"\bآژانس های برتر\b",
     r"\bلیست شرکت ها\b",
+]
+
+# Explicit linguistic recommendation / endorsement patterns
+EXPLICIT_RECOMMENDATION_PATTERNS_EN = [
+    r"\brecommend(?:ed|s|ing)?\b",
+    r"\bsuggest(?:ed|s|ing)?\b",
+    r"\btop choice\b",
+    r"\btop pick\b",
+    r"\bbest option\b",
+    r"\bbest choice\b",
+    r"\bideal choice\b",
+    r"\bhighly rated\b",
+    r"\bgreat choice\b",
+    r"\bstandout\b",
+    r"\bleading choice\b",
+    r"\bwe recommend\b",
+    r"\bi recommend\b",
+    r"\bour recommendation\b",
+    r"\bshould consider\b",
+    r"\bworth considering\b",
+    r"\bstrongly suggest\b",
+]
+
+EXPLICIT_RECOMMENDATION_PATTERNS_FA = [
+    r"پیشنهاد\s+(?:می‌کنم|می‌کنیم|می‌شود|ما)",
+    r"توصیه\s+(?:می‌کنم|می‌کنیم|می‌شود|ما)",
+    r"بهترین\s+(?:گزینه|انتخاب|پیشنهاد|راهکار)",
+    r"گزینه\s+(?:برتر|اول|مناسب|ایده‌آل|پیشنهادی)",
+    r"انتخاب\s+(?:اول|برتر|عالی)",
+    r"شرکت\s+(?:برتر|پیشنهادی|منتخب)",
+    r"آژانس\s+(?:برتر|پیشنهادی|منتخب)",
+    r"از\s+بهترین\s+گزینه‌ها",
+]
+
+LIST_ITEM_RECOMMENDATION_HEADER_PATTERNS = [
+    r"recommended\s+(?:solutions|options|companies|tools|providers|platforms|services)",
+    r"top\s+(?:recommendations|picks|options|choices|providers|companies|tools)",
+    r"best\s+(?:options|tools|companies|agencies|solutions|platforms|choices)",
+    r"گزینه‌های\s+پیشنهادی",
+    r"شرکت‌های\s+پیشنهادی",
+    r"برترین\s+گزینه‌ها",
+    r"پیشنهادهای\s+برتر",
 ]
 
 
@@ -104,6 +147,10 @@ def classify_query_intent(query: str) -> str:
 class ObservationParser:
     """
     Entity-aware observation parser for AI search engine and LLM responses.
+    Strictly adheres to:
+    1. mentioned != recommended (recommendation requires explicit linguistic endorsement).
+    2. Strict ranking contract: rank_position is assigned ONLY from recognized ordered list syntax,
+       never inferred from arbitrary paragraph order.
     """
 
     def __init__(self, confidence_threshold: float = 0.70):
@@ -120,7 +167,7 @@ class ObservationParser:
     ) -> ObservationParsedResult:
         """
         Parses a response text for a specific entity.
-        Strictly distinguishes brand mentions from associated people and homonyms.
+        Strictly distinguishes brand mentions from associated people, homonyms, and recommendations.
         """
         citations = citations or []
         norm_text = normalize_text(text)
@@ -153,7 +200,6 @@ class ObservationParser:
             name_norm = normalize_text(name).lower()
             if not name_norm:
                 continue
-            # Use regex word boundary for english/alphanumeric or exact substring with space boundaries
             pattern = r"(?<!\w)" + re.escape(name_norm) + r"(?!\w)"
             if re.search(pattern, search_text, re.IGNORECASE):
                 brand_matched = True
@@ -183,8 +229,6 @@ class ObservationParser:
         if confused_terms and not brand_matched:
             wrong_entity = True
 
-        # If only person matched and brand did not match, brand is NOT mentioned
-        # Person mention is flagged independently
         mentioned = brand_matched and not wrong_entity
 
         # 6. Check Citations & Attribution
@@ -211,7 +255,7 @@ class ObservationParser:
                     attributed = True
                     break
 
-        # 7. Recommendation and Rank Extraction
+        # 7. Strict Recommendation and Rank Extraction
         recommended = False
         top1 = False
         rank: Optional[int] = None
@@ -231,16 +275,13 @@ class ObservationParser:
             rank = None
             parser_conf = 1.0 if not confused_terms else 0.85
         else:
-            # Entity was mentioned in a recommendation or general context
-            # Detect list ranking and position
-            rank, is_top1, rec_conf = self._extract_rank_and_recommendation(norm_text, entity)
-            if rank is not None:
-                recommended = True
-                top1 = is_top1
-            else:
-                # Mentioned but not in a structured ranking list
-                recommended = True
-                top1 = False
+            # Entity was mentioned. Evaluate strictly if explicit recommendation endorsement exists.
+            rank, is_top1, is_explicit_rec, rec_conf = self._extract_rank_and_recommendation(text, entity)
+            
+            # Strict Rule: mentioned != recommended
+            # recommended is True ONLY if there is explicit endorsement or an ordered recommendation list item
+            recommended = is_explicit_rec
+            top1 = is_top1
             
             parser_conf = rec_conf
             if parser_conf < self.confidence_threshold:
@@ -256,6 +297,8 @@ class ObservationParser:
             evidence.append(f"Matched associated people: {matched_people}")
         if confused_terms:
             evidence.append(f"Matched negative homonyms: {confused_terms}")
+        if recommended:
+            evidence.append("Explicit recommendation evidence confirmed")
 
         e_display = entity.names[0] if entity.names else entity.id
         e_type = getattr(entity, "entity_type", "organization")
@@ -285,40 +328,88 @@ class ObservationParser:
             evidence_snippets=evidence,
         )
 
-    def _extract_rank_and_recommendation(self, text: str, entity: Entity) -> Tuple[Optional[int], bool, float]:
+    def _extract_rank_and_recommendation(
+        self,
+        text: str,
+        entity: Entity,
+    ) -> Tuple[Optional[int], bool, bool, float]:
         """
-        Extracts rank position (1-based) if the response is formatted as a numbered or bulleted recommendation list.
-        Returns: (rank, is_top1, confidence)
+        Strict Ranking & Recommendation Extraction.
+        Contract:
+        1. rank / rank_position is assigned ONLY from recognized ordered recommendation list syntax.
+           Paragraph order is NEVER converted to rank.
+        2. recommended is True ONLY if explicit linguistic endorsement is present or if the entity
+           is placed in an ordered recommendation/ranking list.
+        Returns: (rank, is_top1, is_recommended, confidence)
         """
         lines = text.split("\n")
-        list_items = []
         
         # Regex matching numbered list items (e.g. "1. ", "1- ", "#1 ", "۱. ", "۱- ")
-        item_regex = re.compile(r"^\s*(?:[0-9]+|[۰-۹]+|\*|\-|\#\s*[0-9]+)[\.\-\:\)]\s*(.*)$")
+        numbered_item_regex = re.compile(r"^\s*(?:([0-9]+|[۰-۹]+)|\#\s*([0-9]+))[\.\-\:\)]\s*(.*)$")
         
+        numbered_list_items: List[Tuple[int, str]] = []
         for line in lines:
-            m = item_regex.match(line.strip())
+            line_str = line.strip()
+            m = numbered_item_regex.match(line_str)
             if m:
-                list_items.append(line.strip())
+                num_str = m.group(1) or m.group(2)
+                persian_digits = {"۰": "0", "۱": "1", "۲": "2", "۳": "3", "۴": "4", "۵": "5", "۶": "6", "۷": "7", "۸": "8", "۹": "9"}
+                for p_digit, e_digit in persian_digits.items():
+                    num_str = num_str.replace(p_digit, e_digit)
+                try:
+                    num_val = int(num_str)
+                except ValueError:
+                    num_val = len(numbered_list_items) + 1
+                numbered_list_items.append((num_val, line_str))
 
-        if not list_items:
-            # Check paragraph order
-            # If entity is in the very first paragraph, it might be top recommendation
-            paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
-            for idx, p in enumerate(paragraphs):
-                p_norm = p.lower()
-                if any(normalize_text(n).lower() in p_norm for n in entity.names):
-                    rank = idx + 1
+        # Check if entity appears in a recognized numbered ranking list
+        rank: Optional[int] = None
+        is_top1 = False
+        in_numbered_list = False
+
+        if numbered_list_items:
+            for item_num, item_text in numbered_list_items:
+                item_norm = normalize_text(item_text).lower()
+                if any(normalize_text(n).lower() in item_norm for n in entity.names):
+                    rank = item_num
                     is_top1 = (rank == 1)
-                    return rank, is_top1, 0.75
-            return None, False, 0.70
+                    in_numbered_list = True
+                    break
 
-        # Find position in numbered list
-        for idx, item in enumerate(list_items):
-            item_norm = normalize_text(item).lower()
-            if any(normalize_text(n).lower() in item_norm for n in entity.names):
-                rank = idx + 1
-                is_top1 = (rank == 1)
-                return rank, is_top1, 0.95
+        # Check explicit linguistic recommendation endorsement in text
+        text_lower = text.lower()
+        has_linguistic_rec = False
+        
+        for pat in EXPLICIT_RECOMMENDATION_PATTERNS_EN:
+            if re.search(pat, text_lower, re.IGNORECASE):
+                for sentence in re.split(r"[\.\!\?\n]", text_lower):
+                    if re.search(pat, sentence, re.IGNORECASE) and any(normalize_text(n).lower() in sentence for n in entity.names):
+                        has_linguistic_rec = True
+                        break
+            if has_linguistic_rec:
+                break
 
-        return None, False, 0.75
+        if not has_linguistic_rec:
+            for pat in EXPLICIT_RECOMMENDATION_PATTERNS_FA:
+                if re.search(pat, text_lower, re.IGNORECASE):
+                    for sentence in re.split(r"[\.\!\?\n]", text_lower):
+                        if re.search(pat, sentence, re.IGNORECASE) and any(normalize_text(n).lower() in sentence for n in entity.names):
+                            has_linguistic_rec = True
+                            break
+                if has_linguistic_rec:
+                    break
+
+        # If in a numbered list with recommendation header
+        has_rec_header = any(re.search(pat, text_lower, re.IGNORECASE) for pat in LIST_ITEM_RECOMMENDATION_HEADER_PATTERNS)
+
+        is_recommended = in_numbered_list or has_linguistic_rec or (has_rec_header and in_numbered_list)
+
+        # Confidence calculation
+        if in_numbered_list:
+            confidence = 0.95
+        elif has_linguistic_rec:
+            confidence = 0.90
+        else:
+            confidence = 0.80
+
+        return rank, is_top1, is_recommended, confidence

@@ -21,9 +21,17 @@ class OllamaProvider(BaseProvider):
 
     async def generate_response(self, prompt_item: Dict[str, Any]) -> str:
         url = f"{self.host}/api/generate"
+        prompt_policy = prompt_item.get("prompt_policy", "neutral")
+        query = prompt_item.get("query") or prompt_item.get("prompt", "")
+
+        if prompt_policy == "forced_list":
+            user_prompt = f"Analyze and recommend solutions with pros/cons and structured lists:\n\n{query}"
+        else:
+            user_prompt = query
+
         payload = {
             "model": self.model,
-            "prompt": f"Analyze and recommend solutions with pros/cons and structured lists:\n\n{prompt_item.get('query', '')}",
+            "prompt": user_prompt,
             "stream": False,
             "options": {"temperature": 0.2, "num_predict": 1024},
         }

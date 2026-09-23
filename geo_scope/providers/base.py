@@ -81,6 +81,17 @@ class BaseProvider(ABC):
         Never falls back to simulation.
         """
         model_id = getattr(self, "model", self.name)
+        # Extract prompt context
+        prompt_policy = prompt_item.get("prompt_policy", "neutral")
+        prompt_language = prompt_item.get("language") or prompt_item.get("prompt_language") or "unknown"
+        country_iso = prompt_item.get("country_iso") or "unknown"
+        locale = prompt_item.get("locale") or "unknown"
+        region = prompt_item.get("region") or "unknown"
+        repeat_index = prompt_item.get("repeat_index", 0)
+        comparison_batch_id = prompt_item.get("comparison_batch_id")
+        comparison_window_started_at = prompt_item.get("comparison_window_started_at")
+        comparison_window_completed_at = prompt_item.get("comparison_window_completed_at")
+
         if not self.is_available():
             err_msg = f"{self.display_name} is not configured or missing API credentials."
             return ProviderResponse(
@@ -88,6 +99,20 @@ class BaseProvider(ABC):
                 model=model_id,
                 execution_mode=execution_mode,
                 provider_class=self.provider_class,
+                prompt_policy=prompt_policy,
+                requested_provider=self.name,
+                actual_provider=self.name,
+                requested_model=model_id,
+                actual_model=model_id,
+                search_grounded=self.is_search_grounded(),
+                prompt_language=prompt_language,
+                country_iso=country_iso,
+                locale=locale,
+                region=region,
+                repeat_index=repeat_index,
+                comparison_batch_id=comparison_batch_id,
+                comparison_window_started_at=comparison_window_started_at,
+                comparison_window_completed_at=comparison_window_completed_at,
                 text="",
                 citations=[],
                 raw={},
@@ -117,6 +142,20 @@ class BaseProvider(ABC):
                     model=evidence.get("model") or model_id,
                     execution_mode=execution_mode,
                     provider_class=self.provider_class,
+                    prompt_policy=prompt_policy,
+                    requested_provider=evidence.get("requested_provider", self.name),
+                    actual_provider=evidence.get("actual_provider", self.name),
+                    requested_model=evidence.get("requested_model", model_id),
+                    actual_model=evidence.get("actual_model", evidence.get("model", model_id)),
+                    search_grounded=self.is_search_grounded(),
+                    prompt_language=prompt_language,
+                    country_iso=country_iso,
+                    locale=locale,
+                    region=region,
+                    repeat_index=repeat_index,
+                    comparison_batch_id=comparison_batch_id,
+                    comparison_window_started_at=comparison_window_started_at,
+                    comparison_window_completed_at=comparison_window_completed_at,
                     text=text if isinstance(text, str) else "",
                     citations=list(citations),
                     raw=sanitize_sensitive_data(raw_payload),
@@ -143,6 +182,20 @@ class BaseProvider(ABC):
             model=model_id,
             execution_mode=execution_mode,
             provider_class=self.provider_class,
+            prompt_policy=prompt_policy,
+            requested_provider=self.name,
+            actual_provider=self.name,
+            requested_model=model_id,
+            actual_model=model_id,
+            search_grounded=self.is_search_grounded(),
+            prompt_language=prompt_language,
+            country_iso=country_iso,
+            locale=locale,
+            region=region,
+            repeat_index=repeat_index,
+            comparison_batch_id=comparison_batch_id,
+            comparison_window_started_at=comparison_window_started_at,
+            comparison_window_completed_at=comparison_window_completed_at,
             text="",
             citations=[],
             raw={},

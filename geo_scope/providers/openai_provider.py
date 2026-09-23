@@ -31,14 +31,22 @@ class OpenAIProvider(BaseProvider):
 
         url = "https://api.openai.com/v1/chat/completions"
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
+        prompt_policy = prompt_item.get("prompt_policy", "neutral")
+        query = prompt_item.get("query") or prompt_item.get("prompt", "")
+
+        if prompt_policy == "forced_list":
+            system_prompt = "You are an expert market analyst. Answer user queries with direct recommendations, rankings, comparisons, and cite authoritative sources where known."
+        else:
+            system_prompt = "You are a neutral AI assistant. Answer the user prompt directly, factually, and objectively without bias."
+
         payload = {
             "model": self.model,
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are an expert market analyst. Answer user queries with direct recommendations, rankings, comparisons, and cite authoritative sources where known.",
+                    "content": system_prompt,
                 },
-                {"role": "user", "content": prompt_item.get("query", "")},
+                {"role": "user", "content": query},
             ],
             "temperature": 0.2,
         }

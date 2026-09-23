@@ -186,31 +186,70 @@ class ReplayEngine:
         }
 
     def _compute_metrics(self, observations: List[Dict[str, Any]], prompts: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Computes replay metrics with strict provider-class separation."""
+        """Computes replay metrics with strict provider-class separation and failure denominators."""
         metrics = {
             "mode": "replay",
+            "sample_interpretation": "stratified research sample, not global user census",
             "entities": {},
             "provider_breakdown": {},
         }
 
+        # Provider-level completion accounting
+        providers = sorted(list(set(o.get("provider", "unknown") for o in observations)))
+        for prov in providers:
+            p_obs = [o for o in observations if o.get("provider") == prov]
+            seen_execs = set()
+            p_attempts = 0
+            p_success = 0
+            p_failed = 0
+            for o in p_obs:
+                key = (o.get("prompt_id"), o.get("repeat_index", 0))
+                if key not in seen_execs:
+                    seen_execs.add(key)
+                    p_attempts += 1
+                    if o.get("status") == "success":
+                        p_success += 1
+                    else:
+                        p_failed += 1
+            metrics["provider_breakdown"][prov] = {
+                "attempted_n": p_attempts,
+                "successful_n": p_success,
+                "failed_n": p_failed,
+                "metric_denominator_n": p_success,
+                "status": "valid" if p_success > 0 else "insufficient_data",
+            }
+
         for eid in self.entities.ids():
-            e_obs = [o for o in observations if o["entity_id"] == eid]
-            e_scored = [o for o in e_obs if o.get("scoring_status") == "scored"]
-            total_obs = len(e_obs)
+            e_obs_all = [o for o in observations if o["entity_id"] == eid]
+            e_obs_success = [o for o in e_obs_all if o.get("status") == "success"]
+            e_scored = [o for o in e_obs_success if o.get("scoring_status") == "scored"]
+            
+            attempted_n = len(e_obs_all)
+            successful_n = len(e_obs_success)
+            failed_n = attempted_n - successful_n
+            metric_denominator_n = successful_n
             total_scored = len(e_scored)
 
-            if total_obs == 0:
+            if successful_n == 0:
+                metrics["entities"][eid] = {
+                    "status": "insufficient_data",
+                    "attempted_n": attempted_n,
+                    "successful_n": 0,
+                    "failed_n": failed_n,
+                    "metric_denominator_n": 0,
+                    "reason": "All provider requests failed; visibility cannot be computed.",
+                }
                 continue
 
-            mentions = sum(1 for o in e_obs if o.get("mentioned"))
-            citations = sum(1 for o in e_obs if o.get("cited"))
+            mentions = sum(1 for o in e_obs_success if o.get("mentioned"))
+            citations = sum(1 for o in e_obs_success if o.get("cited"))
             recs = sum(1 for o in e_scored if o.get("recommended"))
             top1s = sum(1 for o in e_scored if o.get("top1"))
-            confused = sum(1 for o in e_obs if o.get("confused_with"))
+            confused = sum(1 for o in e_obs_success if o.get("confused_with"))
 
-            search_obs = [o for o in e_obs if o.get("provider_class") == "answer_engine"]
+            search_obs = [o for o in e_obs_success if o.get("provider_class") == "answer_engine"]
             search_scored = [o for o in search_obs if o.get("scoring_status") == "scored"]
-            llm_obs = [o for o in e_obs if o.get("provider_class") == "llm"]
+            llm_obs = [o for o in e_obs_success if o.get("provider_class") == "llm"]
             llm_scored = [o for o in llm_obs if o.get("scoring_status") == "scored"]
 
             search_vis = {}
@@ -227,7 +266,8 @@ class ReplayEngine:
                     "search_citation_rate": round(s_c / s_total, 4),
                     "search_recommendation_rate": round(s_r / s_scored_total, 4) if s_scored_total > 0 else 0.0,
                     "search_top1_rate": round(s_t / s_scored_total, 4) if s_scored_total > 0 else 0.0,
-                    "observations_count": s_total,
+                    "metric_denominator_n": s_total,
+                    "scored_denominator_n": s_scored_total,
                 }
 
             llm_obs_metrics = {}
@@ -239,14 +279,18 @@ class ReplayEngine:
                 llm_obs_metrics = {
                     "llm_mention_rate": round(l_m / l_total, 4),
                     "llm_top1_rate": round(l_t / l_scored_total, 4) if l_scored_total > 0 else 0.0,
-                    "observations_count": l_total,
+                    "metric_denominator_n": l_total,
+                    "scored_denominator_n": l_scored_total,
                 }
 
             metrics["entities"][eid] = {
-                "overall_mention_rate": round(mentions / total_obs, 4),
+                "overall_mention_rate": round(mentions / successful_n, 4),
                 "ai_search_visibility": search_vis if search_vis else None,
                 "llm_brand_observation": llm_obs_metrics if llm_obs_metrics else None,
-                "total_observations": total_obs,
+                "attempted_n": attempted_n,
+                "successful_n": successful_n,
+                "failed_n": failed_n,
+                "metric_denominator_n": metric_denominator_n,
                 "scored_observations": total_scored,
                 "confused_observations": confused,
             }
@@ -293,6 +337,7 @@ class ReplayEngine:
 
         # 6. manifest.json
         manifest = {
+            "schema_version": "0.3",
             "mode": "replay",
             "replayed_from": replayed_from,
             "created_at": created_at,
@@ -305,6 +350,7 @@ class ReplayEngine:
             "providers": providers,
             "provider_classes": provider_classes,
             "prompt_source_breakdown": source_counts,
+            "sample_interpretation": "stratified research sample, not global user census",
             "raw_responses_path": "raw_responses.jsonl",
         }
         (out_path / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")

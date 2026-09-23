@@ -154,6 +154,41 @@ def validate_benchmark_dataset(dataset_dir: str | Path) -> Dict[str, Any]:
         "detail": "Zero secrets or unredacted credentials detected" if len(secrets_found) == 0 else f"Potential secrets: {'; '.join(secrets_found)}",
     }
 
+    # Check 7: Scientific Measurement Integrity (Live vs Simulation Isolation)
+    manifest_file = path / "manifest.json"
+    is_live_or_empirical = False
+    if manifest_file.exists():
+        try:
+            m_data = json.loads(manifest_file.read_text(encoding="utf-8"))
+            m_mode = m_data.get("mode") or m_data.get("execution_mode", "")
+            is_live_or_empirical = m_mode in ("live", "empirical") or m_data.get("is_empirical") is True or "live" in str(m_data.get("execution_class", ""))
+        except Exception:
+            pass
+
+    simulation_contamination = []
+    if is_live_or_empirical and obs_file.exists():
+        try:
+            with open(obs_file, "r", encoding="utf-8") as f:
+                for idx, line in enumerate(f, 1):
+                    if line.strip():
+                        o = json.loads(line)
+                        if (
+                            o.get("mode") == "simulation"
+                            or o.get("execution_mode") == "simulation"
+                            or o.get("execution_class") == "simulation"
+                            or o.get("synthetic") is True
+                        ):
+                            simulation_contamination.append(f"Observation line {idx} marked simulation/synthetic in live release")
+                            if len(simulation_contamination) >= 5:
+                                break
+        except Exception as exc:
+            simulation_contamination.append(str(exc))
+
+    checks["live_measurement_integrity"] = {
+        "passed": len(simulation_contamination) == 0,
+        "detail": "Zero simulation/synthetic contamination in empirical release" if len(simulation_contamination) == 0 else f"Contamination detected: {'; '.join(simulation_contamination)}",
+    }
+
     all_passed = all(c["passed"] for c in checks.values())
     status = "PASS" if all_passed else "FAIL"
 

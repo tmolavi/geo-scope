@@ -3,7 +3,7 @@ GEO-Scope: Generative Engine Optimization (GEO) & AI Visibility Reverse-Engineer
 An open-source scientific framework for reverse-engineering LLM ranking factors and citation algorithms.
 """
 
-__version__ = "1.0.0"
+__version__ = "0.3.0"
 __author__ = "GEO-Scope Community & Contributors"
 __license__ = "MIT"
 
