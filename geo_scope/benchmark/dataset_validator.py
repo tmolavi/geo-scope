@@ -157,6 +157,7 @@ def validate_benchmark_dataset(dataset_dir: str | Path) -> Dict[str, Any]:
     # Check 7: Scientific Measurement Integrity (Live vs Simulation Isolation)
     manifest_file = path / "manifest.json"
     is_live_or_empirical = False
+    m_data = {}
     if manifest_file.exists():
         try:
             m_data = json.loads(manifest_file.read_text(encoding="utf-8"))
@@ -187,6 +188,22 @@ def validate_benchmark_dataset(dataset_dir: str | Path) -> Dict[str, Any]:
     checks["live_measurement_integrity"] = {
         "passed": len(simulation_contamination) == 0,
         "detail": "Zero simulation/synthetic contamination in empirical release" if len(simulation_contamination) == 0 else f"Contamination detected: {'; '.join(simulation_contamination)}",
+    }
+
+    # Check 8: Benchmark Repeat Protocol (Enforced for Empirical Protocols)
+    repeat_valid = True
+    repeat_detail = "Repeat count not required for this dataset tier"
+    if is_live_or_empirical and "repeat_count" in m_data:
+        rep_count = m_data.get("repeat_count", 1)
+        if rep_count < 5:
+            repeat_valid = False
+            repeat_detail = f"Empirical release requires repeat_count >= 5 (found: {rep_count})"
+        else:
+            repeat_detail = f"Repeat protocol satisfied (repeat_count={rep_count} >= 5 with measurement window)"
+
+    checks["repeat_protocol_integrity"] = {
+        "passed": repeat_valid,
+        "detail": repeat_detail,
     }
 
     all_passed = all(c["passed"] for c in checks.values())

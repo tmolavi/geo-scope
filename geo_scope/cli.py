@@ -1058,6 +1058,17 @@ def main():
     # Command: mcp
     subparsers.add_parser("mcp", help="Start MCP (Model Context Protocol) Server for Claude Desktop & Cursor")
 
+    # Command: parser
+    parser_cmd_p = subparsers.add_parser("parser", help="ObservationParser evaluation and diagnostics against golden datasets")
+    parser_subparsers = parser_cmd_p.add_subparsers(dest="parser_action", help="Parser action")
+
+    # parser evaluate
+    parse_eval_p = parser_subparsers.add_parser("evaluate", help="Evaluate parser against a versioned golden evaluation dataset")
+    parse_eval_p.add_argument("--golden-set", type=str, default="benchmark/golden_sets/v1", help="Path to golden set directory")
+    parse_eval_p.add_argument("--entities", type=str, default=None, help="Path to entities.json (defaults to golden set dir)")
+    parse_eval_p.add_argument("--output", "--out", type=str, default="output/parser_metrics.json", help="Output path for parser_metrics.json")
+    parse_eval_p.add_argument("--json", action="store_true", help="Output raw JSON to stdout")
+
     # Command: generate
     gen_parser = subparsers.add_parser("generate", help="Generate prompt datasets without running inference")
     gen_parser.add_argument("--niche", type=str, default="crm_sales", help="Industry preset key")
@@ -1094,6 +1105,8 @@ def main():
         mavi_cmd(args)
     elif args.command == "benchmark":
         benchmark_cmd(args)
+    elif args.command == "parser":
+        parser_cmd(args)
     elif args.command == "prompts":
         prompts_cmd(args)
     elif args.command == "hamzad":
@@ -1113,6 +1126,41 @@ def main():
         print(f"✓ Generated {len(prompts)} prompts and saved to {args.out}")
     else:
         parser.print_help()
+
+
+def parser_cmd(args):
+    """Handler for 'geo-scope parser' subcommands."""
+    action = getattr(args, "parser_action", None)
+    if action == "evaluate":
+        from geo_scope.parser.evaluator import evaluate_golden_set
+        golden_set = getattr(args, "golden_set", "benchmark/golden_sets/v1")
+        out_file = getattr(args, "output", "output/parser_metrics.json")
+        ent_file = getattr(args, "entities", None)
+        
+        print("\n" + "=" * 75)
+        print("GEO-Scope Golden Parser Evaluation")
+        print(f"Dataset : {golden_set}")
+        print("=" * 75 + "\n")
+        
+        report = evaluate_golden_set(golden_set, output_file=out_file, entities_file=ent_file)
+        
+        if getattr(args, "json", False):
+            print(json.dumps(report, ensure_ascii=False, indent=2))
+        else:
+            print(f"Total Evaluated Records: {report['total_records']}")
+            print(f"Overall Match Accuracy : {report['overall_accuracy'] * 100:.2f}%\n")
+            print("Field Metrics Breakdown (Precision / Recall / F1 / Support):")
+            print("-" * 75)
+            print(f"{'Field':<15} | {'Precision':<10} | {'Recall':<10} | {'F1-Score':<10} | {'Support':<8}")
+            print("-" * 75)
+            for fld, m in report["metrics_by_field"].items():
+                print(f"{fld:<15} | {m['precision'] * 100:>8.2f}% | {m['recall'] * 100:>8.2f}% | {m['f1_score'] * 100:>8.2f}% | {m['support']:<8}")
+            print("-" * 75)
+            print(f"Rank Accuracy          : {report['rank_evaluation']['rank_accuracy'] * 100:.2f}% (Matches: {report['rank_evaluation']['exact_matches']}/{report['rank_evaluation']['evaluated_count']})")
+            print(f"Intent Classification  : {report['intent_evaluation']['intent_accuracy'] * 100:.2f}% (Matches: {report['intent_evaluation']['exact_matches']}/{report['intent_evaluation']['evaluated_count']})")
+            print(f"\n✓ Granular evaluation results saved to '{out_file}'")
+    else:
+        print("Usage: geo-scope parser evaluate --golden-set benchmark/golden_sets/v1")
 
 
 if __name__ == "__main__":

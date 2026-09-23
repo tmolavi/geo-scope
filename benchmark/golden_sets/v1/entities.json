@@ -1,0 +1,523 @@
+[
+  {
+    "id": "inten",
+    "entity_type": "organization",
+    "names": [
+      "Inten",
+      "اینتن",
+      "InTen",
+      "شرکت اینتن"
+    ],
+    "people": [
+      "Taghi Molavi",
+      "تقی مولوی"
+    ],
+    "domains": [
+      "inten.asia"
+    ],
+    "related_domains": [
+      "molavi.pro"
+    ],
+    "do_not_confuse": [
+      "بازار مولوی",
+      "فرش مولوی",
+      "خیابان مولوی",
+      "مولوی رومی",
+      "مولانا جلال‌الدین",
+      "اشعار مولوی",
+      "ایستگاه مولوی"
+    ],
+    "metadata": {
+      "industry": "seo_digital_marketing",
+      "headquarters": "Tehran, Iran"
+    }
+  },
+  {
+    "id": "web24",
+    "entity_type": "organization",
+    "names": [
+      "Web24",
+      "وب ۲۴",
+      "وب۲۴",
+      "شرکت وب۲۴"
+    ],
+    "people": [
+      "Reza Shirazi",
+      "رضا شیرازی"
+    ],
+    "domains": [
+      "web24.ir",
+      "web24.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "web 2.0",
+      "web 24/7"
+    ],
+    "metadata": {
+      "industry": "seo_digital_marketing",
+      "headquarters": "Tehran, Iran"
+    }
+  },
+  {
+    "id": "novin",
+    "entity_type": "organization",
+    "names": [
+      "Novin",
+      "نوین",
+      "آژانس نوین",
+      "رسانه تجارت نوین"
+    ],
+    "people": [
+      "Saeed Rahnama",
+      "سعید رهنما"
+    ],
+    "domains": [
+      "novin.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "روش نوین",
+      "سبک نوین",
+      "فناوری‌های نوین",
+      "دوران نوین",
+      "عصر نوین",
+      "دانش نوین",
+      "دنیای نوین",
+      "رویکرد نوین"
+    ],
+    "metadata": {
+      "industry": "digital_marketing",
+      "headquarters": "Tehran, Iran"
+    }
+  },
+  {
+    "id": "triboon",
+    "entity_type": "organization",
+    "names": [
+      "Triboon",
+      "تریبون",
+      "پلتفرم تریبون"
+    ],
+    "people": [
+      "Arman Safaei",
+      "آرمان صفایی"
+    ],
+    "domains": [
+      "triboon.net",
+      "triboon.ir"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "تریبون آزاد",
+      "پشت تریبون",
+      "تریبون مجلس",
+      "پشت تریبون رفتن"
+    ],
+    "metadata": {
+      "industry": "pr_linkbuilding",
+      "headquarters": "Tehran, Iran"
+    }
+  },
+  {
+    "id": "digikala",
+    "entity_type": "organization",
+    "names": [
+      "Digikala",
+      "دیجی‌کالا",
+      "دیجیکالا",
+      "دیجی کالا"
+    ],
+    "people": [
+      "Hamid Mohammadi",
+      "Saeed Mohammadi",
+      "حمید محمدی",
+      "سعید محمدی"
+    ],
+    "domains": [
+      "digikala.com"
+    ],
+    "related_domains": [
+      "digikalabusiness.com"
+    ],
+    "do_not_confuse": [
+      "کالای دیجیتال",
+      "دیجیتال کالا"
+    ],
+    "metadata": {
+      "industry": "ecommerce",
+      "headquarters": "Tehran, Iran"
+    }
+  },
+  {
+    "id": "snapp",
+    "entity_type": "organization",
+    "names": [
+      "Snapp",
+      "اسنپ",
+      "گروه اسنپ"
+    ],
+    "people": [
+      "Eyad Alkassar",
+      "ژوبین علاقبند",
+      "ایاد الکسار"
+    ],
+    "domains": [
+      "snapp.ir"
+    ],
+    "related_domains": [
+      "snapp.cab"
+    ],
+    "do_not_confuse": [
+      "اسنپ شات",
+      "عکس فوری"
+    ],
+    "metadata": {
+      "industry": "ride_hailing",
+      "headquarters": "Tehran, Iran"
+    }
+  },
+  {
+    "id": "hubspot",
+    "entity_type": "organization",
+    "names": [
+      "HubSpot",
+      "هاب‌اسپات",
+      "هاب اسپات",
+      "Hubspot CRM"
+    ],
+    "people": [
+      "Brian Halligan",
+      "Dharmesh Shah",
+      "Yamini Rangan"
+    ],
+    "domains": [
+      "hubspot.com"
+    ],
+    "related_domains": [
+      "inbound.com"
+    ],
+    "do_not_confuse": [
+      "USB hub spot",
+      "wifi hub spot",
+      "hub spot location"
+    ],
+    "metadata": {
+      "industry": "crm_sales",
+      "headquarters": "Cambridge, MA, USA"
+    }
+  },
+  {
+    "id": "salesforce",
+    "entity_type": "organization",
+    "names": [
+      "Salesforce",
+      "سیلزفورس",
+      "سیلز فورس",
+      "Salesforce CRM"
+    ],
+    "people": [
+      "Marc Benioff",
+      "مارک بنیوف"
+    ],
+    "domains": [
+      "salesforce.com"
+    ],
+    "related_domains": [
+      "force.com"
+    ],
+    "do_not_confuse": [
+      "sales force team",
+      "sales force automation theory",
+      "sales force field"
+    ],
+    "metadata": {
+      "industry": "crm_sales",
+      "headquarters": "San Francisco, CA, USA"
+    }
+  },
+  {
+    "id": "openai",
+    "entity_type": "organization",
+    "names": [
+      "OpenAI",
+      "اوپن‌ای‌آی",
+      "اوپن ای آی",
+      "OpenAI Inc"
+    ],
+    "people": [
+      "Sam Altman",
+      "Greg Brockman",
+      "Mira Murati",
+      "سام آلتمن"
+    ],
+    "domains": [
+      "openai.com"
+    ],
+    "related_domains": [
+      "chatgpt.com"
+    ],
+    "do_not_confuse": [
+      "open AI research field",
+      "open ai ecosystem in general"
+    ],
+    "metadata": {
+      "industry": "artificial_intelligence",
+      "headquarters": "San Francisco, CA, USA"
+    }
+  },
+  {
+    "id": "sam_altman",
+    "entity_type": "person",
+    "names": [
+      "Sam Altman",
+      "سام آلتمن",
+      "سام التمان",
+      "山姆·奥特曼",
+      "Samuel H. Altman"
+    ],
+    "people": [],
+    "domains": [
+      "openai.com",
+      "blog.samaltman.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "Robert Altman",
+      "Altman Z-score",
+      "Edward Altman",
+      "Altman clinical test"
+    ],
+    "metadata": {
+      "profession": "tech_executive",
+      "affiliation": "OpenAI"
+    }
+  },
+  {
+    "id": "slack",
+    "entity_type": "organization",
+    "names": [
+      "Slack",
+      "اسلک",
+      "Slack Technologies"
+    ],
+    "people": [
+      "Stewart Butterfield",
+      "استوارت باترفیلد"
+    ],
+    "domains": [
+      "slack.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "slack variable",
+      "slack time in scheduling",
+      "cut some slack",
+      "slack rope"
+    ],
+    "metadata": {
+      "industry": "collaboration_software",
+      "headquarters": "San Francisco, CA, USA"
+    }
+  },
+  {
+    "id": "noon",
+    "entity_type": "organization",
+    "names": [
+      "Noon",
+      "نون",
+      "منصة نون",
+      "نون للتسوق"
+    ],
+    "people": [
+      "Mohamed Alabbar",
+      "محمد العبار"
+    ],
+    "domains": [
+      "noon.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "وقت الظهيرة",
+      "صلاة الظهر",
+      "noon sun",
+      "at high noon",
+      "حرف النون"
+    ],
+    "metadata": {
+      "industry": "ecommerce",
+      "headquarters": "Dubai, UAE"
+    }
+  },
+  {
+    "id": "careem",
+    "entity_type": "organization",
+    "names": [
+      "Careem",
+      "كريم",
+      "شركة كريم",
+      "تطبيق كريم"
+    ],
+    "people": [
+      "Mudassir Sheikha",
+      "مدثر شيخة",
+      "Magnus Olsson"
+    ],
+    "domains": [
+      "careem.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "رجل كريم",
+      "كريم الأخلاق",
+      "حجر كريم",
+      "القرآن الكريم",
+      "شهر رمضان الكريم",
+      "كريم الوجه"
+    ],
+    "metadata": {
+      "industry": "ride_hailing",
+      "headquarters": "Dubai, UAE"
+    }
+  },
+  {
+    "id": "jahez",
+    "entity_type": "organization",
+    "names": [
+      "Jahez",
+      "جاهز",
+      "شركة جاهز",
+      "تطبيق جاهز"
+    ],
+    "people": [
+      "Ghassab Al Mandeel",
+      "غصاب المنديل"
+    ],
+    "domains": [
+      "jahez.net"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "طعام جاهز",
+      "هو جاهز",
+      "مستعد وجاهز",
+      "غير جاهز",
+      "ملابس جاهزة"
+    ],
+    "metadata": {
+      "industry": "food_delivery",
+      "headquarters": "Riyadh, Saudi Arabia"
+    }
+  },
+  {
+    "id": "trendyol",
+    "entity_type": "organization",
+    "names": [
+      "Trendyol",
+      "Trendyol Group",
+      "Trendyol Pazaryeri"
+    ],
+    "people": [
+      "Demet Mutlu",
+      "Çağlayan Çetin"
+    ],
+    "domains": [
+      "trendyol.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "trend yol",
+      "trend yollar",
+      "moda yol"
+    ],
+    "metadata": {
+      "industry": "ecommerce",
+      "headquarters": "Istanbul, Turkey"
+    }
+  },
+  {
+    "id": "getir",
+    "entity_type": "organization",
+    "names": [
+      "Getir",
+      "Getir Perakende",
+      "Getir Teslimat"
+    ],
+    "people": [
+      "Nazım Salur",
+      "Serkan Borançılı",
+      "Tuncay Tütek"
+    ],
+    "domains": [
+      "getir.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "bana su getir",
+      "ekmek getir",
+      "aklıma getir",
+      "yerine getir",
+      "meydana getir"
+    ],
+    "metadata": {
+      "industry": "quick_commerce",
+      "headquarters": "Istanbul, Turkey"
+    }
+  },
+  {
+    "id": "deepseek",
+    "entity_type": "organization",
+    "names": [
+      "DeepSeek",
+      "深度求索",
+      "杭州深度求索",
+      "DeepSeek AI"
+    ],
+    "people": [
+      "Liang Wenfeng",
+      "梁文锋"
+    ],
+    "domains": [
+      "deepseek.com"
+    ],
+    "related_domains": [],
+    "do_not_confuse": [
+      "deep seeking",
+      "deep seek algorithm",
+      "seeking deeply"
+    ],
+    "metadata": {
+      "industry": "artificial_intelligence",
+      "headquarters": "Hangzhou, China"
+    }
+  },
+  {
+    "id": "baidu",
+    "entity_type": "organization",
+    "names": [
+      "Baidu",
+      "百度",
+      "百度在线",
+      "Baidu Inc"
+    ],
+    "people": [
+      "Robin Li",
+      "李彦宏"
+    ],
+    "domains": [
+      "baidu.com"
+    ],
+    "related_domains": [
+      "erennie.baidu.com"
+    ],
+    "do_not_confuse": [
+      "一百度",
+      "摄氏一百度",
+      "水温达到百度"
+    ],
+    "metadata": {
+      "industry": "search_and_ai",
+      "headquarters": "Beijing, China"
+    }
+  }
+]

@@ -1,0 +1,109 @@
+# GEO-Scope Provider Contract Registry
+# Strict classification of provider classes and capabilities.
+# Rules:
+# - provider_class must be 'llm' or 'answer_engine'
+# - search_grounded is boolean
+# - Never classify base completion LLMs as 'AI Search' or 'answer_engine'
+
+version: "1.0"
+registry_updated: "2026-09-23"
+
+providers:
+  - provider_id: "perplexity_sonar"
+    model_id: "sonar"
+    provider_class: "answer_engine"
+    search_grounded: true
+    search_engine_backend: "bing_and_perplexity_index"
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Perplexity Sonar answer engine with native search index grounding and inline citation URLs."
+
+  - provider_id: "gemini_grounding"
+    model_id: "gemini-2.5-flash"
+    provider_class: "answer_engine"
+    search_grounded: true
+    search_engine_backend: "google_search"
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Google Gemini with dynamic Google Search Grounding and grounding metadata chunks."
+
+  - provider_id: "chatgpt_search"
+    model_id: "gpt-4o"
+    provider_class: "answer_engine"
+    search_grounded: true
+    search_engine_backend: "bing_search"
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "OpenAI ChatGPT Search with web search tool execution."
+
+  - provider_id: "openai_completion"
+    model_id: "gpt-4o"
+    provider_class: "llm"
+    search_grounded: false
+    search_engine_backend: null
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "OpenAI GPT-4o base completion without search grounding tool."
+
+  - provider_id: "claude_completion"
+    model_id: "claude-3-7-sonnet-20250219"
+    provider_class: "llm"
+    search_grounded: false
+    search_engine_backend: null
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Anthropic Claude 3.7 Sonnet direct generation without web browsing."
+
+  - provider_id: "hamzad_perplexity"
+    model_id: "sonar-pro"
+    provider_class: "answer_engine"
+    search_grounded: true
+    search_engine_backend: "perplexity_index"
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Hamzad AI Gateway route to Perplexity Sonar Pro."
+
+  - provider_id: "hamzad_gemini"
+    model_id: "gemini-2.5-flash"
+    provider_class: "answer_engine"
+    search_grounded: true
+    search_engine_backend: "google_search"
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Hamzad AI Gateway route to Google Gemini Search Grounded."
+
+  - provider_id: "hamzad_openai"
+    model_id: "gpt-4o-mini"
+    provider_class: "llm"
+    search_grounded: false
+    search_engine_backend: null
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Hamzad AI Gateway route to OpenAI GPT-4o-mini completion."
+
+  - provider_id: "hamzad_claude"
+    model_id: "anthropic/claude-3.5-sonnet"
+    provider_class: "llm"
+    search_grounded: false
+    search_engine_backend: null
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Hamzad AI Gateway route to Claude 3.5 Sonnet completion."
+
+  - provider_id: "hamzad_groq"
+    model_id: "qwen/qwen3.8-27b"
+    provider_class: "llm"
+    search_grounded: false
+    search_engine_backend: null
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Hamzad AI Gateway route to Groq Qwen completion."
+
+  - provider_id: "ollama_local"
+    model_id: "llama3.2"
+    provider_class: "llm"
+    search_grounded: false
+    search_engine_backend: null
+    checked_date: "2026-09-23"
+    deprecated_after: "2027-01-01"
+    description: "Locally running Ollama instance."

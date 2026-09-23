@@ -294,7 +294,15 @@ geo-scope measure   --entities entities/iran-seo-agencies.json   --prompts examp
 geo-scope replay   --bundle output/research_run_01   --entities entities/iran-seo-agencies.json   --out-dir output/replay_01
 ```
 
-### 5. Launch Interactive Dashboard
+### 5. Evaluate Parser against Golden Dataset
+
+```bash
+geo-scope parser evaluate \
+  --golden-set benchmark/golden_sets/v1 \
+  --output output/parser_metrics.json
+```
+
+### 6. Launch Interactive Dashboard
 
 ```bash
 geo-scope serve --host 0.0.0.0 --port 8000
@@ -332,6 +340,7 @@ pytest tests/ -v
 ## 📚 Documentation & Research Guides
 
 - 📖 [Documentation Index](docs/index.md)
+- 🔁 [Reproducing Benchmarks Guide](docs/REPRODUCE_BENCHMARK.md)
 - 📊 [Methodology Crosswalk (Public Practice Comparison)](docs/METHODOLOGY_CROSSWALK.md)
 - 🗺️ [Cross-Repository Evidence Map](docs/EVIDENCE_MAP.md)
 - 🔬 [Scientific Methodology](docs/benchmark-methodology.md)
