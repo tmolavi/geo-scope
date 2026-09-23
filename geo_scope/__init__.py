@@ -1,6 +1,6 @@
 """
-GEO-Scope: Generative Engine Optimization (GEO) & AI Visibility Reverse-Engineering Platform
-An open-source scientific framework for reverse-engineering LLM ranking factors and citation algorithms.
+GEO-Scope: Generative Engine Optimization (GEO) & Empirical AI Answer Visibility Framework
+An open-source scientific framework for measuring entity visibility, recommendations, and citations across generative AI systems.
 """
 
 __version__ = "0.3.0"

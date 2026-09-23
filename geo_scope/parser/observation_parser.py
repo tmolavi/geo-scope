@@ -360,9 +360,11 @@ class ObservationParser:
         if combined_names:
             attribution_patterns = [
                 # Persian
-                rf"(?:بر اساس|طبق گزارش|به نقل از|به گزارش|مطابق آمار|به گفته)\s+.*?(?:{combined_names})",
+                rf"(?:بر اساس|طبق گزارش|به نقل از|به گزارش|مطابق آمار|به گفته|با استناد به|بر پایه تحلیل|بررسی‌های)\s+.*?(?:{combined_names})",
+                rf"(?:{combined_names})\s+.*?(?:گزارش داده است|اعلام کرد|اعلام نموده|بیان کرده است)",
                 # English
-                rf"(?:according to|source:|data from|reported by|published by|based on research by|as stated by)\s+.*?(?:{combined_names})",
+                rf"(?:according to|source:|data from|reported by|published by|based on research by|as stated by|cited by|research from)\s+.*?(?:{combined_names})",
+                rf"(?:{combined_names})\s+.*?(?:reports that|stated that|found that|study shows)",
                 # Arabic
                 rf"(?:وفقا لـ?|وفقاً لـ?|حسب تقرير|المصدر:|استناداً إلى|استنادا الى|بناءً على|نقلاً عن)\s+.*?(?:{combined_names})",
                 # Turkish
