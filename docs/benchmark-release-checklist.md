@@ -15,17 +15,17 @@ Use this checklist before publishing or updating any public GEO-Scope benchmark 
 
 ## 2. Dataset Structure & Schema
 - [ ] All 10 required dataset files are present in `benchmark/<dataset_id>/`:
-  - `manifest.json`
+  - `manifest.json` (declares `measurement_contract_version: "1.0"`)
   - `prompts.jsonl`
   - `brands.json`
   - `providers.json`
-  - `observations.jsonl`
+  - `observations.jsonl` (conforms to [Measurement Contract v1](measurement-contract-v1.md))
   - `citations.jsonl`
   - `metrics.json`
   - `methodology.md`
   - `README.md`
   - `checksums.sha256`
-- [ ] `manifest.json` includes valid git commit hash, parser version, sample counts, and dataset description.
+- [ ] `manifest.json` includes valid git commit hash, parser version, sample counts, `measurement_contract_version: "1.0"`, and dataset description.
 
 ---
 

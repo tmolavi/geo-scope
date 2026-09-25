@@ -21,13 +21,13 @@ Every versioned benchmark release resides under `benchmark/<dataset_id>/` and fo
 
 | File | Format | Description |
 |------|--------|-------------|
-| `manifest.json` | JSON | Dataset metadata, git commit, parser version, sample counts, and SHA-256 hashes. |
+| `manifest.json` | JSON | Dataset metadata, git commit, parser version, sample counts, SHA-256 hashes, and `measurement_contract_version: "1.0"`. |
 | `prompts.jsonl` | JSONL | Stratified evaluation queries with intent labels and entity parameters. |
 | `brands.json` | JSON | Evaluated target brands and competitor entities with verified domains. |
 | `providers.json` | JSON | Target LLM engines and search providers (ChatGPT, Perplexity, Gemini, Claude). |
-| `observations.jsonl` | JSONL | Raw model responses, parsed mention ranks, sentiment, latency, and status. |
-| `citations.jsonl` | JSONL | Extracted citation URLs, source domains, and attribution anchors. |
-| `metrics.json` | JSON | Computed benchmark metrics with point estimates and 95% bootstrap CIs. |
+| `observations.jsonl` | JSONL | Raw model responses, parsed mention ranks, sentiment, latency, and status conforming to [Measurement Contract v1](measurement-contract-v1.md). |
+| `citations.jsonl` | JSONL | Extracted citation URLs, source domains, and 4-way attribution anchors. |
+| `metrics.json` | JSON | Computed benchmark metrics with point estimates, explicit denominators, and 95% bootstrap CIs. |
 | `methodology.md` | Markdown | Experiment methodology specification for the dataset release. |
 | `README.md` | Markdown | Dataset introduction and quickstart reproduction instructions. |
 | `checksums.sha256` | Text | Standard SHA-256 checksums file for cryptographic verification. |

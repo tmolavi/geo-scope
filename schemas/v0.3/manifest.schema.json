@@ -17,6 +17,9 @@
       "type": "string",
       "enum": ["0.3", "v0.3", "0.3.0"]
     },
+    "measurement_contract_version": {
+      "type": "string"
+    },
     "benchmark_version": {
       "type": "string"
     },

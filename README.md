@@ -150,7 +150,29 @@ GEO-Scope provides three mutually exclusive execution modes:
 
 ---
 
-## 6. Published Benchmark Releases
+## 6. Measurement Contract v1
+
+GEO-Scope does not claim universal AI visibility truth. It measures empirical observations under declared, reproducible measurement configurations.
+
+> [!IMPORTANT]
+> **Fundamental Measurement Axiom**  
+> *"AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking."*
+
+- 📄 **Full Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
+- ❓ **Why This Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
+- 📐 **Machine-Readable Schema**: [`schemas/measurement-contract-v1.json`](schemas/measurement-contract-v1.json)
+- 🧪 **Validation Example Fixture**: [`examples/measurement-contract-v1-example.json`](examples/measurement-contract-v1-example.json)
+
+### Core Measurement Principles
+1. **Mention Definition**: A response-level binary observation indicating whether the target entity appears at least once in the completion. Multiple mentions in a single answer do **not** artificially inflate response-level mention counts.
+2. **Citation Separation**: Strict 4-way separation between `entity_mentioned` in text, `target_domain_cited` (root domain), `target_url_cited` (deep link), and `third_party_source_cited` (external authority/review links). Mention and citation are never treated as equivalent.
+3. **Recommendation Semantics**: Evaluated as true only when the model semantically recommends, selects, or endorses the entity. Ambiguous detections are gated and marked `experimental`.
+4. **Comparability Rules**: Machine-readable comparability verification. Two studies are marked `comparable: true` only when prompt universe, market/language, provider/model family, measurement definitions, and observation windows match.
+5. **Raw Evidence Traceability**: Every public observation is linked to prompt ID, raw response or cryptographic SHA-256 hash (`response_hash_sha256`), extracted entities, citations, and execution configuration hash.
+
+---
+
+## 7. Published Benchmark Releases
 
 GEO-Scope maintains immutable, peer-review-ready benchmark releases under `benchmark/releases/`:
 
@@ -162,7 +184,7 @@ GEO-Scope maintains immutable, peer-review-ready benchmark releases under `bench
 | [`geo-seo-digital-agency-iran-2026.1`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/) | 30 prompts (5 intent strata) | 120 completions | 4 models | SHA-256 Verified | [Agency Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
 
 Every release bundle contains:
-- `manifest.json`: Dataset metadata, provider matrix, and schema version.
+- `manifest.json`: Dataset metadata, provider matrix, and schema version (`measurement_contract_version: "1.0"`).
 - `prompts.jsonl`: Neutral, categorized prompts.
 - `raw_responses.jsonl`: Verbatim API completion payloads.
 - `observations.jsonl`: Granular extracted observation records.
@@ -171,7 +193,7 @@ Every release bundle contains:
 
 ---
 
-## 7. Reproducibility & Auditability
+## 8. Reproducibility & Auditability
 
 ### 1. Cryptographic SHA-256 Verification
 Verify that dataset files have not been modified or corrupted:
@@ -203,8 +225,10 @@ geo-scope parser evaluate --golden-set benchmark/golden_sets/v1
 
 ---
 
-## 8. Research & Documentation
+## 9. Research & Documentation
 
+- 📄 **Measurement Contract v1 Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
+- ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
 - 📄 **Research Paper Outline**: [`docs/RESEARCH_PAPER_OUTLINE.md`](docs/RESEARCH_PAPER_OUTLINE.md)
 - 🔒 **Open Source Security Audit**: [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md)
 - 📊 **Methodology Crosswalk (Public Practice Comparison)**: [`docs/METHODOLOGY_CROSSWALK.md`](docs/METHODOLOGY_CROSSWALK.md)

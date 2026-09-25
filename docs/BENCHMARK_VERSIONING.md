@@ -42,11 +42,11 @@ Once a benchmark dataset package is tagged and published under `benchmark/releas
 
 ## 4. Release Bundle Standard Contents
 Every release directory must contain:
-1. `manifest.json`: Full release metadata, lineage, and provider classification.
+1. `manifest.json`: Full release metadata, lineage, provider classification, and `measurement_contract_version: "1.0"`.
 2. `prompts.jsonl` & `prompts/`: Standardized prompt records.
 3. `entities.json`: Tracked entity dictionary with aliases and disambiguation tokens.
 4. `raw_responses.jsonl`: Raw unparsed model response logs.
-5. `observations.jsonl`: Deterministic entity observation records.
+5. `observations.jsonl`: Deterministic entity observation records conforming to [Measurement Contract v1](measurement-contract-v1.md).
 6. `citations.jsonl`: Grounded source citations.
 7. `metrics.json`: Empirical aggregated metrics.
 8. `errors.jsonl`: Transparent failure log.

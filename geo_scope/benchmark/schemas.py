@@ -21,6 +21,7 @@ MANIFEST_SCHEMA = {
     ],
     "properties": {
         "schema_version": {"type": "string", "enum": ["0.3", "0.3.0", "2026.1", "2026.2"]},
+        "measurement_contract_version": {"type": ["string", "null"]},
         "mode": {"type": "string", "enum": ["live", "empirical", "replay", "simulation"]},
         "created_at": {"type": "string", "format": "date-time"},
         "comparison_batch_id": {"type": ["string", "null"]},
