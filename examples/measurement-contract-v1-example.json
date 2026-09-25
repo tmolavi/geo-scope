@@ -1,0 +1,662 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0",
+  "declaration": {
+    "principle": "AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking.",
+    "measurement_standard": "GEO-Scope Measurement Contract v1.0",
+    "disclaimer": "All measurements reflect empirical observations from the declared prompt set and provider configurations at observation timestamp."
+  },
+  "prompt_universe": {
+    "prompt_set_id": "geo-seo-digital-agency-iran-2026.1-sample",
+    "prompt_count": 10,
+    "prompt_source": "Iranian Digital Agency & SEO Search Landscape",
+    "prompt_generation_method": "hybrid_stratified",
+    "language": "fa",
+    "country_or_market": "IR",
+    "intent_distribution": {
+      "recommendation": 0.6,
+      "informational": 0.3,
+      "navigational": 0.1
+    },
+    "collection_date": "2026-09-23T14:55:00Z",
+    "strata": [
+      "recommendation",
+      "informational",
+      "navigational"
+    ]
+  },
+  "model_observation": {
+    "provider": "chatgpt_search",
+    "model": "gpt-4o-search-grounded",
+    "model_version": "2026-03-01",
+    "temperature": 0.0,
+    "timestamp": "2026-09-23T14:55:00Z",
+    "location": "IR",
+    "search_grounding_enabled": true,
+    "web_access_enabled": true,
+    "configuration_hash": "d7c768e5d1277bb8",
+    "system_prompt_policy": "neutral"
+  },
+  "observations": [
+    {
+      "observation_id": "obs-v1-001",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "inten",
+      "entity_name": "Inten",
+      "mention": {
+        "mentioned": true,
+        "occurrence_count": 1,
+        "matched_aliases": [
+          "Inten"
+        ]
+      },
+      "citation": {
+        "entity_mentioned": true,
+        "target_domain_cited": true,
+        "target_url_cited": true,
+        "third_party_source_cited": false,
+        "cited_domains": [
+          "inten.asia"
+        ],
+        "cited_urls": [
+          "https://inten.asia"
+        ]
+      },
+      "recommendation": {
+        "recommended": true,
+        "recommendation_status": "confirmed",
+        "recommendation_evidence": "Matched brand names: ['Inten', 'اینتن', 'InTen', 'inten.asia']"
+      },
+      "position": {
+        "rank_position": 1,
+        "is_top1": true,
+        "ranking_method": "numbered_list_only"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 10.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-001",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [
+          "Inten"
+        ],
+        "citations": [
+          "inten.asia"
+        ],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-002",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "web24",
+      "entity_name": "Web24",
+      "mention": {
+        "mentioned": true,
+        "occurrence_count": 1,
+        "matched_aliases": [
+          "Web24"
+        ]
+      },
+      "citation": {
+        "entity_mentioned": true,
+        "target_domain_cited": true,
+        "target_url_cited": true,
+        "third_party_source_cited": false,
+        "cited_domains": [
+          "web24.ir"
+        ],
+        "cited_urls": [
+          "https://web24.ir"
+        ]
+      },
+      "recommendation": {
+        "recommended": true,
+        "recommendation_status": "confirmed",
+        "recommendation_evidence": "Matched brand names: ['Web24', 'وب ۲۴', 'وب۲۴', 'web24.ir']"
+      },
+      "position": {
+        "rank_position": 2,
+        "is_top1": false,
+        "ranking_method": "numbered_list_only"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 10.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-002",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [
+          "Web24"
+        ],
+        "citations": [
+          "web24.ir"
+        ],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-003",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "novin",
+      "entity_name": "Novin",
+      "mention": {
+        "mentioned": true,
+        "occurrence_count": 1,
+        "matched_aliases": [
+          "Novin"
+        ]
+      },
+      "citation": {
+        "entity_mentioned": true,
+        "target_domain_cited": false,
+        "target_url_cited": false,
+        "third_party_source_cited": false,
+        "cited_domains": [],
+        "cited_urls": []
+      },
+      "recommendation": {
+        "recommended": true,
+        "recommendation_status": "confirmed",
+        "recommendation_evidence": "Matched brand names: ['Novin', 'نوین']"
+      },
+      "position": {
+        "rank_position": 4,
+        "is_top1": false,
+        "ranking_method": "numbered_list_only"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 10.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-003",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [
+          "Novin"
+        ],
+        "citations": [],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-004",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "triboon",
+      "entity_name": "Triboon",
+      "mention": {
+        "mentioned": true,
+        "occurrence_count": 1,
+        "matched_aliases": [
+          "Triboon"
+        ]
+      },
+      "citation": {
+        "entity_mentioned": true,
+        "target_domain_cited": true,
+        "target_url_cited": true,
+        "third_party_source_cited": false,
+        "cited_domains": [
+          "triboon.net"
+        ],
+        "cited_urls": [
+          "https://triboon.net"
+        ]
+      },
+      "recommendation": {
+        "recommended": true,
+        "recommendation_status": "confirmed",
+        "recommendation_evidence": "Matched brand names: ['Triboon', 'تریبون', 'triboon.net']"
+      },
+      "position": {
+        "rank_position": 3,
+        "is_top1": false,
+        "ranking_method": "numbered_list_only"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 10.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-004",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [
+          "Triboon"
+        ],
+        "citations": [
+          "triboon.net"
+        ],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-005",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "dimarketing",
+      "entity_name": "Dimarketing",
+      "mention": {
+        "mentioned": false,
+        "occurrence_count": 0,
+        "matched_aliases": []
+      },
+      "citation": {
+        "entity_mentioned": false,
+        "target_domain_cited": false,
+        "target_url_cited": false,
+        "third_party_source_cited": false,
+        "cited_domains": [],
+        "cited_urls": []
+      },
+      "recommendation": {
+        "recommended": false,
+        "recommendation_status": "not_recommended",
+        "recommendation_evidence": null
+      },
+      "position": {
+        "rank_position": null,
+        "is_top1": false,
+        "ranking_method": "unranked"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 0.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-005",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [],
+        "citations": [],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-006",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "inten",
+      "entity_name": "Inten",
+      "mention": {
+        "mentioned": true,
+        "occurrence_count": 1,
+        "matched_aliases": [
+          "Inten"
+        ]
+      },
+      "citation": {
+        "entity_mentioned": true,
+        "target_domain_cited": true,
+        "target_url_cited": true,
+        "third_party_source_cited": false,
+        "cited_domains": [
+          "inten.asia"
+        ],
+        "cited_urls": [
+          "https://inten.asia"
+        ]
+      },
+      "recommendation": {
+        "recommended": true,
+        "recommendation_status": "confirmed",
+        "recommendation_evidence": "Matched brand names: ['Inten', 'اینتن', 'InTen', 'inten.asia']"
+      },
+      "position": {
+        "rank_position": 1,
+        "is_top1": true,
+        "ranking_method": "numbered_list_only"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 10.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-006",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [
+          "Inten"
+        ],
+        "citations": [
+          "inten.asia"
+        ],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-007",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "web24",
+      "entity_name": "Web24",
+      "mention": {
+        "mentioned": true,
+        "occurrence_count": 1,
+        "matched_aliases": [
+          "Web24"
+        ]
+      },
+      "citation": {
+        "entity_mentioned": true,
+        "target_domain_cited": true,
+        "target_url_cited": true,
+        "third_party_source_cited": false,
+        "cited_domains": [
+          "web24.ir"
+        ],
+        "cited_urls": [
+          "https://web24.ir"
+        ]
+      },
+      "recommendation": {
+        "recommended": true,
+        "recommendation_status": "confirmed",
+        "recommendation_evidence": "Matched brand names: ['Web24', 'وب ۲۴', 'وب۲۴', 'web24.ir']"
+      },
+      "position": {
+        "rank_position": 2,
+        "is_top1": false,
+        "ranking_method": "numbered_list_only"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 10.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-007",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [
+          "Web24"
+        ],
+        "citations": [
+          "web24.ir"
+        ],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-008",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "novin",
+      "entity_name": "Novin",
+      "mention": {
+        "mentioned": true,
+        "occurrence_count": 1,
+        "matched_aliases": [
+          "Novin"
+        ]
+      },
+      "citation": {
+        "entity_mentioned": true,
+        "target_domain_cited": false,
+        "target_url_cited": false,
+        "third_party_source_cited": false,
+        "cited_domains": [],
+        "cited_urls": []
+      },
+      "recommendation": {
+        "recommended": true,
+        "recommendation_status": "confirmed",
+        "recommendation_evidence": "Matched brand names: ['Novin', 'نوین']"
+      },
+      "position": {
+        "rank_position": 4,
+        "is_top1": false,
+        "ranking_method": "numbered_list_only"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 10.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-008",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [
+          "Novin"
+        ],
+        "citations": [],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-009",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "triboon",
+      "entity_name": "Triboon",
+      "mention": {
+        "mentioned": true,
+        "occurrence_count": 1,
+        "matched_aliases": [
+          "Triboon"
+        ]
+      },
+      "citation": {
+        "entity_mentioned": true,
+        "target_domain_cited": true,
+        "target_url_cited": true,
+        "third_party_source_cited": false,
+        "cited_domains": [
+          "triboon.net"
+        ],
+        "cited_urls": [
+          "https://triboon.net"
+        ]
+      },
+      "recommendation": {
+        "recommended": true,
+        "recommendation_status": "confirmed",
+        "recommendation_evidence": "Matched brand names: ['Triboon', 'تریبون', 'triboon.net']"
+      },
+      "position": {
+        "rank_position": 3,
+        "is_top1": false,
+        "ranking_method": "numbered_list_only"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 10.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-009",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [
+          "Triboon"
+        ],
+        "citations": [
+          "triboon.net"
+        ],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    },
+    {
+      "observation_id": "obs-v1-010",
+      "prompt_id": "p-001",
+      "prompt_query": "بهترین شرکت سئو در ایران کدام است؟",
+      "entity_id": "dimarketing",
+      "entity_name": "Dimarketing",
+      "mention": {
+        "mentioned": false,
+        "occurrence_count": 0,
+        "matched_aliases": []
+      },
+      "citation": {
+        "entity_mentioned": false,
+        "target_domain_cited": false,
+        "target_url_cited": false,
+        "third_party_source_cited": false,
+        "cited_domains": [],
+        "cited_urls": []
+      },
+      "recommendation": {
+        "recommended": false,
+        "recommendation_status": "not_recommended",
+        "recommendation_evidence": null
+      },
+      "position": {
+        "rank_position": null,
+        "is_top1": false,
+        "ranking_method": "unranked"
+      },
+      "share_of_voice": {
+        "raw_mention_share": 0.0,
+        "weighted_share_of_voice": null,
+        "weighting_source": null,
+        "denominator_definition": "Total successful observations in prompt universe (N=10)"
+      },
+      "repeated_observation": {
+        "observation_count": 1,
+        "repeat_index": 0,
+        "first_observed_at": "2026-09-23T14:55:00Z",
+        "last_observed_at": "2026-09-23T14:55:00Z"
+      },
+      "raw_evidence": {
+        "prompt_id": "p-001",
+        "observation_id": "obs-v1-010",
+        "raw_response": "بر اساس بررسی بازار ایران در سال ۲۰۲۶، پاسخ به پرسش «بهترین شرکت سئو در ایران کدام است؟» شامل آژانس‌های معتبر زیر است:\n\n### آژانس‌های برتر سئو در ایران:\n1. **اینتن (Inten)**: ارائه دهنده خدمات جامع سئ...",
+        "raw_response_reference": "raw_responses.jsonl#p-001",
+        "response_hash_sha256": "1eb941ba7f2cb9cc315f95f433e30efb218a7cb41066694bf50a3bd139d5f8b1",
+        "extracted_entities": [],
+        "citations": [],
+        "timestamp": "2026-09-23T14:55:00Z",
+        "configuration_hash": "d7c768e5d1277bb8",
+        "privacy_or_provider_constraint": null
+      }
+    }
+  ],
+  "comparability": {
+    "comparable": true,
+    "mismatch_reasons": [],
+    "required_matching_dimensions": [
+      "prompt_universe",
+      "market_and_language",
+      "provider_and_model_family",
+      "measurement_definition",
+      "observation_window"
+    ],
+    "target_comparison_benchmark_id": "geo-seo-digital-agency-iran-2026.1"
+  }
+}

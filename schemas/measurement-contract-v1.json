@@ -1,0 +1,272 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geo-scope.org/schemas/measurement-contract-v1.json",
+  "title": "AIVisibilityMeasurementContract_v1",
+  "description": "GEO-Scope AI Visibility Measurement Contract v1 — A standardized, machine-readable specification for empirical generative AI visibility observations.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contract_version",
+    "declaration",
+    "prompt_universe",
+    "model_observation",
+    "observations",
+    "comparability"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "contract_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "declaration": {
+      "type": "object",
+      "required": ["principle", "measurement_standard"],
+      "properties": {
+        "principle": {
+          "type": "string",
+          "const": "AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking."
+        },
+        "measurement_standard": {
+          "type": "string"
+        },
+        "disclaimer": {
+          "type": "string"
+        }
+      }
+    },
+    "prompt_universe": {
+      "type": "object",
+      "required": [
+        "prompt_set_id",
+        "prompt_count",
+        "prompt_source",
+        "prompt_generation_method",
+        "language",
+        "country_or_market",
+        "intent_distribution",
+        "collection_date"
+      ],
+      "properties": {
+        "prompt_set_id": { "type": "string" },
+        "prompt_count": { "type": "integer", "minimum": 1 },
+        "prompt_source": { "type": "string" },
+        "prompt_generation_method": {
+          "type": "string",
+          "enum": ["observed_user_queries", "expert_curated", "synthetic_templated", "hybrid_stratified"]
+        },
+        "language": { "type": "string" },
+        "country_or_market": { "type": "string" },
+        "intent_distribution": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        },
+        "collection_date": { "type": "string", "format": "date-time" },
+        "strata": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "model_observation": {
+      "type": "object",
+      "required": [
+        "provider",
+        "model",
+        "timestamp",
+        "search_grounding_enabled",
+        "web_access_enabled"
+      ],
+      "properties": {
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "model_version": { "type": ["string", "null"] },
+        "temperature": { "type": ["number", "null"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "location": { "type": ["string", "null"] },
+        "search_grounding_enabled": { "type": "boolean" },
+        "web_access_enabled": { "type": "boolean" },
+        "configuration_hash": { "type": "string" },
+        "system_prompt_policy": {
+          "type": "string",
+          "enum": ["neutral", "forced_list", "custom"]
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "observation_id",
+          "prompt_id",
+          "prompt_query",
+          "entity_id",
+          "entity_name",
+          "mention",
+          "citation",
+          "recommendation",
+          "position",
+          "repeated_observation",
+          "raw_evidence"
+        ],
+        "properties": {
+          "observation_id": { "type": "string" },
+          "prompt_id": { "type": "string" },
+          "prompt_query": { "type": "string" },
+          "entity_id": { "type": "string" },
+          "entity_name": { "type": "string" },
+          "mention": {
+            "type": "object",
+            "required": ["mentioned", "occurrence_count"],
+            "description": "A response-level binary observation: whether target entity appears at least once. Multiple occurrences do NOT count as multiple mentions.",
+            "properties": {
+              "mentioned": { "type": "boolean" },
+              "occurrence_count": { "type": "integer", "minimum": 0 },
+              "matched_aliases": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          },
+          "citation": {
+            "type": "object",
+            "required": [
+              "entity_mentioned",
+              "target_domain_cited",
+              "target_url_cited",
+              "third_party_source_cited",
+              "cited_domains",
+              "cited_urls"
+            ],
+            "description": "Strict separation between entity in response text and actual web/grounding citations.",
+            "properties": {
+              "entity_mentioned": { "type": "boolean" },
+              "target_domain_cited": { "type": "boolean" },
+              "target_url_cited": { "type": "boolean" },
+              "third_party_source_cited": { "type": "boolean" },
+              "cited_domains": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "cited_urls": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          },
+          "recommendation": {
+            "type": "object",
+            "required": ["recommended", "recommendation_status"],
+            "description": "True only when response semantically recommends or selects entity. Marked experimental if detection reliability is limited.",
+            "properties": {
+              "recommended": { "type": "boolean" },
+              "recommendation_status": {
+                "type": "string",
+                "enum": ["confirmed", "not_recommended", "experimental"]
+              },
+              "recommendation_evidence": {
+                "type": ["string", "null"]
+              }
+            }
+          },
+          "position": {
+            "type": "object",
+            "required": ["rank_position", "is_top1", "ranking_method"],
+            "description": "Rank extracted exclusively from explicit numbered list structures.",
+            "properties": {
+              "rank_position": { "type": ["integer", "null"], "minimum": 1 },
+              "is_top1": { "type": "boolean" },
+              "ranking_method": {
+                "type": "string",
+                "enum": ["numbered_list_only", "unranked"]
+              }
+            }
+          },
+          "share_of_voice": {
+            "type": "object",
+            "properties": {
+              "raw_mention_share": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+              "weighted_share_of_voice": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+              "weighting_source": { "type": ["string", "null"] },
+              "denominator_definition": { "type": "string" }
+            }
+          },
+          "repeated_observation": {
+            "type": "object",
+            "required": [
+              "observation_count",
+              "repeat_index",
+              "first_observed_at",
+              "last_observed_at"
+            ],
+            "description": "Supports k>=1 independent observations. A single observation must not be represented as longitudinal visibility.",
+            "properties": {
+              "observation_count": { "type": "integer", "minimum": 1 },
+              "repeat_index": { "type": "integer", "minimum": 0 },
+              "first_observed_at": { "type": "string", "format": "date-time" },
+              "last_observed_at": { "type": "string", "format": "date-time" }
+            }
+          },
+          "raw_evidence": {
+            "type": "object",
+            "required": [
+              "prompt_id",
+              "observation_id",
+              "raw_response_reference",
+              "response_hash_sha256",
+              "extracted_entities",
+              "citations",
+              "timestamp",
+              "configuration_hash"
+            ],
+            "description": "Traceable raw evidence or privacy-compliant cryptographic reference.",
+            "properties": {
+              "prompt_id": { "type": "string" },
+              "observation_id": { "type": "string" },
+              "raw_response": { "type": ["string", "null"] },
+              "raw_response_reference": { "type": "string" },
+              "response_hash_sha256": { "type": "string" },
+              "extracted_entities": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "citations": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "timestamp": { "type": "string", "format": "date-time" },
+              "configuration_hash": { "type": "string" },
+              "privacy_or_provider_constraint": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "comparability": {
+      "type": "object",
+      "required": [
+        "comparable",
+        "mismatch_reasons",
+        "required_matching_dimensions"
+      ],
+      "description": "Machine-readable comparability section. Directly comparable only when all critical dimensions match.",
+      "properties": {
+        "comparable": { "type": "boolean" },
+        "mismatch_reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "required_matching_dimensions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "target_comparison_benchmark_id": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
