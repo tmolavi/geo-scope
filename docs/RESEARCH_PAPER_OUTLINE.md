@@ -1,163 +1,163 @@
-# Empirical AI Answer Visibility: An Auditable Measurement Framework for Generative Information Retrieval
+# Research Paper Outline: Empirical Generative Engine Optimization (GEO) & AI Answer Visibility
 
-**Paper Outline & Technical Specification**  
-**Repository**: `tmolavi/geo-scope`  
-**Document Version**: 1.0  
-**Target Publication**: Empirical Methods in Information Retrieval / AI Search Systems  
-
----
-
-## Title
-
-**Empirical AI Answer Visibility: A Reproducible Measurement Framework for Entity Mentions, Recommendations, and Citations in Generative AI Systems**
+**Title**: *Measuring Generative AI Visibility: A Standardized Measurement Contract, Evidence Pipeline, and Multi-Model Empirical Benchmark*  
+**Authors**: Taqi Molavi, et al.  
+**Repository**: [`https://github.com/tmolavi/geo-scope`](https://github.com/tmolavi/geo-scope)  
+**Methodological Foundation**: [`docs/measurement-contract-v1.md`](measurement-contract-v1.md)  
+**Schema Standard**: [`schemas/measurement-contract-v1.json`](../schemas/measurement-contract-v1.json)  
 
 ---
 
 ## Abstract
+As generative AI systems and search-grounded answer engines replace traditional search interfaces, quantifying how entities, brands, and sources surface in AI-generated answers has become a critical research challenge. Existing visibility tools produce conflicting numbers due to ad-hoc definitions, unstandardized sampling, and lack of reproducible evidence. 
 
-As generative artificial intelligence (AI) systems and search-grounded answer engines increasingly replace traditional ten-blue-link search engines for information discovery, empirical methodology for measuring entity visibility remains fragmented and unstandardized. Existing commercial tools frequently conflate mentions with recommendations, obscure provider failure denominators, and fail to preserve raw prompt provenance or unparsed model responses. 
-
-In this work, we introduce **GEO-Scope**, an open-source, reproducible measurement framework designed to quantify and preserve auditable evidence of how generative AI systems surface commercial, informational, and personal entities. The framework establishes a strict taxonomic distinction between four independent visibility dimensions: **unprompted mentions**, **explicit recommendations**, **direct domain citations**, and **linguistic attributions**. We introduce a multi-lingual entity resolution engine capable of normalizing Unicode non-joiners and disambiguating homonyms across five languages (Arabic, English, Persian, Turkish, and Chinese), evaluated against a versioned 220-item human-labeled Golden Dataset. Furthermore, we formalize a repeat protocol ($k \ge 5$) to quantify response variability and enforce cryptographic SHA-256 artifact verification for zero-network replayability. We report baseline observational findings across 45,000+ observations from search-grounded answer engines and parametric foundation models.
-
----
-
-## 1. Research Question
-
-### Primary Research Questions (RQ)
-- **RQ1 (Visibility Disambiguation)**: To what degree do search-grounded answer engines (e.g., Perplexity Sonar, Gemini Search Grounding) differ from parametric foundation LLMs (e.g., GPT-4o, Claude 3.7 Sonnet) in how entities are *mentioned* versus explicitly *recommended* or *cited*?
-- **RQ2 (Attribution vs. Citation Separation)**: How frequently do generative AI models attribute factual statements to an organization or study by name without providing an explicit source URL/citation link, and vice versa?
-- **RQ3 (Measurement Reproducibility & Stability)**: Under repeated sampling ($k \ge 5$) with identical neutral prompts, what is the observed variance in entity appearance rates across distinct model providers and search grounding classes?
-- **RQ4 (Multi-Lingual Resolution Reliability)**: Can rule-based deterministic parsers with language-specific morphological normalization achieve $\ge 90\%$ F1-scores for entity identification, homonym filtering, and rank extraction across diverse language families without introducing non-deterministic neural parser drift?
+This paper introduces the **GEO-Scope AI Visibility Measurement Contract v1**, a formal, machine-readable measurement standard and deterministic evidence pipeline for empirical generative AI observation. We formalize response-level binary mentions, 4-way citation attribution, semantic recommendation gating, and structured list ranking. We evaluate our deterministic multi-lingual parser on a 5-language human-annotated Golden Dataset ($N=220$, achieving $99.75\%$ Mention F1, $100\%$ Recommendation F1, and $100\%$ Citation F1) and demonstrate end-to-end zero-network replayability across public benchmark datasets.
 
 ---
 
-## 2. Methodology
+## 1. Introduction & The Problem
 
-### 2.1 Prompt Provenance & Neutral Prompt Policy
-- **Synthetic Domain Generation**: Standardized generation of multi-lingual queries across predefined topic taxonomies (e.g., B2B SaaS, digital marketing, consumer technology, travel, financial tools).
-- **Zero-Steering Constraint**: Prompts are strictly formulated without target entity names, biased framing, or loaded adjectives that artificially induce specific brand mentions.
-- **Intent Categorization**: Categorization of queries into *informational* (entity background, definitions), *investigative* (comparisons, alternatives), *recommendation-seeking* ("best tools for X"), and *navigational* (direct platform entry).
+### 1.1 The Shift from Traditional Search to Generative Answer Engines
+- Traditional search engines return ranked lists of uniform URLs evaluated by stable crawling and indexing paradigms.
+- Generative answer engines (ChatGPT Search, Perplexity, Google Gemini, Claude) generate synthesized natural language completions combining parametric memory with real-time search-retrieval grounding.
 
-### 2.2 Provider Class Taxonomy
-- **Search-Grounded Answer Engines** (`provider_class: answer_engine`): Systems that dynamically retrieve live web documents before answer generation (e.g., Perplexity Sonar, Gemini with Google Search Grounding).
-- **Parametric Foundation Models** (`provider_class: llm`): Models generating completions strictly from internal training weights without dynamic search grounding tools.
-- **Provider Governance & Identity Preservation**: Enforcement that `requested_provider` and `actual_provider` match exactly, with silent fallbacks disabled to prevent surrogate model contamination.
+### 1.2 The Problem: Lack of Standardized Observable Definitions
+Current commercial and academic AI visibility platforms produce divergent, non-comparable numbers for identical entities. These discrepancies stem from:
+1. **Unstandardized Observable Definitions**: Equating mere lexical mention in text with explicit commercial recommendation or source citation.
+2. **Ad-Hoc Prompt Sampling**: Comparing head queries against long-tail queries without declared prompt universes or intent distributions.
+3. **Proprietary "Black-Box" Visibility Scores**: Aggregating observations into ungrounded composite scores without transparent denominators or weighting models.
+4. **Lack of Verifiable Evidence Chains**: Presenting aggregated percentages without preserved raw API payloads, cryptographic hashes, or offline replay capabilities.
+
+---
+
+## 2. Methodological Foundation: Measurement Contract v1
+
+### 2.1 Core Epistemic Axiom
+> *"AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking."*
+
+GEO-Scope establishes that AI visibility cannot be claimed as a universal constant. Every valid measurement is an empirical observation bounded by:
+- A declared **Prompt Universe** (count, source, intent strata, language, market).
+- A declared **Model Configuration** (provider, model snapshot, temperature, search grounding state).
+- An explicit **Measurement Contract** defining extraction rules, failure denominators, and comparability criteria.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    GEO-SCOPE THREE-PILLAR METHODOLOGY                       │
+├────────────────────────┬──────────────────────────┬─────────────────────────┤
+│  MEASUREMENT CONTRACT  │    EVIDENCE PIPELINE     │  REPRODUCIBLE BENCHMARK │
+│  Machine-Readable JSON │  Raw Payload Capture &   │  Immutable Datasets &   │
+│  Schema & Axioms       │  Cryptographic Hashes    │  Zero-Network Replay    │
+└────────────────────────┴──────────────────────────┴─────────────────────────┘
+```
+
+### 2.2 Provider Class Taxonomy & Execution Modes
+- **Search-Grounded Answer Engines** (`provider_class: answer_engine`): Retrieval-augmented generation querying live web sources (e.g., Perplexity Sonar, Gemini Search Grounding).
+- **Parametric Foundation Models** (`provider_class: llm`): Generating strictly from model weights without search tools.
+- **Provider Neutrality & Governance**: Enforcing exact provider identity (`requested_provider == actual_provider`), disabling surrogate fallbacks, and using neutral system prompts by default.
 
 ### 2.3 Denominator & Failure Accounting
-- Explicit mathematical separation between:
-  1. $N_{\text{attempted}}$: Total scheduled prompt execution runs.
-  2. $N_{\text{successful}}$: HTTP 200 completion records successfully parsed.
-  3. $N_{\text{failed}}$: Rate-limited, timed-out, or upstream API error records.
-- All visibility proportions are computed over verified successful completions with $N_{\text{failed}}$ explicitly reported as provider error rate.
+- Explicit mathematical reporting:
+  - $N_{\text{attempted}}$: Total scheduled query dispatches.
+  - $N_{\text{successful}}$: HTTP 200 responses successfully parsed.
+  - $N_{\text{failed}}$: Rate-limited, timed out, or API error dispatches.
+- If $N_{\text{successful}} = 0$, visibility is reported as `insufficient_data` / `null`, never artificially as `0.0%`.
 
 ---
 
-## 3. Dataset Description
+## 3. Standardized Metrics Formalization
 
-### 3.1 Empirical Benchmark Releases
-- **Global AI Answers Benchmark 2026.2**:
-  - Scope: 500 prompts across 50 countries, 9 industry categories, and 26 language varieties.
-  - Scale: 626 completion runs yielding 45,698 discrete entity observations across 73 tracked entities.
-  - Formats: Preserved `prompts.jsonl`, `raw_responses.jsonl`, `observations.jsonl`, `metrics.json`, and `errors.jsonl`.
-- **Pilot & Regional Releases**:
-  - `global-ai-answers-2026.2-pilot`: Calibration dataset for cross-provider variance.
-  - `geo-seo-digital-agency-iran-2026.1`: Regional dataset focused on Middle Eastern technology entities and Persian-language retrieval.
+Under Measurement Contract v1, GEO-Scope separates observable outputs into five distinct mathematical metrics:
 
-### 3.2 Evidence Chain & Preserved Artifacts
-- **Payload Preservation**: Full raw JSON payloads from provider APIs (including token usage, latency, search metadata chunks, and timestamps) stored alongside extracted metrics.
-- **Cryptographic Hashes**: Every benchmark package includes a `checksums.sha256` manifest guaranteeing bit-level immutability.
+### 3.1 Observed Mention Rate ($\text{OMR}$) — Binary Response-Level
+A response-level binary indicator $\mathbb{I}(\text{Mention}(E, R_i)) \in \{0, 1\}$. Multiple occurrences of entity $E$ in response $R_i$ count as exactly $1$ response mention:
+$$\text{OMR}(E) = \frac{1}{N_{\text{successful}}} \sum_{i=1}^{N_{\text{successful}}} \mathbb{I}(\text{Mention}(E, R_i)) \times 100$$
 
----
+### 3.2 4-Way Citation Attribution
+Separates citations into four mutually exclusive observable states:
+1. **Target Domain Cited ($\text{TDC}$)**: Target entity's verified root domain cited in web grounding links.
+2. **Target URL Cited ($\text{TUC}$)**: Specific deep URL cited.
+3. **Third-Party Source Cited ($\text{3PC}$)**: External reviews, news, or directory URLs cited.
+4. **Entity Mentioned Without Citation**: Lexical mention in text without grounding links.
 
-## 4. Measurement Framework
+### 3.3 Recommendation Share ($\text{RS}$) & Experimental Gating
+$$\text{RS}(E) = \frac{1}{N_{\text{successful}}} \sum_{i=1}^{N_{\text{successful}}} \mathbb{I}(\text{Recommended}(E, R_i)) \times 100$$
+- Evaluated as `1` only when the completion explicitly endorses or selects the entity.
+- Informational or historical mentions are strictly scored as `0`.
+- Ambiguous classifications are gated with `recommendation_status: "experimental"`.
 
-### 4.1 Visibility Metrics Formalization
-Let $E$ be the target entity, $Q$ be the query set, and $R(q)$ be the set of valid model responses for query $q \in Q$ under provider $P$:
+### 3.4 First-Rank Share ($\text{FRS}$) & Position
+- Ranks are assigned strictly from recognized numbered list patterns (`1. `, `1- `, `#1 `).
+- Unranked paragraphs or bulleted lists yield $\text{Rank} = \text{null}$.
+- $\text{FRS}(E)$ measures the percentage of recommendation queries where entity $E$ occupies rank 1.
 
-1. **Observed Mention Rate ($\text{OMR}$)**:
-   $$\text{OMR}(E, P) = \frac{1}{|Q_{\text{successful}}|} \sum_{q \in Q_{\text{successful}}} \mathbb{I}(\text{Mentioned}(E, R(q)))$$
-
-2. **Recommendation Share ($\text{RS}$)**:
-   $$\text{RS}(E, P) = \frac{1}{|Q_{\text{successful}}|} \sum_{q \in Q_{\text{successful}}} \mathbb{I}(\text{Recommended}(E, R(q)))$$
-   *(Strictly requires explicit endorsement phrasing or an ordered recommendation list structure; informational mentions do not qualify).*
-
-3. **First-Rank Share ($\text{FRS}$)**:
-   $$\text{FRS}(E, P) = \frac{1}{|Q_{\text{rec\_queries}}|} \sum_{q \in Q_{\text{rec\_queries}}} \mathbb{I}(\text{Rank}(E, R(q)) = 1)$$
-
-4. **Direct Citation Rate ($\text{DCR}$)**:
-   $$\text{DCR}(E, P) = \frac{1}{|Q_{\text{successful}}|} \sum_{q \in Q_{\text{successful}}} \mathbb{I}(\text{URL\_Cited}(E, R(q)))$$
-
-5. **Attribution Sourcing Rate ($\text{ASR}$)**:
-   $$\text{ASR}(E, P) = \frac{1}{|Q_{\text{successful}}|} \sum_{q \in Q_{\text{successful}}} \mathbb{I}(\text{Text\_Attributed}(E, R(q)))$$
+### 3.5 Attribution Sourcing Rate ($\text{ASR}$)
+$$\text{ASR}(E) = \frac{1}{N_{\text{successful}}} \sum_{i=1}^{N_{\text{successful}}} \mathbb{I}(\text{Text\_Attributed}(E, R_i)) \times 100$$
+- Measures textual credit linking specific claims or statistics to the source entity.
 
 ---
 
-## 5. Multi-Lingual Entity Resolution Engine
+## 4. Multi-Lingual Entity Resolution & Parser Engine
 
-### 5.1 Text Normalization Pipeline
-- **Unicode NFKC & Case Folding**: Canonical decomposition followed by canonical composition.
-- **Persian & Arabic Orthographic Unification**: Unification of Arabic Kaf/Yeh (`ك`, `ي`) with Persian Keheh/Yeh (`ک`, `ی`), removal of Tatweel (`ـ`), and stripping of non-breaking spaces.
-- **Zero-Width Non-Joiner (ZWNJ) Handling**: Flexible matching for compound words (e.g., `وب‌۲۴` matches `وب ۲۴`, `وب24`, and `Web24`).
-- **Unspaced Continuous Matching**: Concatenation heuristics to resolve single-word variations of multi-word brand and personal names.
+### 4.1 Normalization Pipeline
+- **Unicode NFKC & Case Folding**: Canonical decomposition and recomposition.
+- **Perso-Arabic Orthographic Unification**: Unifying Arabic Kaf/Yeh (`ك`, `ي`) with Persian Keheh/Yeh (`ک`, `ی`), stripping Tatweel (`ـ`), and normalizing Zero-Width Non-Joiners (ZWNJ).
+- **Unspaced Concatenation Matching**: Resolving single-token variants of multi-word names.
 
-### 5.2 Homonym Collision Filtering
-- Negative constraints (`do_not_confuse` dictionaries) to eliminate false positives arising from common nouns, geographical places, or historical homonyms (e.g., distinguishing modern digital agencies from historical poet references or physical retail markets).
+### 4.2 Homonym Collision Filtering
+- Negative boundary rules (`do_not_confuse` dictionaries) preventing false positives from common words, geographical locations, or historical figures.
 
 ---
 
-## 6. Parser Evaluation on Golden Dataset
+## 5. Golden Dataset & Parser Evaluation
 
-### 6.1 Evaluation Methodology
-- **Dataset**: `benchmark/golden_sets/v1/` comprising 220 human-labeled examples across 5 languages (Arabic, English, Persian, Turkish, Chinese) and 18 diverse entities.
-- **Evaluation Protocol**: Deterministic execution of `ObservationParser` with binary scoring (Precision, Recall, F1) per attribute.
+### 5.1 Evaluation Setup
+- **Dataset**: `benchmark/golden_sets/v1/` ($N=220$ human-labeled instances across Arabic, English, Persian, Turkish, Chinese across 18 entities).
+- **Deterministic Metric**: Precision, Recall, and F1 per attribute.
 
-### 6.2 Empirical Parser Metrics
+### 5.2 Empirical Evaluation Results
 
-| Evaluation Field | Precision | Recall | F1-Score | Support ($N$) | Notes |
+| Attribute | Precision | Recall | F1-Score | Support ($N$) | Evaluation Notes |
 |:---|:---|:---|:---|:---|:---|
-| **Mentioned** | 99.51% | 100.00% | **99.75%** | 203 | High accuracy across all 5 languages |
+| **Mentioned** | 99.51% | 100.00% | **99.75%** | 203 | Robust across all 5 evaluated languages |
 | **Recommended** | 100.00% | 100.00% | **100.00%** | 82 | Zero false positives on informational queries |
 | **Cited (URL)** | 100.00% | 100.00% | **100.00%** | 112 | Exact domain/subdomain matching |
-| **Attributed (Text)** | 100.00% | 84.44% | **91.56%** | 45 | High precision; recall impacted by complex syntax |
-| **Wrong Entity (Homonym)**| 100.00% | 94.12% | **96.97%** | 17 | Robust homonym filtering |
+| **Attributed (Text)** | 100.00% | 84.44% | **91.56%** | 45 | High precision; syntax variability affects recall |
+| **Wrong Entity (Homonym)**| 100.00% | 94.12% | **96.97%** | 17 | Verified negative constraint filtering |
 | **Rank Extraction** | 100.00% | 100.00% | **100.00%** | 77 | Perfect ordinal position identification |
 
 ---
 
-## 7. Limitations
+## 6. Dataset Releases & Zero-Network Replay Protocol
 
-1. **Non-Causal Associational Boundary**:
-   - The framework measures observed outputs under documented prompts; it does not claim to uncover the internal proprietary ranking weights or algorithmic scoring functions of commercial providers.
-2. **Attribution Syntax Variability**:
-   - Linguistic attribution in natural prose exhibits rich stylistic diversity; indirect or passive attribution phrasing can produce false negatives ($\approx 8\text{--}15\%$) in complex non-English text.
-3. **Single-Turn Scope**:
-   - The primary evaluation protocol operates on discrete single-turn queries, without modeling multi-turn conversational context drift or user chat feedback loops.
-4. **Provider Interface Volatility**:
-   - Upstream API parameter shifts, undocumented model version updates, and dynamic web search index updates introduce temporal volatility into longitudinal observations.
+### 6.1 Preserved Benchmark Releases
+- **Global AI Answers Benchmark 2026.2**: 500 prompts across 50 countries, 45,698 discrete entity observations.
+- **Regional Benchmark 2026.1**: Focused on Middle Eastern technology and digital agency ecosystems.
 
----
-
-## 8. Reproducibility & Audit Protocol
-
-- **Zero-Network Offline Replay**:
-  - `geo-scope replay <release_directory>` re-executes all feature extraction and metric computations directly from preserved `raw_responses.jsonl` without calling external APIs.
-- **Cryptographic Verification**:
-  - Independent auditors can verify bit-level file integrity using standard SHA-256 tools (`sha256sum -c checksums.sha256`).
-- **Open Implementation**:
-  - Complete Python codebase, JSON schemas (`schemas/v0.3/`), CLI tooling, and test suites are released under the MIT License.
+### 6.2 Zero-Network Offline Replayability
+- Any independent auditor can reproduce published benchmark metrics bit-for-bit without executing API calls:
+  ```bash
+  geo-scope replay --bundle benchmark/releases/global-ai-answers-2026.2 --out-dir output/audit_replay
+  ```
+- File integrity is cryptographically locked via `checksums.sha256`.
 
 ---
 
-## 9. Future Work
+## 7. Methodological Limitations
 
-1. **Multi-Turn Conversational Visibility**:
-   - Extending the measurement protocol to track entity persistence, displacement, and brand decay across multi-turn dialogue sessions.
-2. **Contextual Synthetic Grounding**:
-   - Measuring how variations in document indexing speed, schema markup, and authoritative knowledge graph entries correlate with observed citation frequency.
-3. **Automated Continuous Replay CI**:
-   - Integration of scheduled automated re-evaluation jobs against public archival snapshots to track visibility drifts over time.
-4. **Expanded Multi-Lingual Golden Corpora**:
-   - Scaling the human-labeled Golden Dataset to 1,000+ examples across 15+ global languages.
+GEO-Scope research operates under explicit epistemic boundaries:
+
+1. **No Universal AI Ranking Truth**: Observed metrics reflect specific prompt sets and model configurations; they do not represent global search engine market share or static rankings.
+2. **No Causal Claims**: Observed correlations between entity features and mention frequencies are exploratory associations, not proven causal factors.
+3. **No Proprietary Algorithm Reverse-Engineering**: GEO-Scope measures external observable outputs, not internal model weights or proprietary retrieval heuristics.
+4. **Temporal & Grounding Volatility**: Live search-grounded models depend on dynamic search index caches, producing temporal variance across observation epochs.
+
+---
+
+## 8. Future Directions
+
+1. **Multi-Turn Conversational Visibility**: Tracking entity decay and reinforcement across continuous multi-turn dialogue trees.
+2. **Longitudinal Shift Tracking**: Continuous automated replay against scheduled archival web snapshots.
+3. **Expanded Multi-Lingual Golden Corpora**: Scaling human-labeled validation sets to 15+ low-resource languages.
 
 ---
 
@@ -165,3 +165,5 @@ Let $E$ be the target entity, $Q$ be the query set, and $R(q)$ be the set of val
 - NIST AI Risk Management Framework (AI RMF 1.0)
 - JSON Schema Draft 2020-12 Specifications
 - Unicode Consortium Standard Annex #15 (Unicode Normalization Forms)
+- [GEO-Scope Measurement Contract v1](measurement-contract-v1.md)
+- [Why the Measurement Contract Exists](WHY_MEASUREMENT_CONTRACT_EXISTS.md)

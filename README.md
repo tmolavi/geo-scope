@@ -229,6 +229,7 @@ geo-scope parser evaluate --golden-set benchmark/golden_sets/v1
 
 - 📄 **Measurement Contract v1 Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
 - ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
+- 🔬 **Research Methods & Protocol**: [`docs/RESEARCH_METHODS.md`](docs/RESEARCH_METHODS.md)
 - 📄 **Research Paper Outline**: [`docs/RESEARCH_PAPER_OUTLINE.md`](docs/RESEARCH_PAPER_OUTLINE.md)
 - 🔒 **Open Source Security Audit**: [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md)
 - 📊 **Methodology Crosswalk (Public Practice Comparison)**: [`docs/METHODOLOGY_CROSSWALK.md`](docs/METHODOLOGY_CROSSWALK.md)
@@ -240,7 +241,7 @@ geo-scope parser evaluate --golden-set benchmark/golden_sets/v1
 
 ---
 
-## 9. Installation & Usage
+## 10. Installation & Usage
 
 ### Installation
 ```bash
@@ -276,7 +277,7 @@ geo-scope serve --host 127.0.0.1 --port 8000
 
 ---
 
-## 10. Model Context Protocol (MCP)
+## 11. Model Context Protocol (MCP)
 
 GEO-Scope includes a native **MCP Server** (`stdio`), enabling AI coding assistants and agents (Claude Desktop, Cursor, Antigravity) to query visibility benchmarks and inspect entity evidence chains directly:
 
