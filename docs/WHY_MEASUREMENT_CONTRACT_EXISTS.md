@@ -86,6 +86,8 @@ When communicating GEO-Scope findings publicly:
 
 ## 4. Related Resources
 
+- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](SCIENTIFIC_FOUNDATION_V1.md)
+- 📊 **Releases Timeline & Benchmark Catalog**: [`docs/RELEASES.md`](RELEASES.md)
 - 📄 **Full Specification**: [`docs/measurement-contract-v1.md`](measurement-contract-v1.md)
 - 📐 **JSON Schema**: [`schemas/measurement-contract-v1.json`](../schemas/measurement-contract-v1.json)
 - 🧪 **Example Validation Fixture**: [`examples/measurement-contract-v1-example.json`](../examples/measurement-contract-v1-example.json)

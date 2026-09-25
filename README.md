@@ -14,11 +14,13 @@
 
 [![CI](https://github.com/tmolavi/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/tmolavi/geo-scope/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Scientific Foundation](https://img.shields.io/badge/Scientific%20Foundation-v1.0%20Published-darkgreen)](docs/SCIENTIFIC_FOUNDATION_V1.md)
+[![Measurement Contract](https://img.shields.io/badge/Measurement%20Contract-v1.0-informational)](docs/measurement-contract-v1.md)
 [![Research Paper Outline](https://img.shields.io/badge/Research-Paper%20Outline-purple)](docs/RESEARCH_PAPER_OUTLINE.md)
-[![Security Audit](https://img.shields.io/badge/Security-Audit%20Passed-success)](docs/SECURITY_AUDIT.md)
 [![Golden Parser](https://img.shields.io/badge/Golden%20Parser-v1%20Verified-blueviolet)](benchmark/golden_sets/v1/)
+[![Security Audit](https://img.shields.io/badge/Security-Audit%20Passed-success)](docs/SECURITY_AUDIT.md)
 
-[Introduction](#1-introduction) • [What It Measures](#2-what-geo-scope-measures) • [What It Does Not Measure](#3-what-geo-scope-does-not-measure) • [Architecture](#4-architecture) • [Execution Modes](#5-execution-modes) • [Benchmarks](#6-published-benchmark-releases) • [Reproducibility](#7-reproducibility--auditability) • [Research](#8-research--documentation) • [Quickstart](#9-installation--usage) • [MCP](#10-model-context-protocol-mcp)
+[Introduction](#1-introduction) • [What It Measures](#2-what-geo-scope-measures) • [Scientific Foundation](#6-measurement-contract-v1--scientific-foundation) • [Benchmarks](#7-published-benchmark-releases) • [Reproducibility](#8-reproducibility--auditability) • [Research](#9-research--documentation) • [Quickstart](#10-installation--usage) • [MCP](#11-model-context-protocol-mcp)
 
 </div>
 
@@ -150,7 +152,7 @@ GEO-Scope provides three mutually exclusive execution modes:
 
 ---
 
-## 6. Measurement Contract v1
+## 6. Measurement Contract v1 & Scientific Foundation
 
 GEO-Scope does not claim universal AI visibility truth. It measures empirical observations under declared, reproducible measurement configurations.
 
@@ -158,10 +160,12 @@ GEO-Scope does not claim universal AI visibility truth. It measures empirical ob
 > **Fundamental Measurement Axiom**  
 > *"AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking."*
 
-- 📄 **Full Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
-- ❓ **Why This Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
+- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](docs/SCIENTIFIC_FOUNDATION_V1.md)
+- 📄 **Full Measurement Contract Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
+- ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
 - 📐 **Machine-Readable Schema**: [`schemas/measurement-contract-v1.json`](schemas/measurement-contract-v1.json)
 - 🧪 **Validation Example Fixture**: [`examples/measurement-contract-v1-example.json`](examples/measurement-contract-v1-example.json)
+- 📊 **Releases & Milestones Timeline**: [`docs/RELEASES.md`](docs/RELEASES.md)
 
 ### Core Measurement Principles
 1. **Mention Definition**: A response-level binary observation indicating whether the target entity appears at least once in the completion. Multiple mentions in a single answer do **not** artificially inflate response-level mention counts.
@@ -174,7 +178,7 @@ GEO-Scope does not claim universal AI visibility truth. It measures empirical ob
 
 ## 7. Published Benchmark Releases
 
-GEO-Scope maintains immutable, peer-review-ready benchmark releases under `benchmark/releases/`:
+GEO-Scope maintains immutable, peer-review-ready benchmark releases under `benchmark/releases/` (see complete [Releases & Milestones Timeline](docs/RELEASES.md)):
 
 | Benchmark Release | Prompt Count | Observations | Providers | Cryptographic Status | Documentation |
 |:---|:---|:---|:---|:---|:---|
@@ -227,6 +231,8 @@ geo-scope parser evaluate --golden-set benchmark/golden_sets/v1
 
 ## 9. Research & Documentation
 
+- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](docs/SCIENTIFIC_FOUNDATION_V1.md)
+- 📊 **Releases & Milestones Timeline**: [`docs/RELEASES.md`](docs/RELEASES.md)
 - 📄 **Measurement Contract v1 Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
 - ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
 - 🔬 **Research Methods & Protocol**: [`docs/RESEARCH_METHODS.md`](docs/RESEARCH_METHODS.md)

@@ -167,6 +167,8 @@ All scientific publications, reports, and communications derived from GEO-Scope 
 
 ## 7. Related Standards & References
 
+- 🏛️ **Scientific Foundation Release v1.0**: [docs/SCIENTIFIC_FOUNDATION_V1.md](SCIENTIFIC_FOUNDATION_V1.md)
+- 📊 **Releases Timeline & Benchmark Catalog**: [docs/RELEASES.md](RELEASES.md)
 - 📄 **Measurement Contract Specification**: [docs/measurement-contract-v1.md](measurement-contract-v1.md)
 - ❓ **Why Measurement Contract Exists**: [docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md](WHY_MEASUREMENT_CONTRACT_EXISTS.md)
 - 📄 **Research Paper Outline**: [docs/RESEARCH_PAPER_OUTLINE.md](RESEARCH_PAPER_OUTLINE.md)

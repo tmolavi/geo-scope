@@ -165,5 +165,7 @@ GEO-Scope research operates under explicit epistemic boundaries:
 - NIST AI Risk Management Framework (AI RMF 1.0)
 - JSON Schema Draft 2020-12 Specifications
 - Unicode Consortium Standard Annex #15 (Unicode Normalization Forms)
+- [GEO-Scope Scientific Foundation Release v1.0](SCIENTIFIC_FOUNDATION_V1.md)
 - [GEO-Scope Measurement Contract v1](measurement-contract-v1.md)
+- [GEO-Scope Releases & Milestones Timeline](RELEASES.md)
 - [Why the Measurement Contract Exists](WHY_MEASUREMENT_CONTRACT_EXISTS.md)

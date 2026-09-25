@@ -228,6 +228,8 @@ Public reporting based on GEO-Scope measurement contracts must maintain scientif
 
 ## 11. Schema & Validation Fixture
 
+* **Scientific Foundation Release v1.0:** [`docs/SCIENTIFIC_FOUNDATION_V1.md`](SCIENTIFIC_FOUNDATION_V1.md)
+* **Releases & Milestones Timeline:** [`docs/RELEASES.md`](RELEASES.md)
 * **JSON Schema Specification:** [`schemas/measurement-contract-v1.json`](../schemas/measurement-contract-v1.json)
 * **10-Observation Working Fixture:** [`examples/measurement-contract-v1-example.json`](../examples/measurement-contract-v1-example.json)
 * **Validation Test Suite:** [`tests/test_measurement_contract_v1.py`](../tests/test_measurement_contract_v1.py)
