@@ -4,284 +4,252 @@
 
 ### Empirical AI Answer Visibility Measurement Framework
 
-**GEO-Scope measures and preserves evidence of how generative AI systems mention, recommend, cite, and attribute entities.**
+**An open-source framework for empirical measurement of AI answer visibility, entity mentions, recommendations, and citations across generative AI systems.**
 
-*توسعه‌داده‌شده توسط [تقی مولوی (Taghi Molavi)](https://molavi.pro/) — بخشی از اکوسیستم پژوهشی AI Visibility در کنار [`mcp-geo-server`](https://github.com/tmolavi/mcp-geo-server)*
+[![Language](https://img.shields.io/badge/Language-English-blue)](#)
+[![فارسی](https://img.shields.io/badge/فارسی-README.fa.md-green)](README.fa.md)
+[![Türkçe](https://img.shields.io/badge/T%C3%BCrk%C3%A7e-README.tr.md-red)](README.tr.md)
+[![Azərbaycan](https://img.shields.io/badge/Az%C9%99rbaycan-README.az.md-orange)](README.az.md)
+[![العربية](https://img.shields.io/badge/%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-README.ar.md-teal)](README.ar.md)
 
-[![Website](https://img.shields.io/badge/Website-molavi.pro-blue?logo=googlechrome&logoColor=white)](https://molavi.pro/)
-[![Research Transparency](https://img.shields.io/badge/Research-Transparency%20%26%20Limitations-blueviolet?logo=readme&logoColor=white)](docs/research-transparency.md)
-[![Benchmark Methodology](https://img.shields.io/badge/Benchmark-Methodology%20v1-teal?logo=arxiv&logoColor=white)](docs/benchmark-methodology.md)
-[![MCP Ready](https://img.shields.io/badge/MCP-Protocol%20Ready-8A2BE2?logo=anthropic&logoColor=white)](geo_scope/mcp_server.py)
 [![CI](https://github.com/tmolavi/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/tmolavi/geo-scope/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Scientific Foundation](https://img.shields.io/badge/Scientific%20Foundation-v1.0%20Published-darkgreen)](docs/SCIENTIFIC_FOUNDATION_V1.md)
+[![Measurement Contract](https://img.shields.io/badge/Measurement%20Contract-v1.0-informational)](docs/measurement-contract-v1.md)
+[![Research Paper Outline](https://img.shields.io/badge/Research-Paper%20Outline-purple)](docs/RESEARCH_PAPER_OUTLINE.md)
+[![Golden Parser](https://img.shields.io/badge/Golden%20Parser-v1%20Verified-blueviolet)](benchmark/golden_sets/v1/)
+[![Security Audit](https://img.shields.io/badge/Security-Audit%20Passed-success)](docs/SECURITY_AUDIT.md)
 
-[Product Overview](#-product-overview) • [Evidence Pipeline](#-evidence-pipeline) • [Key Capabilities](#-key-capabilities) • [Published Benchmarks](#-published-benchmarks) • [Language Support](#-language-support) • [Transparency](#-what-geo-scope-does-not-claim) • [راهنمای فارسی](#-راهنمای-فارسی)
+[Introduction](#1-introduction) • [What It Measures](#2-what-geo-scope-measures) • [Scientific Foundation](#6-measurement-contract-v1--scientific-foundation) • [Benchmarks](#7-published-benchmark-releases) • [Reproducibility](#8-reproducibility--auditability) • [Research](#9-research--documentation) • [Quickstart](#10-installation--usage) • [MCP](#11-model-context-protocol-mcp)
 
 </div>
 
 ---
 
-> [!IMPORTANT]
-> **GEO-Scope Scientific Measurement Contract**
-> GEO-Scope measures and preserves evidence of observed generative AI responses across explicit prompt sets and execution dates. It does not measure true global search engine market share, reverse-engineer proprietary algorithms, or claim causal ranking factors.
+## 1. Introduction
 
-## 🎯 Product Overview
+Generative AI systems and search-grounded answer engines are rapidly becoming the primary discovery layer for users seeking products, vendors, services, and factual insights. 
 
-**GEO-Scope** is an evidence-oriented empirical measurement framework designed for researchers, analysts, and practitioners to measure and evaluate how generative AI systems answer questions.
+**GEO-Scope** is an evidence-first, open-source measurement framework designed to empirically quantify and preserve auditable evidence of how generative AI systems surface entities. It records, normalizes, and analyzes observable AI completions under documented, neutral prompt sets without relying on speculative ranking algorithms or ungrounded claims.
 
-It helps analyze:
-- **Entity mentions**: When and how brands, people, technologies, and organizations appear in generated responses.
-- **Recommendations**: Explicit entity recommendations and top-position endorsements.
-- **Citations**: Grounding URLs and referenced domains in search-augmented AI systems.
-- **Attribution**: Attribution of facts, data, and claims to source entities.
-- **Answer patterns**: Distributional shifts across regions, query intents, and provider classes.
-
-GEO-Scope avoids ungrounded claims and instead preserves the full raw evidence chain for all published metrics.
+### Core Observable Outputs Measured:
+- **Entity Mentions**: Observable presence of brands, products, technologies, and public figures in generated text.
+- **Recommendations**: Explicit linguistic endorsements and ordered top-position recommendations.
+- **Citations**: Grounding source URLs and referenced web domains returned by search-augmented models.
+- **Attribution**: Textual credit linking specific facts, statistics, or claims to source entities.
+- **Provider Differences**: Distributional shifts between live search-grounded answer engines and parametric foundation LLMs.
+- **Multilingual Behavior**: Cross-lingual response variations across 26+ evaluated languages.
 
 ---
 
-## 🏗️ Evidence Pipeline
+## 2. What GEO-Scope Measures
 
-GEO-Scope operates through a sequential, auditable evidence pipeline:
+GEO-Scope enforces a strict taxonomic separation between four independent visibility dimensions:
 
 ```text
-       ┌────────────────────────────────────────────────────────┐
-       │                   Question Discovery                   │
-       │     (Mined Search Queries · Conversational Logs)       │
-       └───────────────────────────┬────────────────────────────┘
-                                   │
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                    Prompt Provenance                   │
-       │   (Observed vs Research · Intent · Region · Lang)      │
-       └───────────────────────────┬────────────────────────────┘
-                                   │
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                  AI Provider Execution                 │
-       │  ┌───────────────────────┐  ┌───────────────────────┐  │
-       │  │     Answer Engine     │  │       Base LLM        │  │
-       │  │   (Search-Grounded)   │  │  (Direct Completion)  │  │
-       │  └───────────────────────┘  └───────────────────────┘  │
-       └───────────────────────────┬────────────────────────────┘
-                                   │
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                  Raw Response Storage                  │
-       │   (Unmodified API Payloads · Execution Metadata)       │
-       └───────────────────────────┬────────────────────────────┘
-                                   │
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │              Entity Observation Extraction             │
-       │   (Multi-Type Entities · Homonym Rules · Context)      │
-       └───────────────────────────┬────────────────────────────┘
-                                   │
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │             Metrics + Reproducible Evidence            │
-       │  (Aggregated Rates · SHA-256 Checksums · Replay)       │
-       └────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        AI RESPONSE VISIBILITY MATRIX                    │
+├───────────────────┬─────────────────────────────────────────────────────┤
+│ Mention           │ Did the entity appear anywhere in the completion?   │
+│ Recommendation    │ Was the entity explicitly endorsed or recommended?  │
+│ Citation          │ Was a source URL or grounding domain link provided? │
+│ Attribution       │ Was specific data/claim textually credited to it?  │
+│ Rank              │ Extracted ONLY when a valid ordered list exists.   │
+└───────────────────┴─────────────────────────────────────────────────────┘
 ```
 
-### Pipeline Stages
-
-1. **Question Discovery**: Identifies real-world search queries and user questions across specific verticals and regions.
-2. **Prompt Provenance**: Categorizes prompts by source type (`observed_user_questions` vs `research_questions`), search intent (`commercial`, `comparative`, `problem_solving`, `long_tail`, `reputation`), language, and country code.
-3. **AI Provider Execution**: Dispatches queries to live AI models with zero silent fallback. Failures and timeouts are logged explicitly rather than masked.
-4. **Raw Response Storage**: Preserves full, unparsed model completion payloads (`raw_responses.jsonl`) for complete auditability.
-5. **Entity Observation Extraction**: Evaluates responses against structured entity registries, extracting mention status, recommendation position, citations, and negative homonym collision checks.
-6. **Metrics + Reproducible Evidence**: Computes descriptive statistics and packages all data with cryptographic SHA-256 checksums (`checksums.sha256`), enabling deterministic offline re-evaluation.
-
----
-
-## 🔒 Benchmark Trust Model
-
-To maintain scientific integrity without ungrounded claims, GEO-Scope benchmark releases follow a 6-layer trust model:
-
-| Trust Layer | Verification Contract | Implementation & Evidence Artifact |
-|:---|:---|:---|
-| **1. Prompt Provenance** | Clear provenance tracking | `prompts.jsonl` explicitly marks `observed_user_questions` vs `research_questions` with language and intent metadata. |
-| **2. Provider Execution** | Strict model identity & zero fallback | Preserves `requested_provider`, `requested_model`, `actual_provider`, `actual_model`, and `provider_class` (`answer_engine` vs `llm`). |
-| **3. Raw Response Preservation** | Unmodified completion payloads | `raw_responses.jsonl` stores verbatim API responses, token latency, and error logs for independent verification. |
-| **4. Observation Extraction** | Context-aware entity resolution | Separates `mentioned`, `recommended`, `cited` (domain link presence), and `attributed` (explicit sourcing grammar) with negative homonym filtering. |
-| **5. Metrics Generation** | Failure denominator separation | Metrics account for total attempted queries and separate provider errors from negative entity visibility. |
-| **6. Checksum Verification** | Cryptographic immutability | SHA-256 manifest (`checksums.sha256`) guarantees that datasets remain identical across reproduction runs. |
+1. **Mention (`mentioned: true/false`)**:
+   - Captures whether the target entity (or associated canonical aliases/founders) appeared in the generated completion.
+   - Evaluated via Unicode NFKC normalization, Arabic/Persian letter unification, Zero-Width Non-Joiner (ZWNJ) handling, and negative homonym collision filtering.
+2. **Recommendation (`recommended: true/false`)**:
+   - Strict rule: `mentioned != recommended`.
+   - Evaluated based on explicit linguistic recommendation markers (e.g., *"We recommend..."*, *"Top pick"*, *"گزینه پیشنهادی"*) or inclusion in an ordered list answering a recommendation query.
+3. **Citation (`cited: true/false`)**:
+   - Identifies presence of target entity web domains in grounding references, markdown hyperlinks, or structured provider citation chunks.
+4. **Attribution (`attributed: true/false`)**:
+   - Distinct from citation: detects explicit textual sourcing phrasing (e.g., *"According to [Entity]..."*, *"طبق گزارش [موجودیت]"*) even if an active URL link was omitted by the model.
+5. **Rank (`rank: 1..N | null`)**:
+   - Extracted strictly from numbered lists or ordinal items. If an informational question yields an unranked mention, rank is set to `null` to prevent artificial ranking bias.
 
 ---
 
-## ⚡ Key Capabilities
+## 3. What GEO-Scope Does NOT Measure
 
-### 1. Provenance-Aware Questions
-Prompts preserve structured provenance metadata:
-* **Source category**: Explicit separation between real user demand (`observed_user_questions`) and systematic exploratory templates (`research_questions`).
-* **Intent strata**: Classification into commercial direct, comparative, problem-solving, long-tail niche, and reputation categories.
-* **Geographic & Linguistic tagging**: Explicit country ISO codes, regional tags, and language codes.
+To maintain scientific integrity, GEO-Scope clearly outlines its epistemic boundaries:
 
-### 2. Entity-Aware Measurement
-Entities are modeled as structured registries supporting multiple entity types:
-* **People**: Founders, researchers, spokespersons.
-* **Companies**: Brands, vendors, SaaS platforms, agencies.
-* **Countries & Regions**: Geographic and migration destinations.
-* **Universities**: Academic and research institutions.
-* **Technologies**: Software libraries, programming languages, protocols.
-* **Communities**: Forums, open-source ecosystems.
-
-Each entity definition includes multilingual aliases, canonical domains, and explicit negative collision rules (`do_not_confuse`). Founder mentions (`person_mentioned`) are recorded separately from organizational mentions (`mentioned`).
-
-### 3. Complete Evidence Preservation
-GEO-Scope does not merely output aggregate scores; every release package contains:
-* `prompts.jsonl`: Complete categorized prompt records.
-* `entities.json`: Entity definitions, aliases, and constraints.
-* `raw_responses.jsonl`: Verbatim API completion payloads.
-* `observations.jsonl`: Granular per-entity observation records.
-* `citations.jsonl`: Extracted source URLs and domains.
-* `metrics.json`: Aggregated descriptive rates.
-* `errors.jsonl`: Transparent log of provider timeouts and errors.
-* `checksums.sha256`: Cryptographic verification hashes.
-
-### 4. Provider Separation
-GEO-Scope separates model adapters into two distinct measurement classes:
-* `answer_engine`: Search-grounded models with dynamic web retrieval and citation grounding (e.g., Perplexity Sonar, Google Gemini with Grounding).
-* `llm`: Parametric language models evaluating intrinsic model representations (e.g., OpenAI GPT-4o, Anthropic Claude 3.5 Sonnet).
-
-Metrics from different provider classes are maintained and reported separately.
+- ❌ **It does NOT reverse-engineer internal ranking algorithms**: GEO-Scope observes external API completions; it cannot inspect internal model weights, attention matrices, or proprietary ranking formulas.
+- ❌ **It does NOT inspect hidden training data**: Observed entity knowledge reflects generated outputs, not full visibility into private training corpora.
+- ❌ **It does NOT claim causal ranking factors**: All reported metrics represent descriptive statistical associations under documented prompts, not causal guarantees.
+- ❌ **It does NOT guarantee SEO or AI visibility improvements**: Measurements provide historical observation, not predictive visibility promises.
+- ❌ **It does NOT treat simulation as live empirical data**: Simulation fixtures are strictly quarantined for testing and CI.
 
 ---
 
-## 🌐 Language Support
+## 4. Architecture
 
-Currently verified benchmark languages across repository datasets:
+GEO-Scope operates as a modular, six-stage evidence pipeline:
 
-| Language Code | Language | Benchmark Releases |
-|:---|:---|:---|
-| `en` | English | Global AI Answers 2026.1, 2026.2-pilot, 2026.2 |
-| `fa` | Persian (فارسی) | Global AI Answers 2026.1, 2026.2-pilot, 2026.2, Agency Benchmark |
-| `tr` | Turkish (Türkçe) | Global AI Answers 2026.1, 2026.2-pilot, 2026.2 |
-| `de` | German (Deutsch) | Global AI Answers 2026.1, 2026.2-pilot, 2026.2 |
-| `fr` | French (Français) | Global AI Answers 2026.1, 2026.2 |
-| `es` | Spanish (Español) | Global AI Answers 2026.1, 2026.2 |
-| `ar` | Arabic (العربية) | Global AI Answers 2026.1, 2026.2-pilot, 2026.2 |
-| `hi` | Hindi (हिन्दी) | Global AI Answers 2026.2-pilot, 2026.2 |
-| `ja` | Japanese (日本語) | Global AI Answers 2026.1, 2026.2-pilot, 2026.2 |
-| `pt` | Portuguese (Português) | Global AI Answers 2026.2-pilot, 2026.2 |
-| `zh` | Chinese (中文) | Global AI Answers 2026.1, 2026.2 |
-
-*Additional localized regional languages in the 2026.2 dataset: Amharic (`am`), Danish (`da`), Finnish (`fi`), Indonesian (`id`), Italian (`it`), Korean (`ko`), Malay (`ms`), Dutch (`nl`), Norwegian (`no`), Polish (`pl`), Swedish (`sv`), Swahili (`sw`), Tagalog (`tl`), Urdu (`ur`), Vietnamese (`vi`).*
-
-Further linguistic expansions are detailed in the [Research Roadmap](docs/ROADMAP_GLOBAL_AI_ANSWERS_2026_2.md).
-
----
-
-## 📊 Published Benchmarks
-
-GEO-Scope maintains published empirical benchmark datasets under `benchmark/releases/`. All published datasets are immutable and verifiable offline:
-
-```
-benchmark/releases/
-├── global-ai-answers-2026.2/           # Full global research release (500 prompts, 50 countries)
-├── global-ai-answers-2026.2-pilot/     # Controlled pilot release (100 prompts, 10 countries)
-├── global-ai-answers-2026.1/           # Initial baseline release (34 prompts, 7 regions)
-└── geo-seo-digital-agency-iran-2026.1/ # Domain release for digital marketing agencies
+```text
+  ┌─────────────────────────────────────────────────────────────┐
+  │                       Provider Layer                        │
+  │   ┌──────────────────────────┐  ┌────────────────────────┐  │
+  │   │  Search Answer Engines   │  │ Parametric Base LLMs   │  │
+  │   │  (Perplexity, Gemini...) │  │ (OpenAI, Claude...)    │  │
+  │   └──────────────────────────┘  └────────────────────────┘  │
+  └──────────────────────────────┬──────────────────────────────┘
+                                 │
+                                 ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                     Measurement Engine                      │
+  │     (Prompt Provenance · Zero Silent Fallback · Runs)       │
+  └──────────────────────────────┬──────────────────────────────┘
+                                 │
+                                 ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                    Raw Response Storage                     │
+  │    (Unparsed API Payloads · Latency · Token Usage)          │
+  └──────────────────────────────┬──────────────────────────────┘
+                                 │
+                                 ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                     Observation Parser                      │
+  │    (Multi-Lingual Normalizer · Homonyms · Citations)        │
+  └──────────────────────────────┬──────────────────────────────┘
+                                 │
+                                 ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                     Metrics Calculation                     │
+  │    (OMR · Rec Share · Citation Rate · Honest Denominators)  │
+  └──────────────────────────────┬──────────────────────────────┘
+                                 │
+                                 ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                 Reports + Replayable Bundle                 │
+  │    (JSONL Bundles · SHA-256 Checksums · Markdown Summaries) │
+  └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### 1. Global AI Answers Benchmark 2026.2 (Full Research Release)
-* **Path**: [`benchmark/releases/global-ai-answers-2026.2/`](benchmark/releases/global-ai-answers-2026.2/)
-* **Purpose**: Measure observed generative AI responses to major human concerns across 50 countries, 22+ languages, and 9 categories.
-* **Dataset Scope**: 500 culturally localized prompts (300 observed user questions [60%], 200 research templates [40%]), 73 multi-type entities, 626 raw completions, 45,698 parsed observations across 4 model adapters.
-* **Methodology**: Multi-model live API execution via Hamzad Gateway, zero synthetic fallback, multi-type entity parsing, and cryptographic SHA-256 verification.
-* **Publications**: [Academic Paper Draft](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) · [Executive Report](docs/research/global-ai-answers-2026.2/global-ai-answers-report.md)
+## 5. Execution Modes
 
+GEO-Scope provides three mutually exclusive execution modes:
+
+### `demo` (Simulation Fixture)
+- **Purpose**: Rapid offline testing, development fixtures, and CI validation.
+- **Behavior**: Uses local mock completions with prefixed IDs (`simulated_*`) and a clear simulation banner.
+- **Guarantee**: Simulation data is strictly rejected by the release quality gate and can **never** enter published empirical benchmarks.
+
+### `measure` (Live Empirical Execution)
+- **Purpose**: Real-world observation runs against live generative AI endpoints.
+- **Behavior**: Dispatches neutral prompt bundles to configured API providers with **zero silent fallback**.
+- **Preservation**: Saves full unmodified payloads to `raw_responses.jsonl` with exact model governance metadata (`requested_provider`, `actual_provider`, `search_grounded`).
+
+### `replay` (Deterministic Offline Replay)
+- **Purpose**: Independent auditability and benchmark verification without API calls or cost.
+- **Behavior**: Reruns the observation parser and metric calculations directly against preserved `raw_responses.jsonl`.
+- **Integrity**: Verifies that recomputed metrics match published results bit-for-bit.
+
+---
+
+## 6. Measurement Contract v1 & Scientific Foundation
+
+GEO-Scope does not claim universal AI visibility truth. It measures empirical observations under declared, reproducible measurement configurations.
+
+> [!IMPORTANT]
+> **Fundamental Measurement Axiom**  
+> *"AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking."*
+
+- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](docs/SCIENTIFIC_FOUNDATION_V1.md)
+- 📄 **Full Measurement Contract Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
+- ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
+- 📐 **Machine-Readable Schema**: [`schemas/measurement-contract-v1.json`](schemas/measurement-contract-v1.json)
+- 🧪 **Validation Example Fixture**: [`examples/measurement-contract-v1-example.json`](examples/measurement-contract-v1-example.json)
+- 📊 **Releases & Milestones Timeline**: [`docs/RELEASES.md`](docs/RELEASES.md)
+
+### Core Measurement Principles
+1. **Mention Definition**: A response-level binary observation indicating whether the target entity appears at least once in the completion. Multiple mentions in a single answer do **not** artificially inflate response-level mention counts.
+2. **Citation Separation**: Strict 4-way separation between `entity_mentioned` in text, `target_domain_cited` (root domain), `target_url_cited` (deep link), and `third_party_source_cited` (external authority/review links). Mention and citation are never treated as equivalent.
+3. **Recommendation Semantics**: Evaluated as true only when the model semantically recommends, selects, or endorses the entity. Ambiguous detections are gated and marked `experimental`.
+4. **Comparability Rules**: Machine-readable comparability verification. Two studies are marked `comparable: true` only when prompt universe, market/language, provider/model family, measurement definitions, and observation windows match.
+5. **Raw Evidence Traceability**: Every public observation is linked to prompt ID, raw response or cryptographic SHA-256 hash (`response_hash_sha256`), extracted entities, citations, and execution configuration hash.
+
+---
+
+## 7. Published Benchmark Releases
+
+GEO-Scope maintains immutable, peer-review-ready benchmark releases under `benchmark/releases/` (see complete [Releases & Milestones Timeline](docs/RELEASES.md)):
+
+| Benchmark Release | Prompt Count | Observations | Providers | Cryptographic Status | Documentation |
+|:---|:---|:---|:---|:---|:---|
+| [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | 500 prompts (50 countries) | 45,698 obs | 4 models | SHA-256 Verified | [Paper Draft](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
+| [`global-ai-answers-2026.2-pilot`](benchmark/releases/global-ai-answers-2026.2-pilot/) | 100 prompts (10 countries) | 8,940 obs | 4 models | SHA-256 Verified | [Pilot Report](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md) |
+| [`global-ai-answers-2026.1`](benchmark/releases/global-ai-answers-2026.1/) | 34 prompts (7 regions) | Baseline obs | 4 models | SHA-256 Verified | [Methodology](docs/global-ai-answers-methodology.md) |
+| [`geo-seo-digital-agency-iran-2026.1`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/) | 30 prompts (5 intent strata) | 120 completions | 4 models | SHA-256 Verified | [Agency Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
+
+Every release bundle contains:
+- `manifest.json`: Dataset metadata, provider matrix, and schema version (`measurement_contract_version: "1.0"`).
+- `prompts.jsonl`: Neutral, categorized prompts.
+- `raw_responses.jsonl`: Verbatim API completion payloads.
+- `observations.jsonl`: Granular extracted observation records.
+- `metrics.json`: Aggregated metrics with explicit failure denominators.
+- `checksums.sha256`: SHA-256 hashes of all artifacts.
+
+---
+
+## 8. Reproducibility & Auditability
+
+### 1. Cryptographic SHA-256 Verification
+Verify that dataset files have not been modified or corrupted:
 ```bash
-# Verify checksums
 geo-scope benchmark verify --dataset benchmark/releases/global-ai-answers-2026.2
-
-# Deterministically replay metrics from raw responses
-geo-scope benchmark replay --dataset benchmark/releases/global-ai-answers-2026.2
 ```
 
----
-
-### 2. Global AI Answers Benchmark 2026.2 Pilot
-* **Path**: [`benchmark/releases/global-ai-answers-2026.2-pilot/`](benchmark/releases/global-ai-answers-2026.2-pilot/)
-* **Purpose**: Controlled pilot release validating the end-to-end evidence pipeline prior to full deployment.
-* **Dataset Scope**: 100 prompts (55 observed user questions, 45 research templates) across 10 representative countries and 8 languages, 30 entities, 298 raw completions, 8,940 entity observations.
-* **Methodology**: Live model execution across separated provider classes with zero synthetic substitution.
-* **Documentation**: [Pilot Report](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md) · [Methodology](benchmark/releases/global-ai-answers-2026.2-pilot/methodology.md)
-
+### 2. Zero-Network Replay Workflow
+Replay metrics directly from preserved raw responses without executing live API calls:
 ```bash
-# Verify checksums
-geo-scope benchmark verify --dataset benchmark/releases/global-ai-answers-2026.2-pilot
-
-# Replay metrics
-geo-scope benchmark replay --dataset benchmark/releases/global-ai-answers-2026.2-pilot
+geo-scope replay \
+  --bundle benchmark/releases/global-ai-answers-2026.2 \
+  --out-dir output/replay_2026_2
 ```
 
----
-
-### 3. Global AI Answers Benchmark 2026.1
-* **Path**: [`benchmark/releases/global-ai-answers-2026.1/`](benchmark/releases/global-ai-answers-2026.1/)
-* **Purpose**: Initial empirical baseline measuring observed AI answer distributions on critical human inquiries.
-* **Dataset Scope**: 34 prompts across 7 regions and 9 languages, 24 entities, 4 models.
-* **Methodology**: Zero synthetic fallback, honest error logging, and deterministic replay.
-* **Documentation**: [Methodology](docs/global-ai-answers-methodology.md) · [Limitations](docs/global-ai-answers-limitations.md)
-
+### 3. Golden Parser Evaluation
+Evaluate the deterministic multi-lingual parser against human-labeled ground truth:
 ```bash
-# Verify checksums
-geo-scope benchmark verify --dataset benchmark/releases/global-ai-answers-2026.1
-
-# Replay metrics
-geo-scope benchmark replay --dataset benchmark/releases/global-ai-answers-2026.1
+geo-scope parser evaluate --golden-set benchmark/golden_sets/v1
 ```
 
----
-
-### 4. GEO & SEO Digital Agency Iran Benchmark
-* **Path**: [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/)
-* **Purpose**: Measure observed visibility, recommendation rates, and citation presence for digital marketing agencies in Iran.
-* **Dataset Scope**: 30 prompts across 5 intent strata, 8 agencies, 120 model completions.
-* **Methodology**: Cross-sectional domain observation with bootstrap confidence intervals.
-* **Documentation**: [Methodology](benchmarks/geo-seo-digital-agency-iran-2026.1/methodology.md) · [Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md)
-
-```bash
-# Verify checksums
-geo-scope benchmark verify --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1
-
-# Reproduce metrics
-geo-scope benchmark reproduce --dataset benchmark/releases/geo-seo-digital-agency-iran-2026.1
-```
+**Golden Set Benchmark Results (`v1`, 220 examples across 5 languages)**:
+- **Mention F1**: `99.75%` (Precision: 99.51%, Recall: 100.00%)
+- **Recommendation F1**: `100.00%` (Precision: 100.00%, Recall: 100.00%)
+- **Citation F1**: `100.00%` (Precision: 100.00%, Recall: 100.00%)
+- **Attribution F1**: `91.56%` (Precision: 100.00%, Recall: 84.44%)
+- **Wrong Entity (Homonym) F1**: `96.97%`
+- **Rank Accuracy**: `100.00%`
 
 ---
 
-## 🛡️ What GEO-Scope Does Not Claim
+## 9. Research & Documentation
 
-GEO-Scope adheres to strict epistemic boundaries:
-
-1. **It does not reveal proprietary model algorithms**: GEO-Scope measures empirical outputs from external APIs; it does not claim to inspect or reverse-engineer internal weights, training data, or proprietary retrieval ranking functions.
-2. **It does not predict future rankings**: Generative engine responses are probabilistic and subject to continuous model and index updates.
-3. **It does not measure "true influence" or entity capability**: Mention rates and recommendation positions reflect query-specific observations, not real-world entity superiority.
-4. **It does not replace search analytics**: It measures generative AI answer visibility, not web search volume, click-through rates, or conversion tracking.
-5. **It does not claim that simulation equals live measurement**: Simulation fixtures are strictly for development and testing; published measurements require preserved execution records.
-
----
-
-## 🇮🇷 راهنمای فارسی
-
-**GEO-Scope** یک فریم‌ورک متن‌باز برای سنجش تجربی و ثبت شواهد نحوه نمایش، پیشنهاد، استناد و ارجاع موجودیت‌ها (برندها، افراد، فناوری‌ها و سازمان‌ها) در سیستم‌های هوش مصنوعی مولد است.
-
-### ویژگی‌های اصلی
-۱. **تفکیک کامل شبیه‌سازی از سنجش واقعی**: حالت دمو صرفاً برای توسعه و تست با برچسب مشخص داده‌های شبیه‌سازی شده است. در حالت سنجش زنده هیچ‌گونه جایگزینی خودکار شبیه‌سازی وجود ندارد (Zero Silent Fallback).
-۲. **تفکیک رده مدل‌ها**: موتورهای جستجوی متصل به وب (`answer_engine`) و مدل‌های زبانی مستقیم (`llm`) به عنوان دو رده اندازه‌گیری مستقل سنجیده می‌شوند.
-۳. **زنجیره شواهد کامل**: هر انتشار شامل پرامپت‌ها، پاسخ‌های خام، مشاهدات، استنادها، لاگ خطاها و هش‌های SHA-256 برای بازتولیدپذیری آفلاین است.
+- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](docs/SCIENTIFIC_FOUNDATION_V1.md)
+- 📊 **Releases & Milestones Timeline**: [`docs/RELEASES.md`](docs/RELEASES.md)
+- 📄 **Measurement Contract v1 Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
+- ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
+- 🔬 **Research Methods & Protocol**: [`docs/RESEARCH_METHODS.md`](docs/RESEARCH_METHODS.md)
+- 📄 **Research Paper Outline**: [`docs/RESEARCH_PAPER_OUTLINE.md`](docs/RESEARCH_PAPER_OUTLINE.md)
+- 🔒 **Open Source Security Audit**: [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md)
+- 📊 **Methodology Crosswalk (Public Practice Comparison)**: [`docs/METHODOLOGY_CROSSWALK.md`](docs/METHODOLOGY_CROSSWALK.md)
+- 🔬 **Scientific Benchmark Methodology**: [`docs/benchmark-methodology.md`](docs/benchmark-methodology.md)
+- 🗺️ **Cross-Repository Evidence Map**: [`docs/EVIDENCE_MAP.md`](docs/EVIDENCE_MAP.md)
+- 📐 **Mathematical Formulation & MAVI**: [`docs/MATHEMATICAL_MODEL.md`](docs/MATHEMATICAL_MODEL.md)
+- 🔌 **API Integration Guide**: [`docs/API_INTEGRATION.md`](docs/API_INTEGRATION.md)
+- 🛡️ **Release Gate Integrity Protocol**: [`docs/SCIENTIFIC_MEASUREMENT_GATE.md`](docs/SCIENTIFIC_MEASUREMENT_GATE.md)
 
 ---
 
-## ⚡ Quickstart & CLI Commands
+## 10. Installation & Usage
 
-### 1. Installation
-
+### Installation
 ```bash
 # Clone the repository
 git clone https://github.com/tmolavi/geo-scope.git
@@ -291,43 +259,52 @@ cd geo-scope
 pip install -e .
 ```
 
-### 2. Run Instant Simulation Demo
+### PyPI publishing
 
+The stable package is available at [PyPI](https://pypi.org/project/geo-scope/).
+Future releases are published from GitHub Actions through Trusted Publishing;
+no PyPI token is stored in the repository.
+
+To publish a new version:
+
+1. Update the version in `pyproject.toml`.
+2. Commit and push the release changes to `main`.
+3. Create a **published GitHub Release** for the matching version.
+
+The workflow is [`.github/workflows/publish.yml`](.github/workflows/publish.yml)
+and uses the `pypi` GitHub environment for `tmolavi/geo-scope`. The PyPI-side
+publisher must remain mapped to Owner `tmolavi`, Repository `geo-scope`,
+Workflow `publish.yml`, Environment `pypi`.
+
+Do not put a PyPI API token in GitHub secrets or commit it to this repository.
+
+### Quick Commands
 ```bash
+# 1. Run local simulation fixture demo
 geo-scope demo
-```
 
-### 3. Execute Live Measurement (Zero Silent Fallback)
+# 2. Execute live empirical measurement (requires API credentials)
+geo-scope measure \
+  --entities entities/iran-seo-agencies.json \
+  --prompts examples/research_run/prompts.jsonl \
+  --mode live \
+  --providers perplexity_sonar,gemini_grounding \
+  --out-dir output/live_run_01
 
-```bash
-geo-scope measure   --entities entities/iran-seo-agencies.json   --prompts examples/research_run/prompts.jsonl   --mode live   --providers perplexity_sonar,gemini_grounding   --out-dir output/research_run_01
-```
+# 3. Deterministic offline replay
+geo-scope replay \
+  --bundle output/live_run_01 \
+  --out-dir output/replay_run_01
 
-### 4. Deterministic Offline Replay (Zero Network Calls)
-
-```bash
-geo-scope replay   --bundle output/research_run_01   --entities entities/iran-seo-agencies.json   --out-dir output/replay_01
-```
-
-### 5. Evaluate Parser against Golden Dataset
-
-```bash
-geo-scope parser evaluate \
-  --golden-set benchmark/golden_sets/v1 \
-  --output output/parser_metrics.json
-```
-
-### 6. Launch Interactive Dashboard
-
-```bash
-geo-scope serve --host 0.0.0.0 --port 8000
+# 4. Launch interactive local research dashboard
+geo-scope serve --host 127.0.0.1 --port 8000
 ```
 
 ---
 
-## 🔌 MCP Integration (Claude Desktop, Cursor, Antigravity)
+## 11. Model Context Protocol (MCP)
 
-GEO-Scope includes a native **Model Context Protocol (MCP)** stdio server:
+GEO-Scope includes a native **MCP Server** (`stdio`), enabling AI coding assistants and agents (Claude Desktop, Cursor, Antigravity) to query visibility benchmarks and inspect entity evidence chains directly:
 
 ```json
 {
@@ -340,36 +317,14 @@ GEO-Scope includes a native **Model Context Protocol (MCP)** stdio server:
 }
 ```
 
-See [Client Integrations Guide](docs/CLIENT_INTEGRATIONS.md).
+See the [Client Integrations Guide](docs/CLIENT_INTEGRATIONS.md) for full configuration details.
 
 ---
 
-## 🧪 Testing
-
-```bash
-pytest tests/ -v
-```
-
----
-
-## 📚 Documentation & Research Guides
-
-- 📖 [Documentation Index](docs/index.md)
-- 🔁 [Reproducing Benchmarks Guide](docs/REPRODUCE_BENCHMARK.md)
-- 📊 [Methodology Crosswalk (Public Practice Comparison)](docs/METHODOLOGY_CROSSWALK.md)
-- 🗺️ [Cross-Repository Evidence Map](docs/EVIDENCE_MAP.md)
-- 🔬 [Scientific Methodology](docs/benchmark-methodology.md)
-- 📄 [Research Whitepaper](docs/WHITEPAPER.md)
-- 📐 [Mathematical Model](docs/MATHEMATICAL_MODEL.md)
-- 🔌 [Live API Integration Guide](docs/API_INTEGRATION.md)
-- 🇮🇷 [راهنمای تفصیلی فارسی](docs/FA_GUIDE.md)
-
----
-
-## Citation & Author
+## Citation & Authorship
 
 Developed by **[Taqi Molavi](https://molavi.pro)** (Senior SEO Strategist & GEO Systems Architect).  
-Part of the **[Molavi GEO Pyramid](https://molavi.pro/research/geo-pyramid)** research framework.
+Part of the **[Molavi GEO Pyramid](https://molavi.pro/research/geo-pyramid)** research initiative.
 
 ```bibtex
 @software{molavi2026geoscope,
@@ -385,6 +340,6 @@ Part of the **[Molavi GEO Pyramid](https://molavi.pro/research/geo-pyramid)** re
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE) — Copyright (c) 2026 [تقی مولوی (Taqi Molavi)](https://molavi.pro/).
