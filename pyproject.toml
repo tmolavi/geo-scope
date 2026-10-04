@@ -44,6 +44,13 @@ dependencies = [
     "pyyaml>=6.0",
 ]
 
+[project.urls]
+Homepage = "https://molavi.pro"
+Repository = "https://github.com/tmolavi/geo-scope"
+Documentation = "https://github.com/tmolavi/geo-scope#readme"
+Research = "https://github.com/tmolavi/geo-scope/tree/main/docs"
+Issues = "https://github.com/tmolavi/geo-scope/issues"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0.0",
