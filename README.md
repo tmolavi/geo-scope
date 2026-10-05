@@ -160,12 +160,11 @@ GEO-Scope does not claim universal AI visibility truth. It measures empirical ob
 > **Fundamental Measurement Axiom**  
 > *"AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking."*
 
-- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](docs/SCIENTIFIC_FOUNDATION_V1.md)
-- 📄 **Full Measurement Contract Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
-- ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
-- 📐 **Machine-Readable Schema**: [`schemas/measurement-contract-v1.json`](schemas/measurement-contract-v1.json)
-- 🧪 **Validation Example Fixture**: [`examples/measurement-contract-v1-example.json`](examples/measurement-contract-v1-example.json)
-- 📊 **Releases & Milestones Timeline**: [`docs/RELEASES.md`](docs/RELEASES.md)
+- 🏛️ **Scientific Measurement Gate**: [`docs/SCIENTIFIC_MEASUREMENT_GATE.md`](docs/SCIENTIFIC_MEASUREMENT_GATE.md)
+- 📄 **Methodology**: [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)
+- 📐 **Machine-Readable Schema**: [`schemas/v0.3/manifest.schema.json`](schemas/v0.3/manifest.schema.json)
+- 🧪 **Validation Example Fixture**: [`examples/public_demo/manifest.json`](examples/public_demo/manifest.json)
+- 📊 **Documentation Index**: [`docs/index.md`](docs/index.md)
 
 ### Core Measurement Principles
 1. **Mention Definition**: A response-level binary observation indicating whether the target entity appears at least once in the completion. Multiple mentions in a single answer do **not** artificially inflate response-level mention counts.
@@ -178,7 +177,7 @@ GEO-Scope does not claim universal AI visibility truth. It measures empirical ob
 
 ## 7. Published Benchmark Releases
 
-GEO-Scope maintains immutable, peer-review-ready benchmark releases under `benchmark/releases/` (see complete [Releases & Milestones Timeline](docs/RELEASES.md)):
+GEO-Scope maintains immutable, peer-review-ready benchmark releases under `benchmark/releases/` (see the [documentation index](docs/index.md)):
 
 | Benchmark Release | Prompt Count | Observations | Providers | Cryptographic Status | Documentation |
 |:---|:---|:---|:---|:---|:---|
@@ -231,13 +230,12 @@ geo-scope parser evaluate --golden-set benchmark/golden_sets/v1
 
 ## 9. Research & Documentation
 
-- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](docs/SCIENTIFIC_FOUNDATION_V1.md)
-- 📊 **Releases & Milestones Timeline**: [`docs/RELEASES.md`](docs/RELEASES.md)
-- 📄 **Measurement Contract v1 Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
-- ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
-- 🔬 **Research Methods & Protocol**: [`docs/RESEARCH_METHODS.md`](docs/RESEARCH_METHODS.md)
-- 📄 **Research Paper Outline**: [`docs/RESEARCH_PAPER_OUTLINE.md`](docs/RESEARCH_PAPER_OUTLINE.md)
-- 🔒 **Open Source Security Audit**: [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md)
+- 🏛️ **Scientific Measurement Gate**: [`docs/SCIENTIFIC_MEASUREMENT_GATE.md`](docs/SCIENTIFIC_MEASUREMENT_GATE.md)
+- 📄 **Methodology**: [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)
+- 📊 **Documentation Index**: [`docs/index.md`](docs/index.md)
+- 🔬 **Research Methods & Protocol**: [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)
+- 📄 **Research Paper**: [`docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md`](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md)
+- 🔒 **Public Reality Audit**: [`docs/REALITY_AUDIT.md`](docs/REALITY_AUDIT.md)
 - 📊 **Methodology Crosswalk (Public Practice Comparison)**: [`docs/METHODOLOGY_CROSSWALK.md`](docs/METHODOLOGY_CROSSWALK.md)
 - 🔬 **Scientific Benchmark Methodology**: [`docs/benchmark-methodology.md`](docs/benchmark-methodology.md)
 - 🗺️ **Cross-Repository Evidence Map**: [`docs/EVIDENCE_MAP.md`](docs/EVIDENCE_MAP.md)
