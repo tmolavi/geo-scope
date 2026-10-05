@@ -14,11 +14,11 @@
 
 [![CI](https://github.com/tmolavi/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/tmolavi/geo-scope/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Scientific Foundation](https://img.shields.io/badge/Scientific%20Foundation-v1.0%20Published-darkgreen)](docs/SCIENTIFIC_FOUNDATION_V1.md)
-[![Measurement Contract](https://img.shields.io/badge/Measurement%20Contract-v1.0-informational)](docs/measurement-contract-v1.md)
-[![Research Paper Outline](https://img.shields.io/badge/Research-Paper%20Outline-purple)](docs/RESEARCH_PAPER_OUTLINE.md)
+[![Scientific Measurement Gate](https://img.shields.io/badge/Scientific%20Measurement%20Gate-verified-darkgreen)](docs/SCIENTIFIC_MEASUREMENT_GATE.md)
+[![Methodology](https://img.shields.io/badge/Methodology-public-informational)](docs/METHODOLOGY.md)
+[![Research Paper](https://img.shields.io/badge/Research-Paper-purple)](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md)
 [![Golden Parser](https://img.shields.io/badge/Golden%20Parser-v1%20Verified-blueviolet)](benchmark/golden_sets/v1/)
-[![Security Audit](https://img.shields.io/badge/Security-Audit%20Passed-success)](docs/SECURITY_AUDIT.md)
+[![Public Reality Audit](https://img.shields.io/badge/Public-Reality%20Audit-success)](docs/REALITY_AUDIT.md)
 
 [Introduction](#1-introduction) • [What It Measures](#2-what-geo-scope-measures) • [Scientific Foundation](#6-measurement-contract-v1--scientific-foundation) • [Benchmarks](#7-published-benchmark-releases) • [Reproducibility](#8-reproducibility--auditability) • [Research](#9-research--documentation) • [Quickstart](#10-installation--usage) • [MCP](#11-model-context-protocol-mcp)
 
@@ -184,7 +184,7 @@ GEO-Scope maintains immutable, peer-review-ready benchmark releases under `bench
 | [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | 500 prompts (50 countries) | 45,698 obs | 4 models | SHA-256 Verified | [Paper Draft](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
 | [`global-ai-answers-2026.2-pilot`](benchmark/releases/global-ai-answers-2026.2-pilot/) | 100 prompts (10 countries) | 8,940 obs | 4 models | SHA-256 Verified | [Pilot Report](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md) |
 | [`global-ai-answers-2026.1`](benchmark/releases/global-ai-answers-2026.1/) | 34 prompts (7 regions) | Baseline obs | 4 models | SHA-256 Verified | [Methodology](docs/global-ai-answers-methodology.md) |
-| [`geo-seo-digital-agency-iran-2026.1`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/) | 30 prompts (5 intent strata) | 120 completions | 4 models | SHA-256 Verified | [Agency Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
+| [`geo-seo-digital-agency-iran-2026.1`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/) | 30 prompts (5 intent strata) | 120 completions | 4 models | SHA-256 Verified | [Agency Report](benchmark/releases/geo-seo-digital-agency-iran-2026.1/README.md) |
 
 Every release bundle contains:
 - `manifest.json`: Dataset metadata, provider matrix, and schema version (`measurement_contract_version: "1.0"`).
