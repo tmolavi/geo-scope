@@ -114,3 +114,22 @@ geo-scope parser evaluate --golden-set benchmark/golden_sets/v1
 ## ارجاع و حق امتیاز
 
 توسعه‌داده‌شده توسط **[تقی مولوی](https://molavi.pro)** — تحت مجوز [MIT License](LICENSE).
+### اجرای اختیاری با Hugging Face
+
+برای اجرای زنده با یک مدل متن‌باز، کلید حساب خودتان را فقط به‌صورت متغیر
+محیطی بدهید؛ آن را در README یا Space عمومی نگذارید:
+
+```bash
+pip install geo-scope
+export HF_TOKEN="hf_..."
+export HF_MODEL="Qwen/Qwen2.5-7B-Instruct"
+geo-scope measure --entities examples/public_demo/brands.json \
+  --prompts examples/public_demo/prompts/observed.jsonl \
+  --providers huggingface_inference --mode live --out-dir output/hf-live
+```
+
+این مسیر مدل را اجرا می‌کند اما web search/citation واقعی فراهم نمی‌کند.
+اعتبار رایگان Hugging Face محدود است، نه نامحدود؛ برای دموی رایگان بدون کلید
+از `demo` یا `replay` استفاده کنید. [ساخت توکن](https://huggingface.co/settings/tokens) ·
+[قیمت‌گذاری](https://huggingface.co/docs/inference-providers/pricing) ·
+[Molavi.pro](https://molavi.pro)

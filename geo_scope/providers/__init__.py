@@ -10,6 +10,7 @@ from geo_scope.providers.gemini_provider import GeminiProvider
 from geo_scope.providers.claude_provider import ClaudeProvider
 from geo_scope.providers.ollama_provider import OllamaProvider
 from geo_scope.providers.hamzad_provider import HamzadProvider
+from geo_scope.providers.huggingface_provider import HuggingFaceProvider
 from geo_scope.providers.registry import ProviderRegistry, registry
 
 __all__ = [
@@ -21,6 +22,7 @@ __all__ = [
     "ClaudeProvider",
     "OllamaProvider",
     "HamzadProvider",
+    "HuggingFaceProvider",
     "ProviderRegistry",
     "registry",
 ]

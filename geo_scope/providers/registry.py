@@ -14,6 +14,7 @@ from geo_scope.providers.gemini_provider import GeminiProvider
 from geo_scope.providers.claude_provider import ClaudeProvider
 from geo_scope.providers.ollama_provider import OllamaProvider
 from geo_scope.providers.hamzad_provider import HamzadProvider
+from geo_scope.providers.huggingface_provider import HuggingFaceProvider
 
 
 class ProviderRegistry:
@@ -34,6 +35,9 @@ class ProviderRegistry:
         "keyless": "keyless_local",
         "hamzad": "hamzad_gateway",
         "hamzad-gateway": "hamzad_gateway",
+        "hf": "huggingface_inference",
+        "huggingface": "huggingface_inference",
+        "hugging-face": "huggingface_inference",
         "gemini-2.5-flash": "hamzad_gemini",
         "gpt-4o": "hamzad_openai",
         "gpt-4o-mini": "hamzad_openai",
@@ -57,6 +61,7 @@ class ProviderRegistry:
         self.register(OpenRouterProvider())
         self.register(PublicResearchProvider())
         self.register(KeylessWrapperProvider())
+        self.register(HuggingFaceProvider())
 
         # Hamzad Gateway adapters (zero-secret inference proxied via Hamzad)
         self.register(HamzadProvider(name="hamzad_gateway", target_provider="gemini", target_model="gemini-2.5-flash"))
@@ -111,6 +116,7 @@ class ProviderRegistry:
             ("Keyless Wrapper", "keyless_local", "unverified wrapper"),
             ("Public Research", "mlvoca_public", "public endpoint"),
             ("Hamzad Gateway", "hamzad_gateway", "gateway proxied (zero-secret)"),
+            ("Hugging Face", "huggingface_inference", "user-token inference (not search-grounded)"),
         ]
 
         for display, provider_id, grounding in ordered_keys:

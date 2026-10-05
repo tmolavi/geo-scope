@@ -20,11 +20,71 @@
 [![Golden Parser](https://img.shields.io/badge/Golden%20Parser-v1%20Verified-blueviolet)](benchmark/golden_sets/v1/)
 [![Security Audit](https://img.shields.io/badge/Security-Audit%20Passed-success)](docs/SECURITY_AUDIT.md)
 
+[PyPI package](https://pypi.org/project/geo-scope/) · [Hugging Face demo](https://huggingface.co/spaces/taqimolavi/geo-scope)
+
 [Introduction](#1-introduction) • [What It Measures](#2-what-geo-scope-measures) • [Scientific Foundation](#6-measurement-contract-v1--scientific-foundation) • [Benchmarks](#7-published-benchmark-releases) • [Reproducibility](#8-reproducibility--auditability) • [Research](#9-research--documentation) • [Quickstart](#10-installation--usage) • [MCP](#11-model-context-protocol-mcp)
 
 </div>
 
 ---
+
+## شروع خیلی ساده (برای تیم)
+
+GEO-Scope پاسخ‌های یک یا چند موتور هوش مصنوعی را بررسی می‌کند و پنج چیز را جداگانه گزارش می‌دهد: آیا نام شما آمده، آیا پیشنهاد شده، آیا لینک یا citation داده شده، آیا مطلبی به شما نسبت داده شده و آیا در فهرست رتبه گرفته‌اید.
+
+### نکته‌ی مهم درباره‌ی نیازمندی‌ها
+
+خود موتور به‌تنهایی کلید API ندارد و چیزی را جعل نمی‌کند. برای یک تست بدون هزینه و بدون اینترنت از حالت `simulation` یا `replay` استفاده کنید. برای `live` باید خودتان دسترسی و کلید ارائه‌دهنده‌ی موردنظر را تنظیم کنید؛ Hugging Face، ZeroGPU و «LLM رایگان نامحدود» جزو نیازمندی‌های این بسته نیستند.
+
+### نصب و اولین تست بدون کلید
+
+```bash
+pip install geo-scope
+geo-scope demo
+```
+
+این دستور یک **SIMULATION FIXTURE** می‌سازد؛ یعنی برای یادگیری و بررسی فرمت خروجی است و به مدل زنده وصل نمی‌شود. بنابراین عددهای آن را گزارش واقعی بازار یا رتبه‌ی برند ندانید.
+
+### چهار واژه‌ای که باید بدانید
+
+- `simulation`: اجرای آزمایشی قطعی و بدون تماس با مدل.
+- `live`: اجرای واقعی با provider و هزینه/کلید همان provider.
+- `replay`: تحلیل دوباره‌ی پاسخ‌های ذخیره‌شده، کاملاً آفلاین.
+- `citation`: لینکی که موتور پاسخ به‌عنوان منبع نشان داده؛ با «ذکر نام» یکی نیست.
+
+### اجرای واقعی با مدل Hugging Face (اختیاری)
+
+دموی عمومی Space عمداً بدون کلید و بدون GPU کار می‌کند و خروجی آن fixture
+قطعی است. برای یک اندازه‌گیری زنده با مدل متن‌باز، کلید حساب خودتان را فقط
+در محیط محلی بگذارید:
+
+```bash
+pip install geo-scope
+export HF_TOKEN="hf_..."
+# در صورت نیاز مدل قابل‌دسترسی حساب/ارائه‌دهنده را انتخاب کنید
+export HF_MODEL="Qwen/Qwen2.5-7B-Instruct"
+geo-scope measure \
+  --entities examples/public_demo/brands.json \
+  --prompts examples/public_demo/prompts/observed.jsonl \
+  --providers huggingface_inference \
+  --mode live \
+  --out-dir output/hf-live
+```
+
+`hf`، `huggingface` و `huggingface_inference` نام‌های قابل‌استفاده‌اند. این
+provider پاسخ مدل را می‌سنجد، اما web search یا citation واقعی به آن اضافه
+نمی‌کند؛ بنابراین citationهای خروجی را فقط وقتی گزارش کنید که خود مدل واقعاً
+لینک داده باشد. کلید را در README، فایل Space، issue، commit یا لاگ قرار
+ندهید. اعتبار رایگان Hugging Face محدود و وابسته به سیاست فعلی حساب است؛
+«رایگان نامحدود» وعده‌ی فنی قابل‌اتکایی نیست. برای استفاده‌ی بدون هزینه‌ی
+ابری، از `simulation`/`replay` یا یک مدل محلی با Ollama استفاده کنید.
+
+- [ساخت توکن Hugging Face](https://huggingface.co/settings/tokens)
+- [قیمت و اعتبار Inference Providers](https://huggingface.co/docs/inference-providers/pricing)
+- [دموی عمومی GEO-Scope](https://huggingface.co/spaces/taqimolavi/geo-scope)
+- [Molavi.pro](https://molavi.pro)
+
+اگر هدف فقط یادگیری است، از `demo` شروع کنید. اگر هدف اندازه‌گیری واقعی visibility است، ابتدا یک فایل entity و یک فایل prompt آماده کنید، provider را تنظیم کنید و بعد `live` را اجرا کنید. بدون پاسخ واقعی provider، GEO-Scope ادعای visibility نمی‌کند. [راهنمای فارسی](README.fa.md) برای مثال‌های تیمی آماده است.
 
 ## 1. Introduction
 
@@ -258,6 +318,25 @@ cd geo-scope
 # Install package in editable mode
 pip install -e .
 ```
+
+### PyPI publishing
+
+The stable package is available at [PyPI](https://pypi.org/project/geo-scope/).
+Future releases are published from GitHub Actions through Trusted Publishing;
+no PyPI token is stored in the repository.
+
+To publish a new version:
+
+1. Update the version in `pyproject.toml`.
+2. Commit and push the release changes to `main`.
+3. Create a **published GitHub Release** for the matching version.
+
+The workflow is [`.github/workflows/publish.yml`](.github/workflows/publish.yml)
+and uses the `pypi` GitHub environment for `tmolavi/geo-scope`. The PyPI-side
+publisher must remain mapped to Owner `tmolavi`, Repository `geo-scope`,
+Workflow `publish.yml`, Environment `pypi`.
+
+Do not put a PyPI API token in GitHub secrets or commit it to this repository.
 
 ### Quick Commands
 ```bash
