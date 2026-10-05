@@ -69,6 +69,6 @@ geo-scope benchmark reproduce --dataset benchmark/releases/geo-seo-digital-agenc
 
 - [`methodology.md`](methodology.md): Full experimental design, prompt strata, and mathematical formulas.
 - [`report.md`](report.md): In-depth research report with provider breakdowns and intent analysis.
-- [`metrics.json`](metrics.json): Machine-readable summary metrics and CI bounds.
+- [`metrics.json`](../../benchmark/releases/geo-seo-digital-agency-iran-2026.1/metrics.json): Machine-readable summary metrics and CI bounds.
 - [`dataset-reference.md`](dataset-reference.md): Complete data dictionary and file schemas.
 - Release Data: [`benchmark/releases/geo-seo-digital-agency-iran-2026.1/`](../../benchmark/releases/geo-seo-digital-agency-iran-2026.1/)
