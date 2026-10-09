@@ -105,6 +105,12 @@ class ObservationRecord(BaseModel):
     error: Optional[Dict[str, Any]] = None
     timestamp: str
 
+    # Experimental Query Fan-Out Entity Tracing (pure observation; excluded from composite visibility scoring)
+    query_introduced_entities: List[str] = Field(default_factory=list)
+    retrieved_entities: List[str] = Field(default_factory=list)
+    answer_mentioned_entities: List[str] = Field(default_factory=list)
+    answer_cited_entities: List[str] = Field(default_factory=list)
+
 
 class CitationEvidenceRecord(BaseModel):
     citation_id: str

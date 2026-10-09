@@ -1,0 +1,44 @@
+{
+  "conversation_id": "conv_043",
+  "prompt_id": "prm_cus_03",
+  "category": "customer_support",
+  "user_prompt": "Which customer support platforms have the best live chat and AI assistant integrations?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "Which customer support platforms 2026 review comparison",
+    "is Zendesk best option for small business"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.zendesk.com/overview",
+      "title": "Zendesk Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Zendesk for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/zendesk/reviews",
+      "title": "G2 Leader: Zendesk Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Zendesk."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Front and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Front for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Help Scout and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Help Scout for team productivity."
+    },
+    {
+      "url": "https://www.capterra.com/compare-software-solutions/",
+      "title": "Top 10 Solutions: Including Gorgias and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Gorgias for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for which customer support platforms have the best live chat and ai assistant integrations, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Zendesk**.\n\n- **Zendesk**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.zendesk.com/overview](https://www.zendesk.com/overview)",
+  "citations": [
+    "https://www.zendesk.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:27.016425+00:00"
+}

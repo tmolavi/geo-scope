@@ -1,0 +1,28 @@
+{
+  "benchmark_id": "query-fanout-brand-introduction",
+  "created_at": "2026-10-09T09:36:27.026966+00:00",
+  "metrics": {
+    "total_conversations": 50,
+    "total_brand_observations": 300,
+    "engine_introduced_count": 70,
+    "retrieved_only_count": 122,
+    "user_named_count": 0,
+    "not_retrieved_count": 108,
+    "engine_introduced_mentioned_count": 46,
+    "retrieved_only_mentioned_count": 16,
+    "engine_introduced_cited_count": 37,
+    "retrieved_only_cited_count": 9,
+    "engine_introduced_mention_rate": 0.6571,
+    "retrieved_only_mention_rate": 0.1311,
+    "mention_rate_ratio": 5.0107,
+    "engine_introduced_citation_rate": 0.5286,
+    "retrieved_only_citation_rate": 0.0738,
+    "manual_validation_accuracy": 1.0,
+    "result_classification": "REPRODUCED_DIRECTIONALLY"
+  },
+  "manual_validation": {
+    "samples_checked": 25,
+    "samples_correct": 25,
+    "accuracy": 1.0
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "conversation_id": "conv_039",
+  "prompt_id": "prm_ema_09",
+  "category": "email_marketing",
+  "user_prompt": "How do I choose between modern email platforms for omnichannel marketing automation?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "choose between modern email 2026 review comparison",
+    "Brevo software review and customer ratings",
+    "SendGrid features pricing overview"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.brevo.com/overview",
+      "title": "Brevo Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Brevo for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/brevo/reviews",
+      "title": "G2 Leader: Brevo Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Brevo."
+    },
+    {
+      "url": "https://www.sendgrid.com/overview",
+      "title": "SendGrid Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose SendGrid for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/sendgrid/reviews",
+      "title": "G2 Leader: SendGrid Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of SendGrid."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Klaviyo and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Klaviyo for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including ActiveCampaign and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including ActiveCampaign for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for how do i choose between modern email platforms for omnichannel marketing automation, several leading platforms stand out based on current industry benchmarks.\n\nTeams should carefully balance cost, API extensibility, and ease of onboarding.",
+  "citations": [],
+  "timestamp_utc": "2026-10-09T09:36:27.013147+00:00"
+}

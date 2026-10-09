@@ -1,0 +1,44 @@
+{
+  "conversation_id": "conv_021",
+  "prompt_id": "prm_clo_01",
+  "category": "cloud_infrastructure",
+  "user_prompt": "What are the best cloud hosting providers for scalable web applications?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "What best cloud hosting 2026 review comparison",
+    "Google Cloud software review and customer ratings"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.cloud.google.com/overview",
+      "title": "Google Cloud Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Google Cloud for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/google-cloud/reviews",
+      "title": "G2 Leader: Google Cloud Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Google Cloud."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Microsoft Azure and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Microsoft Azure for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including AWS and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including AWS for team productivity."
+    },
+    {
+      "url": "https://www.capterra.com/compare-software-solutions/",
+      "title": "Top 10 Solutions: Including DigitalOcean and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including DigitalOcean for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for what are the best cloud hosting providers for scalable web applications, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Google Cloud**, **Microsoft Azure**.\n\n- **Google Cloud**: Well regarded for its feature completeness and user adoption.\n\n- **Microsoft Azure**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.cloud.google.com/overview](https://www.cloud.google.com/overview)",
+  "citations": [
+    "https://www.cloud.google.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:26.997223+00:00"
+}

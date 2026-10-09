@@ -173,6 +173,12 @@ class ObservationParsedResult(BaseModel):
     normalized_text: Optional[str] = None
     source_span: Optional[Tuple[int, int]] = None
 
+    # Experimental Query Fan-Out Entity Tracing (pure observation; excluded from composite visibility scoring)
+    query_introduced_entities: List[str] = Field(default_factory=list)
+    retrieved_entities: List[str] = Field(default_factory=list)
+    answer_mentioned_entities: List[str] = Field(default_factory=list)
+    answer_cited_entities: List[str] = Field(default_factory=list)
+
 
 def classify_query_intent(query: str) -> str:
     """

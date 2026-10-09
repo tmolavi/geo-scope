@@ -1,0 +1,51 @@
+prompt_id,category,text,intent
+prm_crm_01,crm,What is the best CRM software for growing startups in 2026?,commercial_discovery
+prm_crm_02,crm,Top CRM platforms for small business sales pipeline tracking,commercial_discovery
+prm_crm_03,crm,Which CRM offers the best ease of use and contact management for new teams?,commercial_discovery
+prm_crm_04,crm,Recommend scalable customer relationship management tools with good email integration,commercial_discovery
+prm_crm_05,crm,What CRM solutions provide the most flexible sales automation for SMBs?,commercial_discovery
+prm_crm_06,crm,Best modern CRM software for tracking inbound leads and deal flow,commercial_discovery
+prm_crm_07,crm,Which CRM platform is easiest to onboard a non-technical sales team on?,commercial_discovery
+prm_crm_08,crm,Top rated cloud CRM systems for early stage B2B companies,commercial_discovery
+prm_crm_09,crm,How do I choose an affordable CRM for customer retention and pipeline visibility?,commercial_discovery
+prm_crm_10,crm,What are the leading CRM tools for cross-functional marketing and sales alignment?,commercial_discovery
+prm_pro_01,project_management,What are the top project management tools for agile product teams?,commercial_discovery
+prm_pro_02,project_management,Best workflow and task management platforms for remote engineering teams,commercial_discovery
+prm_pro_03,project_management,Which project management software offers the clearest Kanban and sprint boards?,commercial_discovery
+prm_pro_04,project_management,Recommend modern work management platforms for marketing campaign tracking,commercial_discovery
+prm_pro_05,project_management,Top collaborative project tracking tools for cross-departmental initiatives,commercial_discovery
+prm_pro_06,project_management,What software is best for roadmap planning and milestone tracking in high-growth companies?,commercial_discovery
+prm_pro_07,project_management,Which task tracking tools have the best timeline views and workload balancing?,commercial_discovery
+prm_pro_08,project_management,Best lightweight project management apps for small creative agencies,commercial_discovery
+prm_pro_09,project_management,Top project tracking platforms with customizable dashboards and automated notifications,commercial_discovery
+prm_pro_10,project_management,How do I pick an enterprise-grade project tracking tool for distributed operations?,commercial_discovery
+prm_clo_01,cloud_infrastructure,What are the best cloud hosting providers for scalable web applications?,commercial_discovery
+prm_clo_02,cloud_infrastructure,Top cloud platforms for containerized microservices and automated deployment,commercial_discovery
+prm_clo_03,cloud_infrastructure,Which cloud infrastructure provider offers the most cost-effective managed databases?,commercial_discovery
+prm_clo_04,cloud_infrastructure,Recommend developer-friendly cloud platforms for deploying modern frontend apps,commercial_discovery
+prm_clo_05,cloud_infrastructure,What is the most reliable cloud hosting for high-traffic SaaS startups?,commercial_discovery
+prm_clo_06,cloud_infrastructure,Best cloud compute options for compute-intensive web workloads in 2026,commercial_discovery
+prm_clo_07,cloud_infrastructure,Which cloud providers offer the easiest serverless functions and CDN integration?,commercial_discovery
+prm_clo_08,cloud_infrastructure,Top European cloud hosting alternatives for strict data privacy requirements,commercial_discovery
+prm_clo_09,cloud_infrastructure,What cloud platform provides the smoothest developer experience for rapid prototyping?,commercial_discovery
+prm_clo_10,cloud_infrastructure,How should a modern software team choose between leading cloud infrastructure options?,commercial_discovery
+prm_ema_01,email_marketing,What are the best email marketing automation tools for direct-to-consumer ecommerce?,commercial_discovery
+prm_ema_02,email_marketing,Top newsletter platforms with high deliverability and subscriber segmentation,commercial_discovery
+prm_ema_03,email_marketing,Which email marketing software offers the most sophisticated visual automation workflows?,commercial_discovery
+prm_ema_04,email_marketing,Recommend affordable email marketing services for transactional and promotional messaging,commercial_discovery
+prm_ema_05,email_marketing,What are the leading email platforms for digital content creators and educators?,commercial_discovery
+prm_ema_06,email_marketing,Best customer messaging platforms for personalized drip campaigns and behavioral triggers,commercial_discovery
+prm_ema_07,email_marketing,Which email marketing tools provide the most reliable analytics and A/B split testing?,commercial_discovery
+prm_ema_08,email_marketing,Top email software for high-volume customer onboarding and retention emails,commercial_discovery
+prm_ema_09,email_marketing,How do I choose between modern email platforms for omnichannel marketing automation?,commercial_discovery
+prm_ema_10,email_marketing,What email marketing services have the best deliverability rates for small businesses?,commercial_discovery
+prm_cus_01,customer_support,What are the best customer support ticketing systems for multi-channel service?,commercial_discovery
+prm_cus_02,customer_support,Top helpdesk software for managing high-volume customer inquiries and SLA compliance,commercial_discovery
+prm_cus_03,customer_support,Which customer support platforms have the best live chat and AI assistant integrations?,commercial_discovery
+prm_cus_04,customer_support,Recommend modern help desk tools for collaborative shared inbox management,commercial_discovery
+prm_cus_05,customer_support,What is the most intuitive customer service software for growing ecommerce stores?,commercial_discovery
+prm_cus_06,customer_support,Best support ticketing solutions with robust self-service knowledge base builders,commercial_discovery
+prm_cus_07,customer_support,Which customer communication platforms offer seamless CRM and messaging sync?,commercial_discovery
+prm_cus_08,customer_support,Top rated help desk software for internal IT and external customer service teams,commercial_discovery
+prm_cus_09,customer_support,How do I select a customer support platform that scales without extreme pricing per seat?,commercial_discovery
+prm_cus_10,customer_support,"What are the leading tools for unifying customer conversations across email, chat, and social?",commercial_discovery

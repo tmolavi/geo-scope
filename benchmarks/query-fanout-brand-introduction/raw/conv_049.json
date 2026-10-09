@@ -1,0 +1,37 @@
+{
+  "conversation_id": "conv_049",
+  "prompt_id": "prm_cus_09",
+  "category": "customer_support",
+  "user_prompt": "How do I select a customer support platform that scales without extreme pricing per seat?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "select customer support platform 2026 review comparison",
+    "Freshdesk software review and customer ratings"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.freshdesk.com/overview",
+      "title": "Freshdesk Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Freshdesk for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/freshdesk/reviews",
+      "title": "G2 Leader: Freshdesk Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Freshdesk."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Front and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Front for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Zendesk and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Zendesk for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for how do i select a customer support platform that scales without extreme pricing per seat, several leading platforms stand out based on current industry benchmarks.\n\nTeams should carefully balance cost, API extensibility, and ease of onboarding.",
+  "citations": [],
+  "timestamp_utc": "2026-10-09T09:36:27.021083+00:00"
+}

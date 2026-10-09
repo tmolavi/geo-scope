@@ -49,10 +49,12 @@ output/
 results/
 *.csv
 !benchmark/**/*.csv
+!benchmarks/**/*.csv
 !examples/**/*.csv
 *.json
 !geo_scope/data/*.json
 !benchmark/**/*.json
+!benchmarks/**/*.json
 !examples/**/*.json
 !entities/**/*.json
 !examples/prompts/*

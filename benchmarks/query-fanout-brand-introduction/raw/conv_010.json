@@ -1,0 +1,50 @@
+{
+  "conversation_id": "conv_010",
+  "prompt_id": "prm_crm_10",
+  "category": "crm",
+  "user_prompt": "What are the leading CRM tools for cross-functional marketing and sales alignment?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "What leading tools cross-functional 2026 review comparison",
+    "Freshsales software review and customer ratings",
+    "is Zoho CRM best option for small business"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.freshworks.com/overview",
+      "title": "Freshsales Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Freshsales for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/freshsales/reviews",
+      "title": "G2 Leader: Freshsales Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Freshsales."
+    },
+    {
+      "url": "https://www.zoho.com/overview",
+      "title": "Zoho CRM Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Zoho CRM for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/zoho-crm/reviews",
+      "title": "G2 Leader: Zoho CRM Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Zoho CRM."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including HubSpot and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including HubSpot for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Pipedrive and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Pipedrive for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for what are the leading crm tools for cross-functional marketing and sales alignment, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Zoho CRM**, **Pipedrive**.\n\n- **Zoho CRM**: Well regarded for its feature completeness and user adoption.\n\n- **Pipedrive**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.zoho.com/overview](https://www.zoho.com/overview)",
+  "citations": [
+    "https://www.zoho.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:26.988578+00:00"
+}

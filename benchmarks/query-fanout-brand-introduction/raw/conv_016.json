@@ -1,0 +1,37 @@
+{
+  "conversation_id": "conv_016",
+  "prompt_id": "prm_pro_06",
+  "category": "project_management",
+  "user_prompt": "What software is best for roadmap planning and milestone tracking in high-growth companies?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "What software best roadmap 2026 review comparison",
+    "Jira features pricing overview"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.atlassian.com/overview",
+      "title": "Jira Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Jira for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/jira/reviews",
+      "title": "G2 Leader: Jira Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Jira."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Notion and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Notion for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Trello and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Trello for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for what software is best for roadmap planning and milestone tracking in high-growth companies, several leading platforms stand out based on current industry benchmarks.\n\nTeams should carefully balance cost, API extensibility, and ease of onboarding.",
+  "citations": [],
+  "timestamp_utc": "2026-10-09T09:36:26.993555+00:00"
+}

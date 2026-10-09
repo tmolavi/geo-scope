@@ -1,0 +1,51 @@
+{
+  "conversation_id": "conv_026",
+  "prompt_id": "prm_clo_06",
+  "category": "cloud_infrastructure",
+  "user_prompt": "Best cloud compute options for compute-intensive web workloads in 2026",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "Best cloud compute options 2026 review comparison",
+    "Hetzner features pricing overview",
+    "AWS software review and customer ratings"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.hetzner.com/overview",
+      "title": "Hetzner Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Hetzner for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/hetzner/reviews",
+      "title": "G2 Leader: Hetzner Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Hetzner."
+    },
+    {
+      "url": "https://www.aws.amazon.com/overview",
+      "title": "AWS Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose AWS for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/aws/reviews",
+      "title": "G2 Leader: AWS Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of AWS."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including DigitalOcean and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including DigitalOcean for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Google Cloud and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Google Cloud for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for best cloud compute options for compute-intensive web workloads in 2026, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Hetzner**, **AWS**.\n\n- **Hetzner**: Well regarded for its feature completeness and user adoption.\n\n- **AWS**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.hetzner.com/overview](https://www.hetzner.com/overview)\n\n- [https://www.aws.amazon.com/overview](https://www.aws.amazon.com/overview)",
+  "citations": [
+    "https://www.hetzner.com/overview",
+    "https://www.aws.amazon.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:27.002066+00:00"
+}

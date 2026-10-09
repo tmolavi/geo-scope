@@ -1,0 +1,50 @@
+{
+  "conversation_id": "conv_050",
+  "prompt_id": "prm_cus_10",
+  "category": "customer_support",
+  "user_prompt": "What are the leading tools for unifying customer conversations across email, chat, and social?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "What leading tools unifying 2026 review comparison",
+    "Freshdesk features pricing overview",
+    "Front software review and customer ratings"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.freshdesk.com/overview",
+      "title": "Freshdesk Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Freshdesk for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/freshdesk/reviews",
+      "title": "G2 Leader: Freshdesk Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Freshdesk."
+    },
+    {
+      "url": "https://www.front.com/overview",
+      "title": "Front Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Front for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/front/reviews",
+      "title": "G2 Leader: Front Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Front."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Intercom and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Intercom for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Gorgias and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Gorgias for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for what are the leading tools for unifying customer conversations across email, chat, and social, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Freshdesk**, **Front**.\n\n- **Freshdesk**: Well regarded for its feature completeness and user adoption.\n\n- **Front**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.freshdesk.com/overview](https://www.freshdesk.com/overview)",
+  "citations": [
+    "https://www.freshdesk.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:27.021817+00:00"
+}

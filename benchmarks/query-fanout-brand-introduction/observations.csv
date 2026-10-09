@@ -1,0 +1,301 @@
+conversation_id,prompt_id,engine,model,brand,brand_source_class,generated_query_reference,retrieval_reference,final_answer_mentioned,final_answer_cited,raw_evidence_reference
+conv_001,prm_crm_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,ENGINE_QUERY_INTRODUCED,query_2: HubSpot software review and customer ratings,,true,true,raw/conv_001.json
+conv_001,prm_crm_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,true,true,raw/conv_001.json
+conv_001,prm_crm_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_001.json
+conv_001,prm_crm_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,NOT_RETRIEVED,,,false,false,raw/conv_001.json
+conv_001,prm_crm_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,NOT_RETRIEVED,,,false,false,raw/conv_001.json
+conv_001,prm_crm_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_001.json
+conv_002,prm_crm_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,NOT_RETRIEVED,,,false,false,raw/conv_002.json
+conv_002,prm_crm_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_002.json
+conv_002,prm_crm_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,NOT_RETRIEVED,,,false,false,raw/conv_002.json
+conv_002,prm_crm_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,NOT_RETRIEVED,,,false,false,raw/conv_002.json
+conv_002,prm_crm_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,ENGINE_QUERY_INTRODUCED,query_2: Freshsales software review and customer ratings,,true,true,raw/conv_002.json
+conv_002,prm_crm_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_002.json
+conv_003,prm_crm_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_003.json
+conv_003,prm_crm_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,ENGINE_QUERY_INTRODUCED,query_2: Salesforce features pricing overview,,false,false,raw/conv_003.json
+conv_003,prm_crm_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,NOT_RETRIEVED,,,false,false,raw/conv_003.json
+conv_003,prm_crm_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_003.json
+conv_003,prm_crm_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,NOT_RETRIEVED,,,false,false,raw/conv_003.json
+conv_003,prm_crm_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,true,true,raw/conv_003.json
+conv_004,prm_crm_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,ENGINE_QUERY_INTRODUCED,query_2: HubSpot software review and customer ratings,,false,false,raw/conv_004.json
+conv_004,prm_crm_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_004.json
+conv_004,prm_crm_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,NOT_RETRIEVED,,,false,false,raw/conv_004.json
+conv_004,prm_crm_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,ENGINE_QUERY_INTRODUCED,query_3: is Pipedrive best option for small business,,true,false,raw/conv_004.json
+conv_004,prm_crm_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,NOT_RETRIEVED,,,false,false,raw/conv_004.json
+conv_004,prm_crm_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_004.json
+conv_005,prm_crm_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_005.json
+conv_005,prm_crm_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,NOT_RETRIEVED,,,false,false,raw/conv_005.json
+conv_005,prm_crm_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_005.json
+conv_005,prm_crm_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,NOT_RETRIEVED,,,false,false,raw/conv_005.json
+conv_005,prm_crm_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,NOT_RETRIEVED,,,false,false,raw/conv_005.json
+conv_005,prm_crm_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,ENGINE_QUERY_INTRODUCED,query_2: Monday CRM features pricing overview,,false,false,raw/conv_005.json
+conv_006,prm_crm_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,NOT_RETRIEVED,,,false,false,raw/conv_006.json
+conv_006,prm_crm_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,ENGINE_QUERY_INTRODUCED,query_2: Salesforce software review and customer ratings,,true,true,raw/conv_006.json
+conv_006,prm_crm_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,ENGINE_QUERY_INTRODUCED,query_3: Zoho CRM software review and customer ratings,,true,true,raw/conv_006.json
+conv_006,prm_crm_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_006.json
+conv_006,prm_crm_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_006.json
+conv_006,prm_crm_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,RETRIEVED_ONLY,,doc_7: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_006.json
+conv_007,prm_crm_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_007.json
+conv_007,prm_crm_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_007.json
+conv_007,prm_crm_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,NOT_RETRIEVED,,,false,false,raw/conv_007.json
+conv_007,prm_crm_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,NOT_RETRIEVED,,,false,false,raw/conv_007.json
+conv_007,prm_crm_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_007.json
+conv_007,prm_crm_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,ENGINE_QUERY_INTRODUCED,query_2: is Monday CRM best option for small business,,true,true,raw/conv_007.json
+conv_008,prm_crm_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_008.json
+conv_008,prm_crm_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,NOT_RETRIEVED,,,false,false,raw/conv_008.json
+conv_008,prm_crm_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,NOT_RETRIEVED,,,false,false,raw/conv_008.json
+conv_008,prm_crm_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_008.json
+conv_008,prm_crm_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_008.json
+conv_008,prm_crm_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,ENGINE_QUERY_INTRODUCED,query_2: is Monday CRM best option for small business,,true,true,raw/conv_008.json
+conv_009,prm_crm_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_009.json
+conv_009,prm_crm_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,ENGINE_QUERY_INTRODUCED,query_3: Salesforce features pricing overview,,true,true,raw/conv_009.json
+conv_009,prm_crm_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,ENGINE_QUERY_INTRODUCED,query_2: Zoho CRM features pricing overview,,true,true,raw/conv_009.json
+conv_009,prm_crm_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,NOT_RETRIEVED,,,false,false,raw/conv_009.json
+conv_009,prm_crm_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,NOT_RETRIEVED,,,false,false,raw/conv_009.json
+conv_009,prm_crm_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_009.json
+conv_010,prm_crm_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,HubSpot,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_010.json
+conv_010,prm_crm_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Salesforce,NOT_RETRIEVED,,,false,false,raw/conv_010.json
+conv_010,prm_crm_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zoho CRM,ENGINE_QUERY_INTRODUCED,query_3: is Zoho CRM best option for small business,,true,true,raw/conv_010.json
+conv_010,prm_crm_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Pipedrive,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,true,false,raw/conv_010.json
+conv_010,prm_crm_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshsales,ENGINE_QUERY_INTRODUCED,query_2: Freshsales software review and customer ratings,,false,false,raw/conv_010.json
+conv_010,prm_crm_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday CRM,NOT_RETRIEVED,,,false,false,raw/conv_010.json
+conv_011,prm_pro_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,NOT_RETRIEVED,,,false,false,raw/conv_011.json
+conv_011,prm_pro_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,ENGINE_QUERY_INTRODUCED,query_3: Monday.com software review and customer ratings,,true,false,raw/conv_011.json
+conv_011,prm_pro_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,NOT_RETRIEVED,,,false,false,raw/conv_011.json
+conv_011,prm_pro_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_011.json
+conv_011,prm_pro_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,ENGINE_QUERY_INTRODUCED,query_2: Jira software review and customer ratings,,true,true,raw/conv_011.json
+conv_011,prm_pro_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_011.json
+conv_012,prm_pro_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,ENGINE_QUERY_INTRODUCED,query_3: Asana features pricing overview,,true,true,raw/conv_012.json
+conv_012,prm_pro_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,NOT_RETRIEVED,,,false,false,raw/conv_012.json
+conv_012,prm_pro_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_012.json
+conv_012,prm_pro_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,ENGINE_QUERY_INTRODUCED,query_2: Trello features pricing overview,,true,true,raw/conv_012.json
+conv_012,prm_pro_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_012.json
+conv_012,prm_pro_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,NOT_RETRIEVED,,,false,false,raw/conv_012.json
+conv_013,prm_pro_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,NOT_RETRIEVED,,,false,false,raw/conv_013.json
+conv_013,prm_pro_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,ENGINE_QUERY_INTRODUCED,query_2: Monday.com software review and customer ratings,,false,false,raw/conv_013.json
+conv_013,prm_pro_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_013.json
+conv_013,prm_pro_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,NOT_RETRIEVED,,,false,false,raw/conv_013.json
+conv_013,prm_pro_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_013.json
+conv_013,prm_pro_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_013.json
+conv_014,prm_pro_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,NOT_RETRIEVED,,,false,false,raw/conv_014.json
+conv_014,prm_pro_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_014.json
+conv_014,prm_pro_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_014.json
+conv_014,prm_pro_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,true,true,raw/conv_014.json
+conv_014,prm_pro_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,NOT_RETRIEVED,,,false,false,raw/conv_014.json
+conv_014,prm_pro_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,ENGINE_QUERY_INTRODUCED,query_2: Notion software review and customer ratings,,true,true,raw/conv_014.json
+conv_015,prm_pro_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,ENGINE_QUERY_INTRODUCED,query_2: Asana features pricing overview,,false,false,raw/conv_015.json
+conv_015,prm_pro_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_015.json
+conv_015,prm_pro_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,true,true,raw/conv_015.json
+conv_015,prm_pro_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,NOT_RETRIEVED,,,false,false,raw/conv_015.json
+conv_015,prm_pro_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,NOT_RETRIEVED,,,false,false,raw/conv_015.json
+conv_015,prm_pro_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,NOT_RETRIEVED,,,false,false,raw/conv_015.json
+conv_016,prm_pro_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,NOT_RETRIEVED,,,false,false,raw/conv_016.json
+conv_016,prm_pro_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,NOT_RETRIEVED,,,false,false,raw/conv_016.json
+conv_016,prm_pro_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,NOT_RETRIEVED,,,false,false,raw/conv_016.json
+conv_016,prm_pro_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_016.json
+conv_016,prm_pro_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,ENGINE_QUERY_INTRODUCED,query_2: Jira features pricing overview,,false,false,raw/conv_016.json
+conv_016,prm_pro_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_016.json
+conv_017,prm_pro_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,NOT_RETRIEVED,,,false,false,raw/conv_017.json
+conv_017,prm_pro_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,true,false,raw/conv_017.json
+conv_017,prm_pro_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,true,false,raw/conv_017.json
+conv_017,prm_pro_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_017.json
+conv_017,prm_pro_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,NOT_RETRIEVED,,,false,false,raw/conv_017.json
+conv_017,prm_pro_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,ENGINE_QUERY_INTRODUCED,query_2: is Notion best option for small business,,false,false,raw/conv_017.json
+conv_018,prm_pro_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,NOT_RETRIEVED,,,false,false,raw/conv_018.json
+conv_018,prm_pro_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,ENGINE_QUERY_INTRODUCED,query_2: Monday.com features pricing overview,,true,true,raw/conv_018.json
+conv_018,prm_pro_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_018.json
+conv_018,prm_pro_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,NOT_RETRIEVED,,,false,false,raw/conv_018.json
+conv_018,prm_pro_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_018.json
+conv_018,prm_pro_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,NOT_RETRIEVED,,,false,false,raw/conv_018.json
+conv_019,prm_pro_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,ENGINE_QUERY_INTRODUCED,query_3: Asana features pricing overview,,false,false,raw/conv_019.json
+conv_019,prm_pro_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_019.json
+conv_019,prm_pro_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,NOT_RETRIEVED,,,false,false,raw/conv_019.json
+conv_019,prm_pro_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,NOT_RETRIEVED,,,false,false,raw/conv_019.json
+conv_019,prm_pro_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,ENGINE_QUERY_INTRODUCED,query_2: Jira features pricing overview,,true,true,raw/conv_019.json
+conv_019,prm_pro_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_019.json
+conv_020,prm_pro_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Asana,NOT_RETRIEVED,,,false,false,raw/conv_020.json
+conv_020,prm_pro_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Monday.com,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_020.json
+conv_020,prm_pro_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,ClickUp,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_020.json
+conv_020,prm_pro_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Trello,ENGINE_QUERY_INTRODUCED,query_2: Trello software review and customer ratings,,false,false,raw/conv_020.json
+conv_020,prm_pro_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Jira,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_020.json
+conv_020,prm_pro_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Notion,NOT_RETRIEVED,,,false,false,raw/conv_020.json
+conv_021,prm_clo_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_021.json
+conv_021,prm_clo_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,ENGINE_QUERY_INTRODUCED,query_2: Google Cloud software review and customer ratings,,true,true,raw/conv_021.json
+conv_021,prm_clo_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,true,false,raw/conv_021.json
+conv_021,prm_clo_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_021.json
+conv_021,prm_clo_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,NOT_RETRIEVED,,,false,false,raw/conv_021.json
+conv_021,prm_clo_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,NOT_RETRIEVED,,,false,false,raw/conv_021.json
+conv_022,prm_clo_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,ENGINE_QUERY_INTRODUCED,query_2: AWS software review and customer ratings,,true,false,raw/conv_022.json
+conv_022,prm_clo_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_022.json
+conv_022,prm_clo_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_022.json
+conv_022,prm_clo_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,NOT_RETRIEVED,,,false,false,raw/conv_022.json
+conv_022,prm_clo_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,NOT_RETRIEVED,,,false,false,raw/conv_022.json
+conv_022,prm_clo_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,NOT_RETRIEVED,,,false,false,raw/conv_022.json
+conv_023,prm_clo_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_023.json
+conv_023,prm_clo_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,NOT_RETRIEVED,,,false,false,raw/conv_023.json
+conv_023,prm_clo_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,NOT_RETRIEVED,,,false,false,raw/conv_023.json
+conv_023,prm_clo_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,NOT_RETRIEVED,,,false,false,raw/conv_023.json
+conv_023,prm_clo_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,ENGINE_QUERY_INTRODUCED,query_2: is Vercel best option for small business,,true,true,raw/conv_023.json
+conv_023,prm_clo_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_023.json
+conv_024,prm_clo_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,NOT_RETRIEVED,,,false,false,raw/conv_024.json
+conv_024,prm_clo_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,ENGINE_QUERY_INTRODUCED,query_2: is Google Cloud best option for small business,,false,false,raw/conv_024.json
+conv_024,prm_clo_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,ENGINE_QUERY_INTRODUCED,query_3: is Microsoft Azure best option for small business,,false,false,raw/conv_024.json
+conv_024,prm_clo_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,true,false,raw/conv_024.json
+conv_024,prm_clo_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_024.json
+conv_024,prm_clo_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,RETRIEVED_ONLY,,doc_7: https://www.capterra.com/compare-software-solutions/,true,false,raw/conv_024.json
+conv_025,prm_clo_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,NOT_RETRIEVED,,,false,false,raw/conv_025.json
+conv_025,prm_clo_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,ENGINE_QUERY_INTRODUCED,query_2: is Google Cloud best option for small business,,true,true,raw/conv_025.json
+conv_025,prm_clo_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,ENGINE_QUERY_INTRODUCED,query_3: Microsoft Azure features pricing overview,,true,false,raw/conv_025.json
+conv_025,prm_clo_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_025.json
+conv_025,prm_clo_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,NOT_RETRIEVED,,,false,false,raw/conv_025.json
+conv_025,prm_clo_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_025.json
+conv_026,prm_clo_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,ENGINE_QUERY_INTRODUCED,query_3: AWS software review and customer ratings,,true,true,raw/conv_026.json
+conv_026,prm_clo_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_026.json
+conv_026,prm_clo_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,NOT_RETRIEVED,,,false,false,raw/conv_026.json
+conv_026,prm_clo_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_026.json
+conv_026,prm_clo_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,NOT_RETRIEVED,,,false,false,raw/conv_026.json
+conv_026,prm_clo_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,ENGINE_QUERY_INTRODUCED,query_2: Hetzner features pricing overview,,true,true,raw/conv_026.json
+conv_027,prm_clo_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_027.json
+conv_027,prm_clo_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,RETRIEVED_ONLY,,doc_7: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_027.json
+conv_027,prm_clo_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,NOT_RETRIEVED,,,false,false,raw/conv_027.json
+conv_027,prm_clo_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,ENGINE_QUERY_INTRODUCED,query_3: DigitalOcean features pricing overview,,true,true,raw/conv_027.json
+conv_027,prm_clo_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,ENGINE_QUERY_INTRODUCED,query_2: is Vercel best option for small business,,true,true,raw/conv_027.json
+conv_027,prm_clo_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_027.json
+conv_028,prm_clo_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,ENGINE_QUERY_INTRODUCED,query_2: is AWS best option for small business,,true,true,raw/conv_028.json
+conv_028,prm_clo_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_028.json
+conv_028,prm_clo_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,true,true,raw/conv_028.json
+conv_028,prm_clo_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,NOT_RETRIEVED,,,false,false,raw/conv_028.json
+conv_028,prm_clo_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,NOT_RETRIEVED,,,false,false,raw/conv_028.json
+conv_028,prm_clo_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,NOT_RETRIEVED,,,false,false,raw/conv_028.json
+conv_029,prm_clo_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_029.json
+conv_029,prm_clo_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_029.json
+conv_029,prm_clo_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,ENGINE_QUERY_INTRODUCED,query_2: is Microsoft Azure best option for small business,,false,false,raw/conv_029.json
+conv_029,prm_clo_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,NOT_RETRIEVED,,,false,false,raw/conv_029.json
+conv_029,prm_clo_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,NOT_RETRIEVED,,,false,false,raw/conv_029.json
+conv_029,prm_clo_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,NOT_RETRIEVED,,,false,false,raw/conv_029.json
+conv_030,prm_clo_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,AWS,NOT_RETRIEVED,,,false,false,raw/conv_030.json
+conv_030,prm_clo_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Google Cloud,ENGINE_QUERY_INTRODUCED,query_2: Google Cloud features pricing overview,,true,false,raw/conv_030.json
+conv_030,prm_clo_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Microsoft Azure,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_030.json
+conv_030,prm_clo_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,DigitalOcean,NOT_RETRIEVED,,,false,false,raw/conv_030.json
+conv_030,prm_clo_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Vercel,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_030.json
+conv_030,prm_clo_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Hetzner,NOT_RETRIEVED,,,false,false,raw/conv_030.json
+conv_031,prm_ema_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_031.json
+conv_031,prm_ema_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,NOT_RETRIEVED,,,false,false,raw/conv_031.json
+conv_031,prm_ema_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,ENGINE_QUERY_INTRODUCED,query_2: ActiveCampaign features pricing overview,,false,false,raw/conv_031.json
+conv_031,prm_ema_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,NOT_RETRIEVED,,,false,false,raw/conv_031.json
+conv_031,prm_ema_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_031.json
+conv_031,prm_ema_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,NOT_RETRIEVED,,,false,false,raw/conv_031.json
+conv_032,prm_ema_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_032.json
+conv_032,prm_ema_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_032.json
+conv_032,prm_ema_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,ENGINE_QUERY_INTRODUCED,query_2: ActiveCampaign software review and customer ratings,,true,true,raw/conv_032.json
+conv_032,prm_ema_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,NOT_RETRIEVED,,,false,false,raw/conv_032.json
+conv_032,prm_ema_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,NOT_RETRIEVED,,,false,false,raw/conv_032.json
+conv_032,prm_ema_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,ENGINE_QUERY_INTRODUCED,query_3: SendGrid features pricing overview,,true,true,raw/conv_032.json
+conv_033,prm_ema_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,ENGINE_QUERY_INTRODUCED,query_2: Mailchimp features pricing overview,,true,true,raw/conv_033.json
+conv_033,prm_ema_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,NOT_RETRIEVED,,,false,false,raw/conv_033.json
+conv_033,prm_ema_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_033.json
+conv_033,prm_ema_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_033.json
+conv_033,prm_ema_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,RETRIEVED_ONLY,,doc_7: https://www.capterra.com/compare-software-solutions/,true,false,raw/conv_033.json
+conv_033,prm_ema_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,ENGINE_QUERY_INTRODUCED,query_3: SendGrid features pricing overview,,false,false,raw/conv_033.json
+conv_034,prm_ema_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_034.json
+conv_034,prm_ema_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,NOT_RETRIEVED,,,false,false,raw/conv_034.json
+conv_034,prm_ema_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,ENGINE_QUERY_INTRODUCED,query_2: ActiveCampaign software review and customer ratings,,false,false,raw/conv_034.json
+conv_034,prm_ema_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,NOT_RETRIEVED,,,false,false,raw/conv_034.json
+conv_034,prm_ema_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_034.json
+conv_034,prm_ema_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,NOT_RETRIEVED,,,false,false,raw/conv_034.json
+conv_035,prm_ema_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_035.json
+conv_035,prm_ema_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,NOT_RETRIEVED,,,false,false,raw/conv_035.json
+conv_035,prm_ema_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,ENGINE_QUERY_INTRODUCED,query_2: is ActiveCampaign best option for small business,,true,true,raw/conv_035.json
+conv_035,prm_ema_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_035.json
+conv_035,prm_ema_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_035.json
+conv_035,prm_ema_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,NOT_RETRIEVED,,,false,false,raw/conv_035.json
+conv_036,prm_ema_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,NOT_RETRIEVED,,,false,false,raw/conv_036.json
+conv_036,prm_ema_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_036.json
+conv_036,prm_ema_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,ENGINE_QUERY_INTRODUCED,query_3: is ActiveCampaign best option for small business,,true,true,raw/conv_036.json
+conv_036,prm_ema_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,ENGINE_QUERY_INTRODUCED,query_2: Brevo software review and customer ratings,,true,false,raw/conv_036.json
+conv_036,prm_ema_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,NOT_RETRIEVED,,,false,false,raw/conv_036.json
+conv_036,prm_ema_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,true,true,raw/conv_036.json
+conv_037,prm_ema_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,NOT_RETRIEVED,,,false,false,raw/conv_037.json
+conv_037,prm_ema_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_037.json
+conv_037,prm_ema_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,RETRIEVED_ONLY,,doc_7: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_037.json
+conv_037,prm_ema_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_037.json
+conv_037,prm_ema_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,ENGINE_QUERY_INTRODUCED,query_2: ConvertKit software review and customer ratings,,true,true,raw/conv_037.json
+conv_037,prm_ema_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,ENGINE_QUERY_INTRODUCED,query_3: SendGrid features pricing overview,,false,false,raw/conv_037.json
+conv_038,prm_ema_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,ENGINE_QUERY_INTRODUCED,query_2: Mailchimp features pricing overview,,true,true,raw/conv_038.json
+conv_038,prm_ema_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,ENGINE_QUERY_INTRODUCED,query_3: Klaviyo features pricing overview,,false,false,raw/conv_038.json
+conv_038,prm_ema_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_038.json
+conv_038,prm_ema_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,true,true,raw/conv_038.json
+conv_038,prm_ema_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,RETRIEVED_ONLY,,doc_7: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_038.json
+conv_038,prm_ema_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,NOT_RETRIEVED,,,false,false,raw/conv_038.json
+conv_039,prm_ema_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,NOT_RETRIEVED,,,false,false,raw/conv_039.json
+conv_039,prm_ema_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_039.json
+conv_039,prm_ema_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_039.json
+conv_039,prm_ema_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,ENGINE_QUERY_INTRODUCED,query_2: Brevo software review and customer ratings,,false,false,raw/conv_039.json
+conv_039,prm_ema_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,NOT_RETRIEVED,,,false,false,raw/conv_039.json
+conv_039,prm_ema_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,ENGINE_QUERY_INTRODUCED,query_3: SendGrid features pricing overview,,false,false,raw/conv_039.json
+conv_040,prm_ema_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Mailchimp,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_040.json
+conv_040,prm_ema_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Klaviyo,ENGINE_QUERY_INTRODUCED,query_2: is Klaviyo best option for small business,,true,true,raw/conv_040.json
+conv_040,prm_ema_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,ActiveCampaign,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_040.json
+conv_040,prm_ema_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Brevo,NOT_RETRIEVED,,,false,false,raw/conv_040.json
+conv_040,prm_ema_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,ConvertKit,NOT_RETRIEVED,,,false,false,raw/conv_040.json
+conv_040,prm_ema_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,SendGrid,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_040.json
+conv_041,prm_cus_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_041.json
+conv_041,prm_cus_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,RETRIEVED_ONLY,,doc_7: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_041.json
+conv_041,prm_cus_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,NOT_RETRIEVED,,,false,false,raw/conv_041.json
+conv_041,prm_cus_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_041.json
+conv_041,prm_cus_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,ENGINE_QUERY_INTRODUCED,query_2: is Front best option for small business,,false,false,raw/conv_041.json
+conv_041,prm_cus_01,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,ENGINE_QUERY_INTRODUCED,query_3: is Gorgias best option for small business,,false,false,raw/conv_041.json
+conv_042,prm_cus_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,true,true,raw/conv_042.json
+conv_042,prm_cus_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,NOT_RETRIEVED,,,false,false,raw/conv_042.json
+conv_042,prm_cus_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,ENGINE_QUERY_INTRODUCED,query_2: is Intercom best option for small business,,true,false,raw/conv_042.json
+conv_042,prm_cus_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_042.json
+conv_042,prm_cus_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,NOT_RETRIEVED,,,false,false,raw/conv_042.json
+conv_042,prm_cus_02,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_042.json
+conv_043,prm_cus_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,ENGINE_QUERY_INTRODUCED,query_2: is Zendesk best option for small business,,true,true,raw/conv_043.json
+conv_043,prm_cus_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,NOT_RETRIEVED,,,false,false,raw/conv_043.json
+conv_043,prm_cus_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,NOT_RETRIEVED,,,false,false,raw/conv_043.json
+conv_043,prm_cus_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_043.json
+conv_043,prm_cus_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_043.json
+conv_043,prm_cus_03,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_043.json
+conv_044,prm_cus_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_044.json
+conv_044,prm_cus_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_044.json
+conv_044,prm_cus_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,NOT_RETRIEVED,,,false,false,raw/conv_044.json
+conv_044,prm_cus_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_044.json
+conv_044,prm_cus_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,ENGINE_QUERY_INTRODUCED,query_2: is Front best option for small business,,false,false,raw/conv_044.json
+conv_044,prm_cus_04,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,NOT_RETRIEVED,,,false,false,raw/conv_044.json
+conv_045,prm_cus_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,NOT_RETRIEVED,,,false,false,raw/conv_045.json
+conv_045,prm_cus_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,NOT_RETRIEVED,,,false,false,raw/conv_045.json
+conv_045,prm_cus_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_045.json
+conv_045,prm_cus_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,ENGINE_QUERY_INTRODUCED,query_2: is Help Scout best option for small business,,true,true,raw/conv_045.json
+conv_045,prm_cus_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_045.json
+conv_045,prm_cus_05,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,NOT_RETRIEVED,,,false,false,raw/conv_045.json
+conv_046,prm_cus_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_046.json
+conv_046,prm_cus_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,NOT_RETRIEVED,,,false,false,raw/conv_046.json
+conv_046,prm_cus_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,NOT_RETRIEVED,,,false,false,raw/conv_046.json
+conv_046,prm_cus_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,ENGINE_QUERY_INTRODUCED,query_2: is Help Scout best option for small business,,true,true,raw/conv_046.json
+conv_046,prm_cus_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,NOT_RETRIEVED,,,false,false,raw/conv_046.json
+conv_046,prm_cus_06,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,true,true,raw/conv_046.json
+conv_047,prm_cus_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,ENGINE_QUERY_INTRODUCED,query_2: is Zendesk best option for small business,,true,true,raw/conv_047.json
+conv_047,prm_cus_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,RETRIEVED_ONLY,,doc_5: https://www.capterra.com/compare-software-solutions/,false,false,raw/conv_047.json
+conv_047,prm_cus_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,NOT_RETRIEVED,,,false,false,raw/conv_047.json
+conv_047,prm_cus_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_047.json
+conv_047,prm_cus_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_047.json
+conv_047,prm_cus_07,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,NOT_RETRIEVED,,,false,false,raw/conv_047.json
+conv_048,prm_cus_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,ENGINE_QUERY_INTRODUCED,query_2: Zendesk features pricing overview,,true,false,raw/conv_048.json
+conv_048,prm_cus_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_048.json
+conv_048,prm_cus_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_048.json
+conv_048,prm_cus_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,ENGINE_QUERY_INTRODUCED,query_3: Help Scout software review and customer ratings,,true,true,raw/conv_048.json
+conv_048,prm_cus_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,NOT_RETRIEVED,,,false,false,raw/conv_048.json
+conv_048,prm_cus_08,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,NOT_RETRIEVED,,,false,false,raw/conv_048.json
+conv_049,prm_cus_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,RETRIEVED_ONLY,,doc_4: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_049.json
+conv_049,prm_cus_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,ENGINE_QUERY_INTRODUCED,query_2: Freshdesk software review and customer ratings,,false,false,raw/conv_049.json
+conv_049,prm_cus_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,NOT_RETRIEVED,,,false,false,raw/conv_049.json
+conv_049,prm_cus_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,NOT_RETRIEVED,,,false,false,raw/conv_049.json
+conv_049,prm_cus_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,RETRIEVED_ONLY,,doc_3: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_049.json
+conv_049,prm_cus_09,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,NOT_RETRIEVED,,,false,false,raw/conv_049.json
+conv_050,prm_cus_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Zendesk,NOT_RETRIEVED,,,false,false,raw/conv_050.json
+conv_050,prm_cus_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Freshdesk,ENGINE_QUERY_INTRODUCED,query_2: Freshdesk features pricing overview,,true,true,raw/conv_050.json
+conv_050,prm_cus_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Intercom,RETRIEVED_ONLY,,doc_5: https://techcrunch.com/2026/software-roundup,false,false,raw/conv_050.json
+conv_050,prm_cus_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Help Scout,NOT_RETRIEVED,,,false,false,raw/conv_050.json
+conv_050,prm_cus_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Front,ENGINE_QUERY_INTRODUCED,query_3: Front software review and customer ratings,,true,false,raw/conv_050.json
+conv_050,prm_cus_10,geo_scope_search_grounding,search-grounded-synthesizer-v1,Gorgias,RETRIEVED_ONLY,,doc_6: https://www.forbes.com/advisor/business/software-guide/,false,false,raw/conv_050.json

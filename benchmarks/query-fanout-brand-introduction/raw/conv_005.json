@@ -1,0 +1,37 @@
+{
+  "conversation_id": "conv_005",
+  "prompt_id": "prm_crm_05",
+  "category": "crm",
+  "user_prompt": "What CRM solutions provide the most flexible sales automation for SMBs?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "What solutions provide most 2026 review comparison",
+    "Monday CRM features pricing overview"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.monday.com/overview",
+      "title": "Monday CRM Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Monday CRM for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/monday-crm/reviews",
+      "title": "G2 Leader: Monday CRM Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Monday CRM."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Zoho CRM and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Zoho CRM for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including HubSpot and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including HubSpot for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for what crm solutions provide the most flexible sales automation for smbs, several leading platforms stand out based on current industry benchmarks.\n\nTeams should carefully balance cost, API extensibility, and ease of onboarding.",
+  "citations": [],
+  "timestamp_utc": "2026-10-09T09:36:26.984298+00:00"
+}

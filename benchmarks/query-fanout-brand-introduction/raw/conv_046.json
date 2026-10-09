@@ -1,0 +1,40 @@
+{
+  "conversation_id": "conv_046",
+  "prompt_id": "prm_cus_06",
+  "category": "customer_support",
+  "user_prompt": "Best support ticketing solutions with robust self-service knowledge base builders",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "Best support ticketing solutions 2026 review comparison",
+    "is Help Scout best option for small business"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.helpscout.com/overview",
+      "title": "Help Scout Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Help Scout for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/help-scout/reviews",
+      "title": "G2 Leader: Help Scout Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Help Scout."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Gorgias and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Gorgias for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Zendesk and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Zendesk for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for best support ticketing solutions with robust self-service knowledge base builders, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Help Scout**, **Gorgias**.\n\n- **Help Scout**: Well regarded for its feature completeness and user adoption.\n\n- **Gorgias**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.helpscout.com/overview](https://www.helpscout.com/overview)\n\n- [https://www.gorgias.com/](https://www.gorgias.com/)",
+  "citations": [
+    "https://www.helpscout.com/overview",
+    "https://www.gorgias.com/"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:27.018766+00:00"
+}

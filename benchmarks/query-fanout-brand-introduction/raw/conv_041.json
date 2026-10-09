@@ -1,0 +1,53 @@
+{
+  "conversation_id": "conv_041",
+  "prompt_id": "prm_cus_01",
+  "category": "customer_support",
+  "user_prompt": "What are the best customer support ticketing systems for multi-channel service?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "What best customer support 2026 review comparison",
+    "is Front best option for small business",
+    "is Gorgias best option for small business"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.front.com/overview",
+      "title": "Front Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Front for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/front/reviews",
+      "title": "G2 Leader: Front Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Front."
+    },
+    {
+      "url": "https://www.gorgias.com/overview",
+      "title": "Gorgias Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Gorgias for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/gorgias/reviews",
+      "title": "G2 Leader: Gorgias Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Gorgias."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Help Scout and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Help Scout for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Zendesk and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Zendesk for team productivity."
+    },
+    {
+      "url": "https://www.capterra.com/compare-software-solutions/",
+      "title": "Top 10 Solutions: Including Freshdesk and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Freshdesk for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for what are the best customer support ticketing systems for multi-channel service, several leading platforms stand out based on current industry benchmarks.\n\nTeams should carefully balance cost, API extensibility, and ease of onboarding.",
+  "citations": [],
+  "timestamp_utc": "2026-10-09T09:36:27.014752+00:00"
+}

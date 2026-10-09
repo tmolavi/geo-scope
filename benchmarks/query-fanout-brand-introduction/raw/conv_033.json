@@ -1,0 +1,55 @@
+{
+  "conversation_id": "conv_033",
+  "prompt_id": "prm_ema_03",
+  "category": "email_marketing",
+  "user_prompt": "Which email marketing software offers the most sophisticated visual automation workflows?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "Which email marketing software 2026 review comparison",
+    "Mailchimp features pricing overview",
+    "SendGrid features pricing overview"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.mailchimp.com/overview",
+      "title": "Mailchimp Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Mailchimp for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/mailchimp/reviews",
+      "title": "G2 Leader: Mailchimp Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Mailchimp."
+    },
+    {
+      "url": "https://www.sendgrid.com/overview",
+      "title": "SendGrid Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose SendGrid for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/sendgrid/reviews",
+      "title": "G2 Leader: SendGrid Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of SendGrid."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including ActiveCampaign and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including ActiveCampaign for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Brevo and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Brevo for team productivity."
+    },
+    {
+      "url": "https://www.capterra.com/compare-software-solutions/",
+      "title": "Top 10 Solutions: Including ConvertKit and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including ConvertKit for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for which email marketing software offers the most sophisticated visual automation workflows, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Mailchimp**, **ConvertKit**.\n\n- **Mailchimp**: Well regarded for its feature completeness and user adoption.\n\n- **ConvertKit**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.mailchimp.com/overview](https://www.mailchimp.com/overview)",
+  "citations": [
+    "https://www.mailchimp.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:27.008095+00:00"
+}

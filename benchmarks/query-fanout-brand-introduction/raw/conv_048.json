@@ -1,0 +1,50 @@
+{
+  "conversation_id": "conv_048",
+  "prompt_id": "prm_cus_08",
+  "category": "customer_support",
+  "user_prompt": "Top rated help desk software for internal IT and external customer service teams",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "rated help desk software 2026 review comparison",
+    "Zendesk features pricing overview",
+    "Help Scout software review and customer ratings"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.zendesk.com/overview",
+      "title": "Zendesk Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Zendesk for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/zendesk/reviews",
+      "title": "G2 Leader: Zendesk Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Zendesk."
+    },
+    {
+      "url": "https://www.helpscout.com/overview",
+      "title": "Help Scout Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Help Scout for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/help-scout/reviews",
+      "title": "G2 Leader: Help Scout Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Help Scout."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Freshdesk and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Freshdesk for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Intercom and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Intercom for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for top rated help desk software for internal it and external customer service teams, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Zendesk**, **Help Scout**.\n\n- **Zendesk**: Well regarded for its feature completeness and user adoption.\n\n- **Help Scout**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.helpscout.com/overview](https://www.helpscout.com/overview)",
+  "citations": [
+    "https://www.helpscout.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:27.020234+00:00"
+}

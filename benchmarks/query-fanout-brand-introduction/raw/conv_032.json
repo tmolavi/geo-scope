@@ -1,0 +1,51 @@
+{
+  "conversation_id": "conv_032",
+  "prompt_id": "prm_ema_02",
+  "category": "email_marketing",
+  "user_prompt": "Top newsletter platforms with high deliverability and subscriber segmentation",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "newsletter platforms with high 2026 review comparison",
+    "ActiveCampaign software review and customer ratings",
+    "SendGrid features pricing overview"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.activecampaign.com/overview",
+      "title": "ActiveCampaign Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose ActiveCampaign for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/activecampaign/reviews",
+      "title": "G2 Leader: ActiveCampaign Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of ActiveCampaign."
+    },
+    {
+      "url": "https://www.sendgrid.com/overview",
+      "title": "SendGrid Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose SendGrid for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/sendgrid/reviews",
+      "title": "G2 Leader: SendGrid Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of SendGrid."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Klaviyo and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Klaviyo for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Mailchimp and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Mailchimp for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for top newsletter platforms with high deliverability and subscriber segmentation, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **ActiveCampaign**, **SendGrid**.\n\n- **ActiveCampaign**: Well regarded for its feature completeness and user adoption.\n\n- **SendGrid**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.activecampaign.com/overview](https://www.activecampaign.com/overview)\n\n- [https://www.sendgrid.com/overview](https://www.sendgrid.com/overview)",
+  "citations": [
+    "https://www.activecampaign.com/overview",
+    "https://www.sendgrid.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:27.007327+00:00"
+}

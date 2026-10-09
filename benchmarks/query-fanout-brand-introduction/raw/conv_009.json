@@ -1,0 +1,51 @@
+{
+  "conversation_id": "conv_009",
+  "prompt_id": "prm_crm_09",
+  "category": "crm",
+  "user_prompt": "How do I choose an affordable CRM for customer retention and pipeline visibility?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "choose affordable customer retention 2026 review comparison",
+    "Zoho CRM features pricing overview",
+    "Salesforce features pricing overview"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.zoho.com/overview",
+      "title": "Zoho CRM Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Zoho CRM for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/zoho-crm/reviews",
+      "title": "G2 Leader: Zoho CRM Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Zoho CRM."
+    },
+    {
+      "url": "https://www.salesforce.com/overview",
+      "title": "Salesforce Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Salesforce for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/salesforce/reviews",
+      "title": "G2 Leader: Salesforce Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Salesforce."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Monday CRM and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Monday CRM for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including HubSpot and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including HubSpot for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for how do i choose an affordable crm for customer retention and pipeline visibility, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Zoho CRM**, **Salesforce**.\n\n- **Zoho CRM**: Well regarded for its feature completeness and user adoption.\n\n- **Salesforce**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.zoho.com/overview](https://www.zoho.com/overview)\n\n- [https://www.salesforce.com/overview](https://www.salesforce.com/overview)",
+  "citations": [
+    "https://www.zoho.com/overview",
+    "https://www.salesforce.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:26.987610+00:00"
+}

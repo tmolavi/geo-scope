@@ -1,0 +1,50 @@
+{
+  "conversation_id": "conv_011",
+  "prompt_id": "prm_pro_01",
+  "category": "project_management",
+  "user_prompt": "What are the top project management tools for agile product teams?",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "What project management tools 2026 review comparison",
+    "Jira software review and customer ratings",
+    "Monday.com software review and customer ratings"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.atlassian.com/overview",
+      "title": "Jira Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Jira for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/jira/reviews",
+      "title": "G2 Leader: Jira Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Jira."
+    },
+    {
+      "url": "https://www.monday.com/overview",
+      "title": "Monday.com Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Monday.com for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/monday.com/reviews",
+      "title": "G2 Leader: Monday.com Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Monday.com."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Trello and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Trello for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including Notion and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Notion for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for what are the top project management tools for agile product teams, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Jira**, **Monday.com**.\n\n- **Jira**: Well regarded for its feature completeness and user adoption.\n\n- **Monday.com**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.atlassian.com/overview](https://www.atlassian.com/overview)",
+  "citations": [
+    "https://www.atlassian.com/overview"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:26.989700+00:00"
+}

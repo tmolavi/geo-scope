@@ -1,0 +1,45 @@
+{
+  "conversation_id": "conv_014",
+  "prompt_id": "prm_pro_04",
+  "category": "project_management",
+  "user_prompt": "Recommend modern work management platforms for marketing campaign tracking",
+  "engine": "geo_scope_search_grounding",
+  "model": "search-grounded-synthesizer-v1",
+  "generated_search_queries": [
+    "Recommend modern work management 2026 review comparison",
+    "Notion software review and customer ratings"
+  ],
+  "retrieved_results": [
+    {
+      "url": "https://www.notion.so/overview",
+      "title": "Notion Official Overview & Feature Matrix",
+      "snippet": "Learn why thousands of organizations choose Notion for scalability and performance."
+    },
+    {
+      "url": "https://www.g2.com/products/notion/reviews",
+      "title": "G2 Leader: Notion Verified User Ratings",
+      "snippet": "User feedback highlights key strengths and weaknesses of Notion."
+    },
+    {
+      "url": "https://techcrunch.com/2026/software-roundup",
+      "title": "Top 10 Solutions: Including Trello and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Trello for team productivity."
+    },
+    {
+      "url": "https://www.forbes.com/advisor/business/software-guide/",
+      "title": "Top 10 Solutions: Including ClickUp and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including ClickUp for team productivity."
+    },
+    {
+      "url": "https://www.capterra.com/compare-software-solutions/",
+      "title": "Top 10 Solutions: Including Monday.com and Industry Alternatives",
+      "snippet": "In this roundup we examine multiple tools including Monday.com for team productivity."
+    }
+  ],
+  "final_answer": "When evaluating options for recommend modern work management platforms for marketing campaign tracking, several leading platforms stand out based on current industry benchmarks.\n\nAmong the top recommended solutions are **Notion**, **Trello**.\n\n- **Notion**: Well regarded for its feature completeness and user adoption.\n\n- **Trello**: Well regarded for its feature completeness and user adoption.\n\n\nSources:\n\n- [https://www.notion.so/overview](https://www.notion.so/overview)\n\n- [https://www.trello.com/](https://www.trello.com/)",
+  "citations": [
+    "https://www.notion.so/overview",
+    "https://www.trello.com/"
+  ],
+  "timestamp_utc": "2026-10-09T09:36:26.992197+00:00"
+}
