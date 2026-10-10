@@ -245,7 +245,11 @@ GEO-Scope maintains immutable, peer-review-ready benchmark releases under `bench
 | [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | 500 prompts (50 countries) | 45,698 obs | 4 models | SHA-256 Verified | [Paper Draft](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
 | [`global-ai-answers-2026.2-pilot`](benchmark/releases/global-ai-answers-2026.2-pilot/) | 100 prompts (10 countries) | 8,940 obs | 4 models | SHA-256 Verified | [Pilot Report](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md) |
 | [`global-ai-answers-2026.1`](benchmark/releases/global-ai-answers-2026.1/) | 34 prompts (7 regions) | Baseline obs | 4 models | SHA-256 Verified | [Methodology](docs/global-ai-answers-methodology.md) |
-| [`geo-seo-digital-agency-iran-2026.1`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/) | 30 prompts (5 intent strata) | 120 completions | 4 models | SHA-256 Verified | [Agency Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
+| [`geo-seo-digital-agency-iran-2026.1`](benchmarks/geo-seo-digital-agency-iran-2026.1/) | 30 prompts (5 intent strata) | 120 completions | 4 models | SHA-256 Verified | [Agency Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
+| [`query-fanout-brand-introduction`](benchmarks/query-fanout-brand-introduction/) | 50 prompts (5 sectors) | 300 brand obs | Grounded AI Search | SHA-256 Verified | [Findings & Methodology](benchmarks/query-fanout-brand-introduction/README.md) |
+
+### Mechanism & Replication Studies
+- **[Query Fan-Out Brand Introduction](benchmarks/query-fanout-brand-introduction/)**: Empirical replication test examining whether brands introduced by the engine's internal search/fan-out queries are more likely to appear in the final answer than retrieved-only brands. Across 50 commercial discovery conversations (300 brand observations), engine-introduced brands achieved a **65.7%** mention rate vs **13.1%** for retrieved-only brands (**5.01×** ratio; `REPRODUCED_DIRECTIONALLY`). Intermediate query fan-out tracking is preserved as an experimental diagnostic layer and explicitly excluded from composite visibility scores to avoid causal overreach.
 
 Every release bundle contains:
 - `manifest.json`: Dataset metadata, provider matrix, and schema version (`measurement_contract_version: "1.0"`).
