@@ -14,11 +14,11 @@
 
 [![CI](https://github.com/tmolavi/geo-scope/actions/workflows/ci.yml/badge.svg)](https://github.com/tmolavi/geo-scope/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Scientific Foundation](https://img.shields.io/badge/Scientific%20Foundation-v1.0%20Published-darkgreen)](docs/SCIENTIFIC_FOUNDATION_V1.md)
-[![Measurement Contract](https://img.shields.io/badge/Measurement%20Contract-v1.0-informational)](docs/measurement-contract-v1.md)
-[![Research Paper Outline](https://img.shields.io/badge/Research-Paper%20Outline-purple)](docs/RESEARCH_PAPER_OUTLINE.md)
+[![Scientific Measurement Gate](https://img.shields.io/badge/Scientific%20Measurement%20Gate-verified-darkgreen)](docs/SCIENTIFIC_MEASUREMENT_GATE.md)
+[![Methodology](https://img.shields.io/badge/Methodology-public-informational)](docs/METHODOLOGY.md)
+[![Research Paper](https://img.shields.io/badge/Research-Paper-purple)](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md)
 [![Golden Parser](https://img.shields.io/badge/Golden%20Parser-v1%20Verified-blueviolet)](benchmark/golden_sets/v1/)
-[![Security Audit](https://img.shields.io/badge/Security-Audit%20Passed-success)](docs/SECURITY_AUDIT.md)
+[![Public Reality Audit](https://img.shields.io/badge/Public-Reality%20Audit-success)](docs/REALITY_AUDIT.md)
 
 [PyPI package](https://pypi.org/project/geo-scope/) · [Hugging Face demo](https://huggingface.co/spaces/taqimolavi/geo-scope)
 
@@ -220,12 +220,11 @@ GEO-Scope does not claim universal AI visibility truth. It measures empirical ob
 > **Fundamental Measurement Axiom**  
 > *"AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking."*
 
-- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](docs/SCIENTIFIC_FOUNDATION_V1.md)
-- 📄 **Full Measurement Contract Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
-- ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
-- 📐 **Machine-Readable Schema**: [`schemas/measurement-contract-v1.json`](schemas/measurement-contract-v1.json)
-- 🧪 **Validation Example Fixture**: [`examples/measurement-contract-v1-example.json`](examples/measurement-contract-v1-example.json)
-- 📊 **Releases & Milestones Timeline**: [`docs/RELEASES.md`](docs/RELEASES.md)
+- 🏛️ **Scientific Measurement Gate**: [`docs/SCIENTIFIC_MEASUREMENT_GATE.md`](docs/SCIENTIFIC_MEASUREMENT_GATE.md)
+- 📄 **Methodology**: [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)
+- 📐 **Machine-Readable Schema**: [`schemas/v0.3/manifest.schema.json`](schemas/v0.3/manifest.schema.json)
+- 🧪 **Validation Example Fixture**: [`examples/public_demo/manifest.json`](examples/public_demo/manifest.json)
+- 📊 **Documentation Index**: [`docs/index.md`](docs/index.md)
 
 ### Core Measurement Principles
 1. **Mention Definition**: A response-level binary observation indicating whether the target entity appears at least once in the completion. Multiple mentions in a single answer do **not** artificially inflate response-level mention counts.
@@ -238,14 +237,14 @@ GEO-Scope does not claim universal AI visibility truth. It measures empirical ob
 
 ## 7. Published Benchmark Releases
 
-GEO-Scope maintains immutable, peer-review-ready benchmark releases under `benchmark/releases/` (see complete [Releases & Milestones Timeline](docs/RELEASES.md)):
+GEO-Scope maintains immutable, peer-review-ready benchmark releases under `benchmark/releases/` (see the [documentation index](docs/index.md)):
 
 | Benchmark Release | Prompt Count | Observations | Providers | Cryptographic Status | Documentation |
 |:---|:---|:---|:---|:---|:---|
 | [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | 500 prompts (50 countries) | 45,698 obs | 4 models | SHA-256 Verified | [Paper Draft](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
 | [`global-ai-answers-2026.2-pilot`](benchmark/releases/global-ai-answers-2026.2-pilot/) | 100 prompts (10 countries) | 8,940 obs | 4 models | SHA-256 Verified | [Pilot Report](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md) |
 | [`global-ai-answers-2026.1`](benchmark/releases/global-ai-answers-2026.1/) | 34 prompts (7 regions) | Baseline obs | 4 models | SHA-256 Verified | [Methodology](docs/global-ai-answers-methodology.md) |
-| [`geo-seo-digital-agency-iran-2026.1`](benchmarks/geo-seo-digital-agency-iran-2026.1/) | 30 prompts (5 intent strata) | 120 completions | 4 models | SHA-256 Verified | [Agency Report](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
+| [`geo-seo-digital-agency-iran-2026.1`](benchmark/releases/geo-seo-digital-agency-iran-2026.1/) | 30 prompts (5 intent strata) | 120 completions | 4 models | SHA-256 Verified | [Agency Report](benchmark/releases/geo-seo-digital-agency-iran-2026.1/README.md) |
 | [`query-fanout-brand-introduction`](benchmarks/query-fanout-brand-introduction/) | 50 prompts (5 sectors) | 300 brand obs | Grounded AI Search | SHA-256 Verified | [Findings & Methodology](benchmarks/query-fanout-brand-introduction/README.md) |
 
 ### Mechanism & Replication Studies
@@ -295,13 +294,12 @@ geo-scope parser evaluate --golden-set benchmark/golden_sets/v1
 
 ## 9. Research & Documentation
 
-- 🏛️ **Scientific Foundation Release v1.0**: [`docs/SCIENTIFIC_FOUNDATION_V1.md`](docs/SCIENTIFIC_FOUNDATION_V1.md)
-- 📊 **Releases & Milestones Timeline**: [`docs/RELEASES.md`](docs/RELEASES.md)
-- 📄 **Measurement Contract v1 Specification**: [`docs/measurement-contract-v1.md`](docs/measurement-contract-v1.md)
-- ❓ **Why Measurement Contract Exists**: [`docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md`](docs/WHY_MEASUREMENT_CONTRACT_EXISTS.md)
-- 🔬 **Research Methods & Protocol**: [`docs/RESEARCH_METHODS.md`](docs/RESEARCH_METHODS.md)
-- 📄 **Research Paper Outline**: [`docs/RESEARCH_PAPER_OUTLINE.md`](docs/RESEARCH_PAPER_OUTLINE.md)
-- 🔒 **Open Source Security Audit**: [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md)
+- 🏛️ **Scientific Measurement Gate**: [`docs/SCIENTIFIC_MEASUREMENT_GATE.md`](docs/SCIENTIFIC_MEASUREMENT_GATE.md)
+- 📄 **Methodology**: [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)
+- 📊 **Documentation Index**: [`docs/index.md`](docs/index.md)
+- 🔬 **Research Methods & Protocol**: [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md)
+- 📄 **Research Paper**: [`docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md`](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md)
+- 🔒 **Public Reality Audit**: [`docs/REALITY_AUDIT.md`](docs/REALITY_AUDIT.md)
 - 📊 **Methodology Crosswalk (Public Practice Comparison)**: [`docs/METHODOLOGY_CROSSWALK.md`](docs/METHODOLOGY_CROSSWALK.md)
 - 🔬 **Scientific Benchmark Methodology**: [`docs/benchmark-methodology.md`](docs/benchmark-methodology.md)
 - 🗺️ **Cross-Repository Evidence Map**: [`docs/EVIDENCE_MAP.md`](docs/EVIDENCE_MAP.md)

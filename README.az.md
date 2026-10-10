@@ -13,7 +13,7 @@
 [![العربية](https://img.shields.io/badge/%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-README.ar.md-teal)](README.ar.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Research Paper Outline](https://img.shields.io/badge/Research-Paper%20Outline-purple)](docs/RESEARCH_PAPER_OUTLINE.md)
+[![Research Paper](https://img.shields.io/badge/Research-Paper-purple)](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md)
 [![Golden Parser](https://img.shields.io/badge/Golden%20Parser-v1%20Verified-blueviolet)](benchmark/golden_sets/v1/)
 
 [Giriş](#1-giriş) • [Ölçülən Sahələr](#2-geo-scope-nəyi-ölçür) • [Qeyri-empirik Sahələr](#3-geo-scope-nəyi-ölçmür) • [Memarlıq](#4-sistem-memarlığı) • [İcra Rejimləri](#5-icra-rejimləri-execution-modes) • [Təkrar İstehsal](#6-təkrar-istehsal-və-yoxlama) • [Tez Başlama](#7-quraşdırma-və-istifadə)

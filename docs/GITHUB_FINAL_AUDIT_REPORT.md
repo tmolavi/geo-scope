@@ -59,7 +59,7 @@
 - Prominent **`🤝 Participate & Collaborate`** section guiding researchers to replicate benchmarks, review evidence taxonomy, join GitHub Discussions, and contribute.
 
 ### 4. Benchmark & Research Evidence
-- **Live Empirical Release**: [`geo-seo-digital-agency-iran-2026.1`](https://github.com/tmolavi/geo-scope/tree/codex/verified-benchmark-execution/benchmark/releases/geo-seo-digital-agency-iran-2026.1) with 30 intent-stratified prompts, 120 multi-model observations, full routing provenance, and 100% SHA-256 bit-for-bit checksum integrity.
+- **Live Empirical Release**: [`geo-seo-digital-agency-iran-2026.1`](https://github.com/tmolavi/geo-scope/tree/main/benchmark/releases/geo-seo-digital-agency-iran-2026.1) with 30 intent-stratified prompts, 120 multi-model observations, full routing provenance, and 100% SHA-256 bit-for-bit checksum integrity.
 - **Zero False Claims**: All outputs explicitly framed as *empirically observed completions*—never claims of secret ranking factors or guaranteed algorithmic advantages.
 
 ### 5. Missing Artifact Detection
