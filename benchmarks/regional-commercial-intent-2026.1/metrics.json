@@ -1,0 +1,150 @@
+{
+  "$schema": "https://geo-scope.org/schemas/v0.3/metrics.schema.json",
+  "mode": "empirical",
+  "sample_interpretation": "exploratory_pilot_uncalibrated",
+  "benchmark_id": "regional-commercial-intent-2026.1",
+  "measurement_status": "NOT_RUN",
+  "status_reason": "Live search-grounded provider adapters lack configured API credentials in this execution session (marked PROVIDER_UNAVAILABLE). No synthetic observations fabricated.",
+  "sampling_plan": {
+    "total_prompts": 24,
+    "providers_count": 3,
+    "repetitions": 2,
+    "total_planned_observations": 144
+  },
+  "summary_metrics": {
+    "planned_observations": 144,
+    "attempted_n": 0,
+    "successful_n": 0,
+    "failed_n": 0,
+    "metric_denominator_n": 0,
+    "brand_mention_rate": null,
+    "explicit_recommendation_rate": null,
+    "citation_rate": null,
+    "first_recommendation_position": null,
+    "competitor_share_of_voice": {},
+    "source_domain_frequency": {},
+    "response_variability": null,
+    "missing_failed_observations": 0
+  },
+  "entities": {
+    "inten": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "web24": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "novin": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "triboon": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "dimarketing": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "zeo": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "webtures": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "roas": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "semtr": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "stradiji": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    },
+    "b2press": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "valid_observation_n": 0,
+      "status": "NOT_RUN"
+    }
+  },
+  "provider_breakdown": {
+    "chatgpt_search": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "status": "PROVIDER_UNAVAILABLE"
+    },
+    "gemini_grounding": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "status": "PROVIDER_UNAVAILABLE"
+    },
+    "perplexity_sonar": {
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0,
+      "metric_denominator_n": 0,
+      "status": "PROVIDER_UNAVAILABLE"
+    }
+  },
+  "source_type_breakdown": {
+    "research_questions": {
+      "planned_n": 144,
+      "attempted_n": 0,
+      "successful_n": 0,
+      "failed_n": 0
+    }
+  }
+}

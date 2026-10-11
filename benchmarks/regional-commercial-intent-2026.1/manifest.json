@@ -1,0 +1,62 @@
+{
+  "$schema": "https://geo-scope.org/schemas/v0.3/manifest.schema.json",
+  "schema_version": "0.3.0",
+  "benchmark_version": "regional-commercial-intent-2026.1",
+  "dataset_name": "GEO-Scope Regional Commercial AI Visibility Pilot 2026.1 (Iran & Türkiye)",
+  "execution_mode": "empirical",
+  "mode": "empirical",
+  "is_empirical": true,
+  "prompt_policy": "neutral",
+  "provider_matrix": [
+    "chatgpt_search",
+    "gemini_grounding",
+    "perplexity_sonar"
+  ],
+  "providers": [
+    "chatgpt_search",
+    "gemini_grounding",
+    "perplexity_sonar"
+  ],
+  "repeat_count": 2,
+  "repeats_per_prompt": 2,
+  "comparison_batch_id": "reg-pilot-2026.1-ir-tr",
+  "created_at_utc": "2026-10-11T12:00:00Z",
+  "total_prompts": 24,
+  "total_raw_responses": 0,
+  "total_observations": 0,
+  "total_errors": 0,
+  "measurement_status": "NOT_RUN",
+  "provider_status": {
+    "chatgpt_search": "PROVIDER_UNAVAILABLE",
+    "gemini_grounding": "PROVIDER_UNAVAILABLE",
+    "perplexity_sonar": "PROVIDER_UNAVAILABLE"
+  },
+  "status_reason": "Live search-grounded provider adapters lack configured API credentials in this execution session (marked PROVIDER_UNAVAILABLE). No non-grounded models substituted; no synthetic observations fabricated.",
+  "file_hashes": {
+    "README.md": "4a707dd210c3728a76e2e6b96b7b8dbc4515a27d64c646bbe8c0981a2d1fae1b",
+    "entities.json": "7d3392329d254b07afbd0de2e3de2e92468c67b6c9cc2c72b6d1737b80b18f9f",
+    "errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "limitations.md": "a6ffa1775c7ec7c5ab69a819205c155e94e990d5ff265a8e938f1e4cd0341adc",
+    "manifest.json": "15833b1663bcc544cb3cc108ad04deaa1433a756666b2033119d5e960fd0b337",
+    "methodology.md": "5c254e835f9517ed7112aa4c0eaa62ec2a0c0e920a75534bf9543396ac1f99f9",
+    "metrics.json": "9e1914a911008cb52e38f9c70d3ccbb14158f6d683452dec2e0197621f2de604",
+    "observations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "prompts.jsonl": "388947bf773b22a22025a273f55914536dd85c706f4e10daf1bd43bfb24f5f87",
+    "raw_responses.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-config.json": "c32c736f90c55eac188d9b37612370e71dfe8212d4bbca8862c5d660cb52d6dc"
+  },
+  "checksums": {
+    "README.md": "4a707dd210c3728a76e2e6b96b7b8dbc4515a27d64c646bbe8c0981a2d1fae1b",
+    "entities.json": "7d3392329d254b07afbd0de2e3de2e92468c67b6c9cc2c72b6d1737b80b18f9f",
+    "errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "limitations.md": "a6ffa1775c7ec7c5ab69a819205c155e94e990d5ff265a8e938f1e4cd0341adc",
+    "manifest.json": "15833b1663bcc544cb3cc108ad04deaa1433a756666b2033119d5e960fd0b337",
+    "methodology.md": "5c254e835f9517ed7112aa4c0eaa62ec2a0c0e920a75534bf9543396ac1f99f9",
+    "metrics.json": "9e1914a911008cb52e38f9c70d3ccbb14158f6d683452dec2e0197621f2de604",
+    "observations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "prompts.jsonl": "388947bf773b22a22025a273f55914536dd85c706f4e10daf1bd43bfb24f5f87",
+    "raw_responses.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-config.json": "c32c736f90c55eac188d9b37612370e71dfe8212d4bbca8862c5d660cb52d6dc"
+  },
+  "composite_dataset_hash": "d14f93e28414e30bf2ddf8f556f08127413f99a67aef22bfedd8b5ab92e0e7c7"
+}

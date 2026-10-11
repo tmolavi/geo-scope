@@ -1,0 +1,135 @@
+{
+  "benchmark_id": "regional-commercial-intent-2026.1",
+  "title": "GEO-Scope Regional Commercial AI Visibility Pilot 2026.1 (Iran & Türkiye)",
+  "schema_version": "0.3.0",
+  "status": "NOT_RUN",
+  "status_reason": "Live search-grounded provider adapters lack configured API credentials in this execution session (marked PROVIDER_UNAVAILABLE). No non-grounded models substituted; no synthetic observations fabricated.",
+  "reference_study": {
+    "name": "Peak Ace AI Visibility LLM Benchmark 2026",
+    "reference_url": "https://peakace.agency/en/latest/ai-visibility-llm-benchmark-2026/",
+    "relation": "Independent regional pilot inspired by Peak Ace's intent-based measurement design. Not a reproduction of Peak Ace results."
+  },
+  "markets": {
+    "fa-IR": {
+      "country_iso": "IR",
+      "language": "fa",
+      "name": "Iran",
+      "prompts_count": 12,
+      "locale": "fa-IR"
+    },
+    "tr-TR": {
+      "country_iso": "TR",
+      "language": "tr",
+      "name": "Türkiye",
+      "prompts_count": 12,
+      "locale": "tr-TR"
+    }
+  },
+  "intent_distribution": {
+    "best_recommendation": {
+      "count": 6,
+      "prompts_per_market": 3,
+      "description": "Direct unbranded buyer requests for top provider recommendations"
+    },
+    "comparison": {
+      "count": 6,
+      "prompts_per_market": 3,
+      "description": "Comparative evaluation of service paradigms, toolsets, and agency models"
+    },
+    "pricing_vendor_selection": {
+      "count": 6,
+      "prompts_per_market": 3,
+      "description": "Pricing mechanisms, budget expectations, and vendor selection methodology"
+    },
+    "criteria_guidance": {
+      "count": 6,
+      "prompts_per_market": 3,
+      "description": "Readiness criteria, KPIs, and audit guidance for search AI visibility"
+    }
+  },
+  "topics": [
+    "SEO agencies",
+    "GEO service providers",
+    "AI visibility measurement tools",
+    "Technical SEO auditing",
+    "Digital PR providers",
+    "AI search consulting"
+  ],
+  "sampling_plan": {
+    "total_unique_prompts": 24,
+    "target_engines": [
+      "chatgpt_search",
+      "gemini_grounding",
+      "perplexity_sonar"
+    ],
+    "engines_count": 3,
+    "repetitions_per_prompt": 2,
+    "total_planned_observations": 144,
+    "sampling_interpretation": "Exploratory pilot calibration. Not statistically representative."
+  },
+  "provider_matrix": {
+    "chatgpt_search": {
+      "provider_class": "answer_engine",
+      "model": "gpt-4o",
+      "search_grounded": true,
+      "search_backend": "bing_search",
+      "status": "PROVIDER_UNAVAILABLE",
+      "planned_queries": 48
+    },
+    "gemini_grounding": {
+      "provider_class": "answer_engine",
+      "model": "gemini-2.5-flash",
+      "search_grounded": true,
+      "search_backend": "google_search",
+      "status": "PROVIDER_UNAVAILABLE",
+      "planned_queries": 48
+    },
+    "perplexity_sonar": {
+      "provider_class": "answer_engine",
+      "model": "sonar",
+      "search_grounded": true,
+      "search_backend": "bing_and_perplexity_index",
+      "status": "PROVIDER_UNAVAILABLE",
+      "planned_queries": 48
+    }
+  },
+  "budget": {
+    "budget_ceiling_usd": 10.00,
+    "estimated_execution_cost_usd": 2.64,
+    "within_budget": true,
+    "cost_estimation_details": {
+      "perplexity_sonar": {
+        "queries": 48,
+        "unit_rate_usd": 0.005,
+        "subtotal_usd": 0.24
+      },
+      "gemini_grounding": {
+        "queries": 48,
+        "unit_rate_usd": 0.035,
+        "subtotal_usd": 1.68
+      },
+      "chatgpt_search": {
+        "queries": 48,
+        "unit_rate_usd": 0.015,
+        "subtotal_usd": 0.72
+      }
+    }
+  },
+  "measurement_protocol": {
+    "prompt_policy": "neutral",
+    "temperature": 0.2,
+    "search_grounding_enforced": true,
+    "substitute_non_grounded_models": false,
+    "uncertainty_interval_method": "wilson_score_interval_95",
+    "metric_definitions": {
+      "brand_mention_rate": "Binary response-level mention (target entity mentioned >= 1 time) / valid observations",
+      "explicit_recommendation_rate": "Target entity explicitly recommended in numbered list or direct endorsement / valid observations",
+      "citation_rate": "Target entity domain/URL cited in grounding metadata or citations / valid observations",
+      "first_recommendation_position": "1-based ordinal position of first target entity recommendation in explicit numbered lists",
+      "competitor_share_of_voice": "Share of all brand mentions captured by target entity among all identified competitors",
+      "source_domain_frequency": "Frequency of distinct third-party domains cited across all search groundings",
+      "response_variability": "Jaccard similarity and rank variance across repeat observations (k=2)",
+      "missing_failed_observations": "Count and proportion of failed, timed-out, or unavailable observations"
+    }
+  }
+}

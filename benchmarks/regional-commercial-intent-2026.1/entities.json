@@ -1,0 +1,123 @@
+[
+  {
+    "id": "inten",
+    "names": ["Inten", "اینتن", "InTen"],
+    "people": ["Taghi Molavi", "تقی مولوی"],
+    "domains": ["inten.asia"],
+    "related_domains": ["molavi.pro"],
+    "market": "IR",
+    "country_iso": "IR",
+    "category": "seo_geo_agency",
+    "do_not_confuse": ["بازار مولوی", "فرش مولوی", "خیابان مولوی", "مولوی شاعر"]
+  },
+  {
+    "id": "web24",
+    "names": ["Web24", "وب24", "وب ۲۴"],
+    "people": ["Reza Shirazi", "رضا شیرازی"],
+    "domains": ["web24.ir"],
+    "related_domains": [],
+    "market": "IR",
+    "country_iso": "IR",
+    "category": "seo_agency",
+    "do_not_confuse": ["وب ۲۴ ساعته"]
+  },
+  {
+    "id": "novin",
+    "names": ["Novin", "نوین", "آژانس نوین", "Novin Hub"],
+    "people": [],
+    "domains": ["novin.com"],
+    "related_domains": [],
+    "market": "IR",
+    "country_iso": "IR",
+    "category": "digital_marketing_agency",
+    "do_not_confuse": ["دانشگاه نوین", "بیمه نوین", "بانک اقتصاد نوین", "نوین چرم", "پوشاک نوین"]
+  },
+  {
+    "id": "triboon",
+    "names": ["Triboon", "تریبون"],
+    "people": ["Arman Safaei", "آرمان صفایی"],
+    "domains": ["triboon.net"],
+    "related_domains": [],
+    "market": "IR",
+    "country_iso": "IR",
+    "category": "digital_pr_provider",
+    "do_not_confuse": ["تریبون آزاد", "تریبون مجلس", "تریبون سخنرانی"]
+  },
+  {
+    "id": "dimarketing",
+    "names": ["Dimarketing", "دی مارکتینگ", "دی‌مارکتینگ"],
+    "people": [],
+    "domains": ["dimarketing.ir"],
+    "related_domains": [],
+    "market": "IR",
+    "country_iso": "IR",
+    "category": "digital_agency",
+    "do_not_confuse": ["دی جی مارکتینگ"]
+  },
+  {
+    "id": "zeo",
+    "names": ["Zeo Agency", "Zeo", "Zeo.org"],
+    "people": ["Yiğit Konur"],
+    "domains": ["zeo.org"],
+    "related_domains": [],
+    "market": "TR",
+    "country_iso": "TR",
+    "category": "seo_geo_agency",
+    "do_not_confuse": ["Zeo water", "Zeo coin"]
+  },
+  {
+    "id": "webtures",
+    "names": ["Webtures", "Webtures Dijital"],
+    "people": ["Kaan Gülten"],
+    "domains": ["webtures.com"],
+    "related_domains": [],
+    "market": "TR",
+    "country_iso": "TR",
+    "category": "seo_agency",
+    "do_not_confuse": []
+  },
+  {
+    "id": "roas",
+    "names": ["Roas Digital", "Roas", "Roas Dijital"],
+    "people": [],
+    "domains": ["roas.com", "roasdigital.com"],
+    "related_domains": [],
+    "market": "TR",
+    "country_iso": "TR",
+    "category": "performance_seo_agency",
+    "do_not_confuse": ["ROAS return on ad spend", "roas metriği"]
+  },
+  {
+    "id": "semtr",
+    "names": ["SEM Danışmanlık", "SEMTR", "SEM Dijital"],
+    "people": [],
+    "domains": ["semtr.com"],
+    "related_domains": [],
+    "market": "TR",
+    "country_iso": "TR",
+    "category": "digital_marketing_agency",
+    "do_not_confuse": ["Search Engine Marketing"]
+  },
+  {
+    "id": "stradiji",
+    "names": ["Stradiji", "Stradiji Danışmanlık"],
+    "people": [],
+    "domains": ["stradiji.com"],
+    "related_domains": [],
+    "market": "TR",
+    "country_iso": "TR",
+    "category": "seo_consulting",
+    "do_not_confuse": ["Strateji"]
+  },
+  {
+    "id": "b2press",
+    "names": ["B2Press", "B2Press Online PR"],
+    "people": [],
+    "domains": ["b2press.com"],
+    "related_domains": [],
+    "market": "TR",
+    "country_iso": "TR",
+    "category": "digital_pr_provider",
+    "do_not_confuse": []
+  }
+]
