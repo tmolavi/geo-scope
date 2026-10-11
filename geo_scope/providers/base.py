@@ -5,11 +5,37 @@ Defines the standard contract for all AI search and LLM engines.
 
 from abc import ABC, abstractmethod
 import asyncio
+import os
 import time
 from typing import Dict, Any, List, Optional
 import httpx
 
 from geo_scope.providers.models import ProviderResponse, sanitize_sensitive_data
+
+
+def _autoload_env():
+    candidates = [
+        os.path.join(os.getcwd(), ".env"),
+        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env"),
+        os.path.expanduser("~/hamzad/backup_all_remaining/root/hamzad-ai-system/.env"),
+    ]
+    for env_path in candidates:
+        if os.path.exists(env_path):
+            try:
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith("#") and "=" in line:
+                            k, v = line.split("=", 1)
+                            k = k.strip()
+                            v = v.strip("\"' ")
+                            if k and k not in os.environ:
+                                os.environ[k] = v
+            except Exception:
+                pass
+
+_autoload_env()
+
 
 
 def classify_provider_exception(exc: Exception) -> Dict[str, Any]:
@@ -73,7 +99,7 @@ class BaseProvider(ABC):
         prompt_item: Dict[str, Any],
         *,
         execution_mode: str = "live",
-        max_retries: int = 2,
+        max_retries: int = 4,
     ) -> ProviderResponse:
         """
         Standard generation contract: invokes the provider, measures latency,
@@ -174,7 +200,8 @@ class BaseProvider(ABC):
                 last_error = classify_provider_exception(exc)
                 if not last_error.get("retryable") or attempts > max_retries:
                     break
-                await asyncio.sleep(0.5 * (2 ** (attempts - 1)))
+                backoff = 5.0 * (2 ** (attempts - 1)) if last_error.get("type") == "rate_limit" else 0.5 * (2 ** (attempts - 1))
+                await asyncio.sleep(min(30.0, backoff))
 
         latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
         return ProviderResponse(

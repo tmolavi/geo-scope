@@ -19,6 +19,11 @@ class PerplexityProvider(BaseProvider):
         )
         self.api_key = api_key or os.getenv("PERPLEXITY_API_KEY", "")
         self.model = os.getenv("PERPLEXITY_MODEL", model)
+        self.avalai_mode = bool(self.api_key and self.api_key.startswith("aa-"))
+        self.base_url = os.getenv(
+            "PERPLEXITY_BASE_URL",
+            "https://api.avalai.ir/v1" if self.avalai_mode else "https://api.perplexity.ai"
+        )
         self.response_kind = "search_enabled"
         self.search_grounded = True
         self.provider_class = "answer_engine"
@@ -30,7 +35,7 @@ class PerplexityProvider(BaseProvider):
         if not self.api_key:
             raise ValueError("PERPLEXITY_API_KEY is not set.")
 
-        url = "https://api.perplexity.ai/chat/completions"
+        url = f"{self.base_url.rstrip('/')}/chat/completions"
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
         prompt_policy = prompt_item.get("prompt_policy", "neutral")
         query = prompt_item.get("query") or prompt_item.get("prompt", "")

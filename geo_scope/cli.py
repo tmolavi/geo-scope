@@ -163,11 +163,13 @@ def measure_cmd(args):
         pct = int((done / total) * 100) if total > 0 else 100
         print(f"\rProgress: [{done}/{total}] {pct}% completed...", end="", flush=True)
 
+    repeats_count = getattr(args, "repeat", getattr(args, "repeats", 1)) or 1
     res = asyncio.run(engine.execute_measurement(
         prompts=prompts,
         providers=provider_list,
         out_dir=out_dir,
         mode=mode,
+        repeats=repeats_count,
         seed=getattr(args, "seed", 42),
         progress_callback=progress,
     ))
@@ -855,6 +857,13 @@ def main():
         help="Output directory for standard measurement bundle (default: output/measure_latest)",
     )
     measure_parser.add_argument("--seed", type=int, default=42, help="Deterministic seed for simulation mode")
+    measure_parser.add_argument(
+        "--repeat",
+        "--repeats",
+        type=int,
+        default=1,
+        help="Number of repetitions per prompt across providers (default: 1)",
+    )
     measure_parser.add_argument(
         "--confidence-threshold",
         type=float,
