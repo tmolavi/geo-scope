@@ -138,9 +138,20 @@ Kanıt Paketleri ve Raporlar (Reports + Replay Bundle)
 
 ---
 
-## 6. Tekrarlanabilirlik ve Doğrulama
+## 6. Yayımlanan Karşılaştırma Paketleri (Benchmarks) ve Tekrarlanabilirlik
 
-`benchmark/releases/` altındaki tüm veri setleri `checksums.sha256` kriptografik özetleriyle korunur:
+GEO-Scope, hakemli denetime hazır ve `checksums.sha256` ile kriptografik olarak doğrulanmış bağımsız veri setleri yayımlar:
+
+| Karşılaştırma Paketi (Benchmark) | Çalışma Türü | Sorgu / Gözlem Sayısı | Temel Bulgu | Dokümantasyon ve Sonuçlar |
+|:---|:---|:---|:---|:---|
+| 🏆 [`regional-commercial-intent-2026.1`](benchmarks/regional-commercial-intent-2026.1/) | İran ve Türkiye Bölgesel Ticari Benchmark (İlk Kez Bu Ölçekte) | 24 sorgu / 1.584 gözlem (2.291 kaynak) | Canlı arama motoru ölçümü; Zeo %47,4 ses payı (TR), Novin %36,4 ses payı (IR) | [Tam Sonuçlar (TR)](benchmarks/regional-commercial-intent-2026.1/results.tr.md) · [Results (EN)](benchmarks/regional-commercial-intent-2026.1/results.md) |
+| [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | Küresel Çok Modelli Benchmark | 500 sorgu (50 ülke) / 45.698 gözlem | Çok modelli marka anılma ve kaynak dağılımı | [Makale Taslağı](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
+| [`geo-seo-digital-agency-iran-2026.1`](benchmarks/geo-seo-digital-agency-iran-2026.1/) | İran Dijital Ajans Benchmark | 30 ticari sorgu / 120 çıktı | Dijital ajansların AI görünürlük oranları | [Ajans Raporu](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
+| [`query-fanout-brand-introduction`](benchmarks/query-fanout-brand-introduction/) | Arama Dağılımı Mekanizma Testi | 50 oturum / 300 marka gözlemi | İç arama sorgularında geçen markalar nihai yanıtta **5,01 kat** daha fazla yer aldı | [Yöntem ve Kanıtlar](benchmarks/query-fanout-brand-introduction/README.md) |
+
+### Veri Seti Bütünlüğünü Doğrulama ve Çevrimdışı Çalıştırma
+
+`benchmark/releases/` ve `benchmarks/` altındaki tüm veri setleri `checksums.sha256` kriptografik özetleriyle korunur:
 
 ```bash
 # Veri seti bütünlüğünü doğrulama

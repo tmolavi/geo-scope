@@ -144,6 +144,7 @@ GEO-Scope مجموعه‌داده‌ها و بنچمارک‌های غیرقاب
 
 | نسخه بنچمارک | نوع مطالعه | پرامپت / مشاهدات | یافته کلیدی | مستندات |
 |:---|:---|:---|:---|:---|
+| 🏆 [`regional-commercial-intent-2026.1`](benchmarks/regional-commercial-intent-2026.1/) | بنچمارک تجاری ایران و ترکیه (منتشرشده برای اولین بار در این سطح) | ۲۴ پرامپت / ۱٬۵۸۴ مشاهده (۲٬۲۹۱ استناد وب) | ارزیابی زنده متصل به وب؛ ۳۶.۴٪ سهم صدای نوین در ایران، ۴۷.۴٪ سهم صدای Zeo در ترکیه | [نتایج کامل (FA)](benchmarks/regional-commercial-intent-2026.1/results.fa.md) · [Results (EN)](benchmarks/regional-commercial-intent-2026.1/results.md) · [Sonuçlar (TR)](benchmarks/regional-commercial-intent-2026.1/results.tr.md) |
 | [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | بنچمارک جامع جهانی | ۵۰۰ پرامپت (۵۰ کشور) / ۴۵,۶۹۸ مشاهده | مانیتورینگ چندمدلی سهم برندها و استنادات | [پیش‌نویس مقاله](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
 | [`geo-seo-digital-agency-iran-2026.1`](benchmarks/geo-seo-digital-agency-iran-2026.1/) | بنچمارک بازار ایران | ۳۰ پرامپت تجاری / ۱۲۰ خروجی مدل | مقایسه نرخ دیداری آژانس‌های دیجیتال | [گزارش تحلیلی](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
 | [`query-fanout-brand-introduction`](benchmarks/query-fanout-brand-introduction/) | آزمون بازتولید مکانیسم جستجو | ۵۰ مکالمه / ۳۰۰ مشاهده برند | برندهای معرفی‌شده در فَن‌اوت **۵.۰۱ برابر** بیشتر در پاسخ نهایی آمدند (۶۵.۷٪ در برابر ۱۳.۱٪) | [متدولوژی و شواهد](benchmarks/query-fanout-brand-introduction/README.md) |

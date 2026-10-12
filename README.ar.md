@@ -138,9 +138,20 @@
 
 ---
 
-## ٦. إعادة الإنتاج والتدقيق
+## ٦. حزم القياس المرجعية المنشورة وإعادة الإنتاج
 
-جميع مجموعات البيانات المنشورة في `benchmark/releases/` محمية بملفات الهاش المشفرة `checksums.sha256`:
+ينشر GEO-Scope مجموعات بيانات مرجعية غير قابلة للتغيير وموثقة تشفيرياً بملفات `checksums.sha256`:
+
+| حزمة القياس المرجعية | نوع الدراسة | الأسئلة / الملاحظات | النتيجة الأساسية | التوثيق والنتائج |
+|:---|:---|:---|:---|:---|
+| 🏆 [`regional-commercial-intent-2026.1`](benchmarks/regional-commercial-intent-2026.1/) | مؤشر تجاري لإيران وتركيا (يُنشر لأول مرة بهذا المستوى) | 24 سؤالاً / 1,584 ملاحظة (2,291 استشهاداً) | تقييم مباشر متصل بالبحث؛ Novin بنسبة 36.4% سهم صوت في إيران، و Zeo بنسبة 47.4% في تركيا | [النتائج الكاملة (AR)](benchmarks/regional-commercial-intent-2026.1/results.ar.md) · [Results (EN)](benchmarks/regional-commercial-intent-2026.1/results.md) |
+| [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | مؤشر عالمي متعدد النماذج | 500 سؤال (50 دولة) / 45,698 ملاحظة | مراقبة متعددة النماذج لحصص ظهور العلامات ومصادر الروابط | [مسودة الورقة العلمية](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
+| [`geo-seo-digital-agency-iran-2026.1`](benchmarks/geo-seo-digital-agency-iran-2026.1/) | مؤشر الوكالات الرقمية في إيران | 30 سؤالاً تجارياً / 120 مخرجاً | مقارنة معدلات ظهور الوكالات الرقمية في الذكاء الاصطناعي | [تقرير الوكالات](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
+| [`query-fanout-brand-introduction`](benchmarks/query-fanout-brand-introduction/) | اختبار آلية تشعب استفسارات البحث | 50 جلسة / 300 ملاحظة للعلامات | العلامات الواردة في البحث الداخلي ظهرت بنسبة **5.01 أضعاف** في الإجابة النهائية | [المنهجية والأدلة](benchmarks/query-fanout-brand-introduction/README.md) |
+
+### التحقق من سلامة البيانات والتشغيل دون اتصال
+
+جميع مجموعات البيانات المنشورة في `benchmark/releases/` و `benchmarks/` محمية بملفات الهاش المشفرة `checksums.sha256`:
 
 ```bash
 # التحقق من سلامة ملفات حزمة القياس

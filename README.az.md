@@ -138,9 +138,20 @@ Sübut Paketləri və Hesabatlar (Reports + Replay Bundle)
 
 ---
 
-## 6. Təkrar İstehsal və Yoxlama
+## 6. Dərc Olunmuş Bençmark Buraxılışları və Təkrar İstehsal
 
-`benchmark/releases/` altındakı bütün məlumat dəstləri `checksums.sha256` kriptoqrafik xülasələri ilə qorunur:
+GEO-Scope, elmi resenziyaya hazır və `checksums.sha256` ilə kriptoqrafik olaraq təsdiqlənmiş müstəqil məlumat dəstləri dərc edir:
+
+| Bençmark Buraxılışı | Tədqiqat Növü | Sorğu / Müşahidə Sayı | Əsas Nəticə | Sənədlər və Hesabat |
+|:---|:---|:---|:---|:---|
+| 🏆 [`regional-commercial-intent-2026.1`](benchmarks/regional-commercial-intent-2026.1/) | İran və Türkiyə Regional Kommersiya Bençmarkı (İlk Dəfə Bu Miqyasda) | 24 sorğu / 1.584 müşahidə (2.291 istinad) | Canlı axtarış sistemlərinin ölçülməsi; Zeo 47.4% səs payı (TR), Novin 36.4% səs payı (IR) | [Tam Nəticələr (AZ)](benchmarks/regional-commercial-intent-2026.1/results.az.md) · [Results (EN)](benchmarks/regional-commercial-intent-2026.1/results.md) |
+| [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | Qlobal Çoxmodelli Bençmark | 500 sorğu (50 ölkə) / 45.698 müşahidə | Çoxmodelli brend anılma və istinad paylanması | [Məqalə Qaralaması](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
+| [`geo-seo-digital-agency-iran-2026.1`](benchmarks/geo-seo-digital-agency-iran-2026.1/) | İran Rəqəmsal Agentlik Bençmarkı | 30 kommersiya sorğusu / 120 nəticə | Rəqəmsal agentliklərin AI görünmə dərəcələri | [Agentlik Hesabatı](benchmarks/geo-seo-digital-agency-iran-2026.1/report.md) |
+| [`query-fanout-brand-introduction`](benchmarks/query-fanout-brand-introduction/) | Axtarış Mexanizmi Təkrar Yoxlama Testi | 50 seans / 300 brend müşahidəsi | Daxili axtarışda qeyd olunan brendlər yekun cavabda **5.01 dəfə** daha çox yer aldı | [Metodologiya və Sübutlar](benchmarks/query-fanout-brand-introduction/README.md) |
+
+### Məlumat Dəstinin Bütövlüyünü Yoxlamaq və Oflayn İcra
+
+`benchmark/releases/` və `benchmarks/` altındakı bütün məlumat dəstləri `checksums.sha256` kriptoqrafik xülasələri ilə qorunur:
 
 ```bash
 # Məlumat dəstinin bütövlüyünü yoxlamaq
