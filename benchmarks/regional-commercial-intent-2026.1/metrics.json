@@ -1,150 +1,239 @@
 {
-  "$schema": "https://geo-scope.org/schemas/v0.3/metrics.schema.json",
   "mode": "empirical",
-  "sample_interpretation": "exploratory_pilot_uncalibrated",
-  "benchmark_id": "regional-commercial-intent-2026.1",
-  "measurement_status": "NOT_RUN",
-  "status_reason": "Live search-grounded provider adapters lack configured API credentials in this execution session (marked PROVIDER_UNAVAILABLE). No synthetic observations fabricated.",
-  "sampling_plan": {
-    "total_prompts": 24,
-    "providers_count": 3,
-    "repetitions": 2,
-    "total_planned_observations": 144
-  },
-  "summary_metrics": {
-    "planned_observations": 144,
-    "attempted_n": 0,
-    "successful_n": 0,
-    "failed_n": 0,
-    "metric_denominator_n": 0,
-    "brand_mention_rate": null,
-    "explicit_recommendation_rate": null,
-    "citation_rate": null,
-    "first_recommendation_position": null,
-    "competitor_share_of_voice": {},
-    "source_domain_frequency": {},
-    "response_variability": null,
-    "missing_failed_observations": 0
-  },
+  "sample_interpretation": "stratified research sample, not global user census",
   "entities": {
     "inten": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 1.32,
+        "search_mention_rate": 0.0278,
+        "search_citation_rate": 0.0069,
+        "search_recommendation_rate": 0.0,
+        "search_top1_rate": 0.0,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "web24": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 3.26,
+        "search_mention_rate": 0.0764,
+        "search_citation_rate": 0.0,
+        "search_recommendation_rate": 0.0069,
+        "search_top1_rate": 0.0069,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "novin": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 3.75,
+        "search_mention_rate": 0.0833,
+        "search_citation_rate": 0.0,
+        "search_recommendation_rate": 0.0139,
+        "search_top1_rate": 0.0069,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "triboon": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 3.4,
+        "search_mention_rate": 0.0486,
+        "search_citation_rate": 0.0486,
+        "search_recommendation_rate": 0.0,
+        "search_top1_rate": 0.0,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "dimarketing": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 0.0,
+        "search_mention_rate": 0.0,
+        "search_citation_rate": 0.0,
+        "search_recommendation_rate": 0.0,
+        "search_top1_rate": 0.0,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "zeo": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 5.49,
+        "search_mention_rate": 0.1319,
+        "search_citation_rate": 0.0,
+        "search_recommendation_rate": 0.0069,
+        "search_top1_rate": 0.0,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "webtures": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 6.18,
+        "search_mention_rate": 0.1181,
+        "search_citation_rate": 0.0417,
+        "search_recommendation_rate": 0.0069,
+        "search_top1_rate": 0.0069,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "roas": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 0.83,
+        "search_mention_rate": 0.0208,
+        "search_citation_rate": 0.0,
+        "search_recommendation_rate": 0.0,
+        "search_top1_rate": 0.0,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "semtr": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 0.0,
+        "search_mention_rate": 0.0,
+        "search_citation_rate": 0.0,
+        "search_recommendation_rate": 0.0,
+        "search_top1_rate": 0.0,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     },
     "stradiji": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 0.0,
+        "search_mention_rate": 0.0,
+        "search_citation_rate": 0.0,
+        "search_recommendation_rate": 0.0,
+        "search_top1_rate": 0.0,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 60
     },
     "b2press": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "ai_search_visibility": {
+        "search_visibility_score": 0.0,
+        "search_mention_rate": 0.0,
+        "search_citation_rate": 0.0,
+        "search_recommendation_rate": 0.0,
+        "search_top1_rate": 0.0,
+        "metric_denominator_n": 144,
+        "scored_denominator_n": 144
+      },
+      "llm_brand_observation": null,
+      "observed_source_mention_rate": 0.0,
+      "attempted_n": 144,
+      "successful_n": 144,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "valid_observation_n": 0,
-      "status": "NOT_RUN"
+      "metric_denominator_n": 144,
+      "scored_observations": 144,
+      "confused_observations": 0
     }
   },
   "provider_breakdown": {
-    "chatgpt_search": {
-      "attempted_n": 0,
-      "successful_n": 0,
-      "failed_n": 0,
-      "metric_denominator_n": 0,
-      "status": "PROVIDER_UNAVAILABLE"
-    },
     "gemini_grounding": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "attempted_n": 48,
+      "successful_n": 48,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "status": "PROVIDER_UNAVAILABLE"
+      "metric_denominator_n": 48,
+      "status": "valid"
+    },
+    "openai_completion": {
+      "attempted_n": 48,
+      "successful_n": 48,
+      "failed_n": 0,
+      "metric_denominator_n": 48,
+      "status": "valid"
     },
     "perplexity_sonar": {
-      "attempted_n": 0,
-      "successful_n": 0,
+      "attempted_n": 48,
+      "successful_n": 48,
       "failed_n": 0,
-      "metric_denominator_n": 0,
-      "status": "PROVIDER_UNAVAILABLE"
+      "metric_denominator_n": 48,
+      "status": "valid"
     }
   },
-  "source_type_breakdown": {
-    "research_questions": {
-      "planned_n": 144,
-      "attempted_n": 0,
-      "successful_n": 0,
-      "failed_n": 0
-    }
-  }
+  "source_type_breakdown": {}
 }

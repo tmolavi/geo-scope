@@ -19,44 +19,67 @@
   ],
   "repeat_count": 2,
   "repeats_per_prompt": 2,
-  "comparison_batch_id": "reg-pilot-2026.1-ir-tr",
+  "comparison_batch_id": "d23d597b-62db-4ef0-9cfc-57f6ae4bf093",
   "created_at_utc": "2026-10-11T12:00:00Z",
   "total_prompts": 24,
-  "total_raw_responses": 0,
-  "total_observations": 0,
+  "total_raw_responses": 144,
+  "total_observations": 1584,
   "total_errors": 0,
-  "measurement_status": "NOT_RUN",
+  "measurement_status": "COMPLETE",
   "provider_status": {
-    "chatgpt_search": "PROVIDER_UNAVAILABLE",
-    "gemini_grounding": "PROVIDER_UNAVAILABLE",
-    "perplexity_sonar": "PROVIDER_UNAVAILABLE"
+    "chatgpt_search": "COMPLETE",
+    "gemini_grounding": "COMPLETE",
+    "perplexity_sonar": "COMPLETE"
   },
-  "status_reason": "Live search-grounded provider adapters lack configured API credentials in this execution session (marked PROVIDER_UNAVAILABLE). No non-grounded models substituted; no synthetic observations fabricated.",
+  "status_reason": "Live benchmark execution completed successfully across all search-grounded providers with verified citations.",
   "file_hashes": {
     "README.md": "4a707dd210c3728a76e2e6b96b7b8dbc4515a27d64c646bbe8c0981a2d1fae1b",
     "entities.json": "7d3392329d254b07afbd0de2e3de2e92468c67b6c9cc2c72b6d1737b80b18f9f",
     "errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "limitations.md": "a6ffa1775c7ec7c5ab69a819205c155e94e990d5ff265a8e938f1e4cd0341adc",
-    "manifest.json": "15833b1663bcc544cb3cc108ad04deaa1433a756666b2033119d5e960fd0b337",
+    "manifest.json": "de349c474822c1108ede1207870d46d3deb7b94db0a719f607431755d676f372",
     "methodology.md": "5c254e835f9517ed7112aa4c0eaa62ec2a0c0e920a75534bf9543396ac1f99f9",
-    "metrics.json": "9e1914a911008cb52e38f9c70d3ccbb14158f6d683452dec2e0197621f2de604",
-    "observations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "metrics.json": "a469f56725be54fe1fc42df5f91cb724af790aae0015ac7c76b1673e7d8a81eb",
+    "observations.jsonl": "47ae0004fe91226abf1dbfae8ac84f3971345d5264867afbc450fb78b8dde74d",
     "prompts.jsonl": "388947bf773b22a22025a273f55914536dd85c706f4e10daf1bd43bfb24f5f87",
-    "raw_responses.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "run-config.json": "c32c736f90c55eac188d9b37612370e71dfe8212d4bbca8862c5d660cb52d6dc"
+    "raw_responses.jsonl": "a2df692b16cdbf68f90dd345f20c7ff944957e42adaee1ada252495313506659",
+    "results.md": "8d7093c548e043b69d45aff97e6f4c7b50dd1c8114d3fe42d312c2152b176527",
+    "run-config.json": "f620663d4f0860ffd5f0cab8f2987c3cde053d67002da65abb68d0a57ba827ec",
+    "summary.json": "7fa6848984342e30a9a59ebafe4eb539ef4a491be0f099a130e81d13fa2e8a93"
   },
   "checksums": {
     "README.md": "4a707dd210c3728a76e2e6b96b7b8dbc4515a27d64c646bbe8c0981a2d1fae1b",
     "entities.json": "7d3392329d254b07afbd0de2e3de2e92468c67b6c9cc2c72b6d1737b80b18f9f",
     "errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "limitations.md": "a6ffa1775c7ec7c5ab69a819205c155e94e990d5ff265a8e938f1e4cd0341adc",
-    "manifest.json": "15833b1663bcc544cb3cc108ad04deaa1433a756666b2033119d5e960fd0b337",
+    "manifest.json": "de349c474822c1108ede1207870d46d3deb7b94db0a719f607431755d676f372",
     "methodology.md": "5c254e835f9517ed7112aa4c0eaa62ec2a0c0e920a75534bf9543396ac1f99f9",
-    "metrics.json": "9e1914a911008cb52e38f9c70d3ccbb14158f6d683452dec2e0197621f2de604",
-    "observations.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "metrics.json": "a469f56725be54fe1fc42df5f91cb724af790aae0015ac7c76b1673e7d8a81eb",
+    "observations.jsonl": "47ae0004fe91226abf1dbfae8ac84f3971345d5264867afbc450fb78b8dde74d",
     "prompts.jsonl": "388947bf773b22a22025a273f55914536dd85c706f4e10daf1bd43bfb24f5f87",
-    "raw_responses.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "run-config.json": "c32c736f90c55eac188d9b37612370e71dfe8212d4bbca8862c5d660cb52d6dc"
+    "raw_responses.jsonl": "a2df692b16cdbf68f90dd345f20c7ff944957e42adaee1ada252495313506659",
+    "results.md": "8d7093c548e043b69d45aff97e6f4c7b50dd1c8114d3fe42d312c2152b176527",
+    "run-config.json": "f620663d4f0860ffd5f0cab8f2987c3cde053d67002da65abb68d0a57ba827ec",
+    "summary.json": "7fa6848984342e30a9a59ebafe4eb539ef4a491be0f099a130e81d13fa2e8a93"
   },
-  "composite_dataset_hash": "d14f93e28414e30bf2ddf8f556f08127413f99a67aef22bfedd8b5ab92e0e7c7"
+  "composite_dataset_hash": "d14f93e28414e30bf2ddf8f556f08127413f99a67aef22bfedd8b5ab92e0e7c7",
+  "created_at": "2026-10-12T08:53:35.832066+00:00",
+  "comparison_window_started_at": "2026-10-12T08:53:35.832066+00:00",
+  "comparison_window_completed_at": "2026-10-12T09:33:51.390641+00:00",
+  "prompt_count": 24,
+  "execution_count": 144,
+  "n_prompts": 24,
+  "n_completions": 144,
+  "n_observations": 1584,
+  "n_errors": 0,
+  "provider_classes": {
+    "chatgpt_search": "answer_engine",
+    "gemini_grounding": "answer_engine",
+    "perplexity_sonar": "answer_engine"
+  },
+  "prompt_source_breakdown": {
+    "research_questions": 24
+  },
+  "sample_interpretation": "stratified research sample, not global user census",
+  "raw_responses_path": "raw_responses.jsonl"
 }

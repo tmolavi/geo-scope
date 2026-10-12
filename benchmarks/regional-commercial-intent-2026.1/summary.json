@@ -1,0 +1,358 @@
+{
+  "benchmark_id": "regional-commercial-intent-2026.1",
+  "title": "GEO-Scope Regional Commercial AI Visibility Pilot 2026.1 (Iran & Türkiye)",
+  "measurement_status": "COMPLETE",
+  "execution_mode": "empirical",
+  "created_at_utc": "2026-10-12T09:34:00Z",
+  "total_prompts": 24,
+  "total_raw_responses": 144,
+  "total_observations": 1584,
+  "total_errors": 0,
+  "total_citations_collected": 2291,
+  "actual_cost_usd": 2.16,
+  "budget_ceiling_usd": 10.0,
+  "manual_qa": {
+    "sample_size_iran": 10,
+    "sample_size_turkiye": 10,
+    "total_inspected": 20,
+    "extraction_matches": 20,
+    "accuracy_pct": 100.0,
+    "validation_gate_passed": true
+  },
+  "markets": {
+    "iran": {
+      "locale": "fa-IR",
+      "prompts_n": 12,
+      "completions_n": 72,
+      "observations_n": 792,
+      "total_citations": 1183,
+      "top_cited_domains": [
+        {
+          "domain": "vertexaisearch.cloud.google.com",
+          "count": 460
+        },
+        {
+          "domain": "iranweblife.com",
+          "count": 21
+        },
+        {
+          "domain": "miladjalayi.com",
+          "count": 14
+        },
+        {
+          "domain": "frac.tl",
+          "count": 14
+        },
+        {
+          "domain": "demandsage.com",
+          "count": 12
+        },
+        {
+          "domain": "triboon.net",
+          "count": 12
+        },
+        {
+          "domain": "virgool.io",
+          "count": 11
+        },
+        {
+          "domain": "setare.com",
+          "count": 11
+        },
+        {
+          "domain": "seodo.agency",
+          "count": 10
+        },
+        {
+          "domain": "ensun.io",
+          "count": 9
+        }
+      ],
+      "brand_rankings": [
+        {
+          "id": "novin",
+          "name": "Novin",
+          "mentions": 12,
+          "mention_rate_pct": 16.67,
+          "mention_ci_95": [
+            9.8,
+            26.91
+          ],
+          "recommendations": 2,
+          "citations": 0,
+          "top1_count": 1,
+          "sov_pct": 36.36,
+          "confused_filtered": 0
+        },
+        {
+          "id": "web24",
+          "name": "Web24",
+          "mentions": 11,
+          "mention_rate_pct": 15.28,
+          "mention_ci_95": [
+            8.75,
+            25.32
+          ],
+          "recommendations": 1,
+          "citations": 0,
+          "top1_count": 1,
+          "sov_pct": 33.33,
+          "confused_filtered": 0
+        },
+        {
+          "id": "triboon",
+          "name": "Triboon",
+          "mentions": 7,
+          "mention_rate_pct": 9.72,
+          "mention_ci_95": [
+            4.79,
+            18.74
+          ],
+          "recommendations": 0,
+          "citations": 7,
+          "top1_count": 0,
+          "sov_pct": 21.21,
+          "confused_filtered": 0
+        },
+        {
+          "id": "inten",
+          "name": "Inten",
+          "mentions": 3,
+          "mention_rate_pct": 4.17,
+          "mention_ci_95": [
+            1.43,
+            11.55
+          ],
+          "recommendations": 0,
+          "citations": 1,
+          "top1_count": 0,
+          "sov_pct": 9.09,
+          "confused_filtered": 0
+        },
+        {
+          "id": "dimarketing",
+          "name": "Dimarketing",
+          "mentions": 0,
+          "mention_rate_pct": 0.0,
+          "mention_ci_95": [
+            0.0,
+            5.07
+          ],
+          "recommendations": 0,
+          "citations": 0,
+          "top1_count": 0,
+          "sov_pct": 0.0,
+          "confused_filtered": 0
+        }
+      ]
+    },
+    "turkiye": {
+      "locale": "tr-TR",
+      "prompts_n": 12,
+      "completions_n": 72,
+      "observations_n": 792,
+      "total_citations": 1108,
+      "top_cited_domains": [
+        {
+          "domain": "vertexaisearch.cloud.google.com",
+          "count": 484
+        },
+        {
+          "domain": "agencies.semrush.com",
+          "count": 22
+        },
+        {
+          "domain": "edvido.com",
+          "count": 16
+        },
+        {
+          "domain": "pr.net.tr",
+          "count": 16
+        },
+        {
+          "domain": "prix-studio.com",
+          "count": 14
+        },
+        {
+          "domain": "ranktracker.com",
+          "count": 13
+        },
+        {
+          "domain": "onuruzunonline.com",
+          "count": 12
+        },
+        {
+          "domain": "habergazetesi.com.tr",
+          "count": 12
+        },
+        {
+          "domain": "indigodergisi.com",
+          "count": 11
+        },
+        {
+          "domain": "publicus.com.tr",
+          "count": 10
+        }
+      ],
+      "brand_rankings": [
+        {
+          "id": "zeo",
+          "name": "Zeo Agency",
+          "mentions": 18,
+          "mention_rate_pct": 25.0,
+          "mention_ci_95": [
+            16.44,
+            36.09
+          ],
+          "recommendations": 1,
+          "citations": 0,
+          "top1_count": 0,
+          "sov_pct": 47.37,
+          "confused_filtered": 0
+        },
+        {
+          "id": "webtures",
+          "name": "Webtures",
+          "mentions": 17,
+          "mention_rate_pct": 23.61,
+          "mention_ci_95": [
+            15.3,
+            34.6
+          ],
+          "recommendations": 1,
+          "citations": 6,
+          "top1_count": 1,
+          "sov_pct": 44.74,
+          "confused_filtered": 0
+        },
+        {
+          "id": "roas",
+          "name": "Roas Digital",
+          "mentions": 3,
+          "mention_rate_pct": 4.17,
+          "mention_ci_95": [
+            1.43,
+            11.55
+          ],
+          "recommendations": 0,
+          "citations": 0,
+          "top1_count": 0,
+          "sov_pct": 7.89,
+          "confused_filtered": 0
+        },
+        {
+          "id": "semtr",
+          "name": "SEM Danışmanlık",
+          "mentions": 0,
+          "mention_rate_pct": 0.0,
+          "mention_ci_95": [
+            0.0,
+            5.07
+          ],
+          "recommendations": 0,
+          "citations": 0,
+          "top1_count": 0,
+          "sov_pct": 0.0,
+          "confused_filtered": 0
+        },
+        {
+          "id": "stradiji",
+          "name": "Stradiji",
+          "mentions": 0,
+          "mention_rate_pct": 0.0,
+          "mention_ci_95": [
+            0.0,
+            5.07
+          ],
+          "recommendations": 0,
+          "citations": 0,
+          "top1_count": 0,
+          "sov_pct": 0.0,
+          "confused_filtered": 60
+        },
+        {
+          "id": "b2press",
+          "name": "B2Press",
+          "mentions": 0,
+          "mention_rate_pct": 0.0,
+          "mention_ci_95": [
+            0.0,
+            5.07
+          ],
+          "recommendations": 0,
+          "citations": 0,
+          "top1_count": 0,
+          "sov_pct": 0.0,
+          "confused_filtered": 0
+        }
+      ]
+    }
+  },
+  "intents": {
+    "best_recommendation": {
+      "total_queries": 36,
+      "total_citations": 663,
+      "avg_citations_per_query": 18.42,
+      "brand_mentions": 47,
+      "brand_recommendations": 5
+    },
+    "comparison": {
+      "total_queries": 36,
+      "total_citations": 582,
+      "avg_citations_per_query": 16.17,
+      "brand_mentions": 7,
+      "brand_recommendations": 0
+    },
+    "pricing_vendor_selection": {
+      "total_queries": 36,
+      "total_citations": 556,
+      "avg_citations_per_query": 15.44,
+      "brand_mentions": 7,
+      "brand_recommendations": 0
+    },
+    "criteria_guidance": {
+      "total_queries": 36,
+      "total_citations": 490,
+      "avg_citations_per_query": 13.61,
+      "brand_mentions": 12,
+      "brand_recommendations": 0
+    }
+  },
+  "providers": {
+    "openai_completion": {
+      "display_name": "ChatGPT Search (gpt-4o)",
+      "completions": 48,
+      "total_citations": 344,
+      "avg_citations_per_query": 7.17,
+      "avg_latency_sec": 21.1,
+      "brand_mentions": 23,
+      "brand_recommendations": 5,
+      "error_count": 0
+    },
+    "gemini_grounding": {
+      "display_name": "Google Gemini (gemini-2.5-flash)",
+      "completions": 48,
+      "total_citations": 944,
+      "avg_citations_per_query": 19.67,
+      "avg_latency_sec": 18.13,
+      "brand_mentions": 26,
+      "brand_recommendations": 0,
+      "error_count": 0
+    },
+    "perplexity_sonar": {
+      "display_name": "Perplexity (sonar-pro)",
+      "completions": 48,
+      "total_citations": 1003,
+      "avg_citations_per_query": 20.9,
+      "avg_latency_sec": 8.07,
+      "brand_mentions": 24,
+      "brand_recommendations": 0,
+      "error_count": 0
+    }
+  },
+  "peak_ace_comparison": {
+    "methodology_status": "REPRODUCED_DIRECTIONALLY",
+    "comparison_density_observed": true,
+    "notes": "Independent regional pilot inspired by Peak Ace intent-based design. Directionally reproduced heavy reliance on third-party comparison/directory domains across comparative commercial queries in both emerging regional markets."
+  }
+}
