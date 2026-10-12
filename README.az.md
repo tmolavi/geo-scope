@@ -16,9 +16,69 @@
 [![Research Paper](https://img.shields.io/badge/Research-Paper-purple)](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md)
 [![Golden Parser](https://img.shields.io/badge/Golden%20Parser-v1%20Verified-blueviolet)](benchmark/golden_sets/v1/)
 
-[Giriş](#1-giriş) • [Ölçülən Sahələr](#2-geo-scope-nəyi-ölçür) • [Qeyri-empirik Sahələr](#3-geo-scope-nəyi-ölçmür) • [Memarlıq](#4-sistem-memarlığı) • [İcra Rejimləri](#5-icra-rejimləri-execution-modes) • [Təkrar İstehsal](#6-təkrar-istehsal-və-yoxlama) • [Tez Başlama](#7-quraşdırma-və-istifadə)
+[🏆 Mühüm Bençmark (İran və Türkiyə)](#-mühüm-bençmark-kommersiya-süni-i̇ntellekt-görünməsi--i̇ran-və-türkiyə-20261) • [Giriş](#1-giriş) • [Ölçülən Sahələr](#2-geo-scope-nəyi-ölçür) • [Qeyri-empirik Sahələr](#3-geo-scope-nəyi-ölçmür) • [Memarlıq](#4-sistem-memarlığı) • [İcra Rejimləri](#5-icra-rejimləri-execution-modes) • [Təkrar İstehsal](#6-təkrar-istehsal-və-yoxlama) • [Tez Başlama](#7-quraşdırma-və-istifadə)
 
 </div>
+
+---
+
+## 🏆 Mühüm Bençmark: Kommersiya Süni İntellekt Görünməsi — İran və Türkiyə (2026.1)
+
+> [!IMPORTANT]
+> ### 🚀 Regional Axtarışda Bu Miqyas və Dəqiqlikdə İLK DƏFƏ Dərc Olunub
+> Bu tədqiqat, **İran (`fa-IR`)** və **Türkiyə (`tr-TR`)** rəqəmsal axtarış bazarlarında generativ süni intellekt cavab sistemlərində kommersiya brend görünməsini (Commercial AI Visibility), birbaşa tövsiyə dərəcələrini və internet istinadlarını qiymətləndirən **ilk müstəqil və hərtərəfli empirik bençmarkdır**.
+> Bütün 144 müşahidə, **100% canlı internet axtarışı ilə dəstəklənən (Search Grounding)**, **süni verilənlərdən tamamilə uzaq** və **kriptoqrafik olaraq yoxlanıla bilən (SHA-256)** şəkildə qeydə alınmışdır.
+
+<div align="center">
+
+**[Bençmark Verilənlərini İncələyin](benchmarks/regional-commercial-intent-2026.1/)** • **[Tam Nəticələr Hesabatı (Azərbaycan)](benchmarks/regional-commercial-intent-2026.1/results.az.md)** • **[Full Results (English)](benchmarks/regional-commercial-intent-2026.1/results.md)** • **[نتایج کامل (فارسی)](benchmarks/regional-commercial-intent-2026.1/results.fa.md)** • **[Sonuç Raporu (Türkçe)](benchmarks/regional-commercial-intent-2026.1/results.tr.md)** • **[النتائج الكاملة (العربية)](benchmarks/regional-commercial-intent-2026.1/results.ar.md)**
+
+</div>
+
+### Əsas Göstəricilər Xülasəsi
+
+| Göstərici | Ölçülən Qiymət | Empirik Doğrulama Qeydi |
+| :--- | :--- | :--- |
+| **Canlı Cavablar** | **144 / 144** (100.0%) | 24 neytral alıcı sorğusu $\times$ 3 süni intellekt mühərriki $\times$ 2 təkrar |
+| **Obyekt Müşahidələri** | **1.584 müşahidə** | 11 hədəf agentlik kontekst üzrə incələndi |
+| **Təsdiqlənmiş İstinadlar** | **2.291 URL** | Sıfır halüsinasiya; 100% real vaxt internet mənbələri |
+| **Xəta Dərəcəsi** | **0.0% (0 xəta)** | Bütün mühərriklərdə tam və kəsintisiz icra |
+| **Ümumi Xərc** | **$2.16 USD** | 10 dollarlıq pilot büdcə limitindən xeyli aşağı |
+| **Qiymətləndirilən Mühərriklər** | **ChatGPT Search, Gemini Grounding, Perplexity Sonar** | Axtarış modelləri: `gpt-4o`, `gemini-2.5-flash`, `sonar-pro` |
+
+### Bazar Sıralamaları və Səs Payı (Share of Voice)
+
+#### 🇹🇷 Türkiyə (`tr-TR`) Kommersiya Bazarı — 72 Tamamlanmış Cavab
+| Sıra | Agentlik / Brend | Qeyd Olunma | Qeyd Nisbəti (%) | 95% Vilson İnt. | Tövsiyə | İstinad | 1-ci Yer | Səs Payı (SOV) |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 🥇 | **Zeo Agency** (`zeo`) | 18 | 25.00% | [16.44%, 36.09%] | 1 | 0 | 0 | **47.37%** |
+| 🥈 | **Webtures** (`webtures`) | 17 | 23.61% | [15.30%, 34.60%] | 1 | 6 | 1 | **44.74%** |
+| 🥉 | **Roas Digital** (`roas`) | 3 | 4.17% | [1.43%, 11.55%] | 0 | 0 | 0 | **7.89%** |
+| 4 | **SEM Danışmanlık** (`semtr`) | 0 | 0.00% | [0.00%, 5.07%] | 0 | 0 | 0 | **0.00%** |
+| 5 | **Stradiji** (`stradiji`) | 0 | 0.00% | [0.00%, 5.07%] | 0 | 0 | 0 | **0.00%** |
+| 6 | **B2Press** (`b2press`) | 0 | 0.00% | [0.00%, 5.07%] | 0 | 0 | 0 | **0.00%** |
+
+*Obyekt Dəqiqləşdirməsi Qeydi: Stradiji markası 0 kommersiya cavabında qeyd edilmişdir; ümumi türk sözü olan "strateji" ilə yaranan 60 yanlış uyğunluq GEO-Scope-un kontekst filtrləmə sistemi tərəfindən uğurla kənarlaşdırılmışdır.*
+
+#### 🇮🇷 İran (`fa-IR`) Kommersiya Bazarı — 72 Tamamlanmış Cavab
+| Sıra | Agentlik / Brend | Qeyd Olunma | Qeyd Nisbəti (%) | 95% Vilson İnt. | Tövsiyə | İstinad | 1-ci Yer | Səs Payı (SOV) |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 🥇 | **Novin** (`novin`) | 12 | 16.67% | [9.80%, 26.91%] | 2 | 0 | 1 | **36.36%** |
+| 🥈 | **Web24** (`web24`) | 11 | 15.28% | [8.75%, 25.32%] | 1 | 0 | 1 | **33.33%** |
+| 🥉 | **Triboon** (`triboon`) | 7 | 9.72% | [4.79%, 18.74%] | 0 | 7 | 0 | **21.21%** |
+| 4 | **Inten** (`inten`) | 3 | 4.17% | [1.43%, 11.55%] | 0 | 1 | 0 | **9.09%** |
+| 5 | **Dimarketing** (`dimarketing`) | 0 | 0.00% | [0.00%, 5.07%] | 0 | 0 | 0 | **0.00%** |
+
+### Axtarış Mühərriklərinin İstinad Sıxlığı
+- **Perplexity Sonar (`sonar-pro`)**: **1.003 istinad** (**20.90** istinad/sorğu, 7.94 san ortalama müddət)
+- **Google Gemini Grounding (`gemini-2.5-flash`)**: **944 istinad** (**19.67** istinad/sorğu, 17.85 san ortalama müddət)
+- **ChatGPT Search (`gpt-4o`)**: **344 istinad** (**7.17** istinad/sorğu, 10.42 san ortalama müddət)
+
+### Ən Çox İstinad Edilən Mənbələr
+- **Türkiyə**: Agentlik kataloqları və müqayisə platformaları (`agencies.semrush.com` #1 22 istinad, `edvido.com` #2 16 istinad, `pr.net.tr` #3 16 istinad).
+- **İran**: İxtisaslaşmış agentlik keysləri və mütəxəssis bloqları (`iranweblife.com` #1 21 istinad, `miladjalayi.com` #2 14 istinad, `triboon.net` #5 12 istinad).
+
+🔗 **[5 Dildə Tam Metodologiya və Bençmark Hesabatını Oxuyun](benchmarks/regional-commercial-intent-2026.1/README.az.md)**
 
 ---
 

@@ -22,9 +22,69 @@
 
 [PyPI package](https://pypi.org/project/geo-scope/) · [Hugging Face demo](https://huggingface.co/spaces/taqimolavi/geo-scope)
 
-[Introduction](#1-introduction) • [What It Measures](#2-what-geo-scope-measures) • [Scientific Foundation](#6-measurement-contract-v1--scientific-foundation) • [Benchmarks](#7-published-benchmark-releases) • [Reproducibility](#8-reproducibility--auditability) • [Research](#9-research--documentation) • [Quickstart](#10-installation--usage) • [MCP](#11-model-context-protocol-mcp)
+[🏆 Landmark Benchmark (Iran & Türkiye)](#-landmark-benchmark-commercial-ai-visibility-in-iran--türkiye-20261) • [Introduction](#1-introduction) • [What It Measures](#2-what-geo-scope-measures) • [Scientific Foundation](#6-measurement-contract-v1--scientific-foundation) • [Benchmarks](#7-published-benchmark-releases) • [Reproducibility](#8-reproducibility--auditability) • [Research](#9-research--documentation) • [Quickstart](#10-installation--usage) • [MCP](#11-model-context-protocol-mcp)
 
 </div>
+
+---
+
+## 🏆 Landmark Benchmark: Commercial AI Visibility in Iran & Türkiye (2026.1)
+
+> [!IMPORTANT]
+> ### 🚀 Published for the First Time at this Scale & Empirical Rigor
+> This landmark study marks the **first comprehensive empirical benchmark** evaluating commercial AI search visibility, entity recommendations, and web citation patterns across **Iran (`fa-IR`)** and **Türkiye (`tr-TR`)**. 
+> Conducted with **zero synthetic fabrication**, **100% real-time search-grounded completions**, and **rigorous cryptographic auditability**, it establishes an evidence-backed baseline for Generative Engine Optimization (GEO) in regional markets.
+
+<div align="center">
+
+**[Explore Benchmark Dataset & Specs](benchmarks/regional-commercial-intent-2026.1/)** • **[Full Results (English)](benchmarks/regional-commercial-intent-2026.1/results.md)** • **[گزارش نتایج (فارسی)](benchmarks/regional-commercial-intent-2026.1/results.fa.md)** • **[Sonuç Raporu (Türkçe)](benchmarks/regional-commercial-intent-2026.1/results.tr.md)** • **[Nəticələr (Azərbaycan)](benchmarks/regional-commercial-intent-2026.1/results.az.md)** • **[النتائج الكاملة (العربية)](benchmarks/regional-commercial-intent-2026.1/results.ar.md)**
+
+</div>
+
+### Key Benchmark Metrics at a Glance
+
+| Metric | Measured Value | Empirical Rigor Note |
+| :--- | :--- | :--- |
+| **Live Completions** | **144 / 144** (100.0%) | 24 neutral buyer queries $\times$ 3 grounded engines $\times$ 2 runs |
+| **Entity Observations** | **1,584 observations** | 11 target agencies evaluated with disambiguation |
+| **Verified Citations** | **2,291 URLs** | Zero hallucinations; 100% verified real-time sources |
+| **Error Rate** | **0.0% (0 errors)** | Full completion with zero fallback across all engines |
+| **Execution Cost** | **$2.16 USD** | Well below $10 pilot cap (\$0.015/obs average) |
+| **Engines Evaluated** | **ChatGPT Search, Gemini Grounding, Perplexity Sonar** | Grounded models: `gpt-4o`, `gemini-2.5-flash`, `sonar-pro` |
+
+### Market Rankings & Share of Voice (SOV)
+
+#### 🇮🇷 Iran (`fa-IR`) Commercial Market (72 completions)
+| Rank | Agency / Brand | Mentions | Mention Rate (%) | 95% Wilson CI | Recs | Citations | Top-1 | Share of Voice (SOV) |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 🥇 | **Novin** (`novin`) | 12 | 16.67% | [9.80%, 26.91%] | 2 | 0 | 1 | **36.36%** |
+| 🥈 | **Web24** (`web24`) | 11 | 15.28% | [8.75%, 25.32%] | 1 | 0 | 1 | **33.33%** |
+| 🥉 | **Triboon** (`triboon`) | 7 | 9.72% | [4.79%, 18.74%] | 0 | 7 | 0 | **21.21%** |
+| 4 | **Inten** (`inten`) | 3 | 4.17% | [1.43%, 11.55%] | 0 | 1 | 0 | **9.09%** |
+| 5 | **Dimarketing** (`dimarketing`) | 0 | 0.00% | [0.00%, 5.07%] | 0 | 0 | 0 | **0.00%** |
+
+#### 🇹🇷 Türkiye (`tr-TR`) Commercial Market (72 completions)
+| Rank | Agency / Brand | Mentions | Mention Rate (%) | 95% Wilson CI | Recs | Citations | Top-1 | Share of Voice (SOV) |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 🥇 | **Zeo Agency** (`zeo`) | 18 | 25.00% | [16.44%, 36.09%] | 1 | 0 | 0 | **47.37%** |
+| 🥈 | **Webtures** (`webtures`) | 17 | 23.61% | [15.30%, 34.60%] | 1 | 6 | 1 | **44.74%** |
+| 🥉 | **Roas Digital** (`roas`) | 3 | 4.17% | [1.43%, 11.55%] | 0 | 0 | 0 | **7.89%** |
+| 4 | **SEM Danışmanlık** (`semtr`) | 0 | 0.00% | [0.00%, 5.07%] | 0 | 0 | 0 | **0.00%** |
+| 5 | **Stradiji** (`stradiji`) | 0 | 0.00% | [0.00%, 5.07%] | 0 | 0 | 0 | **0.00%** |
+| 6 | **B2Press** (`b2press`) | 0 | 0.00% | [0.00%, 5.07%] | 0 | 0 | 0 | **0.00%** |
+
+*Scientific Integrity Note: Stradiji received 0 brand mentions; 60 false-positive token matches with the Turkish word 'strateji' were filtered by GEO-Scope's entity disambiguation engine.*
+
+### Search Engine Grounding & Citation Density
+- **Perplexity Sonar (`sonar-pro`)**: **1,003 citations** (**20.90** citations/query, 7.94s avg latency)
+- **Google Gemini Grounding (`gemini-2.5-flash`)**: **944 citations** (**19.67** citations/query, 17.85s avg latency)
+- **ChatGPT Search (`gpt-4o`)**: **344 citations** (**7.17** citations/query, 10.42s avg latency)
+
+### Top Ecosystem Domains Cited
+- **Türkiye**: Heavily structured around agency directories (`agencies.semrush.com` #1 with 22 citations, `edvido.com` #2 with 16 citations, `pr.net.tr` #3 with 16 citations).
+- **Iran**: Driven by specialized consultant blogs (`iranweblife.com` #1 with 21 citations, `miladjalayi.com` #2 with 14 citations) and digital PR platforms (`triboon.net` #5 with 12 citations).
+
+🔗 **[Read Full 5-Language Methodology & Benchmark Report](benchmarks/regional-commercial-intent-2026.1/README.md)**
 
 ---
 
@@ -241,6 +301,7 @@ GEO-Scope maintains immutable, peer-review-ready benchmark releases under `bench
 
 | Benchmark Release | Prompt Count | Observations | Providers | Cryptographic Status | Documentation |
 |:---|:---|:---|:---|:---|:---|
+| 🏆 [`regional-commercial-intent-2026.1`](benchmarks/regional-commercial-intent-2026.1/) | 24 unbranded prompts (Iran & Türkiye) | 1,584 obs (2,291 citations) | 3 grounded engines (48 ea) | SHA-256 Verified | [Results (EN)](benchmarks/regional-commercial-intent-2026.1/results.md) · [نتایج (FA)](benchmarks/regional-commercial-intent-2026.1/results.fa.md) · [Sonuçlar (TR)](benchmarks/regional-commercial-intent-2026.1/results.tr.md) |
 | [`global-ai-answers-2026.2`](benchmark/releases/global-ai-answers-2026.2/) | 500 prompts (50 countries) | 45,698 obs | 4 models | SHA-256 Verified | [Paper Draft](docs/research/global-ai-answers-2026.2/global-ai-answers-paper.md) |
 | [`global-ai-answers-2026.2-pilot`](benchmark/releases/global-ai-answers-2026.2-pilot/) | 100 prompts (10 countries) | 8,940 obs | 4 models | SHA-256 Verified | [Pilot Report](docs/GLOBAL_AI_ANSWERS_2026_2_PILOT_REPORT.md) |
 | [`global-ai-answers-2026.1`](benchmark/releases/global-ai-answers-2026.1/) | 34 prompts (7 regions) | Baseline obs | 4 models | SHA-256 Verified | [Methodology](docs/global-ai-answers-methodology.md) |

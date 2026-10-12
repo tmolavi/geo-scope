@@ -331,7 +331,7 @@ class MeasurementEngine:
         Also provides filtering by prompt source_type and explicit failure accounting.
         """
         metrics = {
-            "mode": mode,
+            "mode": "empirical" if mode == "live" else mode,
             "sample_interpretation": "stratified research sample, not global user census",
             "entities": {},
             "provider_breakdown": {},
@@ -529,8 +529,8 @@ class MeasurementEngine:
             "schema_version": manifest.get("schema_version", "0.3"),
             "benchmark_version": manifest.get("benchmark_version", "regional-commercial-intent-2026.1"),
             "dataset_name": manifest.get("dataset_name", f"GEO-Scope {out_path.name} Benchmark"),
-            "execution_mode": mode if mode in ("live", "simulation") else "empirical",
-            "mode": mode if mode in ("live", "simulation") else "empirical",
+            "execution_mode": "empirical" if mode == "live" else mode,
+            "mode": "empirical" if mode == "live" else mode,
             "is_empirical": mode != "simulation",
             "prompt_policy": manifest.get("prompt_policy", "neutral"),
             "provider_matrix": providers,

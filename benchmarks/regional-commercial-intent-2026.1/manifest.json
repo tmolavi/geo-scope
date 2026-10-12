@@ -33,17 +33,25 @@
   },
   "status_reason": "Live benchmark execution completed successfully across all search-grounded providers with verified citations.",
   "file_hashes": {
-    "README.md": "4a707dd210c3728a76e2e6b96b7b8dbc4515a27d64c646bbe8c0981a2d1fae1b",
+    "README.ar.md": "c24e85ee362fb19fdfd92c6a03515c13e1c999244f3b0325bf61f038f6d2970b",
+    "README.az.md": "9acfa206889843847e976c7b8e6165a99645034e41ef34046768f2b024c72c3a",
+    "README.fa.md": "c6f9651f585c33817a8b95a89d7444135623fa47bb23d4f2b782542a704cee45",
+    "README.md": "34077ba5b097fa51c0eeaf2824a65b77ecf32a3bd66bf2983de1d402bb83cd46",
+    "README.tr.md": "421b7db045f82667fc4c34d1c4dec09bf58ba5d812e7189219ca3277de812b30",
     "entities.json": "7d3392329d254b07afbd0de2e3de2e92468c67b6c9cc2c72b6d1737b80b18f9f",
     "errors.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "limitations.md": "a6ffa1775c7ec7c5ab69a819205c155e94e990d5ff265a8e938f1e4cd0341adc",
-    "manifest.json": "de349c474822c1108ede1207870d46d3deb7b94db0a719f607431755d676f372",
+    "manifest.json": "b995d2cede73dff96cec7d60f42e6233833f9360c006cd6f5d32d557bdb10d9e",
     "methodology.md": "5c254e835f9517ed7112aa4c0eaa62ec2a0c0e920a75534bf9543396ac1f99f9",
     "metrics.json": "a469f56725be54fe1fc42df5f91cb724af790aae0015ac7c76b1673e7d8a81eb",
     "observations.jsonl": "47ae0004fe91226abf1dbfae8ac84f3971345d5264867afbc450fb78b8dde74d",
     "prompts.jsonl": "388947bf773b22a22025a273f55914536dd85c706f4e10daf1bd43bfb24f5f87",
     "raw_responses.jsonl": "a2df692b16cdbf68f90dd345f20c7ff944957e42adaee1ada252495313506659",
-    "results.md": "8d7093c548e043b69d45aff97e6f4c7b50dd1c8114d3fe42d312c2152b176527",
+    "results.ar.md": "5402ccefb3968f3b2f4ce8a0745772c3fd68e03180ebc1d989b0687552b388ac",
+    "results.az.md": "c3dbb96fe655a06a95c2978f9407028763e23ec91d7cccb2e35cd0d8c0f5c3bf",
+    "results.fa.md": "a8294db4242e0d2ed95ffad9b6182ded202f30e671acef30f34ba3d9a29ef8ad",
+    "results.md": "bc37ff97daeae353b61903491db744e76824a94cde14414fb6367f27c6556567",
+    "results.tr.md": "277ad0193f6f8299a4224079fb88f2e21479458a55a994bed0b4b09e3151ba97",
     "run-config.json": "f620663d4f0860ffd5f0cab8f2987c3cde053d67002da65abb68d0a57ba827ec",
     "summary.json": "7fa6848984342e30a9a59ebafe4eb539ef4a491be0f099a130e81d13fa2e8a93"
   },
@@ -81,5 +89,6 @@
     "research_questions": 24
   },
   "sample_interpretation": "stratified research sample, not global user census",
-  "raw_responses_path": "raw_responses.jsonl"
+  "raw_responses_path": "raw_responses.jsonl",
+  "composite_hash": "5b87be087790b8a35adc54372d0f66b654396c442f5efd7542a633317bc3fac4"
 }
