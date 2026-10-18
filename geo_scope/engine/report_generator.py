@@ -176,7 +176,12 @@ def _build_markdown_summary(exp_id, timestamp, summary, sov, citations, factors,
         lines.append(f"| #{idx} | `{d.get('domain')}` | Referenced URL | {d.get('count')} citations |")
 
     lines.append(
-        "\nRanking-factor weights are labeled hypothesis priors, not fitted findings. Unknown ranks are excluded from average rank. Top-1 rate uses all responses as denominator. Referenced URLs alone do not prove web search.\n"
+        "\n### ⚖️ Scientific Integrity & Measurement Governance\n"
+        "- **Foundational Axiom**: `Mention ≠ Citation ≠ Recommendation ≠ Position ≠ Share of Model`.\n"
+        "- **Statistical Uncertainty**: Proportions must be evaluated alongside 95% Wilson Confidence Intervals. Observations under 5 runs are strictly directional.\n"
+        "- **Google Search Console**: *AI Block Position reflects the position of the AI Overview block on the search results page. It does not measure citation ranking or brand prominence inside the generated text.*\n"
+        "- **UGC Fresh Data Readiness**: *This audit does not guarantee acceptance into Google's program or appearance in Search.*\n"
+        "- **Source Influence**: Marked as `not_measured` until token-level citation absorption is experimentally verified.\n"
     )
     lines.append("\n---\n")
     lines.append(

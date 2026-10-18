@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "1.0",
+  "declaration": {
+    "principle": "AI visibility is an observation under a declared measurement system, not a universal ground-truth ranking.",
+    "measurement_standard": "GEO-Scope Minimum Measurement Contract v1.0",
+    "disclaimer": "All measurements reflect empirical observations under declared prompt universe and provider configurations at observation timestamp."
+  },
+  "prompt_universe": {
+    "prompt_set_id": "regional-commercial-intent-2026.1-sample",
+    "prompt_count": 6,
+    "prompt_source": "Stratified B2B Buyer Query Panels (Iran & Türkiye)",
+    "prompt_generation_method": "hybrid_stratified",
+    "language": "fa",
+    "country_or_market": "IR",
+    "intent_distribution": {
+      "best_recommendation": 0.5,
+      "comparison": 0.5
+    },
+    "collection_date": "2026-10-12T14:30:00Z",
+    "prompts": [
+      {
+        "prompt_id": "prom-fa-comm-001",
+        "prompt_version": "1.0",
+        "text": "بهترین آژانس سئو برای کسب‌وکارهای تجارت الکترونیک در ایران کدام است؟",
+        "language": "fa",
+        "locale": "fa-IR",
+        "market": "IR",
+        "intent": "best_recommendation",
+        "persona": "b2b_buyer",
+        "funnel_stage": "consideration",
+        "brand_named": false,
+        "zero_prompt": true,
+        "source": "research_generated",
+        "created_at": "2026-10-12T00:00:00Z",
+        "updated_at": "2026-10-12T00:00:00Z"
+      }
+    ]
+  },
+  "model_observation": {
+    "requested_provider": "openai",
+    "requested_model": "gpt-4o",
+    "actual_provider": "openai",
+    "actual_model": "gpt-4o-2024-11-20",
+    "engine": "chatgpt_search",
+    "surface": "chat_with_search",
+    "execution_mode": "live",
+    "grounding_enabled": true,
+    "search_triggered": true,
+    "authenticated_session": false,
+    "timestamp": "2026-10-12T14:30:00Z",
+    "system_prompt_policy": "neutral"
+  },
+  "central_denominator_registry": {
+    "attempted_runs": 10,
+    "completed_runs": 10,
+    "valid_answers": 10,
+    "answers_with_retrieval_evidence": 8,
+    "answers_with_any_citation": 8,
+    "answers_with_recommendations": 8,
+    "human_validated_answers": 10,
+    "all_tracked_entity_mentions": 18
+  },
+  "observations": [
+    {
+      "observation_id": "obs-fa-001",
+      "prompt_id": "prom-fa-comm-001",
+      "prompt_version": "1.0",
+      "entity_id": "inten",
+      "entity_name": "InTen",
+      "entity_type": "organization",
+      "mention": {
+        "mentioned": true,
+        "matched_text": "اينتن",
+        "match_type": "normalized_exact",
+        "normalization_rules_applied": [
+          "arabic_yeh_unified",
+          "whitespace_collapsed"
+        ],
+        "first_mention_position": 1,
+        "confidence": 1.0
+      },
+      "citation": {
+        "cited": true,
+        "owned_domain_cited": true,
+        "cited_domains": ["inten.asia"],
+        "retrieval_evidence_present": true
+      },
+      "recommendation": {
+        "recommended": true,
+        "top1": true,
+        "rank": 1,
+        "recommendation_evidence": "بهترین آژانس سئو برای فروشگاه‌های بزرگ اینتن است."
+      },
+      "raw_response_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "metrics": {
+    "mention_rate": {
+      "value": 0.60,
+      "numerator": 6,
+      "denominator": 10,
+      "denominator_type": "valid_answers",
+      "sample_size": 10,
+      "coverage": 1.0,
+      "status": "measured",
+      "ci_method": "wilson",
+      "confidence_level": 0.95,
+      "ci_lower": 0.3127,
+      "ci_upper": 0.8318,
+      "ci_width": 0.5191
+    },
+    "citation_rate_all_answers": {
+      "value": 0.40,
+      "numerator": 4,
+      "denominator": 10,
+      "denominator_type": "valid_answers",
+      "sample_size": 10,
+      "coverage": 1.0,
+      "status": "measured",
+      "ci_method": "wilson",
+      "confidence_level": 0.95,
+      "ci_lower": 0.1682,
+      "ci_upper": 0.6873
+    },
+    "citation_rate_retrieval_evidence": {
+      "value": 0.50,
+      "numerator": 4,
+      "denominator": 8,
+      "denominator_type": "retrieval_evidence_answers",
+      "sample_size": 8,
+      "coverage": 0.80,
+      "status": "measured",
+      "ci_method": "wilson",
+      "confidence_level": 0.95,
+      "ci_lower": 0.2152,
+      "ci_upper": 0.7848
+    },
+    "owned_domain_citation_rate": {
+      "value": 0.50,
+      "numerator": 4,
+      "denominator": 8,
+      "denominator_type": "retrieval_evidence_answers",
+      "sample_size": 8,
+      "coverage": 0.80,
+      "status": "measured",
+      "ci_method": "wilson",
+      "confidence_level": 0.95,
+      "ci_lower": 0.2152,
+      "ci_upper": 0.7848
+    },
+    "recommendation_rate": {
+      "value": 0.50,
+      "numerator": 5,
+      "denominator": 10,
+      "denominator_type": "valid_answers",
+      "sample_size": 10,
+      "coverage": 1.0,
+      "status": "measured",
+      "ci_method": "wilson",
+      "confidence_level": 0.95,
+      "ci_lower": 0.2366,
+      "ci_upper": 0.7634
+    },
+    "top_recommendation_rate": {
+      "value": 0.625,
+      "numerator": 5,
+      "denominator": 8,
+      "denominator_type": "answers_with_recommendations",
+      "sample_size": 8,
+      "status": "measured",
+      "ci_method": "wilson",
+      "confidence_level": 0.95,
+      "ci_lower": 0.3059,
+      "ci_upper": 0.8632
+    },
+    "average_first_mention_position": {
+      "value": 1.33,
+      "sample_size": 6,
+      "denominator_type": "answers_with_target_mention",
+      "mention_coverage": 0.60,
+      "status": "measured",
+      "ci_method": "bootstrap_percentile",
+      "ci_lower": 1.0,
+      "ci_upper": 1.67,
+      "note": "Excludes unmentioned observations (non-zero)"
+    },
+    "share_of_model": {
+      "value": 0.3333,
+      "numerator": 6,
+      "denominator": 18,
+      "denominator_type": "all_tracked_entity_mentions",
+      "status": "measured"
+    },
+    "source_influence": {
+      "status": "not_measured",
+      "value": null,
+      "reason": "Token-level citation absorption or causal text impact not verified."
+    },
+    "confidence_label": "directional"
+  }
+}

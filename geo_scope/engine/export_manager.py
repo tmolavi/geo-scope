@@ -92,3 +92,58 @@ def export_full_json(analysis_results: Dict[str, Any], raw_prompts: List[Dict[st
     """
     payload = {"analysis": analysis_results, "sample_prompts": raw_prompts[:50]}
     return json.dumps(payload, ensure_ascii=False, indent=2)
+
+
+def export_contract_v1_metrics_to_csv(metrics_data: Dict[str, Any]) -> str:
+    """
+    Exports Minimum Measurement Contract v1.0 metrics into CSV with complete statistical uncertainty
+    and denominator metadata.
+    """
+    output = io.StringIO()
+    fieldnames = [
+        "entity_id",
+        "metric",
+        "value",
+        "numerator",
+        "denominator",
+        "denominator_type",
+        "sample_size",
+        "coverage",
+        "status",
+        "ci_method",
+        "confidence_level",
+        "ci_lower",
+        "ci_upper",
+        "confidence_label",
+        "note",
+    ]
+
+    writer = csv.DictWriter(output, fieldnames=fieldnames)
+    writer.writeheader()
+
+    entities = metrics_data.get("entities", {})
+    for eid, edata in entities.items():
+        v1_metrics = edata.get("contract_v1_metrics", {})
+        conf_label = edata.get("confidence_label", "directional")
+        for m_name, m_info in v1_metrics.items():
+            if isinstance(m_info, dict):
+                writer.writerow({
+                    "entity_id": eid,
+                    "metric": m_name,
+                    "value": m_info.get("value"),
+                    "numerator": m_info.get("numerator"),
+                    "denominator": m_info.get("denominator"),
+                    "denominator_type": m_info.get("denominator_type", ""),
+                    "sample_size": m_info.get("sample_size", 0),
+                    "coverage": m_info.get("coverage", 1.0),
+                    "status": m_info.get("status", "measured"),
+                    "ci_method": m_info.get("ci_method", ""),
+                    "confidence_level": m_info.get("confidence_level", ""),
+                    "ci_lower": m_info.get("ci_lower"),
+                    "ci_upper": m_info.get("ci_upper"),
+                    "confidence_label": conf_label,
+                    "note": m_info.get("note", ""),
+                })
+
+    return output.getvalue()
+

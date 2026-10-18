@@ -1,5 +1,7 @@
 """
 Entity Registry and Multi-lingual Normalization for GEO-Scope.
+Integrates MultilingualNormalizer, parent-child brand hierarchies,
+and robust domain extraction.
 """
 
 import json
@@ -10,6 +12,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any, Union, Set
 
 from geo_scope.entities.models import Entity
+from geo_scope.entities.normalizer import MultilingualNormalizer, EntityMatchResult
 
 
 def extract_domain_hostname(url: str) -> str:
@@ -40,72 +43,19 @@ def extract_domain_hostname(url: str) -> str:
         return m.group(1).lower().rstrip("/") if m else url.lower().strip()
 
 
-def normalize_text(text: str) -> str:
+def normalize_text(text: str, language: Optional[str] = None) -> str:
     """
-    High-precision multi-lingual text normalization for Persian, Arabic, Turkish, English, and Chinese.
-    - Full Unicode NFKC normalization (unifies ligatures, fullwidth symbols)
-    - Persian/Arabic character unification:
-        * Arabic Yeh (ي, ى, ۍ, ې) -> Persian Yeh (ی \u06cc)
-        * Arabic Kaf (ك, ڬ, ڭ) -> Persian Kaf (ک \u06a9)
-        * Teh Marbuta (ة) -> Heh (ه \u0647)
-        * Alef variants (آ, أ, إ, ٱ) -> Bare Alef (ا \u0627)
-        * Waw with Hamza (ؤ) -> Waw (و \u0648)
-        * Yeh with Hamza (ئ) -> Persian Yeh (ی \u06cc)
-    - Removes Arabic/Persian diacritics (Harakat / Tashkeel: Fatha, Damma, Kasra, Sukun, Tanwin, Shadda)
-    - Removes Arabic tatweel / kashida (ـ \u0640)
-    - Zero-width character handling:
-        * Collapses ZWNJ (\u200c) to space for token matching
-        * Strips ZWJ (\u200d), ZWSP (\u200b), LTR (\u200e), RTL (\u200f), Bidi marks (\u202a-\u202e), BOM (\ufeff)
-    - Turkish character normalization for lowercase comparisons
-    - Collapses multiple whitespace
+    High-precision multi-lingual text normalization for Persian, Arabic, Turkish, Azerbaijani, and English.
+    Preserves exact backward compatibility with legacy signature, returning the normalized text string.
     """
-    if not text:
-        return ""
-    
-    # 1. Unicode NFKC normalization
-    t = unicodedata.normalize("NFKC", str(text))
-    
-    # 2. Arabic & Persian letter normalization
-    t = t.replace("\u064a", "\u06cc")  # Arabic Yeh -> Persian Yeh (ي -> ی)
-    t = t.replace("\u0649", "\u06cc")  # Alef Maksura -> Persian Yeh (ى -> ی)
-    t = t.replace("\u06d2", "\u06cc")  # Urdu Yeh -> Persian Yeh (ے -> ی)
-    t = t.replace("\u0643", "\u06a9")  # Arabic Kaf -> Persian Kaf (ك -> ک)
-    t = t.replace("\u06aa", "\u06a9")  # Swash Kaf -> Persian Kaf
-    t = t.replace("\u0629", "\u0647")  # Teh Marbuta -> Heh (ة -> ه)
-    t = t.replace("\u06c0", "\u0647")  # Heh with Hamza -> Heh
-    t = t.replace("\u06c1", "\u0647")  # Urdu Heh -> Heh
-    t = t.replace("\u06d5", "\u0647")  # Ae -> Heh
-    t = t.replace("\u0622", "\u0627")  # Alef with Madda -> Alef (آ -> ا)
-    t = t.replace("\u0623", "\u0627")  # Alef with Hamza Above -> Alef (أ -> ا)
-    t = t.replace("\u0625", "\u0627")  # Alef with Hamza Below -> Alef (إ -> ا)
-    t = t.replace("\u0671", "\u0627")  # Alef Wasla -> Alef (ٱ -> ا)
-    t = t.replace("\u0624", "\u0648")  # Waw with Hamza -> Waw (ؤ -> و)
-    t = t.replace("\u0626", "\u06cc")  # Yeh with Hamza -> Yeh (ئ -> ی)
-    t = t.replace("\u0647\u0654", "\u0647")  # Heh with Hamza above -> Heh
-
-    # 3. Remove Arabic Tatweel / Kashida
-    t = t.replace("\u0640", "")
-
-    # 4. Remove Arabic / Persian Tashkeel & Diacritics
-    t = re.sub(r"[\u064b-\u065f\u0670]", "", t)
-
-    # 5. Zero-Width & Directional Characters
-    t = t.replace("\u200c", " ")       # ZWNJ -> space for boundary segmentation
-    t = t.replace("\u200b", "")        # Zero-width space -> strip
-    t = t.replace("\u200d", "")        # Zero-width joiner -> strip
-    t = t.replace("\u200e", "")        # LTR mark -> strip
-    t = t.replace("\u200f", "")        # RTL mark -> strip
-    t = re.sub(r"[\u202a-\u202e]", "", t)  # Bidi embeddings
-    t = t.replace("\ufeff", "")        # BOM
-
-    # 6. Standardize Whitespace
-    t = re.sub(r"\s+", " ", t).strip()
-    return t
+    normalized, _ = MultilingualNormalizer.normalize(text, language=language)
+    return normalized
 
 
 class EntityRegistry:
     """
-    Repository of tracked entities, aliases, key people, and negative disambiguation rules.
+    Repository of tracked entities, aliases, key people, parent brands,
+    and negative disambiguation rules.
     """
 
     def __init__(self, entities: Optional[List[Entity]] = None):
@@ -129,6 +79,31 @@ class EntityRegistry:
     def ids(self) -> List[str]:
         """Returns all entity IDs."""
         return list(self._entities.keys())
+
+    def get_children(self, parent_entity_id: str) -> List[Entity]:
+        """Returns child entities belonging to the given parent entity ID."""
+        return [e for e in self._entities.values() if e.parent_entity_id == parent_entity_id]
+
+    def get_parents(self) -> List[Entity]:
+        """Returns entities that act as parents or have no parent_entity_id."""
+        return [e for e in self._entities.values() if not e.parent_entity_id]
+
+    def find_matches(self, text: str, language: Optional[str] = None) -> List[EntityMatchResult]:
+        """
+        Scans text against all registered entities using the MultilingualNormalizer.
+        """
+        all_results: List[EntityMatchResult] = []
+        for entity in self._entities.values():
+            matches = MultilingualNormalizer.match_entity(
+                text=text,
+                entity_id=entity.id,
+                names=entity.all_names(),
+                do_not_confuse=entity.do_not_confuse,
+                excluded_aliases=entity.excluded_aliases,
+                language=language,
+            )
+            all_results.extend(matches)
+        return all_results
 
     def __len__(self) -> int:
         return len(self._entities)

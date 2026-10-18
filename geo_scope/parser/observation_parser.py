@@ -2,7 +2,7 @@
 Observation Parser for GEO-Scope.
 Evaluates AI/LLM responses against entity definitions with strict intent recognition,
 person-vs-organization disambiguation, negative phrase filtering, explicit recommendation
-evidence verification, and confidence gating.
+evidence verification, multilingual normalization tracing, and confidence gating.
 """
 
 import re
@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 
 from geo_scope.entities.models import Entity
 from geo_scope.entities.registry import normalize_text, extract_domain_hostname
+from geo_scope.entities.normalizer import MultilingualNormalizer, EntityMatchResult
 
 
 # Regex patterns for intent classification
@@ -99,12 +100,10 @@ EXPLICIT_RECOMMENDATION_PATTERNS_FA = [
 
 EXPLICIT_RECOMMENDATION_PATTERNS_AR = [
     r"نوصي\s+بـ?",
-    r"ننصح\s+بـ?",
-    r"أفضل\s+خيار",
-    r"افضل\s+خيار",
+    r"الخيار\s+الأفضل",
     r"الخيار\s+الأمثل",
-    r"خيار\s+ممتاز",
-    r"من\s+أبرز\s+الخيارات",
+    r"أفضل\s+اختيار",
+    r"من\s+أفضل\s+الخيارات",
 ]
 
 EXPLICIT_RECOMMENDATION_PATTERNS_TR = [
@@ -155,8 +154,10 @@ class ObservationParsedResult(BaseModel):
     top1: bool = False
     rank: Optional[int] = None
     rank_position: Optional[int] = None
+    first_mention_position: Optional[int] = None
     cited: bool = False
     citation_found: bool = False
+    owned_domain_cited: bool = False
     source_domain: Optional[str] = None
     attributed: bool = False
     context: Optional[str] = None
@@ -172,6 +173,9 @@ class ObservationParsedResult(BaseModel):
     matched_text: Optional[str] = None
     normalized_text: Optional[str] = None
     source_span: Optional[Tuple[int, int]] = None
+    match_type: str = "exact"  # "exact" | "normalized_exact" | "probable"
+    normalization_rules_applied: List[str] = Field(default_factory=list)
+    recommendation_evidence: Optional[str] = None
 
     # Experimental Query Fan-Out Entity Tracing (pure observation; excluded from composite visibility scoring)
     query_introduced_entities: List[str] = Field(default_factory=list)
@@ -217,6 +221,7 @@ class ObservationParser:
        never inferred from arbitrary paragraph order.
     3. Strict separation of cited (URL link presence) vs attributed (sourcing phrasing).
     4. Multi-lingual Unicode NFKC normalization, ZWNJ handling, and unspaced variant matching.
+    5. Rule-traced match tiers: exact, normalized_exact, probable.
     """
 
     def __init__(self, confidence_threshold: float = 0.70):
@@ -230,13 +235,14 @@ class ObservationParser:
         query: str = "",
         citations: Optional[List[str]] = None,
         query_intent: Optional[str] = None,
+        language: Optional[str] = None,
     ) -> ObservationParsedResult:
         """
         Parses a response text for a specific entity.
         Strictly distinguishes brand mentions from associated people, homonyms, and recommendations.
         """
         citations = citations or []
-        norm_text = normalize_text(text)
+        norm_text = normalize_text(text, language=language)
         norm_text_lower = norm_text.lower()
         
         # 1. Determine Intent
@@ -245,66 +251,93 @@ class ObservationParser:
         # 2. Check Negative Homonyms / Do-Not-Confuse
         confused_terms = []
         for dnc in entity.do_not_confuse:
-            dnc_norm = normalize_text(dnc).lower()
+            dnc_norm = normalize_text(dnc, language=language).lower()
             if dnc_norm and dnc_norm in norm_text_lower:
                 confused_terms.append(dnc)
                 
-        # 3. Check Brand Mention (Names and Domains)
+        # 3. Check Brand Mention (using MultilingualNormalizer)
         brand_matched = False
         matched_brand_names = []
         matched_span = None
         matched_str = None
+        detected_match_type = "exact"
+        rules_applied: List[str] = []
         
-        # Mask out confused terms to verify brand names exist independently of homonyms
-        search_text = norm_text_lower
-        if confused_terms:
-            for ct in confused_terms:
-                ct_norm = normalize_text(ct).lower()
-                if ct_norm:
-                    search_text = search_text.replace(ct_norm, " ")
+        # Perform structured entity matching
+        entity_names_to_check = entity.all_names() if hasattr(entity, "all_names") else entity.names
+        excluded_aliases = getattr(entity, "excluded_aliases", [])
+        
+        match_results = MultilingualNormalizer.match_entity(
+            text=text,
+            entity_id=entity.id,
+            names=entity_names_to_check,
+            do_not_confuse=entity.do_not_confuse,
+            excluded_aliases=excluded_aliases,
+            language=language,
+        )
 
-        # Build candidate aliases (both standard and continuous unspaced forms)
-        all_name_candidates = []
-        for n in entity.names:
-            if n:
-                all_name_candidates.append(n)
-                n_continuous = re.sub(r"\s+", "", n)
-                if n_continuous and n_continuous != n:
-                    all_name_candidates.append(n_continuous)
+        # Fallback to legacy string check if normalizer returned empty but legacy would match
+        if match_results:
+            # Pick highest confidence match
+            best_match = max(match_results, key=lambda m: (1.0 if m.match_type == "exact" else 0.9 if m.match_type == "normalized_exact" else 0.5))
+            brand_matched = True
+            matched_str = best_match.matched_text
+            matched_brand_names.append(best_match.matched_text)
+            detected_match_type = best_match.match_type
+            rules_applied = best_match.normalization_rules_applied
+        else:
+            # Legacy boundary checks & continuous unspaced matching
+            search_text = norm_text_lower
+            if confused_terms:
+                for ct in confused_terms:
+                    ct_norm = normalize_text(ct, language=language).lower()
+                    if ct_norm:
+                        search_text = search_text.replace(ct_norm, " ")
 
-        # Name matching with boundary checks & continuous token matching
-        for name in all_name_candidates:
-            name_norm = normalize_text(name).lower()
-            if not name_norm:
-                continue
-            pattern = r"(?<!\w)" + re.escape(name_norm) + r"(?!\w)"
-            m = re.search(pattern, search_text, re.IGNORECASE)
-            if m:
-                brand_matched = True
-                matched_brand_names.append(name)
-                if not matched_span:
-                    matched_span = m.span()
-                    matched_str = name
-            else:
-                # Check continuous unspaced match
-                search_unspaced = re.sub(r"\s+", "", search_text)
-                name_unspaced = re.sub(r"\s+", "", name_norm)
-                if name_unspaced and name_unspaced in search_unspaced:
+            all_name_candidates = []
+            for n in entity_names_to_check:
+                if n:
+                    all_name_candidates.append(n)
+                    n_continuous = re.sub(r"\s+", "", n)
+                    if n_continuous and n_continuous != n:
+                        all_name_candidates.append(n_continuous)
+
+            for name in all_name_candidates:
+                name_norm = normalize_text(name, language=language).lower()
+                if not name_norm:
+                    continue
+                pattern = r"(?<!\w)" + re.escape(name_norm) + r"(?!\w)"
+                m = re.search(pattern, search_text, re.IGNORECASE)
+                if m:
                     brand_matched = True
                     matched_brand_names.append(name)
-                    if not matched_str:
+                    detected_match_type = "normalized_exact"
+                    rules_applied.append("regex_boundary_match")
+                    if not matched_span:
+                        matched_span = m.span()
                         matched_str = name
-                
-        # Domain matching in text
-        for dom in entity.domains:
-            dom_clean = dom.lower().replace("https://", "").replace("http://", "").rstrip("/")
-            if dom_clean in search_text:
-                brand_matched = True
-                matched_brand_names.append(dom)
-                if not matched_str:
-                    matched_str = dom
+                else:
+                    search_unspaced = re.sub(r"\s+", "", search_text)
+                    name_unspaced = re.sub(r"\s+", "", name_norm)
+                    if name_unspaced and name_unspaced in search_unspaced:
+                        brand_matched = True
+                        matched_brand_names.append(name)
+                        detected_match_type = "normalized_exact"
+                        rules_applied.append("unspaced_continuous_match")
+                        if not matched_str:
+                            matched_str = name
+                    
+            # Domain matching in text
+            for dom in entity.domains:
+                dom_clean = dom.lower().replace("https://", "").replace("http://", "").rstrip("/")
+                if dom_clean in search_text:
+                    brand_matched = True
+                    matched_brand_names.append(dom)
+                    detected_match_type = "exact"
+                    if not matched_str:
+                        matched_str = dom
 
-        # 4. Check Person Mention (Separately Tracked with Unspaced Variants)
+        # 4. Check Person Mention (Separately Tracked)
         person_matched = False
         matched_people = []
         all_people_candidates = []
@@ -316,7 +349,7 @@ class ObservationParser:
                     all_people_candidates.append(p_continuous)
 
         for person in all_people_candidates:
-            person_norm = normalize_text(person).lower()
+            person_norm = normalize_text(person, language=language).lower()
             if not person_norm:
                 continue
             pattern = r"(?<!\w)" + re.escape(person_norm) + r"(?!\w)"
@@ -341,26 +374,45 @@ class ObservationParser:
 
         mentioned = brand_matched and not wrong_entity
 
+        # Compute first mention position (order of first appearance if mentioned)
+        first_mention_pos: Optional[int] = None
+        if mentioned:
+            # Simple heuristic: find character index of matched string
+            m_pos = text.lower().find(matched_str.lower()) if matched_str else -1
+            first_mention_pos = 1 if m_pos >= 0 else None
+
         # 6. Strictly Separate Citations & Attribution
-        # Cited = URL or domain reference appeared
         cited = False
+        owned_domain_cited = False
+        primary_domains = [extract_domain_hostname(d) for d in entity.domains if d]
         all_entity_domains = [extract_domain_hostname(d) for d in entity.all_domains() if d]
         
         for cit in citations:
             cit_host = extract_domain_hostname(cit)
-            if cit_host and any(dom == cit_host or cit_host.endswith("." + dom) or dom in cit_host for dom in all_entity_domains):
-                cited = True
-                break
-
-        if not cited:
-            for dom in all_entity_domains:
-                if dom and (dom in norm_text_lower or dom in text.lower()):
+            if cit_host:
+                if any(dom == cit_host or cit_host.endswith("." + dom) or dom in cit_host for dom in primary_domains):
+                    cited = True
+                    owned_domain_cited = True
+                    break
+                elif any(dom == cit_host or cit_host.endswith("." + dom) or dom in cit_host for dom in all_entity_domains):
                     cited = True
                     break
 
+        if not cited:
+            for dom in primary_domains:
+                if dom and (dom in norm_text_lower or dom in text.lower()):
+                    cited = True
+                    owned_domain_cited = True
+                    break
+            if not cited:
+                for dom in all_entity_domains:
+                    if dom and (dom in norm_text_lower or dom in text.lower()):
+                        cited = True
+                        break
+
         # Attributed = Explicit attribution/sourcing phrasing connects information to entity
         attributed = False
-        entity_name_patterns = [re.escape(normalize_text(n).lower()) for n in (entity.names + entity.domains + entity.people) if n]
+        entity_name_patterns = [re.escape(normalize_text(n, language=language).lower()) for n in (entity_names_to_check + entity.domains + entity.people) if n]
         combined_names = "|".join(entity_name_patterns) if entity_name_patterns else ""
         
         if combined_names:
@@ -389,9 +441,9 @@ class ObservationParser:
         top1 = False
         rank: Optional[int] = None
         parser_conf = 1.0
+        rec_evidence: Optional[str] = None
 
         if intent == "informational":
-            # Informational entity queries ("Who is...", "What is...") must NOT produce recommendation rankings
             scoring_status = "unscored"
             recommended = False
             top1 = False
@@ -404,13 +456,11 @@ class ObservationParser:
             rank = None
             parser_conf = 1.0 if not confused_terms else 0.85
         else:
-            # Entity was mentioned. Evaluate strictly if explicit recommendation endorsement exists.
-            rank, is_top1, is_explicit_rec, rec_conf = self._extract_rank_and_recommendation(text, entity)
-            
-            # Strict Rule: mentioned != recommended
-            # recommended is True ONLY if there is explicit endorsement or an ordered recommendation list item
+            rank, is_top1, is_explicit_rec, rec_conf = self._extract_rank_and_recommendation(text, entity, language=language)
             recommended = is_explicit_rec
             top1 = is_top1
+            if recommended:
+                rec_evidence = f"Recommendation verified (rank={rank}, top1={top1})"
             
             parser_conf = rec_conf
             if parser_conf < self.confidence_threshold:
@@ -430,6 +480,8 @@ class ObservationParser:
             evidence.append("Explicit recommendation evidence confirmed")
         if cited:
             evidence.append("Citation link/domain confirmed")
+        if owned_domain_cited:
+            evidence.append("Owned domain citation confirmed")
         if attributed:
             evidence.append("Attribution sourcing confirmed")
 
@@ -449,8 +501,10 @@ class ObservationParser:
             top1=top1,
             rank=rank,
             rank_position=rank,
+            first_mention_position=first_mention_pos or (rank if rank else (1 if mentioned else None)),
             cited=cited,
             citation_found=cited,
+            owned_domain_cited=owned_domain_cited,
             source_domain=matched_domain if cited else None,
             attributed=attributed,
             context=query if query else intent,
@@ -466,25 +520,28 @@ class ObservationParser:
             matched_text=matched_str,
             normalized_text=norm_text,
             source_span=matched_span,
+            match_type=detected_match_type,
+            normalization_rules_applied=rules_applied,
+            recommendation_evidence=rec_evidence,
         )
 
     def _extract_rank_and_recommendation(
         self,
         text: str,
         entity: Entity,
+        language: Optional[str] = None,
     ) -> Tuple[Optional[int], bool, bool, float]:
         """
         Strict Ranking & Recommendation Extraction.
         Contract:
         1. rank / rank_position is assigned ONLY from recognized ordered recommendation list syntax.
-           Paragraph order is NEVER converted to rank.
         2. recommended is True ONLY if explicit linguistic endorsement is present or if the entity
            is placed in an ordered recommendation/ranking list.
         Returns: (rank, is_top1, is_recommended, confidence)
         """
         lines = text.split("\n")
         
-        # Regex matching numbered list items (e.g. "1. ", "1- ", "#1 ", "۱. ", "۱- ")
+        # Regex matching numbered list items
         numbered_item_regex = re.compile(r"^\s*(?:([0-9]+|[۰-۹]+)|\#\s*([0-9]+))[\.\-\:\)]\s*(.*)$")
         
         numbered_list_items: List[Tuple[int, str]] = []
@@ -502,6 +559,8 @@ class ObservationParser:
                     num_val = len(numbered_list_items) + 1
                 numbered_list_items.append((num_val, line_str))
 
+        entity_names = entity.all_names() if hasattr(entity, "all_names") else entity.names
+
         # Check if entity appears in a recognized numbered ranking list
         rank: Optional[int] = None
         is_top1 = False
@@ -509,14 +568,14 @@ class ObservationParser:
 
         if numbered_list_items:
             for item_num, item_text in numbered_list_items:
-                item_norm = normalize_text(item_text).lower()
-                if any(normalize_text(n).lower() in item_norm for n in entity.names if n):
+                item_norm = normalize_text(item_text, language=language).lower()
+                if any(normalize_text(n, language=language).lower() in item_norm for n in entity_names if n):
                     rank = item_num
                     is_top1 = (rank == 1)
                     in_numbered_list = True
                     break
 
-        # Check explicit linguistic recommendation endorsement in text across EN, FA, AR, TR, ZH
+        # Check explicit linguistic recommendation endorsement in text
         text_lower = text.lower()
         has_linguistic_rec = False
         
@@ -531,18 +590,15 @@ class ObservationParser:
         for pat in all_explicit_patterns:
             if re.search(pat, text_lower, re.IGNORECASE):
                 for sentence in re.split(r"[\.\!\?\n]", text_lower):
-                    if re.search(pat, sentence, re.IGNORECASE) and any(normalize_text(n).lower() in sentence for n in entity.names if n):
+                    if re.search(pat, sentence, re.IGNORECASE) and any(normalize_text(n, language=language).lower() in sentence for n in entity_names if n):
                         has_linguistic_rec = True
                         break
             if has_linguistic_rec:
                 break
 
-        # If in a numbered list with recommendation header
         has_rec_header = any(re.search(pat, text_lower, re.IGNORECASE) for pat in LIST_ITEM_RECOMMENDATION_HEADER_PATTERNS)
-
         is_recommended = in_numbered_list or has_linguistic_rec or (has_rec_header and in_numbered_list)
 
-        # Confidence calculation
         if in_numbered_list:
             confidence = 0.95
         elif has_linguistic_rec:

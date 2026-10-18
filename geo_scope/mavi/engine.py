@@ -162,11 +162,48 @@ class MAVIEngine:
                 else "D"
             )
 
-        # 4. Assess Measurement Confidence
+        # 4. Decouple Readiness (L1-L4) vs Observed Visibility (L5)
+        readiness_layers = [
+            l for lid, l in layers.items()
+            if lid in ("L1", "L2", "L3", "L4") and l.status in ("measured", "manual_override") and l.score is not None
+        ]
+        readiness_weights_sum = sum(l.weight for l in readiness_layers)
+        readiness_score = (
+            round(sum(l.score * l.weight for l in readiness_layers) / readiness_weights_sum, 1)
+            if readiness_weights_sum > 0 else None
+        )
+
+        l5 = layers.get("L5")
+        l5_measured = l5 and l5.status in ("measured", "measured_synthetic", "manual_override") and l5.score is not None
+        
+        if l5_measured:
+            observed_visibility = {
+                "status": l5.status,
+                "score": l5.score,
+                "source_type": l5.source_type,
+                "provenance": l5.provenance.to_dict(),
+            }
+            mavi_composite = normalized
+            composite_reason = None
+        else:
+            observed_visibility = {
+                "status": l5.status if l5 else "not_measured",
+                "score": None,
+                "source_type": "not_measured",
+                "reason": "Live empirical visibility has not been measured.",
+            }
+            mavi_composite = None
+            composite_reason = "Live empirical visibility has not been measured."
+
+        # 5. Assess Measurement Confidence
         confidence = self._calculate_confidence(layers, measured_count, total_layers)
 
         return MAVIReport(
             mavi_score=mavi_score,
+            readiness_score=readiness_score,
+            observed_visibility=observed_visibility,
+            mavi_composite=mavi_composite,
+            composite_reason=composite_reason,
             raw_measured_score=raw_measured,
             max_possible_raw_score=max_possible_raw,
             measured_layers_count=measured_count,
@@ -181,6 +218,42 @@ class MAVIEngine:
             target_entity=target_entity,
             url=url,
         )
+
+    def sensitivity_analysis(
+        self,
+        report: MAVIReport,
+        delta: float = 0.10,
+    ) -> Dict[str, Any]:
+        """
+        Performs sensitivity analysis on MAVI weights (+/- delta shift between Readiness and Empirical layers).
+        """
+        base_composite = report.mavi_composite
+        if base_composite is None:
+            return {
+                "status": "not_applicable",
+                "reason": "Composite score is null; sensitivity analysis requires measured L5.",
+            }
+        
+        w5_base = self.weights.l5_observed_ai_visibility
+        w_readiness_base = 1.0 - w5_base
+        
+        w5_a = min(0.90, w5_base + delta)
+        scale_a = (1.0 - w5_a) / w_readiness_base if w_readiness_base > 0 else 1.0
+        score_a = round(sum(l.score * l.weight * scale_a for lid, l in report.layers.items() if lid != "L5" and l.score is not None) + (report.layers["L5"].score or 0.0) * w5_a, 1)
+
+        w5_b = max(0.10, w5_base - delta)
+        scale_b = (1.0 - w5_b) / w_readiness_base if w_readiness_base > 0 else 1.0
+        score_b = round(sum(l.score * l.weight * scale_b for lid, l in report.layers.items() if lid != "L5" and l.score is not None) + (report.layers["L5"].score or 0.0) * w5_b, 1)
+
+        return {
+            "base_composite": base_composite,
+            "delta": delta,
+            "scenarios": {
+                "empirical_heavy": {"l5_weight": round(w5_a, 2), "composite_score": score_a},
+                "readiness_heavy": {"l5_weight": round(w5_b, 2), "composite_score": score_b},
+            },
+            "stability_range": [min(score_a, score_b), max(score_a, score_b)],
+        }
 
     def _calculate_confidence(
         self,

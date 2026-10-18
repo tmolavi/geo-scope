@@ -1,0 +1,78 @@
+{
+  "mavi_methodology_version": "MAVI v1.0",
+  "target_entity": "InTen",
+  "url": "https://inten.asia",
+  "readiness_score": 74.2,
+  "readiness_layers": {
+    "L1": {
+      "layer_id": "L1",
+      "layer_name": "Technical Accessibility",
+      "score": 85.0,
+      "weight": 0.15,
+      "status": "measured",
+      "provenance": {
+        "source": "sage",
+        "metric_version": "2.0.0"
+      }
+    },
+    "L2": {
+      "layer_id": "L2",
+      "layer_name": "Semantic Extractability",
+      "score": 72.0,
+      "weight": 0.20,
+      "status": "measured",
+      "provenance": {
+        "source": "sage",
+        "metric_version": "2.0.0"
+      }
+    },
+    "L3": {
+      "layer_id": "L3",
+      "layer_name": "Entity Clarity",
+      "score": 70.0,
+      "weight": 0.20,
+      "status": "measured",
+      "provenance": {
+        "source": "sage",
+        "metric_version": "2.0.0"
+      }
+    },
+    "L4": {
+      "layer_id": "L4",
+      "layer_name": "Citation Readiness / CSP",
+      "score": 70.0,
+      "weight": 0.20,
+      "status": "measured",
+      "provenance": {
+        "source": "sage",
+        "metric_version": "2.0.0"
+      }
+    }
+  },
+  "observed_visibility": {
+    "status": "not_measured",
+    "score": null,
+    "source_type": "not_measured",
+    "reason": "Live empirical visibility has not been measured."
+  },
+  "mavi_composite": null,
+  "composite_reason": "Live empirical visibility has not been measured.",
+  "normalization_basis": "Normalized across 4/5 measured layers (L1, L2, L3, L4); active weight sum = 0.75",
+  "measurement_mode": "partial_measured",
+  "grade": "B",
+  "confidence": {
+    "confidence_level": "Medium",
+    "confidence_score": 0.65,
+    "factors": {
+      "measured_layers_count": 4,
+      "total_layers": 5,
+      "l5_source_type": "not_measured"
+    }
+  },
+  "limitations": [
+    "L1-L4 represent deterministic page-level AI extractability and diagnostic proxies from SAGE.",
+    "L4 Citation Survival Proxy (CSP) is a heuristic proxy (E4), not a calibrated empirical probability.",
+    "L5 reflects observational visibility only when executed in LIVE mode with sufficient observations.",
+    "Synthetic L5 results are simulation-based and non-observational."
+  ]
+}
