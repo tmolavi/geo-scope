@@ -20,6 +20,13 @@ from geo_scope.providers.base import BaseProvider
 from geo_scope.providers.models import ProviderResponse
 from geo_scope.providers.registry import ProviderRegistry
 from geo_scope.providers.simulated import SimulatedProvider
+from geo_scope.measurement.stats import (
+    wilson_score_interval,
+    bootstrap_confidence_interval,
+    check_overlapping_ci,
+    generate_confidence_label,
+)
+from geo_scope.measurement.denominators import DenominatorRegistry
 
 
 class MeasurementEngine:
@@ -324,11 +331,9 @@ class MeasurementEngine:
         mode: str = "live",
     ) -> Dict[str, Any]:
         """
-        Computes aggregated metrics with strict separation of metric families and failure denominators:
-        - simulation: simulated_mention_rate, simulated_recommendation_rate, simulated_top1_rate
-        - answer_engine: AI Search Visibility (search_mention_rate, search_citation_rate, search_top1_rate)
-        - llm: LLM Brand Observation (llm_mention_rate, llm_top1_rate)
-        Also provides filtering by prompt source_type and explicit failure accounting.
+        Computes aggregated metrics under Minimum Measurement Contract v1.0
+        with strict denominator accounting, 95% Wilson Score CIs, Bootstrap resampling,
+        Engine x Intent x Language slicing, and backward-compatible legacy structures.
         """
         metrics = {
             "mode": "empirical" if mode == "live" else mode,
@@ -336,13 +341,33 @@ class MeasurementEngine:
             "entities": {},
             "provider_breakdown": {},
             "source_type_breakdown": {},
+            "central_denominators": {},
+            "engine_intent_language_breakdown": [],
+            "uncertainty_analysis": {},
         }
+
+        # Central Denominator Registry for batch
+        central_denom = DenominatorRegistry()
+        seen_run_keys = set()
+        for o in observations:
+            r_key = (o.get("prompt_id"), o.get("repeat_index", 0), o.get("provider"))
+            if r_key not in seen_run_keys:
+                seen_run_keys.add(r_key)
+                is_succ = o.get("status") == "success"
+                has_retrieval = bool(o.get("search_grounded") or o.get("citations") or o.get("cited"))
+                central_denom.record_run(
+                    attempted=True,
+                    completed=is_succ,
+                    is_valid=is_succ,
+                    has_retrieval_evidence=has_retrieval and is_succ,
+                    has_citations=bool(o.get("cited")) and is_succ,
+                    has_recommendations=bool(o.get("recommended")) and is_succ,
+                )
 
         # Provider-level completion accounting
         providers = sorted(list(set(o["provider"] for o in observations)))
         for prov in providers:
             p_obs = [o for o in observations if o["provider"] == prov]
-            # Deduplicate prompt/repeat level status
             seen_execs = set()
             p_attempts = 0
             p_success = 0
@@ -364,7 +389,57 @@ class MeasurementEngine:
                 "status": "valid" if p_success > 0 else "insufficient_data",
             }
 
+        # Slices: Engine x Intent x Language breakdown
+        slice_groups: Dict[Tuple[str, str, str], List[Dict[str, Any]]] = {}
+        for o in observations:
+            if o.get("status") == "success":
+                prov = o.get("provider", "unknown")
+                lang = o.get("prompt_language", "unknown")
+                intent = o.get("intent_type", "general")
+                grp_key = (prov, lang, intent)
+                if grp_key not in slice_groups:
+                    slice_groups[grp_key] = []
+                slice_groups[grp_key].append(o)
+
+        slice_breakdowns = []
+        for (prov, lang, intent), grp_obs in slice_groups.items():
+            unique_runs = len(set((o.get("prompt_id"), o.get("repeat_index", 0)) for o in grp_obs))
+            slice_mentions = sum(1 for o in grp_obs if o.get("mentioned"))
+            slice_citations = sum(1 for o in grp_obs if o.get("cited"))
+            slice_recs = sum(1 for o in grp_obs if o.get("recommended"))
+            total_slice_obs = len(grp_obs)
+            
+            w_mention = wilson_score_interval(slice_mentions, total_slice_obs) if total_slice_obs > 0 else {}
+            w_cit = wilson_score_interval(slice_citations, total_slice_obs) if total_slice_obs > 0 else {}
+            w_rec = wilson_score_interval(slice_recs, total_slice_obs) if total_slice_obs > 0 else {}
+            
+            slice_status = "measured" if unique_runs >= 5 else "directional" if unique_runs >= 2 else "single_observation"
+            slice_breakdowns.append({
+                "engine": prov,
+                "language": lang,
+                "intent": intent,
+                "runs": unique_runs,
+                "total_observations": total_slice_obs,
+                "mention_rate": w_mention.get("value", 0.0),
+                "mention_ci_lower": w_mention.get("ci_lower"),
+                "mention_ci_upper": w_mention.get("ci_upper"),
+                "citation_rate": w_cit.get("value", 0.0),
+                "citation_ci_lower": w_cit.get("ci_lower"),
+                "citation_ci_upper": w_cit.get("ci_upper"),
+                "recommendation_rate": w_rec.get("value", 0.0),
+                "recommendation_ci_lower": w_rec.get("ci_lower"),
+                "recommendation_ci_upper": w_rec.get("ci_upper"),
+                "coverage": 1.0,
+                "status": slice_status,
+            })
+        metrics["engine_intent_language_breakdown"] = slice_breakdowns
+
+        # Total entity mentions across all entities (for Share of Model)
+        total_tracked_mentions = sum(1 for o in observations if o.get("status") == "success" and o.get("mentioned"))
+
         entity_ids = self.entities.ids()
+        entity_ci_map = {}
+
         for eid in entity_ids:
             e_obs_all = [o for o in observations if o["entity_id"] == eid]
             e_obs_success = [o for o in e_obs_all if o.get("status") == "success"]
@@ -387,15 +462,167 @@ class MeasurementEngine:
                 }
                 continue
 
-            # Base count calculations on successful completions only
             mentions = sum(1 for o in e_obs_success if o.get("mentioned"))
             citations = sum(1 for o in e_obs_success if o.get("cited"))
+            owned_citations = sum(1 for o in e_obs_success if o.get("owned_domain_cited"))
             recs = sum(1 for o in e_scored if o.get("recommended"))
             top1s = sum(1 for o in e_scored if o.get("top1"))
             confused = sum(1 for o in e_obs_success if o.get("confused_with"))
 
+            retrieval_obs = [o for o in e_obs_success if (o.get("search_grounded") or o.get("citations") or o.get("cited"))]
+            retrieval_n = len(retrieval_obs)
+            retrieval_citations = sum(1 for o in retrieval_obs if o.get("cited"))
+            retrieval_owned = sum(1 for o in retrieval_obs if o.get("owned_domain_cited"))
+
+            positions = [
+                o.get("first_mention_position") or o.get("rank") or 1
+                for o in e_obs_success
+                if o.get("mentioned") and (o.get("first_mention_position") or o.get("rank"))
+            ]
+
+            unique_e_runs = len(set((o.get("prompt_id"), o.get("repeat_index", 0)) for o in e_obs_success))
+            e_status = "measured" if unique_e_runs >= 5 else "directional" if unique_e_runs >= 2 else "single_observation"
+
+            mention_stats = wilson_score_interval(mentions, successful_n)
+            cit_all_stats = wilson_score_interval(citations, successful_n)
+            cit_retrieval_stats = wilson_score_interval(retrieval_citations, retrieval_n) if retrieval_n > 0 else {
+                "value": None, "ci_lower": None, "ci_upper": None, "ci_width": None, "status": "not_measured"
+            }
+            owned_cit_stats = wilson_score_interval(retrieval_owned, retrieval_n) if retrieval_n > 0 else {
+                "value": None, "ci_lower": None, "ci_upper": None, "ci_width": None, "status": "not_measured"
+            }
+            rec_stats = wilson_score_interval(recs, total_scored if total_scored > 0 else successful_n)
+            all_recs_count = sum(1 for o in e_scored if o.get("recommended"))
+            top1_stats = wilson_score_interval(top1s, all_recs_count) if all_recs_count > 0 else {
+                "value": 0.0, "ci_lower": 0.0, "ci_upper": 0.0, "ci_width": 0.0, "status": "not_measured"
+            }
+            pos_stats = bootstrap_confidence_interval(positions) if positions else {
+                "value": None, "ci_lower": None, "ci_upper": None, "ci_width": None, "is_defined": False
+            }
+            share_val = round(mentions / total_tracked_mentions, 4) if total_tracked_mentions > 0 else 0.0
+
+            distinct_engines = len(set(o.get("provider") for o in e_obs_success))
+            distinct_langs = len(set(o.get("prompt_language") for o in e_obs_success))
+            cov = successful_n / attempted_n if attempted_n > 0 else 0.0
+            conf_label = generate_confidence_label(
+                runs=unique_e_runs,
+                coverage=cov,
+                provenance_complete=True,
+                engine_breadth=distinct_engines,
+                language_breadth=distinct_langs,
+                ci_width=mention_stats.get("ci_width"),
+            )
+
+            if mention_stats.get("ci_lower") is not None and mention_stats.get("ci_upper") is not None:
+                entity_ci_map[eid] = (mention_stats["ci_lower"], mention_stats["ci_upper"])
+
+            contract_v1_metrics = {
+                "mention_rate": {
+                    "value": mention_stats.get("value"),
+                    "numerator": mentions,
+                    "denominator": successful_n,
+                    "denominator_type": "valid_answers",
+                    "sample_size": successful_n,
+                    "coverage": round(cov, 4),
+                    "status": e_status,
+                    "ci_method": "wilson",
+                    "confidence_level": 0.95,
+                    "ci_lower": mention_stats.get("ci_lower"),
+                    "ci_upper": mention_stats.get("ci_upper"),
+                    "ci_width": mention_stats.get("ci_width"),
+                },
+                "citation_rate_all_answers": {
+                    "value": cit_all_stats.get("value"),
+                    "numerator": citations,
+                    "denominator": successful_n,
+                    "denominator_type": "valid_answers",
+                    "sample_size": successful_n,
+                    "coverage": round(cov, 4),
+                    "status": e_status,
+                    "ci_method": "wilson",
+                    "confidence_level": 0.95,
+                    "ci_lower": cit_all_stats.get("ci_lower"),
+                    "ci_upper": cit_all_stats.get("ci_upper"),
+                },
+                "citation_rate_retrieval_evidence": {
+                    "value": cit_retrieval_stats.get("value"),
+                    "numerator": retrieval_citations,
+                    "denominator": retrieval_n,
+                    "denominator_type": "retrieval_evidence_answers",
+                    "sample_size": retrieval_n,
+                    "coverage": round(retrieval_n / successful_n, 4) if successful_n > 0 else 0.0,
+                    "status": "measured" if retrieval_n >= 5 else "directional" if retrieval_n > 0 else "not_measured",
+                    "ci_method": "wilson" if retrieval_n > 0 else None,
+                    "confidence_level": 0.95 if retrieval_n > 0 else None,
+                    "ci_lower": cit_retrieval_stats.get("ci_lower"),
+                    "ci_upper": cit_retrieval_stats.get("ci_upper"),
+                },
+                "owned_domain_citation_rate": {
+                    "value": owned_cit_stats.get("value"),
+                    "numerator": retrieval_owned,
+                    "denominator": retrieval_n,
+                    "denominator_type": "retrieval_evidence_answers",
+                    "sample_size": retrieval_n,
+                    "coverage": round(retrieval_n / successful_n, 4) if successful_n > 0 else 0.0,
+                    "status": "measured" if retrieval_n >= 5 else "directional" if retrieval_n > 0 else "not_measured",
+                    "ci_method": "wilson" if retrieval_n > 0 else None,
+                    "confidence_level": 0.95 if retrieval_n > 0 else None,
+                    "ci_lower": owned_cit_stats.get("ci_lower"),
+                    "ci_upper": owned_cit_stats.get("ci_upper"),
+                },
+                "recommendation_rate": {
+                    "value": rec_stats.get("value"),
+                    "numerator": recs,
+                    "denominator": total_scored if total_scored > 0 else successful_n,
+                    "denominator_type": "valid_answers",
+                    "sample_size": total_scored if total_scored > 0 else successful_n,
+                    "coverage": round(cov, 4),
+                    "status": e_status,
+                    "ci_method": "wilson",
+                    "confidence_level": 0.95,
+                    "ci_lower": rec_stats.get("ci_lower"),
+                    "ci_upper": rec_stats.get("ci_upper"),
+                },
+                "top_recommendation_rate": {
+                    "value": top1_stats.get("value"),
+                    "numerator": top1s,
+                    "denominator": all_recs_count,
+                    "denominator_type": "answers_with_recommendations",
+                    "sample_size": all_recs_count,
+                    "status": "measured" if all_recs_count >= 5 else "directional" if all_recs_count > 0 else "not_measured",
+                    "ci_method": "wilson" if all_recs_count > 0 else None,
+                    "confidence_level": 0.95 if all_recs_count > 0 else None,
+                    "ci_lower": top1_stats.get("ci_lower"),
+                    "ci_upper": top1_stats.get("ci_upper"),
+                },
+                "average_first_mention_position": {
+                    "value": pos_stats.get("value"),
+                    "sample_size": len(positions),
+                    "denominator_type": "answers_with_target_mention",
+                    "mention_coverage": round(len(positions) / successful_n, 4) if successful_n > 0 else 0.0,
+                    "status": "measured" if len(positions) >= 5 else "directional" if len(positions) > 0 else "not_measured",
+                    "ci_method": "bootstrap_percentile" if len(positions) > 1 else None,
+                    "ci_lower": pos_stats.get("ci_lower"),
+                    "ci_upper": pos_stats.get("ci_upper"),
+                    "note": "Excludes unmentioned observations (non-zero)",
+                },
+                "share_of_model": {
+                    "value": share_val,
+                    "numerator": mentions,
+                    "denominator": total_tracked_mentions,
+                    "denominator_type": "all_tracked_entity_mentions",
+                    "status": e_status,
+                },
+                "source_influence": {
+                    "status": "not_measured",
+                    "value": None,
+                    "reason": "Token-level citation absorption or causal text impact not verified.",
+                },
+                "confidence_label": conf_label,
+            }
+
             if mode == "simulation":
-                # SIMULATION METRICS FAMILY
+                # SIMULATION METRICS FAMILY (Legacy compatibility + contract v1)
                 metrics["entities"][eid] = {
                     "simulated_mention_rate": round(mentions / successful_n, 4),
                     "simulated_recommendation_rate": round(recs / total_scored, 4) if total_scored > 0 else 0.0,
@@ -406,15 +633,17 @@ class MeasurementEngine:
                     "metric_denominator_n": successful_n,
                     "scored_prompts": total_scored,
                     "confused_observations": confused,
+                    "contract_v1_metrics": contract_v1_metrics,
+                    "status": e_status,
+                    "confidence_label": conf_label,
                 }
             else:
-                # LIVE / EMPIRICAL METRICS
+                # LIVE / EMPIRICAL METRICS (Legacy compatibility + contract v1)
                 search_obs = [o for o in e_obs_success if o.get("provider_class") == "answer_engine"]
                 search_scored = [o for o in search_obs if o.get("scoring_status") == "scored"]
                 llm_obs = [o for o in e_obs_success if o.get("provider_class") == "llm"]
                 llm_scored = [o for o in llm_obs if o.get("scoring_status") == "scored"]
 
-                # AI Search Visibility Family (answer_engine only)
                 search_vis = {}
                 if search_obs:
                     s_total = len(search_obs)
@@ -433,7 +662,6 @@ class MeasurementEngine:
                         "scored_denominator_n": s_scored_total,
                     }
 
-                # LLM Brand Observation Family (llm only)
                 llm_obs_metrics = {}
                 if llm_obs:
                     l_total = len(llm_obs)
@@ -447,7 +675,6 @@ class MeasurementEngine:
                         "scored_denominator_n": l_scored_total,
                     }
 
-                # Observed prompts only subset
                 obs_only_items = [o for o in e_obs_success if o.get("source_type") == "observed"]
                 obs_only_mentions = sum(1 for o in obs_only_items if o.get("mentioned"))
 
@@ -461,8 +688,23 @@ class MeasurementEngine:
                     "metric_denominator_n": metric_denominator_n,
                     "scored_observations": total_scored,
                     "confused_observations": confused,
+                    "contract_v1_metrics": contract_v1_metrics,
+                    "status": e_status,
+                    "confidence_label": conf_label,
                 }
 
+        if len(entity_ci_map) >= 2:
+            e_sorted = sorted(entity_ci_map.items(), key=lambda item: item[1][0] if item[1] else 0.0, reverse=True)
+            e_a_id, e_a_ci = e_sorted[0]
+            e_b_id, e_b_ci = e_sorted[1]
+            overlap_res = check_overlapping_ci(e_a_ci, e_b_ci)
+            metrics["uncertainty_analysis"] = {
+                "top_entity_a": e_a_id,
+                "top_entity_b": e_b_id,
+                "ci_overlap": overlap_res,
+            }
+
+        metrics["central_denominators"] = central_denom.summary_dict()
         return metrics
 
     def _write_bundle(

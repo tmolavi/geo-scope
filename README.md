@@ -28,12 +28,12 @@
 
 ---
 
-## 🏆 Landmark Benchmark: Commercial AI Visibility in Iran & Türkiye (2026.1)
+## 🔬 Empirical Pilot Benchmark: Commercial AI Visibility in Iran & Türkiye (2026.1)
 
 > [!IMPORTANT]
-> ### 🚀 Published for the First Time at this Scale & Empirical Rigor
-> This landmark study marks the **first comprehensive empirical benchmark** evaluating commercial AI search visibility, entity recommendations, and web citation patterns across **Iran (`fa-IR`)** and **Türkiye (`tr-TR`)**. 
-> Conducted with **zero synthetic fabrication**, **100% real-time search-grounded completions**, and **rigorous cryptographic auditability**, it establishes an evidence-backed baseline for Generative Engine Optimization (GEO) in regional markets.
+> ### 📊 Exploratory Regional Commercial AI Visibility Pilot
+> This pilot benchmark marks an **exploratory empirical baseline** evaluating commercial AI search visibility, entity recommendations, and web citation patterns across **Iran (`fa-IR`)** and **Türkiye (`tr-TR`)**. 
+> Conducted with **zero synthetic fabrication**, **100% real-time search-grounded completions**, and **cryptographic auditability**, it establishes an evidence-backed baseline for Generative Engine Optimization (GEO) research in regional markets.
 
 <div align="center">
 
@@ -46,9 +46,10 @@
 | Metric | Measured Value | Empirical Rigor Note |
 | :--- | :--- | :--- |
 | **Live Completions** | **144 / 144** (100.0%) | 24 neutral buyer queries $\times$ 3 grounded engines $\times$ 2 runs |
-| **Entity Observations** | **1,584 observations** | 11 target agencies evaluated with disambiguation |
-| **Verified Citations** | **2,291 URLs** | Zero hallucinations; 100% verified real-time sources |
-| **Error Rate** | **0.0% (0 errors)** | Full completion with zero fallback across all engines |
+| **Entity Observations** | **1,584 observations** | 11 target agencies evaluated with multi-tier disambiguation |
+| **Citation Records** | **2,291 occurrences** (1,013 unique URLs) | 100% search-grounded; includes 944 intermediary Google redirect tokens |
+| **API Transport Error Rate** | **0.0% (0/144 failed)** | Full completion with zero synthetic fallback across all engines |
+| **Parser Extraction Fidelity** | **100.0% ($n=20$)** | Stratified manual verification of entity extraction regex ($n=20$) |
 | **Execution Cost** | **$2.16 USD** | Well below $10 pilot cap (\$0.015/obs average) |
 | **Engines Evaluated** | **ChatGPT Search, Gemini Grounding, Perplexity Sonar** | Grounded models: `gpt-4o`, `gemini-2.5-flash`, `sonar-pro` |
 

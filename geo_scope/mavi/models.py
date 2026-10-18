@@ -147,6 +147,10 @@ class ConfidenceAssessment:
 class MAVIReport:
     mavi_methodology_version: str = "MAVI v1.0"
     mavi_score: Optional[float] = None  # Normalized score (0-100) or None
+    readiness_score: Optional[float] = None  # Decoupled L1-L4 technical and extractability score
+    observed_visibility: Optional[Dict[str, Any]] = None  # Decoupled L5 empirical visibility object
+    mavi_composite: Optional[float] = None  # Full 5-layer composite score; None if L5 is not measured
+    composite_reason: Optional[str] = None  # Reason why composite is null when L5 unmeasured
     raw_measured_score: Optional[float] = None
     max_possible_raw_score: float = 100.0
     max_score: float = 100.0
@@ -175,6 +179,10 @@ class MAVIReport:
         return {
             "mavi_methodology_version": self.mavi_methodology_version,
             "mavi_score": self.mavi_score,
+            "readiness_score": self.readiness_score,
+            "observed_visibility": self.observed_visibility,
+            "mavi_composite": self.mavi_composite,
+            "composite_reason": self.composite_reason,
             "raw_measured_score": self.raw_measured_score,
             "max_possible_raw_score": self.max_possible_raw_score,
             "max_score": self.max_score,

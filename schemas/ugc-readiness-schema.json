@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://geo-scope.org/schemas/ugc-readiness-schema.json",
+  "title": "UGCFreshDataReadinessAudit_v1",
+  "description": "GEO-Scope UGC Fresh Data Readiness Audit Schema for Google's UGC Fresh Data Program prerequisites.",
+  "type": "object",
+  "required": ["ugc_fresh_data_readiness"],
+  "properties": {
+    "ugc_fresh_data_readiness": {
+      "type": "object",
+      "required": [
+        "status",
+        "score",
+        "max_score",
+        "evaluated_at",
+        "checks",
+        "blocking_issues",
+        "recommended_actions",
+        "disclaimer"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["eligible_candidate", "needs_work", "not_applicable"]
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "max_score": {
+          "type": "integer",
+          "const": 100
+        },
+        "evaluated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "category", "passed", "weight", "detail"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "category": { "type": "string" },
+              "passed": { "type": "boolean" },
+              "weight": { "type": "integer" },
+              "is_blocking": { "type": "boolean" },
+              "detail": { "type": "string" }
+            }
+          }
+        },
+        "blocking_issues": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "recommended_actions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "disclaimer": {
+          "type": "string",
+          "const": "This audit does not guarantee acceptance into Google's program or appearance in Search."
+        }
+      }
+    }
+  }
+}
