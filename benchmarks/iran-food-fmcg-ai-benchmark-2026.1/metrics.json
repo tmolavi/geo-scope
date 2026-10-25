@@ -1,0 +1,231 @@
+{
+  "dataset_id": "iran-food-fmcg-ai-benchmark-2026.1",
+  "computed_at": "2026-10-25T18:00:00.000000+00:00",
+  "execution_mode": "live",
+  "benchmark_mode": "discovery",
+  "research_status": "peer_review_ready",
+  "total_prompts": 180,
+  "total_observations": 720,
+  "successful_observations": 720,
+  "failed_observations": 0,
+  "confidence_level": 0.95,
+  "bootstrap_iterations": 1000,
+  "brands": [
+    {
+      "brand": "Kalleh",
+      "persian_name": "کاله (سولیکو)",
+      "domain": "kalleh.com",
+      "category": "Dairy & Protein",
+      "mention_rate": {
+        "value": 72.4,
+        "ci_lower": 65.4,
+        "ci_upper": 79.4,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 51.2,
+        "ci_lower": 43.6,
+        "ci_upper": 58.8,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 38.5,
+        "ci_lower": 31.1,
+        "ci_upper": 45.9,
+        "sample_size": 720,
+        "status": "ok"
+      }
+    },
+    {
+      "brand": "Choopan",
+      "persian_name": "چوپان",
+      "domain": "choopan.ir",
+      "category": "Healthy & Traditional Dairy",
+      "mention_rate": {
+        "value": 61.8,
+        "ci_lower": 54.5,
+        "ci_upper": 69.1,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 24.0,
+        "ci_lower": 17.6,
+        "ci_upper": 30.4,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 42.1,
+        "ci_lower": 34.6,
+        "ci_upper": 49.6,
+        "sample_size": 720,
+        "status": "ok"
+      }
+    },
+    {
+      "brand": "Zar Macaron",
+      "persian_name": "زرماکارون",
+      "domain": "zarmacaron.com",
+      "category": "Pasta & Grains",
+      "mention_rate": {
+        "value": 54.3,
+        "ci_lower": 46.8,
+        "ci_upper": 61.8,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 31.0,
+        "ci_lower": 24.1,
+        "ci_upper": 37.9,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 19.5,
+        "ci_lower": 13.6,
+        "ci_upper": 25.4,
+        "sample_size": 720,
+        "status": "ok"
+      }
+    },
+    {
+      "brand": "Mahram",
+      "persian_name": "مهرام",
+      "domain": "mahramco.com",
+      "category": "Sauces & Condiments",
+      "mention_rate": {
+        "value": 49.0,
+        "ci_lower": 41.5,
+        "ci_upper": 56.5,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 18.5,
+        "ci_lower": 12.7,
+        "ci_upper": 24.3,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 22.0,
+        "ci_lower": 15.8,
+        "ci_upper": 28.2,
+        "sample_size": 720,
+        "status": "ok"
+      }
+    },
+    {
+      "brand": "Golestan",
+      "persian_name": "گلستان",
+      "domain": "golestan.com",
+      "category": "Tea, Rice & Nuts",
+      "mention_rate": {
+        "value": 44.0,
+        "ci_lower": 36.6,
+        "ci_upper": 51.4,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 16.2,
+        "ci_lower": 10.7,
+        "ci_upper": 21.7,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 18.0,
+        "ci_lower": 12.3,
+        "ci_upper": 23.7,
+        "sample_size": 720,
+        "status": "ok"
+      }
+    },
+    {
+      "brand": "Behrouz",
+      "persian_name": "بهروز",
+      "domain": "behrouz.ir",
+      "category": "Canned Foods & Condiments",
+      "mention_rate": {
+        "value": 41.5,
+        "ci_lower": 34.1,
+        "ci_upper": 48.9,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 12.0,
+        "ci_lower": 7.2,
+        "ci_upper": 16.8,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 15.4,
+        "ci_lower": 10.0,
+        "ci_upper": 20.8,
+        "sample_size": 720,
+        "status": "ok"
+      }
+    },
+    {
+      "brand": "Tabiat",
+      "persian_name": "طبیعت",
+      "domain": "tabiat.ir",
+      "category": "Oils, Rice & Tuna",
+      "mention_rate": {
+        "value": 36.2,
+        "ci_lower": 29.1,
+        "ci_upper": 43.3,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 10.4,
+        "ci_lower": 5.9,
+        "ci_upper": 14.9,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 8.5,
+        "ci_lower": 4.3,
+        "ci_upper": 12.7,
+        "sample_size": 720,
+        "status": "ok"
+      }
+    },
+    {
+      "brand": "Mihan",
+      "persian_name": "میهن",
+      "domain": "mihan-dairy.com",
+      "category": "Ice Cream & Dairy",
+      "mention_rate": {
+        "value": 28.6,
+        "ci_lower": 21.9,
+        "ci_upper": 35.3,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "top1_rate": {
+        "value": 8.2,
+        "ci_lower": 4.1,
+        "ci_upper": 12.3,
+        "sample_size": 720,
+        "status": "ok"
+      },
+      "citation_rate": {
+        "value": 4.5,
+        "ci_lower": 1.4,
+        "ci_upper": 7.6,
+        "sample_size": 720,
+        "status": "ok"
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Kalleh",
+    "persian_name": "کاله",
+    "entity": "Kalleh",
+    "domain": "kalleh.com",
+    "category": "dairy_protein"
+  },
+  {
+    "name": "Choopan",
+    "persian_name": "چوپان",
+    "entity": "Choopan",
+    "domain": "choopan.ir",
+    "category": "dairy_health"
+  },
+  {
+    "name": "Zar Macaron",
+    "persian_name": "زرماکارون",
+    "entity": "Zar Macaron",
+    "domain": "zarmacaron.com",
+    "category": "pasta_grains"
+  },
+  {
+    "name": "Mahram",
+    "persian_name": "مهرام",
+    "entity": "Mahram",
+    "domain": "mahramco.com",
+    "category": "sauces_condiments"
+  },
+  {
+    "name": "Golestan",
+    "persian_name": "گلستان",
+    "entity": "Golestan",
+    "domain": "golestan.com",
+    "category": "tea_rice_staples"
+  },
+  {
+    "name": "Behrouz",
+    "persian_name": "بهروز",
+    "entity": "Behrouz",
+    "domain": "behrouz.ir",
+    "category": "canned_condiments"
+  },
+  {
+    "name": "Tabiat",
+    "persian_name": "طبیعت",
+    "entity": "Tabiat",
+    "domain": "tabiat.ir",
+    "category": "oils_rice_tuna"
+  },
+  {
+    "name": "Mihan",
+    "persian_name": "میهن",
+    "entity": "Mihan",
+    "domain": "mihan-dairy.com",
+    "category": "ice_cream_dairy"
+  }
+]
