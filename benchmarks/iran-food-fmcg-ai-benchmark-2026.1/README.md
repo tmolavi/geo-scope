@@ -10,6 +10,8 @@
 **Permanent Link**: `https://github.com/tmolavi/geo-scope/tree/main/benchmarks/iran-food-fmcg-ai-benchmark-2026.1`  
 **Public Dataset**: `https://inten.asia/data/iran-food-fmcg-ai-benchmark-2026.1.json`  
 
+![Iranian Food Industry & FMCG AI Answers Benchmark 2026](assets/iran-fmcg-ai-benchmark-2026-og.png)
+
 ---
 
 ## 1. Executive Summary
