@@ -28,6 +28,7 @@ class MetricRecord(BaseModel):
     ci_width: Optional[float] = None
     confidence_label: Optional[str] = None
     disclaimer: Optional[str] = None
+    algorithmic_regime: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return self.model_dump(exclude_none=False)

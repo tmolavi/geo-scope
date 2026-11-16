@@ -292,3 +292,20 @@ class AnswerPathConnector:
             clusters=clusters,
             recommended_prompts=recommended,
         )
+
+    def decompose_fanout(
+        self,
+        prompt: str,
+        parent_prompt_id: Optional[str] = None,
+        language: Optional[str] = None,
+        max_subqueries: int = 4,
+    ):
+        """Decomposes a complex prompt into subtopics and atomic sub-queries."""
+        from geo_scope.questions.fanout import QueryFanOutDecomposer
+        decomposer = QueryFanOutDecomposer()
+        return decomposer.decompose(
+            prompt=prompt,
+            parent_prompt_id=parent_prompt_id,
+            language=language,
+            max_subqueries=max_subqueries,
+        )

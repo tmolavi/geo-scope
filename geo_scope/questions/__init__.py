@@ -6,6 +6,11 @@ from geo_scope.questions.discovery import (
     prepare_benchmark_dataset,
     format_discovery_report,
 )
+from geo_scope.questions.fanout import (
+    SubQueryItem,
+    FanOutDecompositionResult,
+    QueryFanOutDecomposer,
+)
 
 __all__ = [
     "DiscoveredQuestion",
@@ -16,4 +21,7 @@ __all__ = [
     "discover_questions",
     "prepare_benchmark_dataset",
     "format_discovery_report",
+    "SubQueryItem",
+    "FanOutDecompositionResult",
+    "QueryFanOutDecomposer",
 ]
