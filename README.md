@@ -250,6 +250,13 @@ GEO-Scope operates as a modular, six-stage evidence pipeline:
   └─────────────────────────────────────────────────────────────┘
 ```
 
+### Advanced Subsystems (November 2026 Engine Updates)
+
+- **Algorithm Timeline & Event Annotation Service (`EventAnnotationService`)**:
+  Maintains a real-time registry of broad search engine updates (e.g., Google November 2026 Core Update), model upgrades (e.g., Gemini 4 Hydrogen Search, OpenAI Business Hub), and SERP layout shifts. Automatically enriches observation records with an `algorithmic_regime` tag (`is_unstable_regime`, active event IDs) to definitively isolate systemic search volatility from on-page optimizations.
+- **AnswerPath Query Fan-Out Decomposer (`QueryFanOutDecomposer`)**:
+  Reverse-engineers and models search engine subtopic decomposition (Query Fan-Out). Decomposes multi-faceted user prompts into structured atomic sub-query graphs across comparative, commercial, and technical intents in English and Persian, validating whether modular passages survive multi-hop retrieval.
+
 ---
 
 ## 5. Execution Modes
